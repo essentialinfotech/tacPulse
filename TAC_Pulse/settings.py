@@ -55,6 +55,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'TAC_Pulse.urls'
+AUTH_USER_MODEL = 'Accounts.User'
 
 TEMPLATES = [
     {

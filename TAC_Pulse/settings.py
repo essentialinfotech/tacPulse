@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Accounting',
+    'Accounts',
+    'Medic'
 ]
 
 MIDDLEWARE = [
@@ -50,6 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'TAC_Pulse.urls'
+AUTH_USER_MODEL = 'Accounts.User'
 
 TEMPLATES = [
     {

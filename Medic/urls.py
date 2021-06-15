@@ -1,8 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from .views import *
 
 urlpatterns = [
-
-    # path('admin/', admin.site.urls),
-   
+    path('audit/form/', audit_form, name = 'audit_form'),
+    path('assesment/form/', assetment_form, name = 'assetment_form'),
 ]

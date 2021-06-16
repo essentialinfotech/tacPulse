@@ -1,0 +1,82 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="page_heading">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h2>Members</h2>
+                    </div>
+                </div>
+            </div>
+
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            </a>
+            {% if request.user.is_user %}
+            <div class="row">
+                <div class="col-md-10"></div>
+                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
+            </div>
+            {% endif %}
+
+            <div class="table-responsive">
+                <table id="data-table" class="display table">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Member Name</th>
+                            <th>Email</th>
+                            <th>Package Name</th>
+                            <th>Price</th>
+                            <th class="text-left">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+
+                            <td>Plabon Datta</td>
+                            <td>aiwebdeveloper1@essential-infotech.com</td>
+                            <td>Personal Package</td>
+                            <td>R 60</td>
+
+
+
+                            <td class="p-5">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <a href="" data-toggle="tooltip" data-placement="top" title="Details"><i
+                                                class="fas fa-clipboard-list text-hover-primary mr-2"></i></a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                class="fas fa-edit text-hover-primary mr-2"></i></a>
+                                    </div>
+                                    <div class="col-md-2 mt-2">
+                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

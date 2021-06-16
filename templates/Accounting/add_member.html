@@ -6,11 +6,11 @@
         bottom: 0;
         right: 15px;
     }
-
+    
     .hide {
         display: none;
     }
-
+    
     .show {
         display: block !important;
     }
@@ -31,10 +31,10 @@
                 <div class="alert-text">
                     <p class="messages">
                         {% for message in messages %}
-                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                        {{message}}
-                    </p>
-                    {% endfor %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
                     </p>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                             <h3 class="card-label">Order Create</h3>
                         </div>
                         <div class="card-toolbar">
-                            <a href="{% url 'order_list' %}" class="btn btn-light-primary font-weight-bolder mr-2">
+                            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-light-primary font-weight-bolder mr-2">
                                 <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
                             <button type="submit" class="btn btn-primary font-weight-bolder">
                                 <i class="ki ki-check icon-xs"></i>Save Form</button>
@@ -71,8 +71,7 @@
                                     Area<span class="asteriskField">*</span>
                                 </label>
                                 <div class="">
-                                    <select name="area" class="select form-control" required="" id="id_area"
-                                        onchange="total()">
+                                    <select name="area" class="select form-control" required="" id="id_area" onchange="total()">
                                         <option value="" selected="">---------</option>
                                         <option value="Inside Dhaka">Inside Dhaka</option>
                                         <option value="Dhaka Suburb">Dhaka Suburb</option>
@@ -82,8 +81,7 @@
                             </div>
                             <div class="form-group col-md-6 mb-0">
                                 <label for="id_payment">Payment*</label>
-                                <select name="payment" id="id_payment" class="textinput textInput form-control"
-                                    required>
+                                <select name="payment" id="id_payment" class="textinput textInput form-control" required>
                                     <option value="">---------</option>
                                     <option value="Cash">Cash</option>
                                     <option value="Wallet">Wallet</option>
@@ -93,8 +91,7 @@
                             <div class="form-group col-md-6 mb-0" id="package" style="display: none;">
                                 <label for="id_package">Package*</label>
 
-                                <select name="package" id="id_package" onchange="package_func()"
-                                    class="textinput textInput form-control">
+                                <select name="package" id="id_package" onchange="package_func()" class="textinput textInput form-control">
                                     <option value="" selected="">---------</option>
                                     {% for v in package %}
                                     <option value="{{v.id}}">{{v.name}}</option>
@@ -114,9 +111,7 @@
                             </div>
                             <div class="form-group col-md-6 mb-0" id="weight">
                                 <label for="id_weight">Weight*</label>
-                                <input type="text" name="weight" maxlength="100"
-                                    class="textinput textInput form-control" required="" id="id_weight"
-                                    oninput="total()">
+                                <input type="text" name="weight" maxlength="100" class="textinput textInput form-control" required="" id="id_weight" oninput="total()">
                             </div>
                             <div class="form-group col-md-6 mb-0">
                                 {{ form.priority|as_crispy_field }}
@@ -129,8 +124,7 @@
                                 <label for="id_package" class=" requiredField">
                                     Amount<span class="asteriskField">*</span>
                                 </label>
-                                <input type="number" name="amount" maxlength="100"
-                                    class="textinput textInput form-control" id="id_amount" readonly>
+                                <input type="number" name="amount" maxlength="100" class="textinput textInput form-control" id="id_amount" readonly>
                             </div>
                         </div>
                         <input type="text" name="pick_up_latitude" maxlength="50" id="id_pick_up_latitude" hidden>
@@ -147,8 +141,8 @@
                 </div>
             </div>
             <div id="map" style="height: 400px;"></div>
+            </div>
         </div>
     </div>
-</div>
 
-{% endblock %}
+    {% endblock %}

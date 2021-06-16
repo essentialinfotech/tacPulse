@@ -14,7 +14,7 @@ def register(request):
 
 
 def my_profile(request):
-    pass
+    return render(request,'accounts/profile.html')
 
 
 def reset_password(request):

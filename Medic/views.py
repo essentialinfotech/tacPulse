@@ -13,3 +13,7 @@ def assetment_form(request):
 def rating(request):
     return render(request,'medic/rate.html')
 
+
+def dispatch_list(request):
+    return render(request,'medic/dispatch_list.html')
+

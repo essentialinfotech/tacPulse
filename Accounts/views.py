@@ -47,6 +47,10 @@ def edit_profile_admin(request):
     return render(request,'accounts/edit_profile_admin.html')
 
 
+def edit_profile_dispatch(request):
+    return render(request,'accounts/edit_profile_dispatch.html')
+
+
 def reset_password(request):
     form = PasswordChangeForm(request.user)
     try:

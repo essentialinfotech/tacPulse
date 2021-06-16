@@ -18,6 +18,7 @@ urlpatterns = [
     path('chart_dispatch_profile,/', chart_dispatch_profile, name = 'chart_dispatch_profile'),
 
     path('edit/profile/', edit_profile_admin, name= 'edit_profile_admin'),
+    path('edit/profile/dispatch/', edit_profile_dispatch, name= 'edit_profile_dispatch'),
 
     path('registration/', register, name = 'register'),
 

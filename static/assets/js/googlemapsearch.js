@@ -19,9 +19,20 @@ function initAutocomplete() {
         const places = searchBox.getPlaces();
 
         if (places.length == 0) {
-            return;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+
+                    })
+
+            }
         }
-        // Clear out the old markers.
+        alert(position)
+            // Clear out the old markers.
         markers.forEach((marker) => {
             marker.setMap(null);
         });
@@ -34,7 +45,7 @@ function initAutocomplete() {
                 return;
             }
             const icon = {
-                url: place.icon,
+                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
                 size: new google.maps.Size(71, 71),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(17, 34),

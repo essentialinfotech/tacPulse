@@ -13,4 +13,16 @@ urlpatterns = [
     path('occurrence/form/', occurrence_form, name = 'occurrence_form'),
     path('panic/request/', panic_system, name = 'panic_system'),
     path('draggable/form/', dragable_form, name = 'dragable_form'),
+    path('ambulance/request/', ambulance_request, name='ambulance_request'),
+    path('ambulance/request/report/', ambulance_request_report,
+         name='ambulance_request_report'),
+    path('audit/report/', audit_report, name='audit_report'),
+    path('inspection/report/', inspaction_report, name='inspaction_report'),
+    path('case/note/reports/', case_reports, name='case_reports'),
+    path('stock/request/report/', stock_req_reports, name='stock_req_reports'),
+    path('hospital/transfer/report/', hospital_transfer_report,
+         name='hospital_transfer_report'),
+    path('hospital/transfer/request/',
+         hospital_transfer, name='hospital_transfer'),
+
 ]

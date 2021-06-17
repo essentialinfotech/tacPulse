@@ -34,7 +34,6 @@ def rating(request):
 
 def ambulance_request(request):
     return render(request, 'medic/ambulance_request.html')
-    return render(request, 'medic/rate.html')
 
 
 def dispatch_list(request):

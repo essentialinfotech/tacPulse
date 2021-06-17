@@ -76,7 +76,7 @@
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
                             <li class="menu-item menu-item-active" aria-haspopup="true">
-                                <a href="" class="menu-link">
+                                <a href="{% url 'dragable_form' %}" class="menu-link">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
 											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -88,7 +88,7 @@
 											</svg>
 											<!--end::Svg Icon-->
 										</span>
-                                    <span class="menu-text">Dashboard</span>
+                                    <span class="menu-text">Draggable Demo</span>
                                 </a>
                             </li>
                             <li class="menu-section">
@@ -140,21 +140,21 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="custom/apps/user/list-default.html" class="menu-link">
+                                            <a href="{% url 'occurrence_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
                                                 <span class="menu-text">Add Occurance Report</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item" aria-haspopup="true">
+                                        <!-- <li class="menu-item" aria-haspopup="true">
                                             <a href="custom/apps/user/list-datatable.html" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
                                                 <span class="menu-text">Occurance Reports</span>
                                             </a>
-                                        </li>
+                                        </li> -->
 
                                     </ul>
                                 </div>
@@ -261,6 +261,21 @@
                                 </div>
                             </li>
 
+                            <li class="menu-section">
+                                <h4 class="menu-text">Dispatch Management</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+											<i class="fas fa-search-plus"></i>
+										</span>
+                                    <span class="menu-text">Dispatch List</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                            
+                            </li>
 
                             <li class="menu-section">
                                 <h4 class="menu-text">Accounting</h4>
@@ -388,7 +403,7 @@
                                             <a href="{% url 'add_member'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
-                                    </i>
+                                                </i>
                                                 <span class="menu-text">Issue Trade</span>
                                             </a>
                                         </li>
@@ -398,6 +413,15 @@
                                                 <span></span>
 
                                                 <span class="menu-text">Trade Reports</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'tools_form'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"></i>
+                                                <span></span>
+
+                                                <span class="menu-text">Property Form</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
@@ -1239,7 +1263,7 @@
             <!--begin::Nav-->
             <div class="navi navi-spacer-x-0 p-0">
                 <!--begin::Item-->
-                <a href="custom/apps/user/profile-1/personal-information.html" class="navi-item">
+                <a href="{% url 'my_profile' %}" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
@@ -1265,7 +1289,7 @@
                 </a>
                 <!--end:Item-->
                 <!--begin::Item-->
-                <a href="custom/apps/user/profile-3.html" class="navi-item">
+                <a href="#" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
@@ -1292,7 +1316,7 @@
                 </a>
                 <!--end:Item-->
                 <!--begin::Item-->
-                <a href="custom/apps/user/profile-2.html" class="navi-item">
+                <a href="#" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
@@ -1317,7 +1341,7 @@
                 </a>
                 <!--end:Item-->
                 <!--begin::Item-->
-                <a href="custom/apps/userprofile-1/overview.html" class="navi-item">
+                <a href="#" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">

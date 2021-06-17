@@ -1,0 +1,152 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<style>
+  #center {
+    margin-bottom: 10px;
+    margin-top: 15px;
+  }
+  #parent-text-center {
+    width: 50%;
+    margin: auto;
+  }
+  .alert {
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
+    width: 300px;
+    text-align: center;
+    align-self: center;
+  }
+  #list {
+    color: #155724;
+  }
+
+
+
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+  height: 100%;
+}
+
+.custom-map-control-button {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  height: 40px;
+  cursor: pointer;
+}
+.custom-map-control-button:hover {
+  background: #ebebeb;
+}
+</style>
+
+<br /><br />
+{%if messages%}
+<div class="alert alert-success" id="alert">
+  {% for message in messages %}
+  <li
+    id="list"
+    {%
+    if
+    message.tags
+    %}
+    class=" {{ message.tags }} "
+    style="list-style: none"
+    {%
+    endif
+    %}
+  >
+    {{message }}
+  </li>
+  {% endfor %}
+</div>
+<br />
+{%endif%}
+
+<div class="d-flex flex-column-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div
+          class="text-center shadow p-3 mb-5 bg-white rounded"
+          id="parent-text-center"
+        >
+          <div id="center">
+            <strong>{{ panic }}</strong>
+          </div>
+          <form method="post" action="{% url 'panic_system' %}">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-warning">Request</button>
+          </form>
+        </div>
+      </div>
+      <br><br>
+      <div class="col-md-12" style="height: 80vh;">
+            <strong style="color: grey; text-decoration: underline;">Location</strong>
+            <div id="map"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script>
+    let map, infoWindow;
+    
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 23.869, lng: 90.384 },
+        zoom: 6,
+      });
+      infoWindow = new google.maps.InfoWindow();
+      const locationButton = document.createElement("button");
+      locationButton.textContent = "Pan to Current Location";
+      locationButton.classList.add("custom-map-control-button");
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+      locationButton.addEventListener("click", () => {
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              infoWindow.setPosition(pos);
+              infoWindow.setContent("Location found.");
+              infoWindow.open(map);
+              map.setCenter(pos);
+            },
+            () => {
+              handleLocationError(true, infoWindow, map.getCenter());
+            }
+          );
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      });
+    }
+    
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(
+        browserHasGeolocation
+          ? "Error: The Geolocation service failed."
+          : "Error: Your browser doesn't support geolocation."
+      );
+      infoWindow.event.addDomListener(window, 'load', initialize);
+      infoWindow.open(map);
+    }
+
+</script>
+    
+{% endblock %}

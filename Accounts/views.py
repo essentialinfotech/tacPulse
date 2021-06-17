@@ -3,6 +3,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from .models import *
+from django.http import JsonResponse
 
 # Create your views here.
 def dashboard(request):
@@ -13,8 +14,41 @@ def register(request):
     return render(request,'registration/register.html')
 
 
-def my_profile(request):
-    return render(request,'accounts/profile.html')
+def admin_profile(request):
+    user = User.objects.all()
+    return render(request,'accounts/admin_profile.html',{'user':user})
+
+def dispatch_profile(request):
+    user = User.objects.all()
+    return render(request, 'accounts/dispacth_profile.html',{'user':user})
+
+
+def chart_admin_profile(request):
+    labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    data = ['30','500','87','400','12','300','52','200','12','100','13','50']
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+
+def chart_dispatch_profile(request):
+    labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    data = ['30','500','87','400','12','300','52','200','12','100','13','50']
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+    
+
+def edit_profile_admin(request):
+    return render(request,'accounts/edit_profile_admin.html')
+
+
+def edit_profile_dispatch(request):
+    return render(request,'accounts/edit_profile_dispatch.html')
 
 
 def reset_password(request):

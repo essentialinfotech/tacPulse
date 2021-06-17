@@ -38,18 +38,18 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-6 mb-0" id="package">
-                                <label for="id_package">Package*</label>
+                                <label for="package_name">Package*</label>
 
-                                <select name="package_name" id="package_name" class="textinput textInput form-control" onchange="package_price_amount()">
+                                <select name="package_name" id="package_name" class="textinput textInput form-control" onchange="cal_package()">
                                     <option value="" selected="">---------</option>
                                     <option value="Family Package">Family Package</option>
                                     <option value="Personal Package">Personal Package</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-0" id="package">
-                                <label for="id_package">Payment Type*</label>
+                                <label for="payment">Payment Type*</label>
 
-                                <select name="package" id="id_package" class="textinput textInput form-control">
+                                <select name="payment" id="payment" class="textinput textInput form-control">
                                     <option value="" selected="">---------</option>
                                     <option value="">FastPay</option>
                                     <option value="">Netcash</option>
@@ -71,5 +71,14 @@
             </form>
 
             </div>
-
+            <script>
+                function cal_package() {
+                    pack = document.getElementById('package_name').value
+                    if (pack === 'Family Package') {
+                        document.getElementById('package_price').value = 120
+                    } else if (pack === 'Personal Package') {
+                        document.getElementById('package_price').value = 80
+                    }
+                }
+            </script>
             {% endblock %}

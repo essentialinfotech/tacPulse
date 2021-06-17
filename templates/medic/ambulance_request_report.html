@@ -1,0 +1,87 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Ambulance Request Report</h3>
+                    </div>
+                </div>
+            </div>
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            </a>
+            <!-- {% if request.user.is_user %}
+            <div class="row">
+                <div class="col-md-10"></div>
+                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
+            </div>
+            {% endif %} -->
+            <div class="table-responsive">
+                <table id="data-table" class="display table text-center">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Ampunt</th>
+                            <th>Report</th>
+                            <th class="text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+
+                            <td>Plabon Datta</td>
+                            <td>plabondatta26@gmail.com</td>
+                            <td>R 1000</td>
+                            <td><input type="button" value="View File" onClick="contentDisp();"></td>
+
+                            <td>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <a href="" data-toggle="tooltip" data-placement="top" title="Details"><i
+                                                class="fas fa-clipboard-list text-hover-primary mr-2"></i></a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                class="fas fa-edit text-hover-primary mr-2"></i></a>
+                                    </div>
+                                    <div class="col-md-2 mt-2">
+                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="contentArea"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function contentDisp() {
+        $.ajax({
+            url: '/' + 'static/file/style.pdf',
+            success: function(data) {
+                $("#contentArea").html(data);
+            }
+        });
+    }
+</script>
+{% endblock %}

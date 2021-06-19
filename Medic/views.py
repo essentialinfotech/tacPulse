@@ -83,7 +83,13 @@ def panic_system(request):
     url = request.META.get('HTTP_REFERER')
     panic = 'Give a panic request'
     if request.method == 'POST':
-        messages.success(request,'Panic request sent')
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
+        panic_sender = Panic.objects.filter(panic_sender_id = request.user.id)
+        if not panic_sender:
+            Panic.objects.create(panic_sender_id = request.user.id, lat = lat, lng = lng)
+        else:
+            panic_sender.update(panic_sender_id = request.user.id, lat = lat, lng = lng)
         return HttpResponseRedirect(url)
     return render(request,'medic/panic.html',{'panic': panic})
         

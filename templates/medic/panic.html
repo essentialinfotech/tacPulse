@@ -1,69 +1,101 @@
-{% extends '../base.html' %} {% load static %} {% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html>
 
-<style>
-    #center {
-        margin-bottom: 10px;
-        margin-top: 15px;
-    }
-    
-    #parent-text-center {
-        width: 50%;
-        margin: auto;
-    }
-    
-    .alert {
-        background-color: #d4edda !important;
-        border-color: #c3e6cb !important;
-        width: 300px;
-        text-align: center;
-        align-self: center;
-    }
-    
-    #list {
-        color: #155724;
-    }
-    /* Always set the map height explicitly to define the size of the div
+<head>
+    <title>Tac-Pulse</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- jsFiddle will insert css and js -->
+    <style>
+        /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-    
-    #map {
-        height: 100%;
-    }
-    
-    .custom-map-control-button {
-        background-color: #fff;
-        border: 0;
-        border-radius: 2px;
-        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
-        margin: 10px;
-        padding: 0 0.5em;
-        font: 400 18px Roboto, Arial, sans-serif;
-        overflow: hidden;
-        height: 40px;
-        cursor: pointer;
-    }
-    
-    .custom-map-control-button:hover {
-        background: #ebebeb;
-    }
-</style>
+        
+        #map {
+            height: 90%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        
+        html,
+        body {
+            background-color: url(static/assets/ma.jpg);
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .custom-map-control-button {
+            background-color: #fff;
+            border: 0;
+            border-radius: 2px;
+            box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+            margin: 10px;
+            padding: 0 0.5em;
+            font: 400 18px Roboto, Arial, sans-serif;
+            overflow: hidden;
+            height: 40px;
+            cursor: pointer;
+        }
+        
+        .custom-map-control-button:hover {
+            background: #ebebeb;
+        }
+        
+        #center {
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+        
+        #parent-text-center {
+            width: 50%;
+            margin: auto;
+        }
+        
+        .alert {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            width: 300px;
+            text-align: center;
+            align-self: center;
+            margin: auto;
+        }
+        
+        #list {
+            color: #155724;
+        }
+        
+        .btn-warning {
+            color: white;
+        }
+        
+        #btn-loc {
+            margin-bottom: 5px;
+            text-decoration: underline;
+        }
+    </style>
+</head>
 
-<br /><br /> {%if messages%}
-<div class="alert alert-success" id="alert">
-    {% for message in messages %}
-    <li id="list" {% if message.tags %} class=" {{ message.tags }} " style="list-style: none" {% endif %}>
-        {{message }}
-    </li>
-    {% endfor %}
-</div>
-<br /> {%endif%}
-
-<div class="d-flex flex-column-fluid">
+<body>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <div class="text-center">
+
+                    <br /><br /> {%if messages%}
+                    <div class="alert alert-success" id="alert">
+                        {% for message in messages %}
+                        <li id="list" {% if message.tags %} class=" {{ message.tags }} " style="list-style: none" {% endif %}>
+                            {{message }}
+                        </li>
+                        {% endfor %}
+                    </div>
+                    <br /> {%endif%}
+
+                </div>
                 <div class="text-center shadow p-3 mb-5 bg-white rounded" id="parent-text-center">
                     <div id="center">
-                        <strong>{{ panic }}</strong>
+                        <strong style="color:grey">{{ panic }}</strong>
                     </div>
                     <form id="form" method="post" action="{% url 'panic_system' %}">
                         {% csrf_token %}
@@ -71,96 +103,107 @@
                     </form>
                 </div>
             </div>
-            <br><br>
-            <div class="col-md-12" style="height: 80vh;">
-                <strong style="color: grey; text-decoration: underline;">Location</strong>
-                <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- map container -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a id="btn-loc">My Location</a>
+                <div style="height: 100vh;">
+                    <div id="map"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly" async></script>
+    <script>
+        let map, infoWindow;
 
-
-
-<!-- this page needs jquery which is already there in base but it does not work unless i put the jquery cdn here...so i am using it here -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-<!-- google map/my location script -->
-<script>
-    let map, infoWindow;
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: {
-                lat: 23.821,
-                lng: 90.385
-            },
-            zoom: 7,
-        });
-        infoWindow = new google.maps.InfoWindow();
-        const locationButton = document.createElement("button");
-        locationButton.textContent = "Pan to Current Location";
-        locationButton.classList.add("custom-map-control-button");
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-        locationButton.addEventListener("click", () => {
-            // Try HTML5 geolocation.
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude,
-                        };
-                        console.log(pos)
-                            // marker by fahad
-                        new google.maps.Marker({
-                            position: pos,
-                            map,
-                            title: "Location Found",
-                        });
-
-                        // infoWindow.setPosition(pos);
-                        // infoWindow.setContent("Location found.");
-                        infoWindow.open(map);
-                        map.setCenter(pos);
-                    },
-                    () => {
-                        handleLocationError(true, infoWindow, map.getCenter());
-                    }
-                );
-            } else {
-                // Browser doesn't support Geolocation
-                handleLocationError(false, infoWindow, map.getCenter());
-            }
-        });
-    }
-
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(
-            browserHasGeolocation ?
-            "Error: The Geolocation service failed." :
-            "Error: Your browser doesn't support geolocation."
-        );
-        infoWindow.open(map);
-    }
-</script>
-
-<script>
-    $(function() {
-        $("#form").submit(function(event) {
-            event.preventDefault();
-            var Form = $(this);
-            console.log(Form)
-            var posting = $.post(Form.attr('action'), Form.serialize());
-            posting.done(function(data) {
-                console.log('hjhjh')
-                swal("Sent", "Panic request sent!", "success");
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: {
+                    lat: -34.397,
+                    lng: 150.644
+                },
+                zoom: 6,
             });
-            posting.fail(function(data) {
-                swal("Ups", "Something went wrong!", "failure");
+            infoWindow = new google.maps.InfoWindow();
+            const locationButton = document.createElement("button");
+            locationButton.textContent = "Pan to Current Location";
+            locationButton.classList.add("custom-map-control-button");
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+
+            // const bt = document.getElementById("btn-loc")
+
+            locationButton.addEventListener('click', () => {
+                // Try HTML5 geolocation.
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude,
+                            };
+
+                            new google.maps.Marker({
+                                position: pos,
+                                map,
+                                title: "loacation found",
+                            });
+
+                            console.log(pos)
+                                // infoWindow.setPosition(pos);
+                                // infoWindow.setContent("Location found.");
+                            infoWindow.open(map);
+                            map.setCenter(pos);
+                        },
+                        () => {
+                            handleLocationError(true, infoWindow, map.getCenter());
+                        }
+                    );
+                } else {
+                    // Browser doesn't support Geolocation
+                    handleLocationError(false, infoWindow, map.getCenter());
+                }
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(
+                browserHasGeolocation ?
+                "Error: The Geolocation service failed." :
+                "Error: Your browser doesn't support geolocation."
+            );
+            infoWindow.open(map);
+        }
+    </script>
+
+
+    <script>
+        $(function() {
+            $("#form").submit(function(event) {
+                event.preventDefault();
+                var Form = $(this);
+                console.log(Form)
+                var posting = $.post(Form.attr('action'), Form.serialize());
+                posting.done(function(data) {
+                    console.log('hjhjh')
+                    swal("Sent", "Panic request sent!", "success");
+                });
+                posting.fail(function(data) {
+                    swal("Ups", "Something went wrong!", "failure");
+                });
             });
         });
-    });
-</script>
-{% endblock %}
+    </script>
+</body>
+
+</html>

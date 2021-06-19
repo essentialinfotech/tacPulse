@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path,register_converter
 from .views import *
+from Accounts.utils import HashIdConverter
+register_converter(HashIdConverter, "hashid")
 
 urlpatterns = [
     path('audit/form/', audit_form, name = 'audit_form'),
@@ -24,5 +26,7 @@ urlpatterns = [
          name='hospital_transfer_report'),
     path('hospital/transfer/request/',
          hospital_transfer, name='hospital_transfer'),
+     path('panic/requests/', check_panic_requests, name = 'check_panic_requests'),
+     path('individial/panic/location/<hashid:id>/', check_panic_requests_location, name = 'check_panic_requests_location'),
 
 ]

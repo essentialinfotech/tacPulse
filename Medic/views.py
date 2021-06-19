@@ -92,7 +92,26 @@ def panic_system(request):
             panic_sender.update(panic_sender_id = request.user.id, lat = lat, lng = lng)
         return HttpResponseRedirect(url)
     return render(request,'medic/panic.html',{'panic': panic})
-        
+
+
+def check_panic_requests(request):
+    panic_requests = Panic.objects.all().order_by('-id')
+    context = {
+        'panic_requests': panic_requests,
+        }
+    return render(request,'medic/panic_requests.html',context)
+
+
+def check_panic_requests_location(request,id):
+    panic = Panic.objects.get(panic_sender_id = id)
+    context = {
+        'lat': panic.lat,
+        'lng': panic.lng,
+        'id': id,
+    }
+    print(context)
+    return render(request,'medic/panic_location_check_admin.html', context)
+
 
 def task_transfer_req(request):
     return render(request, 'medic/task_transfer_req.html')

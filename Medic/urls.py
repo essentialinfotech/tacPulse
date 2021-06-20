@@ -28,5 +28,5 @@ urlpatterns = [
          hospital_transfer, name='hospital_transfer'),
      path('panic/requests/', check_panic_requests, name = 'check_panic_requests'),
      path('individial/panic/location/<hashid:id>/', check_panic_requests_location, name = 'check_panic_requests_location'),
-
+     path('delete/panic/request/<hashid:id>/', del_panic, name = 'del_panic'),
 ]

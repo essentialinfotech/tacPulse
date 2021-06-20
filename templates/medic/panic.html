@@ -109,8 +109,9 @@
                     </div>
                     <form id="form" method="post" action="{% url 'panic_system' %}">
                         {% csrf_token %}
-                        <input readonly class="form-control mb-1" type="text" name="lat" id="lat" placeholder="Latitude">
-                        <input readonly class="form-control mb-1" type="text" name="lng" id="lng" placeholder="Longitude">
+                        <textarea required name="reason" id="reason" class="form-control mb-1" style="resize: none;" placeholder="Reason for a panic request"></textarea>
+                        <input readonly class="form-control mb-1" type="text" name="lat" id="lat" placeholder="Latitude" style="display: none;">
+                        <input readonly class="form-control mb-1" type="text" name="lng" id="lng" placeholder="Longitude" style="display: none;">
                         <button id="btn" type="submit" class="form-control">Request</button>
                     </form>
                 </div>

@@ -4,13 +4,14 @@
 
 <head>
     <title>Tac-Pulse</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <style>
         #map {
             height: 90%;
         }
-        
+
         html,
         body {
             background-color: url(static/assets/ma.jpg);
@@ -18,7 +19,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .custom-map-control-button {
             background-color: #fff;
             border: 0;
@@ -31,7 +32,7 @@
             height: 40px;
             cursor: pointer;
         }
-        
+
         .custom-map-control-button:hover {
             background: #ebebeb;
         }
@@ -44,8 +45,13 @@
             <div class="col-md-12">
                 <div class="text-center">
                     <div class="card-body">
-                        <input class="form-control mb-1" readonly type="number" value="{{lat}}" id="lat">
-                        <input class="form-control" readonly type="number" value="{{lng}}" id="lng">
+                        <button class="btn btn-success form-control m-auto w-50 mb-1" id="reason-btn">Reason</button>
+                        <input id="reason" type="text" class="form-control w-50 m-auto" value="{{ reason }}" readonly
+                            style="display: none;">
+                        <input class="form-control mb-1" readonly type="number" value="{{lat}}" id="lat"
+                            style="display: none;">
+                        <input class="form-control" readonly type="number" value="{{lng}}" id="lng"
+                            style="display: none;">
                     </div>
                 </div>
             </div>
@@ -63,11 +69,16 @@
         </div>
     </div>
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly" async></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly"
+        async></script>
     <script>
         let map, infoWindow;
         var lat = parseFloat(document.getElementById('lat').value);
@@ -119,11 +130,22 @@
             infoWindow.setPosition(pos);
             infoWindow.setContent(
                 browserHasGeolocation ?
-                "Error: The Geolocation service failed." :
-                "Error: Your browser doesn't support geolocation."
+                    "Error: The Geolocation service failed." :
+                    "Error: Your browser doesn't support geolocation."
             );
             infoWindow.open(map);
         }
+    </script>
+
+<!-- show reason -->
+    <script>
+        const button = document.getElementById('reason-btn');
+        button.addEventListener('click', event => {
+            const input_reason = document.getElementById('reason');
+            if (input_reason.style.display === 'none') {
+                input_reason.style.display = 'block';
+            }
+        });
     </script>
 
 </html>

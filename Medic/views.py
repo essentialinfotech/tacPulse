@@ -54,6 +54,14 @@ def dragable_form(request):
     return render(request,'medic/dragable_form.html')
 
 
+def tools_report(request):
+    return render(request,'medic/tools_report.html')
+
+
+def schedule_report(request):
+    return render(request,'medic/schedule_report.html')
+
+
 def rating(request):
     return render(request, 'medic/rate.html')
 

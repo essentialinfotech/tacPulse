@@ -14,7 +14,7 @@
 
                                     {% if i.panic_sender %}
                                     <a href="{% url 'del_panic' i.id %}"  id="{{ i.id }}"
-                                        class="btn btn-sm btn-light-primary font-weight-bold loggedinDelete">
+                                        class="loggedinDelete">
                                         <i class="fas fa-trash"></i></a>
                                 </span>
 
@@ -29,7 +29,7 @@
 
                             <div class="card-toolbar">
                                 {% if i.panic_sender %}
-                                <a href="{% url 'check_panic_requests_location' i.id %}"
+                                <a href="{% url 'check_panic_requests_location' i.panic_sender.id %}"
                                     class="btn btn-sm btn-light-primary font-weight-bold">
                                     <i class="fa fa-map"></i>Location
                                 </a>
@@ -55,7 +55,7 @@
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 
-<!-- real time delete ajax/jquery bt fahad -->
+<!-- real time delete ajax/jquery by fahad -->
 <script>
     $(".delAnonymous").click(function (e) {
         var id = this.id;
@@ -68,7 +68,7 @@
             content: 'Do you want to delete this panic request ?',
             buttons: {
                 confirm: function () {
-                    var sure = swal({
+                    swal({
                         title: "Are you sure?",
                         text: "Once deleted, you will not be able to recover this item!",
                         icon: "warning",
@@ -113,7 +113,7 @@
             content: 'Do you want to delete this panic request ?',
             buttons: {
                 confirm: function () {
-                    var sure = swal({
+                    swal({
                         title: "Are you sure?",
                         text: "Once deleted, you will not be able to recover this item!",
                         icon: "warning",

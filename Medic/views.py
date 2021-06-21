@@ -107,7 +107,7 @@ def check_panic_requests(request):
 
 
 def check_panic_requests_location(request,id):
-    panic = Panic.objects.get(id = id)
+    panic = Panic.objects.get(panic_sender_id = id)
     context = {
         'reason': panic.reason,
         'lat': panic.lat,

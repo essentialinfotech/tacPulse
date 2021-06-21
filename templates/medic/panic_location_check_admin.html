@@ -79,65 +79,9 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly"
         async></script>
-    <script>
-        let map, infoWindow;
-        var lat = parseFloat(document.getElementById('lat').value);
-        var lng = parseFloat(document.getElementById('lng').value);
 
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: {
-                    lat: -34.397,
-                    lng: 150.644
-                },
-                zoom: 6,
-            });
-            infoWindow = new google.maps.InfoWindow();
-            addEventListener('load', () => {
-                // Try HTML5 geolocation.
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const pos = {
-                                lat: lat,
-                                lng: lng,
-                            };
-                            console.log(pos)
-
-                            // setting marker on map by zhf
-                            new google.maps.Marker({
-                                position: pos,
-                                map,
-                                title: "loacation found",
-                            });
-
-                            infoWindow.open(map);
-                            map.setCenter(pos);
-                        },
-                        () => {
-                            handleLocationError(true, infoWindow, map.getCenter());
-                        }
-                    );
-                } else {
-                    // Browser doesn't support Geolocation
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
-            });
-        }
-
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(
-                browserHasGeolocation ?
-                    "Error: The Geolocation service failed." :
-                    "Error: Your browser doesn't support geolocation."
-            );
-            infoWindow.open(map);
-        }
-    </script>
-
-<!-- show reason -->
+    <!-- show reason -->
     <script>
         const button = document.getElementById('reason-btn');
         button.addEventListener('click', event => {
@@ -148,4 +92,42 @@
         });
     </script>
 
+
+    <script>
+        // dynamic lat,lng from database
+        var data_lat = parseFloat(document.getElementById('lat').value);
+        var data_lng = parseFloat(document.getElementById('lng').value);
+
+        function initMap() {
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 6,
+                center: { lat: 23.876719650908374, lng: 90.39049891799795 },
+            });
+            directionsRenderer.setMap(map);
+            calculateAndDisplayRoute(directionsService, directionsRenderer)
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+            directionsService.route(
+                {
+                    origin: {
+                        query: `${data_lat}, ${data_lng}`,
+                    },
+                    destination: {
+                        query: '23.870845736427867, 90.39092265021631',
+                    },
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+        }
+    </script>
 </html>

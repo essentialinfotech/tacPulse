@@ -19,31 +19,26 @@
                                 </span>
 
                                 <h3 class="card-label" style="color: white;">
-                                    {{ i.panic_sender.username|title }} has sent a panic request
-                                    {% else %}
-                                    <div id="anonymous" style="color: white;"><i
-                                            class="fas fa-exclamation-triangle"></i> Anonymous User request</div>
+                                    {{ i.panic_sender.username|title }} has sent a panic request {% else %}
+                                    <div id="anonymous" style="color: white;"><i class="fas fa-exclamation-triangle"></i> Anonymous User request</div>
                                     {% endif %}
                                 </h3>
                             </div>
 
                             <div class="card-toolbar">
                                 {% if i.panic_sender %}
-                                <a href="{% url 'check_panic_requests_location' i.panic_sender.id %}"
-                                    class="btn btn-sm btn-light-primary font-weight-bold">
+                                <a href="{% url 'check_panic_requests_location' i.panic_sender.id %}" class="btn btn-sm btn-light-primary font-weight-bold">
                                     <i class="fa fa-map"></i>Location
                                 </a>
                                 {% else %}
-                                <a href="{% url 'del_panic' i.id %}" id="{{ i.id }}"
-                                    class="btn btn-sm btn-light-primary font-weight-bold delAnonymous">
+                                <a href="{% url 'del_panic' i.id %}" id="{{ i.id }}" class="btn btn-sm btn-light-primary font-weight-bold delAnonymous">
                                     <i class="fa fa-trash"></i>Remove
                                 </a>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
-                    <br> 
-                    {% endfor %}
+                    <br> {% endfor %}
                 </div>
             </div>
         </div>
@@ -51,13 +46,12 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 
 <!-- real time delete ajax/jquery by fahad -->
 <script>
-    $(".delAnonymous").click(function (e) {
+    $(".delAnonymous").click(function(e) {
         var id = this.id;
         var href = this.href;
         console.log(href, id)
@@ -67,14 +61,14 @@
             title: 'Confirm!',
             content: 'Do you want to delete this panic request ?',
             buttons: {
-                confirm: function () {
+                confirm: function() {
                     swal({
-                        title: "Are you sure?",
-                        text: "Once deleted, you will not be able to recover this item!",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
+                            title: "Are you sure?",
+                            text: "Once deleted, you will not be able to recover this item!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
                         .then((willDelete) => {
                             if (willDelete) {
                                 $.ajax({
@@ -82,7 +76,7 @@
                                     data: {},
                                 });
                                 // to remove the card
-                                $("#"+id).fadeOut(1000);
+                                $("#" + id).fadeOut(1000);
                                 swal("Poof! This request has been deleted!", {
                                     icon: "success",
                                 });
@@ -91,7 +85,7 @@
                             }
                         });;
                 },
-                cancel: function () {
+                cancel: function() {
                     $.alert('Canceled!');
                 },
             }
@@ -102,7 +96,7 @@
 
 
 <script>
-    $(".loggedinDelete").click(function (e) {
+    $(".loggedinDelete").click(function(e) {
         var id = this.id;
         var href = this.href;
         console.log(href, id)
@@ -112,14 +106,14 @@
             title: 'Confirm!',
             content: 'Do you want to delete this panic request ?',
             buttons: {
-                confirm: function () {
+                confirm: function() {
                     swal({
-                        title: "Are you sure?",
-                        text: "Once deleted, you will not be able to recover this item!",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
+                            title: "Are you sure?",
+                            text: "Once deleted, you will not be able to recover this item!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
                         .then((willDelete) => {
                             if (willDelete) {
                                 $.ajax({
@@ -127,7 +121,7 @@
                                     data: {},
                                 });
                                 // to remove the card
-                                $("#"+id).fadeOut(1000);
+                                $("#" + id).fadeOut(1000);
                                 swal("Poof! This request has been deleted!", {
                                     icon: "success",
                                 });
@@ -136,7 +130,7 @@
                             }
                         });;
                 },
-                cancel: function () {
+                cancel: function() {
                     $.alert('Canceled!');
                 },
             }

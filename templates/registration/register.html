@@ -23,24 +23,22 @@
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="{% static 'assets/media/logos/favicon.ico' %}" />
+    <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 
-<body id="kt_body"
-    class="quick-panel-right demo-panel-right offcanvas-right header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading">
+<body id="kt_body" class="quick-panel-right demo-panel-right offcanvas-right header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading">
     <!--begin::Main-->
     <div class="d-flex flex-column flex-root">
         <!--begin::Login-->
         <div class="login login-5 login-signin-on d-flex flex-row-fluid" id="kt_login">
-            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid"
-                style="background-image: url(assets/media/bg/bg-2.jpg);">
+            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(assets/media/bg/bg-2.jpg);">
                 <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
                     <!--begin::Login Header-->
                     <div class="d-flex flex-center mb-15">
                         <a href="#">
-                            <img src="{% static 'assets/media/logos/logo-letter-13.png' %}" class="max-h-75px" alt="" />
+                            <img src="{% static 'images\logo.png'%}" class="max-h-75px" alt="" />
                         </a>
                     </div>
                     <!--end::Login Header-->
@@ -52,55 +50,39 @@
                         </div>
 
                         <div>
-                            <input type="checkbox" class="radioCheck " id="is_user" name="is_user"
-                                onclick="check(this);">
+                            <input type="checkbox" class="radioCheck " id="is_user" name="is_user" onclick="check(this);">
                             <label for="is_user" style="font-size: 15px; margin-right: 20px;">Register User</label>
 
-                            <input type="checkbox" class="radioCheck" id="is_staff" name="is_staff"
-                                onclick="check(this);">
+                            <input type="checkbox" class="radioCheck" id="is_staff" name="is_staff" onclick="check(this);">
                             <label for="is_staff" style="font-size: 15px;">Dispatch Register</label>
                         </div>
 
                         <form class="form" id="kt_login_signin_form">
                             <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="text" placeholder="First Name" name="first_name" autocomplete="off" required/>
+                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="First Name" name="first_name" autocomplete="off" required/>
                             </div>
                             <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="text" placeholder="Last Name" name="last_name" autocomplete="off" required/>
+                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="Last Name" name="last_name" autocomplete="off" required/>
                             </div>
                             <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="text" placeholder="Phone" name="contact" autocomplete="off" required/>
+                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="Phone" name="contact" autocomplete="off" required/>
                             </div>
                             <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="text" placeholder="Email" name="username" autocomplete="off" />
+                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="Email" name="username" autocomplete="off" />
                             </div>
                             <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="password" placeholder="Password" name="password1" required/>
+                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="password" placeholder="Password" name="password1" required/>
                             </div>
                             <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="password" placeholder="Confirm Password" name="password2" required/>
+                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="password" placeholder="Confirm Password" name="password2" required/>
                             </div>
                             <div class="form-group text-center mt-10">
-                                <button id="kt_login_signin_submit"
-                                    class="btn btn-pill btn-primary opacity-90 px-15 py-3">Sign Up</button>
+                                <button id="kt_login_signin_submit" class="btn btn-pill btn-primary opacity-90 px-15 py-3">Sign Up</button>
                             </div>
                         </form>
                         <div class="mt-10">
                             <span class="opacity-40 mr-4">Already have an account?</span>
-                            <a href="javascript:;" id="kt_login_signup"
-                                class="text-white opacity-30 font-weight-normal">Sign In</a>
+                            <a href="javascript:;" id="kt_login_signup" class="text-white opacity-30 font-weight-normal">Sign In</a>
                         </div>
                     </div>
                     <!--end::Login Sign in form-->
@@ -111,11 +93,71 @@
         <!--end::Login-->
     </div>
     <!--end::Main-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
+    </script>
     <!--begin::Global Config(global config for global JS scripts)-->
-    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#6993FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121" }, "light": { "white": "#ffffff", "primary": "#E1E9FF", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3", "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121" } }, "font-family": "Poppins" };</script>
+    <script>
+        var KTAppSettings = {
+            "breakpoints": {
+                "sm": 576,
+                "md": 768,
+                "lg": 992,
+                "xl": 1200,
+                "xxl": 1200
+            },
+            "colors": {
+                "theme": {
+                    "base": {
+                        "white": "#ffffff",
+                        "primary": "#6993FF",
+                        "secondary": "#E5EAEE",
+                        "success": "#1BC5BD",
+                        "info": "#8950FC",
+                        "warning": "#FFA800",
+                        "danger": "#F64E60",
+                        "light": "#F3F6F9",
+                        "dark": "#212121"
+                    },
+                    "light": {
+                        "white": "#ffffff",
+                        "primary": "#E1E9FF",
+                        "secondary": "#ECF0F3",
+                        "success": "#C9F7F5",
+                        "info": "#EEE5FF",
+                        "warning": "#FFF4DE",
+                        "danger": "#FFE2E5",
+                        "light": "#F3F6F9",
+                        "dark": "#D6D6E0"
+                    },
+                    "inverse": {
+                        "white": "#ffffff",
+                        "primary": "#ffffff",
+                        "secondary": "#212121",
+                        "success": "#ffffff",
+                        "info": "#ffffff",
+                        "warning": "#ffffff",
+                        "danger": "#ffffff",
+                        "light": "#464E5F",
+                        "dark": "#ffffff"
+                    }
+                },
+                "gray": {
+                    "gray-100": "#F3F6F9",
+                    "gray-200": "#ECF0F3",
+                    "gray-300": "#E5EAEE",
+                    "gray-400": "#D6D6E0",
+                    "gray-500": "#B5B5C3",
+                    "gray-600": "#80808F",
+                    "gray-700": "#464E5F",
+                    "gray-800": "#1B283F",
+                    "gray-900": "#212121"
+                }
+            },
+            "font-family": "Poppins"
+        };
+    </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
     <script src="{% static 'assets/plugins/global/plugins.bundle.js"></script>

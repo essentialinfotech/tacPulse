@@ -13,6 +13,7 @@ urlpatterns = [
     path('stock/request/form/', stock_req_form, name = 'stock_req_form'),
     path('property/form/', tools_form, name = 'tools_form'),
     path('occurrence/form/', occurrence_form, name = 'occurrence_form'),
+    path('occurrence/report/', occurrence_report, name = 'occurrence_report'),
     path('panic/request/', panic_system, name = 'panic_system'),
     path('draggable/form/', dragable_form, name = 'dragable_form'),
     path('ambulance/request/', ambulance_request, name='ambulance_request'),

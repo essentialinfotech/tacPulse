@@ -17,10 +17,10 @@
                 <div class="alert-text">
                     <p class="messages">
                         {% for message in messages %}
-                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                            {{message}}
-                        </p>
-                        {% endfor %}
+                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                        {{message}}
+                    </p>
+                    {% endfor %}
                     </p>
                 </div>
             </div>
@@ -44,6 +44,7 @@
                             <th>Reason</th>
                             <th>From</th>
                             <th>To</th>
+                            <th>Status</th>
                             <th class="text-left">Action</th>
                         </tr>
                     </thead>
@@ -59,6 +60,20 @@
                             <td>Loskop</td>
                             <td>Hoogte</td>
                             <td>
+                                <div class="btn-group">
+                                    <button id="status" type="button"
+                                        style="background-color: rgb(19, 180, 180); border:none"
+                                        class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        status
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a  id="accept" class="dropdown-item" href="#">Accept</a>
+                                        <a  id="decline" class="dropdown-item" href="#">Decline</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
                                 <div class="row">
                                     <div class="col-md-2">
                                         <a href="" data-toggle="tooltip" data-placement="top" title="Details"><i
@@ -69,7 +84,8 @@
                                                 class="fas fa-edit text-hover-primary mr-2"></i></a>
                                     </div>
                                     <div class="col-md-2 mt-2">
-                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        <a href="" data-toggle="tooltip" title="Delete"><i
+                                                class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                     </div>
                                 </div>
                             </td>
@@ -81,14 +97,24 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function contentDisp() {
-        $.ajax({
-            url: '/' + 'static/file/style.pdf',
-            success: function(data) {
-                $("#contentArea").html(data);
-            }
+
+
+<script>
+    function status() {
+
+        const accept = document.getElementById("accept");
+        const decline = document.getElementById("decline");
+        const status = document.getElementById("status");
+
+        accept.addEventListener('click', function () {
+            status.innerHTML = "Accept";
         });
-    }
+
+        decline.addEventListener('click', function () {
+            status.innerHTML = "Decline";
+        });
+
+
+    };
 </script>
 {% endblock %}

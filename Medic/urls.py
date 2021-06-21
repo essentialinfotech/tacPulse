@@ -32,4 +32,6 @@ urlpatterns = [
      path('find/route/', get_route, name = 'get_route'),
      path('individual/panic/location/<hashid:id>/', check_panic_requests_location, name = 'check_panic_requests_location'),
      path('delete/panic/request/<hashid:id>/', del_panic, name = 'del_panic'),
+     path('tools/report/', tools_report, name = 'tools_report'),
+     path('schedule/report/', schedule_report, name = 'schedule_report')
 ]

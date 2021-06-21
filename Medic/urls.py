@@ -28,5 +28,6 @@ urlpatterns = [
          hospital_transfer, name='hospital_transfer'),
      path('panic/requests/', check_panic_requests, name = 'check_panic_requests'),
      path('individial/panic/location/<hashid:id>/', check_panic_requests_location, name = 'check_panic_requests_location'),
-
+     path('transfer/task/', task_transfer_req, name = 'task_transfer_req'),
+     path('find/route/', get_route, name = 'get_route'),
 ]

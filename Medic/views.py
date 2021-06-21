@@ -115,3 +115,7 @@ def check_panic_requests_location(request,id):
 
 def task_transfer_req(request):
     return render(request, 'medic/task_transfer_req.html')
+
+
+def get_route(request):
+    return render(request, 'medic/route.html')

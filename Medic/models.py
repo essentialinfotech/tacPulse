@@ -7,5 +7,5 @@ class Panic(models.Model):
     lat = models.CharField(max_length=200,blank=True,null=True)
     lng = models.CharField(max_length=200,blank=True,null=True)
 
-    def __str__(self):
-        return self.panic_sender.username
+    # def __str__(self):
+    #     return self.panic_sender.username

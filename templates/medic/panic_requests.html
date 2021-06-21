@@ -18,9 +18,11 @@
                                 </h3>
                             </div>
                             <div class="card-toolbar">
+                                {% if i.panic_sender.username %}
                                 <a href="{% url 'check_panic_requests_location' i.panic_sender.id %}" class="btn btn-sm btn-light-primary font-weight-bold">
                                     <i class="fa fa-map"></i>Location
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

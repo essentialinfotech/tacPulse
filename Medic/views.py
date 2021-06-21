@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
@@ -83,15 +83,19 @@ def panic_system(request):
     url = request.META.get('HTTP_REFERER')
     panic = 'Give a panic request'
     if request.method == 'POST':
+        reason = request.POST.get('reason')
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        panic_sender = Panic.objects.filter(panic_sender_id = request.user.id)
-        if not panic_sender:
-            Panic.objects.create(panic_sender_id = request.user.id, lat = lat, lng = lng)
-        else:
-            panic_sender.update(panic_sender_id = request.user.id, lat = lat, lng = lng)
+        Panic.objects.create(panic_sender_id = request.user.id, reason = reason , lat = lat, lng = lng)
         return HttpResponseRedirect(url)
     return render(request,'medic/panic.html',{'panic': panic})
+
+
+def del_panic(request,id):
+    url = request.META.get('HTTP_REFERER')
+    obj = get_object_or_404(Panic, id = id)
+    obj.delete()
+    return HttpResponseRedirect(url)
 
 
 def check_panic_requests(request):
@@ -105,6 +109,7 @@ def check_panic_requests(request):
 def check_panic_requests_location(request,id):
     panic = Panic.objects.get(panic_sender_id = id)
     context = {
+        'reason': panic.reason,
         'lat': panic.lat,
         'lng': panic.lng,
         'id': id,

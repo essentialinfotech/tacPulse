@@ -1,5 +1,8 @@
+.fgh{
+  transform: rotate(180deg);
+}
 
-    label {
+label {
   cursor: pointer;
 }
 

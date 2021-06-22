@@ -68,8 +68,8 @@
                                         status
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a  id="accept" class="dropdown-item" href="#">Accept</a>
-                                        <a  id="decline" class="dropdown-item" href="#">Decline</a>
+                                        <a  id="accept" class="dropdown-item" >Accept</a>
+                                        <a  id="decline" class="dropdown-item">Decline</a>
                                     </div>
                                 </div>
                             </td>
@@ -100,21 +100,18 @@
 
 
 <script>
-    function status() {
+    const accept = document.getElementById('accept');
+    const decline = document.getElementById('decline');
+    const status = document.getElementById('status');
+    
+    accept.addEventListener('click', event => {
+        console.log('dsjhgdujhsd');
+        status.innerHTML = "Accept";
+    });
 
-        const accept = document.getElementById("accept");
-        const decline = document.getElementById("decline");
-        const status = document.getElementById("status");
-
-        accept.addEventListener('click', function () {
-            status.innerHTML = "Accept";
-        });
-
-        decline.addEventListener('click', function () {
-            status.innerHTML = "Decline";
-        });
-
-
-    };
+    decline.addEventListener('click', event => {
+        console.log('dsjhgdujhsd');
+        status.innerHTML = "Decline";
+    });
 </script>
 {% endblock %}

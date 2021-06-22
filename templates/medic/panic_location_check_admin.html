@@ -46,8 +46,11 @@
                 <div class="text-center">
                     <div class="card-body">
                         <button class="btn btn-success form-control m-auto w-50 mb-1" id="reason-btn">Reason</button>
-                        <input id="reason" type="text" class="form-control w-50 m-auto" value="{{ reason }}" readonly
+                        <input id="reason" type="text" class="form-control w-50 m-auto" value="{{ reason }}. user-> {{ name|title }}" readonly
                             style="display: none;">
+                            <div class="text-center" id="distance-duration">
+
+                            </div>
                         <input class="form-control mb-1" readonly type="number" value="{{lat}}" id="lat"
                             style="display: none;">
                         <input class="form-control" readonly type="number" value="{{lng}}" id="lng"
@@ -121,16 +124,14 @@
                 avoidTolls: false,
             };
 
-            console.log(request)
-            
             service.getDistanceMatrix(request).then((response) => {
-                // put response
                 console.log(response)
-                for(const key in response){
-                    if(key == 'rows'){
+                const distance = response.rows[0].elements[0].distance.text;
+                const duration = response.rows[0].elements[0].duration.text;
+                console.log(distance,duration)
+                const distance_duration = "<u><strong>Distance: "+ distance +"</strong> </br><strong>Duration: "+ duration+"</strong></u>";
+                    $('#distance-duration').append(distance_duration);
 
-                    }
-                }
 
                 // show on map
                 const originList = response.originAddresses;
@@ -171,6 +172,7 @@
             });
         }
 
+
         function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             directionsService.route(
                 {
@@ -191,6 +193,8 @@
                 }
             );
         }
+
+
     </script>
 
 </html>

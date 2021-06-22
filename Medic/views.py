@@ -1,7 +1,10 @@
-from django.shortcuts import get_object_or_404, render
+from __future__ import division
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -61,8 +64,29 @@ def tools_report(request):
 def schedule_report(request):
     return render(request,'medic/schedule_report.html')
 
-
+@csrf_exempt
 def rating(request):
+    if request.method == 'POST':
+        star_value = request.POST
+        rating = Rating.objects.all()
+        for k,v in star_value.items():
+            value = v
+            for i in rating:
+                i.rated_value = int(value)
+                if not i.rated_value:
+                    i.all_time_rated_value_store = value
+                i.count = i.count + 1
+                count = i.count
+                i.all_time_rated_value_store = i.all_time_rated_value_store + i.rated_value
+                view_all_time_rated_value_store = i.all_time_rated_value_store
+                avg_rating = view_all_time_rated_value_store/count
+                i.avg_rating = format(avg_rating, ".1f")
+                average = i.avg_rating
+                i.save()
+                Rating.objects.update(feedback_giver_id = request.user.id, rated_value = value, all_time_rated_value_store = view_all_time_rated_value_store, 
+                                        count = count, avg_rating = average)
+                print(average)
+                print(star_value)
     return render(request, 'medic/rate.html')
 
 
@@ -88,14 +112,13 @@ def hospital_transfer_report(request):
 
 
 def panic_system(request):
-    url = request.META.get('HTTP_REFERER')
     panic = 'Give a panic request'
     if request.method == 'POST':
         reason = request.POST.get('reason')
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        Panic.objects.create(panic_sender_id = request.user.id, reason = reason , lat = lat, lng = lng)
-        return HttpResponseRedirect(url)
+        my_panic = Panic.objects.create(panic_sender_id = request.user.id, reason = reason , lat = lat, lng = lng)
+        return redirect('check_panic_requests_location', id=my_panic.id)
     return render(request,'medic/panic.html',{'panic': panic})
 
 
@@ -115,14 +138,19 @@ def check_panic_requests(request):
 
 
 def check_panic_requests_location(request,id):
-    panic = Panic.objects.get(panic_sender_id = id)
-    context = {
-        'reason': panic.reason,
-        'lat': panic.lat,
-        'lng': panic.lng,
-        'id': id,
-    }
-    print(context)
+    context = {}
+    try:
+        panic = Panic.objects.get(id = id)
+        context = {
+            'name': panic.panic_sender.username,
+            'reason': panic.reason,
+            'lat': panic.lat,
+            'lng': panic.lng,
+            'id': id,
+        }
+        print(context)
+    except:
+        return HttpResponse('This panic data has been deleted/not found')
     return render(request,'medic/panic_location_check_admin.html', context)
 
 
@@ -132,3 +160,4 @@ def task_transfer_req(request):
 
 def get_route(request):
     return render(request, 'medic/route.html')
+

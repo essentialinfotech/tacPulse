@@ -27,7 +27,7 @@
 
                             <div class="card-toolbar">
                                 {% if i.panic_sender %}
-                                <a href="{% url 'check_panic_requests_location' i.panic_sender.id %}" class="btn btn-sm btn-light-primary font-weight-bold">
+                                <a href="{% url 'check_panic_requests_location' i.id %}" class="btn btn-sm btn-light-primary font-weight-bold">
                                     <i class="fa fa-map"></i>Location
                                 </a>
                                 {% else %}

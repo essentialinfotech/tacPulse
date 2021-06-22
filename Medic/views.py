@@ -53,6 +53,10 @@ def occurrence_form(request):
     return render(request,'medic/occurrence_form.html')
 
 
+def occurrence_report(request):
+    return render(request,'medic/occurrence_report.html')
+
+
 def dragable_form(request):
     return render(request,'medic/dragable_form.html')
 

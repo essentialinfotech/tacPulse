@@ -6,13 +6,14 @@
 <head>
     <base href="">
     <meta charset="utf-8" />
-    <title>Medic</title>
+    <title>TAC Pulse</title>
     <meta name="description" content="Updates and statistics" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="canonical" href="https://keenthemes.com/metronic" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
@@ -25,7 +26,7 @@
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="" />
+    <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="{% static 'assets/js/googlemapsearch.js' %}"></script>
@@ -39,7 +40,7 @@
     <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
         <!--begin::Logo-->
         <a href="">
-            <img alt="Logo" src="" class="logo-default max-h-30px" />
+            <img alt="Logo" src="{% static 'images/logo.png'%}" class="logo-default max-h-30px" />
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -147,14 +148,14 @@
                                                 <span class="menu-text">Add Occurance Report</span>
                                             </a>
                                         </li>
-                                        <!-- <li class="menu-item" aria-haspopup="true">
-                                            <a href="custom/apps/user/list-datatable.html" class="menu-link">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'occurrence_report' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
                                                 <span class="menu-text">Occurance Reports</span>
                                             </a>
-                                        </li> -->
+                                        </li>
 
                                     </ul>
                                 </div>
@@ -400,26 +401,9 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'add_member'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                </i>
-                                                <span class="menu-text">Issue Trade</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'getmembership'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"></i>
-                                                <span></span>
-
-                                                <span class="menu-text">Trade Reports</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'tools_form'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"></i>
-                                                <span></span>
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                <span></span></i>
 
                                                 <span class="menu-text">Property Form</span>
                                             </a>
@@ -429,7 +413,7 @@
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Membership holder</span>
+                                                <span class="menu-text">Property Reports</span>
                                             </a>
                                         </li>
 
@@ -540,7 +524,7 @@
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Membership holder</span>
+                                                <span class="menu-text">Accepted Schecdule</span>
                                             </a>
                                         </li>
 
@@ -570,8 +554,8 @@
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'hospital_transfer_report'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"></i>
-                                                <span></span>
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                <span></span></i>
 
                                                 <span class="menu-text">Transfer reports</span>
                                             </a>
@@ -581,38 +565,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-search-plus"></i>
-										</span>
-                                    <span class="menu-text">Trip</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'shcedule_trip'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"></i>
 
-                                                <span class="menu-text">Schedule a trip</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'trip_schedules'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"></i>
-                                                <span></span>
-
-                                                <span class="menu-text">Scheduled Trips</span>
-                                            </a>
-                                        </li>
-
-
-                                    </ul>
-                                </div>
-                            </li>
 
                             <li class="menu-section">
                                 <h4 class="menu-text">Rating/Feedback</h4>
@@ -674,7 +627,7 @@
                             <!--end::Aside Toggle-->
                             <!--begin::Logo-->
                             <a href="">
-                                <img alt="Logo" src="" class="logo-sticky max-h-35px" />
+                                <img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-sticky max-h-35px" />
                             </a>
                             <!--end::Logo-->
                             <!--begin::Desktop Search-->

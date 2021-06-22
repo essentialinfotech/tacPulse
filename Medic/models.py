@@ -16,18 +16,11 @@ class Panic(models.Model):
         return self.panic_sender.username
 
 class Rating(models.Model):
-    feedback_giver = models.ForeignKey(User, on_delete = models.CASCADE, blank = True, null = True)
     feedback_text = models.CharField(max_length = 200, blank = True, null = True )
     rated_value = models.IntegerField(blank = True, null = True , default = 0)
     all_time_rated_value_store = models.IntegerField(blank = True, null = True , default = 0)
     count = models.IntegerField(blank = True, null = True, default = 0)
     avg_rating = models.FloatField(blank = True, null = True, default = 0.0)
 
-
-@receiver(post_save, sender=User)
-def create_ratings(sender, instance, created, **kwargs):
-    if created:
-        if instance.is_user :
-            Rating.objects.create(rated_user=instance)
 
 

@@ -73,12 +73,15 @@ def rating(request):
     if request.method == 'POST':
         star_value = request.POST
         rating = Rating.objects.all()
+        value = 0
         for k,v in star_value.items():
             value = v
+        if not rating:
+            first_avg = int(value)/1
+            Rating.objects.create(rated_value = value, all_time_rated_value_store = value, count = 1, avg_rating = first_avg)
+        elif rating:
             for i in rating:
                 i.rated_value = int(value)
-                if not i.rated_value:
-                    i.all_time_rated_value_store = value
                 i.count = i.count + 1
                 count = i.count
                 i.all_time_rated_value_store = i.all_time_rated_value_store + i.rated_value
@@ -87,7 +90,7 @@ def rating(request):
                 i.avg_rating = format(avg_rating, ".1f")
                 average = i.avg_rating
                 i.save()
-                Rating.objects.update(feedback_giver_id = request.user.id, rated_value = value, all_time_rated_value_store = view_all_time_rated_value_store, 
+                Rating.objects.update(rated_value = value, all_time_rated_value_store = view_all_time_rated_value_store, 
                                         count = count, avg_rating = average)
                 print(average)
                 print(star_value)

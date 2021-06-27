@@ -78,7 +78,8 @@ def rating(request):
             value = v
         if not rating:
             first_avg = int(value)/1
-            Rating.objects.create(rated_value = value, all_time_rated_value_store = value, count = 1, avg_rating = first_avg)
+            Rating.objects.create(rated_value = value, all_time_rated_value_store = value, 
+                                    count = 1, avg_rating = first_avg)
         elif rating:
             for i in rating:
                 i.rated_value = int(value)
@@ -146,18 +147,21 @@ def check_panic_requests(request):
 
 def check_panic_requests_location(request,id):
     context = {}
-    try:
-        panic = Panic.objects.get(id = id)
-        context = {
-            'name': panic.panic_sender.username,
-            'reason': panic.reason,
-            'lat': panic.lat,
-            'lng': panic.lng,
-            'id': id,
-        }
-        print(context)
-    except:
-        return HttpResponse('This panic data has been deleted/not found')
+    if request.user.is_authenticated:
+        try:
+            panic = Panic.objects.get(id = id)
+            context = {
+                'name': panic.panic_sender.username,
+                'reason': panic.reason,
+                'lat': panic.lat,
+                'lng': panic.lng,
+                'id': id,
+            }
+            print(context)
+        except:
+            return HttpResponse('This panic data has been deleted/not found')
+    else:
+        return HttpResponse('Please Login First')
     return render(request,'medic/panic_location_check_admin.html', context)
 
 

@@ -44,7 +44,7 @@
             <div class="d-flex align-items-center flex-wrap">
                 <!--begin::Dropdown-->
                 <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
-                    <a href="{% url 'edit_profile_dispatch' %}" class="btn btn-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2">
+                    <a href="{% url 'edit_profile_user' %}" class="btn btn-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2">
                         <span class="d-none d-md-inline">Edit Profile</span>
                     </a>
                 </div>
@@ -1686,15 +1686,15 @@
                     <div class="card card-custom card-stretch gutter-b">
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5 ">
-                            <h3 class="text-center" style="margin: auto;">Patients List</h3>
+                            <h3 class="text-center">Dispatch List</h3>
                         </div>
                         <hr>
                         <!--end::Header-->
                         <!--begin::Body-->
                         <div class="card-body d-flex flex-column" style="overflow-y: scroll; height: 350px;">
-                            {% if user %} {% for i in user %} {{ i.username }}<br> {{i.email}}
+                            {% if dispatch %} {% for i in dispatch %} {{ i.username }}<br> {{i.email}}
                             <br> {{i.contact}}
-                            <hr> {% endfor %} {% else %} <strong style="color: green;">No Patients Registered</strong> {% endif %}
+                            <hr> {% endfor %} {% else %} <strong style="color: green;">No Dispatch</strong> {% endif %}
                         </div>
                         <!--end::Body-->
                     </div>

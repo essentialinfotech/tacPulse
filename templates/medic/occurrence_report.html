@@ -7,7 +7,7 @@
             <div class="card card-custom card-sticky" id="kt_page_sticky_card">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">Schedules</h3>
+                        <h3 class="card-label">Occurance Report</h3>
                     </div>
                 </div>
             </div>
@@ -17,10 +17,10 @@
                 <div class="alert-text">
                     <p class="messages">
                         {% for message in messages %}
-                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                        {{message}}
-                    </p>
-                    {% endfor %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
                     </p>
                 </div>
             </div>
@@ -38,13 +38,8 @@
                         <tr class="text-center">
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Amount</th>
-                            <th>Reason</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Status</th>
+                            <th>Ampunt</th>
+                            <th>Report</th>
                             <th class="text-left">Action</th>
                         </tr>
                     </thead>
@@ -53,26 +48,9 @@
 
                             <td>Plabon Datta</td>
                             <td>plabondatta26@gmail.com</td>
-                            <td>June 16, 2021, 10:58 a.m.</td>
-                            <td>June 18, 2021, 10:58 a.m.</td>
-                            <td>R 1600</td>
-                            <td>Going for advence treatment </td>
-                            <td>Loskop</td>
-                            <td>Hoogte</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button id="status" type="button"
-                                        style="background-color: rgb(19, 180, 180); border:none"
-                                        class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        status
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a  id="accept" class="dropdown-item" >Accept</a>
-                                        <a  id="decline" class="dropdown-item">Decline</a>
-                                    </div>
-                                </div>
-                            </td>
+                            <td>R 1000</td>
+                            <td><input type="button" value="View File" onClick="contentDisp();"></td>
+
                             <td>
                                 <div class="row">
                                     <div class="col-md-2">
@@ -84,8 +62,7 @@
                                                 class="fas fa-edit text-hover-primary mr-2"></i></a>
                                     </div>
                                     <div class="col-md-2 mt-2">
-                                        <a href="" data-toggle="tooltip" title="Delete"><i
-                                                class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                     </div>
                                 </div>
                             </td>
@@ -97,21 +74,14 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    const accept = document.getElementById('accept');
-    const decline = document.getElementById('decline');
-    const status = document.getElementById('status');
-    
-    accept.addEventListener('click', event => {
-        console.log('dsjhgdujhsd');
-        status.innerHTML = "Accept";
-    });
-
-    decline.addEventListener('click', event => {
-        console.log('dsjhgdujhsd');
-        status.innerHTML = "Decline";
-    });
+<script type="text/javascript">
+    function contentDisp() {
+        $.ajax({
+            url: '/' + 'static/file/style.pdf',
+            success: function(data) {
+                $("#contentArea").html(data);
+            }
+        });
+    }
 </script>
 {% endblock %}

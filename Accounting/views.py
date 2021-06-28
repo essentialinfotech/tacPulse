@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import View
 # Create your views here.
 
 
@@ -24,8 +25,16 @@ def members(request):
     return render(request, 'Accounting/members.html')
 
 
-def shcedule_trip(request):
-    return render(request, 'Accounting/shcedule_trip.html')
+class ScheduleTrip(View):
+
+    def get(self, request):
+        print('ok')
+        return render(request, 'Accounting/shcedule_trip.html')
+
+    def post(self, request):
+        print(request.POST)
+        return render(request, 'Accounting/shcedule_trip.html')
+
 
 
 def trip_schedules(request):

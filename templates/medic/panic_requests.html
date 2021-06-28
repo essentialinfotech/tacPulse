@@ -1,0 +1,141 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {% for i in panic_requests %}
+                    <div class="card card-custom m-auto " id="{{ i.id }}" style="background-color: #1BC5BD; width: 75%;">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <span class="card-icon">
+
+                                    {% if i.panic_sender %}
+                                    <a href="{% url 'del_panic' i.id %}"  id="{{ i.id }}"
+                                        class="loggedinDelete">
+                                        <i class="fas fa-trash"></i></a>
+                                </span>
+
+                                <h3 class="card-label" style="color: white;">
+                                    {{ i.panic_sender.username|title }} has sent a panic request {% else %}
+                                    <div id="anonymous" style="color: white;"><i class="fas fa-exclamation-triangle"></i> Anonymous User request</div>
+                                    {% endif %}
+                                </h3>
+                            </div>
+
+                            <div class="card-toolbar">
+                                {% if i.panic_sender %}
+                                <a href="{% url 'check_panic_requests_location' i.id %}" class="btn btn-sm btn-light-primary font-weight-bold">
+                                    <i class="fa fa-map"></i>Location
+                                </a>
+                                {% else %}
+                                <a href="{% url 'del_panic' i.id %}" id="{{ i.id }}" class="btn btn-sm btn-light-primary font-weight-bold delAnonymous">
+                                    <i class="fa fa-trash"></i>Remove
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <br> {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+<!-- real time delete ajax/jquery by fahad -->
+<script>
+    $(".delAnonymous").click(function(e) {
+        var id = this.id;
+        var href = this.href;
+        console.log(href, id)
+        e.preventDefault();
+
+        $.confirm({
+            title: 'Confirm!',
+            content: 'Do you want to delete this panic request ?',
+            buttons: {
+                confirm: function() {
+                    swal({
+                            title: "Are you sure?",
+                            text: "Once deleted, you will not be able to recover this item!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                $.ajax({
+                                    url: href,
+                                    data: {},
+                                });
+                                // to remove the card
+                                $("#" + id).fadeOut(1000);
+                                swal("Poof! This request has been deleted!", {
+                                    icon: "success",
+                                });
+                            } else {
+                                swal("Request has not been deleted!");
+                            }
+                        });;
+                },
+                cancel: function() {
+                    $.alert('Canceled!');
+                },
+            }
+        });
+
+    });
+</script>
+
+
+<script>
+    $(".loggedinDelete").click(function(e) {
+        var id = this.id;
+        var href = this.href;
+        console.log(href, id)
+        e.preventDefault();
+
+        $.confirm({
+            title: 'Confirm!',
+            content: 'Do you want to delete this panic request ?',
+            buttons: {
+                confirm: function() {
+                    swal({
+                            title: "Are you sure?",
+                            text: "Once deleted, you will not be able to recover this item!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                $.ajax({
+                                    url: href,
+                                    data: {},
+                                });
+                                // to remove the card
+                                $("#" + id).fadeOut(1000);
+                                swal("Poof! This request has been deleted!", {
+                                    icon: "success",
+                                });
+                            } else {
+                                swal("No Deletion occured");
+                            }
+                        });;
+                },
+                cancel: function() {
+                    $.alert('Canceled!');
+                },
+            }
+        });
+
+    });
+</script>
+{% endblock %}

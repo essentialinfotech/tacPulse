@@ -2,3 +2,9 @@
     margin: 20px auto;
     padding: 2px;
 }
+
+#map_src,
+#long,
+#lat {
+    display: none;
+}

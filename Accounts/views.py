@@ -22,6 +22,10 @@ def dispatch_profile(request):
     user = User.objects.all()
     return render(request, 'accounts/dispacth_profile.html',{'user':user})
 
+def user_profile(request):
+    dispatch = User.objects.filter(is_superuser = False)
+    return render(request, 'accounts/user_profile.html',{'dispatch':dispatch})
+
 
 def chart_admin_profile(request):
     labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
@@ -49,6 +53,10 @@ def edit_profile_admin(request):
 
 def edit_profile_dispatch(request):
     return render(request,'accounts/edit_profile_dispatch.html')
+
+
+def edit_profile_user(request):
+    return render(request,'accounts/edit_profile_user.html')
 
 
 def reset_password(request):

@@ -1,9 +1,12 @@
-from django.urls import path
+from django.urls import path, register_converter
 from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import views
+from .decorators import forbidden
+from Accounts.utils import HashIdConverter
+register_converter(HashIdConverter, "hashid")
 
 urlpatterns = [
     path('accounts/login/', views.LoginView.as_view(), name='login'),
@@ -11,7 +14,7 @@ urlpatterns = [
 
     path('', dashboard, name = 'dashboard'),
 
-    path('profile/', admin_profile, name = 'my_profile'),
+    path('profile/<hashid:id>/', admin_profile, name = 'my_profile'),
     path('dispatch/profile/', dispatch_profile, name = 'dispatch_profile'),
     path('user/profile/', user_profile, name = 'user_profile'),
 
@@ -25,6 +28,7 @@ urlpatterns = [
     path('registration/', register, name = 'register'),
 
     path('reset/password/', reset_password, name = 'reset_password'),
+    path('forbidden/', forbidden, name = 'forbidden'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

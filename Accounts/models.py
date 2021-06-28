@@ -8,7 +8,8 @@ from django.dispatch import receiver
 
 class User(AbstractUser):
     profile_pic = models.ImageField(upload_to='media/profile_pictures')
-    contact = models.CharField(max_length=30, blank=False, null=False)
+    contact = models.CharField(
+        max_length=30, blank=False, null=False, unique=True)
     address = models.CharField(max_length=150, blank=False, null=False)
     latitude = models.CharField(
         max_length=30, blank=False, null=False, default='')

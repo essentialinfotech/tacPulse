@@ -1,4 +1,4 @@
-{% load static %}
+{%load static %} {% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
@@ -36,11 +36,6 @@
             <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(assets/media/bg/bg-2.jpg);">
                 <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
                     <!--begin::Login Header-->
-                    <div class="d-flex flex-center mb-15">
-                        <a href="#">
-                            <img src="{% static 'images\logo.png'%}" class="max-h-75px" alt="" />
-                        </a>
-                    </div>
                     <!--end::Login Header-->
                     <!--begin::Login Sign in form-->
                     <div class="login-signin">
@@ -48,16 +43,16 @@
                             <h3 class="opacity-40 font-weight-normal">Sign Up</h3>
                             <p class="opacity-40">Register with you details:</p>
                         </div>
+                        {% if form.errors %}
+                        <div class="alert alert-warning" id="errors">{{form.errors}}</div>
+                        {% endif %}
+                        <form class="form" method="post" action="{% url 'register' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div>
+                                <input type="checkbox" class="radioCheck" id="is_staff" name="is_staff" onclick="check(this);">
+                                <label for="is_staff" style="font-size: 15px;">Click the checkbox for Dispatch Registration</label>
+                            </div>
 
-                        <div>
-                            <input type="checkbox" class="radioCheck " id="is_user" name="is_user" onclick="check(this);">
-                            <label for="is_user" style="font-size: 15px; margin-right: 20px;">Register User</label>
-
-                            <input type="checkbox" class="radioCheck" id="is_staff" name="is_staff" onclick="check(this);">
-                            <label for="is_staff" style="font-size: 15px;">Dispatch Register</label>
-                        </div>
-
-                        <form class="form" id="kt_login_signin_form">
                             <div class="form-group">
                                 <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="First Name" name="first_name" autocomplete="off" required/>
                             </div>
@@ -71,10 +66,16 @@
                                 <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="Email" name="username" autocomplete="off" />
                             </div>
                             <div class="form-group">
+                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="Address" name="address" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
                                 <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="password" placeholder="Password" name="password1" required/>
                             </div>
                             <div class="form-group">
                                 <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="password" placeholder="Confirm Password" name="password2" required/>
+                            </div>
+                            <div class="form-group">
+                                {{ form.profile_pic|as_crispy_field }}
                             </div>
                             <div class="form-group text-center mt-10">
                                 <button id="kt_login_signin_submit" class="btn btn-pill btn-primary opacity-90 px-15 py-3">Sign Up</button>
@@ -82,7 +83,7 @@
                         </form>
                         <div class="mt-10">
                             <span class="opacity-40 mr-4">Already have an account?</span>
-                            <a href="javascript:;" id="kt_login_signup" class="text-white opacity-30 font-weight-normal">Sign In</a>
+                            <a href="{% url 'login' %}" class="text-white opacity-30 font-weight-normal">Sign In</a>
                         </div>
                     </div>
                     <!--end::Login Sign in form-->

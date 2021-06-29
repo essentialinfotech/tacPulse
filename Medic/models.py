@@ -1,8 +1,10 @@
+from typing import Set
 from django.db import models
 from django.db.models.aggregates import Count
 from Accounts.models import *
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from Accounts.models import User
 # Create your models here.
 
 
@@ -17,14 +19,37 @@ class Panic(models.Model):
     def __str__(self):
         return self.panic_sender.username
 
-
 class Rating(models.Model):
-    feedback_text = models.CharField(max_length=200, blank=True, null=True)
-    rated_value = models.IntegerField(blank=True, null=True, default=0)
-    all_time_rated_value_store = models.IntegerField(
-        blank=True, null=True, default=0)
-    count = models.IntegerField(blank=True, null=True, default=0)
-    avg_rating = models.FloatField(blank=True, null=True, default=0.0)
+    feedback_text = models.CharField(max_length = 200, blank = True, null = True )
+    rated_value = models.IntegerField(blank = True, null = True , default = 0)
+    all_time_rated_value_store = models.IntegerField(blank = True, null = True , default = 0)
+    count = models.IntegerField(blank = True, null = True, default = 0)
+    avg_rating = models.FloatField(blank = True, null = True, default = 0.0)
+ 
+
+class Occurrence(models.Model):
+    OCCURRENCE_TYPE = [
+        ('CORPORATE','CORPORATE'),
+        ('CUSTOMER','CUSTOMER'),
+    ]
+    occurrence_giver = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    related_user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True, related_name='for_user')
+    occurrence_id = models.CharField(max_length=300,blank=True, null=True)
+    occurrence_type = models.CharField(max_length = 20, choices = OCCURRENCE_TYPE)
+    occurrence_detail = models.CharField(max_length=600)
+    image = models.ImageField(upload_to='media/Occurrence', blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def imagesURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
+
+    def __str__(self):
+        return str(self.occurrence_id)
 
 
 class AmbulanceModel(models.Model):

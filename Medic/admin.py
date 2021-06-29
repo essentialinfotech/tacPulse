@@ -4,4 +4,5 @@ from .models import *
 # Register your models here.
 admin.site.register(Panic)
 admin.site.register(Rating)
+admin.site.register(Occurrence)
 admin.site.register(AmbulanceModel)

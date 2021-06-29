@@ -5,15 +5,16 @@
 
 #map_src,
 #longitude,
-#latitude {
-    display: none;
-}
-
-
-/* #crnt_lat,
+#latitude,
+#crnt_lat,
 #crnt_lng,
 #lat,
-#lng */
+#lng,
+#admin_check,
+#dispatch_check,
+#user_id {
+    display: none;
+}
 
 .detail_field {
     display: flex;

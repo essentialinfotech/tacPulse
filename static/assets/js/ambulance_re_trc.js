@@ -33,7 +33,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
                 directionsRenderer.setDirections(response);
 
             } else {
-                window.alert("Directions request failed due to " + status);
+                calculateAndDisplayRoute(directionsService, directionsRenderer)
+                    // window.alert("Directions request failed due to " + status);
             }
         }
     );
@@ -51,8 +52,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
             var distance = response.rows[0].elements[0].distance.text;
             var duration = response.rows[0].elements[0].duration.text;
-
-            x = 'Distance: ' + distance + "<br>" + ' Predicted Time: ' + duration + " "
+            $('#dis_dur').empty();
+            x = 'Distance: <u>' + distance + "</u><br>" + ' Predicted Time: <u>' + duration + "</u> "
             $('#dis_dur').append(x)
         } else {
             alert("Unable to find the distance via road.");

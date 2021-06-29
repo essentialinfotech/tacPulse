@@ -6,3 +6,4 @@ class AmbulanceRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = AmbulanceModel
         fields = '__all__'
+        depth = 1

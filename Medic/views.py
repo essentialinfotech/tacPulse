@@ -4,7 +4,22 @@ from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 import json
+from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+from .forms import *
+import datetime
+# from datetime import datetime, timedelta
+
+this_month = datetime.datetime.now().month
+this_day = datetime.datetime.today()
+# one_week_ago = datetime.today() - timedelta(days=7)
+this_year = datetime.datetime.now().year
+
+def unique_id(id):
+    date = datetime.datetime.now()
+    timestamp = datetime.datetime.timestamp(date)
+    unique_id = '#'+str(round(timestamp))+str(-(id))
+    return unique_id
 
 # Create your views here.
 
@@ -50,11 +65,69 @@ def tools_form(request):
 
 
 def occurrence_form(request):
-    return render(request,'medic/occurrence_form.html')
+    form = OccurrenceForm()
+    if request.method == 'POST':
+        form = OccurrenceForm(request.POST, request.FILES)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.occurrence_giver = request.user
+            instance.occurrence_id = unique_id(id = request.user.id)
+            instance.save()
+            messages.success(request,'Occurrence Created')
+            return redirect('occurrence_report')
+    context = {
+        'form': form,
+    }
+    return render(request,'medic/occurrence_form.html', context)
 
 
 def occurrence_report(request):
-    return render(request,'medic/occurrence_report.html')
+    monthly_occurences = Occurrence.objects.filter(created__month = this_month, \
+                                                    created__year = this_year)
+
+    daily_occurences = Occurrence.objects.filter(created__date = this_day)
+
+    weekly_occurences = Occurrence.objects.filter(created__iso_week_day__gte = 1,\
+                                                     created__month = this_month,\
+                                                    created__year = this_year)
+
+    print('week:',weekly_occurences)
+    context = {
+        'monthly_occurences': monthly_occurences,
+        'daily_occurences': daily_occurences,
+        'weekly_occurences': weekly_occurences,
+    }
+    return render(request,'medic/occurrence_report.html', context)
+
+
+def common_delete(request,id):
+    url = request.META.get('HTTP_REFERER')
+    try:
+        occurrence = get_object_or_404(Occurrence,id=id)
+        if occurrence:
+            occurrence.delete()
+            return HttpResponseRedirect(url)
+    except:
+        return HttpResponseRedirect(url)
+
+def edit_occurrence(request,id):
+    data = Occurrence.objects.get(id=id)
+    form = OccurrenceForm(instance=data)
+    if request.method == 'POST':
+        form = OccurrenceForm(request.POST,request.FILES, instance=data)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.occurrence_giver = request.user
+            instance.occurrence_id = unique_id(id=request.user.id)
+            instance.save()
+            print(form.errors)
+            return redirect('occurrence_report')
+    context = {
+        'form': form,
+        'id': id
+    }
+    return render(request,'medic/edit_occurence.html', context)
+
 
 
 def dragable_form(request):

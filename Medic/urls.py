@@ -33,5 +33,7 @@ urlpatterns = [
      path('individual/panic/location/<hashid:id>/', check_panic_requests_location, name = 'check_panic_requests_location'),
      path('delete/panic/request/<hashid:id>/', del_panic, name = 'del_panic'),
      path('tools/report/', tools_report, name = 'tools_report'),
-     path('schedule/report/', schedule_report, name = 'schedule_report')
+     path('schedule/report/', schedule_report, name = 'schedule_report'),
+     path('delete/<hashid:id>/', common_delete, name = 'common_delete'),
+     path('edit/occurrence/<hashid:id>/', edit_occurrence, name = 'edit_occurrence'),
 ]

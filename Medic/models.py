@@ -28,6 +28,7 @@ class Rating(models.Model):
 
 
 class AmbulanceModel(models.Model):
+    user = models.ForeignKey(User, null= True, on_delete=models.CASCADE)
     Name = models.CharField(max_length=100, blank=False, null=False)
     contact = models.CharField(max_length=100, blank=False, null=False)
     email = models.CharField(
@@ -38,3 +39,4 @@ class AmbulanceModel(models.Model):
         max_length=100, blank=False, null=False, default='')
     longitude = models.CharField(
         max_length=100, blank=False, null=False, default='')
+    created_on = models.DateTimeField(auto_now_add=True)

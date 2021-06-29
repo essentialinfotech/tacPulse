@@ -9,6 +9,14 @@
                     <div class="card-title">
                         <h3 class="card-label">Schedules</h3>
                     </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-5">
+                        <button class="btn btn-info">Last 30 days</button>
+                        <button class="btn btn-info">Last 7 days</button>
+                        <button class="btn btn-info">Yestarday</button>
+                        <button class="btn btn-info">Today</button>
+                    </div>
+
                 </div>
             </div>
             {% if messages %}
@@ -17,10 +25,10 @@
                 <div class="alert-text">
                     <p class="messages">
                         {% for message in messages %}
-                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                        {{message}}
-                    </p>
-                    {% endfor %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
                     </p>
                 </div>
             </div>
@@ -37,11 +45,10 @@
                     <thead>
                         <tr class="text-center">
                             <th>Name</th>
+                            <th>Contact</th>
                             <th>Email</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Amount</th>
-                            <th>Reason</th>
                             <th>From</th>
                             <th>To</th>
                             <th>Status</th>
@@ -49,30 +56,35 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for obj in data %}
                         <tr class="text-center">
-
-                            <td>Plabon Datta</td>
-                            <td>plabondatta26@gmail.com</td>
-                            <td>June 16, 2021, 10:58 a.m.</td>
-                            <td>June 18, 2021, 10:58 a.m.</td>
-                            <td>R 1600</td>
-                            <td>Going for advence treatment </td>
-                            <td>Loskop</td>
-                            <td>Hoogte</td>
+                            <td>{{obj.name}}</td>
+                            <td>{{obj.contact}}</td>
+                            <td>{{obj.email}}</td>
+                            <td>{{obj.start_datetime}}</td>
+                            <td>{{obj.end_datetime}}</td>
+                            <td>{{obj.from_loc}}</td>
+                            <td>{{obj.location}}</td>
                             <td>
+                                {% if obj.status == 'Pending'%}
+                                <p class="alert alert-info">{{obj.status}}</p>
+                                {% elif obj.status == 'Approved'%}
+                                <p class="alert alert-success">{{obj.status}}</p>
+                                {% else %}
+                                <p class="alert alert-danger">{{obj.status}}</p>
+                                {% endif %}
+                            </td>
+                            <!-- <td>
                                 <div class="btn-group">
-                                    <button id="status" type="button"
-                                        style="background-color: rgb(19, 180, 180); border:none"
-                                        class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
+                                    <button id="status" type="button" style="background-color: rgb(19, 180, 180); border:none" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         status
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a  id="accept" class="dropdown-item" >Accept</a>
-                                        <a  id="decline" class="dropdown-item">Decline</a>
+                                        <a id="accept" class="dropdown-item">Accept</a>
+                                        <a id="decline" class="dropdown-item">Decline</a>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
                             <td>
                                 <div class="row">
                                     <div class="col-md-2">
@@ -83,13 +95,14 @@
                                         <a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i
                                                 class="fas fa-edit text-hover-primary mr-2"></i></a>
                                     </div>
-                                    <div class="col-md-2 mt-2">
+                                    <div class="col-md-2">
                                         <a href="" data-toggle="tooltip" title="Delete"><i
                                                 class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
                 <div id="contentArea"></div>
@@ -99,11 +112,11 @@
 </div>
 
 
-<script>
+<!-- <script>
     const accept = document.getElementById('accept');
     const decline = document.getElementById('decline');
     const status = document.getElementById('status');
-    
+
     accept.addEventListener('click', event => {
         console.log('dsjhgdujhsd');
         status.innerHTML = "Accept";
@@ -112,6 +125,12 @@
     decline.addEventListener('click', event => {
         console.log('dsjhgdujhsd');
         status.innerHTML = "Decline";
+    });
+</script> -->
+
+<script>
+    $(document).read(function() {
+
     });
 </script>
 {% endblock %}

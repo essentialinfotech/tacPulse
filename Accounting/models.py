@@ -42,12 +42,24 @@ class StockRequestModel(models.Model):
 
 
 class ScheduleModel(models.Model):
+    status_type = [
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Declined', 'Declined'),
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=False, null=False)
     contact = models.CharField(max_length=100, blank=False, null=False)
     email = models.CharField(max_length=100, blank=False, null=False)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
     reason = models.TextField(max_length=250, blank=False, null=False)
+    from_loc = models.CharField(max_length=100, blank=False, null=False)
+    from_lat = models.CharField(max_length=100, blank=False, null=False)
+    from_long = models.CharField(max_length=100, blank=False, null=False)
     location = models.CharField(max_length=100, blank=False, null=False)
     latitude = models.CharField(max_length=100, blank=False, null=False)
     longitude = models.CharField(max_length=100, blank=False, null=False)
+    status = models.CharField(
+        choices=status_type, max_length=100, default='Pending')
+    created_on = models.DateTimeField(auto_now_add=True)

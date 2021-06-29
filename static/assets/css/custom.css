@@ -4,7 +4,26 @@
 }
 
 #map_src,
-#long,
-#lat {
+#longitude,
+#latitude {
     display: none;
+}
+
+
+/* #crnt_lat,
+#crnt_lng,
+#lat,
+#lng */
+
+.detail_field {
+    display: flex;
+}
+
+.detail_parent h2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.detail_child h2 {
+    font-size: 16px;
 }

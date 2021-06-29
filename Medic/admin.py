@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Panic)
 admin.site.register(Rating)
 admin.site.register(Occurrence)
+admin.site.register(AmbulanceModel)

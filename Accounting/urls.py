@@ -7,8 +7,8 @@ urlpatterns = [
     path('packages/', packages, name='packages'),
     path('get/membership/', getmembership, name='getmembership'),
     path('members/', members, name='members'),
-    path('schedule/trip/', shcedule_trip, name='shcedule_trip'),
-    path('scheduled/trips/', trip_schedules, name='trip_schedules'),
+    path('schedule/trip/', ScheduleTrip.as_view(), name='shcedule_trip'),
+    path('scheduled/trips/', TripSchedules.as_view(), name='trip_schedules'),
     path('add/paystub/', add_paystub, name='add_paystub'),
     path('paystub/report', paystub_report, name='paystub_report'),
 ]

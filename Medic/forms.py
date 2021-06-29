@@ -12,3 +12,8 @@ class OccurrenceForm(forms.ModelForm):
             'occurrence_type': forms.Select(attrs={'class': 'form-control'}),
             'occurrence_detail': forms.TextInput(attrs={'class': 'form-control'}),        
         }
+
+class AmbulanceModelForm(forms.ModelForm):
+    class Meta:
+        model = AmbulanceModel
+        fields = '__all__'

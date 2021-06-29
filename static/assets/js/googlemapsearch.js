@@ -63,8 +63,8 @@ function initAutocomplete() {
             } else {
                 bounds.extend(place.geometry.location);
             }
-            document.getElementById('lat').value = place.geometry.location.lat()
-            document.getElementById('long').value = place.geometry.location.lng()
+            document.getElementById('latitude').value = place.geometry.location.lat()
+            document.getElementById('longitude').value = place.geometry.location.lng()
 
 
             var geocoder = new google.maps.Geocoder();
@@ -85,7 +85,7 @@ function initAutocomplete() {
                             if (status === "OK") {
                                 console.log('ok');
                                 if (results[0]) {
-                                    document.getElementById('address').value = results[0].formatted_address
+                                    document.getElementById('location').value = results[0].formatted_address
 
                                 }
                             }

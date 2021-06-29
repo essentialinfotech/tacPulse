@@ -30,6 +30,11 @@
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="{% static 'assets/js/googlemapsearch.js' %}"></script>
+    <style>
+        #map_loc {
+            height: 300px;
+        }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -40,11 +45,7 @@
     <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
         <!--begin::Logo-->
         <a href="">
-            <!--<img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-default max-h-30px" />-->
-
-            <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
-                <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
-            </div>
+            <img alt="Logo" src="{% static 'images/logo.png'%}" class="logo-default max-h-30px" />
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -97,16 +98,16 @@
                                 </a>
                             </li>
                             <li class="menu-section">
-                                <h4 class="menu-text">Inspection</h4>
+                                <h4 class="menu-text">Inspaction</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-									<i class="fas fa-search"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
-                                    <span class="menu-text">Inspection</span>
+                                    <span class="menu-text">Inspaction</span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -117,7 +118,7 @@
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Add Inspection Report</span>
+                                                <span class="menu-text">Add inspaction Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
@@ -196,21 +197,11 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="{% url 'get_route'%}" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-route"></i>
-										</span>
-                                    <span class="menu-text">Get Route</span>
 
-                                </a>
-                            </li>
                             <li class="menu-section">
                                 <h4 class="menu-text">Audit</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -247,7 +238,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-exchange-alt"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Transfer task</span>
                                     <i class="menu-arrow"></i>
@@ -256,7 +247,7 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="#" class="menu-link">
+                                            <a href="custom/apps/user/list-default.html" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -264,7 +255,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="#" class="menu-link">
+                                            <a href="custom/apps/user/list-datatable.html" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -280,14 +271,14 @@
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-car"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Dispatch List</span>
-
+                                    <i class="menu-arrow"></i>
                                 </a>
 
                             </li>
@@ -300,7 +291,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i>R</i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Paystub</span>
                                     <i class="menu-arrow"></i>
@@ -332,7 +323,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-box"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Package</span>
                                     <i class="menu-arrow"></i>
@@ -365,7 +356,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-users"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Membership</span>
                                     <i class="menu-arrow"></i>
@@ -406,7 +397,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-tools"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Property/Tools</span>
                                     <i class="menu-arrow"></i>
@@ -423,7 +414,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'tools_report'%}" class="menu-link">
+                                            <a href="{% url 'members'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -444,7 +435,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-warehouse"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Stock</span>
                                     <i class="menu-arrow"></i>
@@ -476,7 +467,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-ambulance "></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Ambulance</span>
                                     <i class="menu-arrow"></i>
@@ -509,7 +500,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-calendar-alt"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Schedule</span>
                                     <i class="menu-arrow"></i>
@@ -521,20 +512,10 @@
                                             <a href="{% url 'shcedule_trip'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
-                                        </i>
+                                    </i>
                                                 <span class="menu-text">Request for Schecdule</span>
                                             </a>
                                         </li>
-
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'schedule_report' %}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                <span class="menu-text">Accepted Requests</span>
-                                            </a>
-                                        </li>
-
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'trip_schedules'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -543,7 +524,6 @@
                                                 <span class="menu-text">Schecduled requests</span>
                                             </a>
                                         </li>
-
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'members'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -561,7 +541,7 @@
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-hospital"></i>
+											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Hospital Transfer</span>
                                     <i class="menu-arrow"></i>
@@ -652,11 +632,7 @@
                             <!--end::Aside Toggle-->
                             <!--begin::Logo-->
                             <a href="">
-                                <!--<img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-default max-h-30px" />-->
-
-                                <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
-                                    <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
-                                </div>
+                                <img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-sticky max-h-35px" />
                             </a>
                             <!--end::Logo-->
                             <!--begin::Desktop Search-->
@@ -925,75 +901,85 @@
                                 </div>
                             </div>
                             {% endif %}
-                            <button id="cl" class="btn btn-info" onclick="getLocation()">Current location</button>
-                            <button id="sl" class="btn btn-info" onclick="Get_map()">Search location</button>
-                            <form class="form" id="kt_form" method="POST">
-                                {% csrf_token %} {{form.errors}}
-                                <!--end::Form-->
-                                <div class="card card-custom card-sticky" id="kt_page_sticky_card">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <h3 class="card-label">Request for a Schedule</h3>
-                                        </div>
-                                        <div class="card-toolbar">
-                                            <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
+                            <!-- <button id="cl" class="btn btn-info" onclick="getLocation()">Current location</button>
+                            <button id="sl" class="btn btn-info" onclick="Get_map()">Search location</button> -->
+
+
+                            <!--end::Form-->
+                            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h3 class="card-label">Request Details</h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <a href="{% url 'AmbulanceTrackLocation' data.id %}" class="btn btn-light-primary font-weight-bolder mr-2">Track</a>
+                                        <!-- <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
                                                 <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
                                             <button type="submit" class="btn btn-primary font-weight-bolder">
-                                <i class="ki ki-check icon-xs"></i>Send Request</button>
-                                        </div>
+                                <i class="ki ki-check icon-xs"></i>Send Request</button> -->
                                     </div>
-                                    <div class="card-body">
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="detail_field">
+                                                <div class="detail_parent">
+                                                    <h2>Name :</h2>
+                                                </div>
+                                                <div class="detail_child ml-4">
+                                                    <h2>{{data.Name}}</h2>
+                                                </div>
+                                            </div>
+                                            <div class="detail_field">
+                                                <div class="detail_parent">
+                                                    <h2>Contact :</h2>
+                                                </div>
+                                                <div class="detail_child ml-4">
+                                                    <h2>{{data.contact}}</h2>
+                                                </div>
+                                            </div>
+                                            <div class="detail_field">
+                                                <div class="detail_parent">
+                                                    <h2>Email :</h2>
+                                                </div>
+                                                <div class="detail_child ml-4">
+                                                    <h2>{{data.email}}</h2>
+                                                </div>
+                                            </div>
+                                            <div class="detail_field">
+                                                <div class="detail_parent">
+                                                    <h2>Reason :</h2>
+                                                </div>
+                                                <div class="detail_child ml-4">
+                                                    <h2>{{data.reason}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
 
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-0">
-                                                <label for="name">Name</label>
-                                                <input type="text" class="form-control" id="name" name="name" value="{{request.user.first_name}} {{request.user.last_name}}">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-0">
-                                                <label for="contact">Contact</label>
-                                                <input type="text" class="form-control" id="contact" name="contact" value="{{request.user.contact}}">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-0">
-                                                <label for="email">Email</label>
-                                                <input type="text" class="form-control" id="email" name="email" value="{{request.user.email}}">
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-0">
-                                                <label for="start_date">Start Date</label>
-                                                <input type="date" class="form-control" id="start_datetime" name="start_datetime">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-0">
-                                                <label for="end_date">End Date</label>
-                                                <input type="date" class="form-control" id="end_datetime" name="end_datetime">
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-0" id="package">
-                                                <label for="reason">Reason</label>
-                                                <textarea name="reason" id="reason" cols="30" rows="10" class="textinput textInput form-control" style="resize: none;"></textarea>
-                                            </div>
-                                            <div class="form-group col-md-6 mb-0" id="package">
-                                                <label for="to">Location</label>
-                                                <input type="text" id="location" name="location" class="form-control" readonly>
-                                                <input type="text" id="longitude" name="longitude">
-                                                <input type="text" id="latitude" name="latitude">
-                                                <div id="map_src">
-                                                    <input id="pac-input" class="controls" type="text" placeholder="Search place" />
-                                                    <div id="map" class="mt-2"></div>
+                                            <div class="detail_field">
+                                                <div class="detail_parent">
+                                                    <h2>Location :</h2>
+                                                </div>
+                                                <div class="detail_child ml-4">
+                                                    <h2>{{data.location}}</h2>
+                                                    <input type="text" id="lat" value="{{data.latitude}}" style="display: none;">
+                                                    <input type="text" id="lng" value="{{data.longitude}}" style="display: none;">
+
                                                 </div>
 
                                             </div>
-
+                                            <div id="map_loc" style="border-radius: 6px;"></div>
                                         </div>
-
                                     </div>
 
+                                </div>
 
 
 
-                                    <!--end::Card-->
-                            </form>
+
+                                <!--end::Card-->
+                                </form>
 
                             </div>
 
@@ -1290,7 +1276,26 @@
                             </div>
                             <!--end::Item-->
                         </div>
-
+                        <div class="row">
+                            <!--begin::Item-->
+                            <div class="col-6">
+                                <a href="#" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
+                                    <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
+								<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Euro.svg-->
+								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<rect x="0" y="0" width="24" height="24" />
+										<path d="M4.3618034,10.2763932 L4.8618034,9.2763932 C4.94649941,9.10700119 5.11963097,9 5.30901699,9 L15.190983,9 C15.4671254,9 15.690983,9.22385763 15.690983,9.5 C15.690983,9.57762255 15.6729105,9.65417908 15.6381966,9.7236068 L15.1381966,10.7236068 C15.0535006,10.8929988 14.880369,11 14.690983,11 L4.80901699,11 C4.53287462,11 4.30901699,10.7761424 4.30901699,10.5 C4.30901699,10.4223775 4.32708954,10.3458209 4.3618034,10.2763932 Z M14.6381966,13.7236068 L14.1381966,14.7236068 C14.0535006,14.8929988 13.880369,15 13.690983,15 L4.80901699,15 C4.53287462,15 4.30901699,14.7761424 4.30901699,14.5 C4.30901699,14.4223775 4.32708954,14.3458209 4.3618034,14.2763932 L4.8618034,13.2763932 C4.94649941,13.1070012 5.11963097,13 5.30901699,13 L14.190983,13 C14.4671254,13 14.690983,13.2238576 14.690983,13.5 C14.690983,13.5776225 14.6729105,13.6541791 14.6381966,13.7236068 Z" fill="#000000" opacity="0.3" />
+										<path d="M17.369,7.618 C16.976998,7.08599734 16.4660031,6.69750122 15.836,6.4525 C15.2059968,6.20749878 14.590003,6.085 13.988,6.085 C13.2179962,6.085 12.5180032,6.2249986 11.888,6.505 C11.2579969,6.7850014 10.7155023,7.16999755 10.2605,7.66 C9.80549773,8.15000245 9.45550123,8.72399671 9.2105,9.382 C8.96549878,10.0400033 8.843,10.7539961 8.843,11.524 C8.843,12.3360041 8.96199881,13.0779966 9.2,13.75 C9.43800119,14.4220034 9.7774978,14.9994976 10.2185,15.4825 C10.6595022,15.9655024 11.1879969,16.3399987 11.804,16.606 C12.4200031,16.8720013 13.1129962,17.005 13.883,17.005 C14.681004,17.005 15.3879969,16.8475016 16.004,16.5325 C16.6200031,16.2174984 17.1169981,15.8010026 17.495,15.283 L19.616,16.774 C18.9579967,17.6000041 18.1530048,18.2404977 17.201,18.6955 C16.2489952,19.1505023 15.1360064,19.378 13.862,19.378 C12.6999942,19.378 11.6325049,19.1855019 10.6595,18.8005 C9.68649514,18.4154981 8.8500035,17.8765035 8.15,17.1835 C7.4499965,16.4904965 6.90400196,15.6645048 6.512,14.7055 C6.11999804,13.7464952 5.924,12.6860058 5.924,11.524 C5.924,10.333994 6.13049794,9.25950479 6.5435,8.3005 C6.95650207,7.34149521 7.5234964,6.52600336 8.2445,5.854 C8.96550361,5.18199664 9.8159951,4.66400182 10.796,4.3 C11.7760049,3.93599818 12.8399943,3.754 13.988,3.754 C14.4640024,3.754 14.9609974,3.79949954 15.479,3.8905 C15.9970026,3.98150045 16.4939976,4.12149906 16.97,4.3105 C17.4460024,4.49950095 17.8939979,4.7339986 18.314,5.014 C18.7340021,5.2940014 19.0909985,5.62999804 19.385,6.022 L17.369,7.618 Z" fill="#000000" />
+									</g>
+								</svg>
+								<!--end::Svg Icon-->
+							</span>
+                                    <span class="d-block font-weight-bold font-size-h6 mt-2">Orders</span>
+                                </a>
+                            </div>
+                            <!--end::Item-->
+                        </div>
                     </div>
                     <!--end::Content-->
                 </div>
@@ -2444,59 +2449,26 @@
                 <!-- <script id="src_lok" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initAutocomplete&libraries=places&v=weekly" async></script> -->
 
                 <!--end::Page Scripts-->
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initAutocomplete&libraries=places&v=weekly" async></script>
+                <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initAutocomplete&libraries=places&v=weekly" async></script> -->
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=intmyMap&libraries=&v=weekly" async></script>
 
                 <script>
-                    var pc_id = ''
-
-                    function getLocation() {
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(showPosition);
-                        } else {
-                            x.innerHTML = "Geolocation is not supported by this browser.";
-                        }
-                    }
-
-                    function showPosition(position) {
-                        x = document.getElementById('map_src')
-                        x.style.display = 'none'
-                        document.getElementById('latitude').value = position.coords.latitude
-                        document.getElementById('longitude').value = position.coords.longitude
-
-                        var geocoder = new google.maps.Geocoder();
-                        var latlng = {
-                            lat: parseFloat(position.coords.latitude),
-                            lng: parseFloat(position.coords.longitude)
+                    function intmyMap() {
+                        lat = parseFloat(document.getElementById('lat').value)
+                        long = parseFloat(document.getElementById('lng').value)
+                        const myLatLng = {
+                            lat: lat,
+                            lng: long
                         };
-                        geocoder.geocode({
-                            'location': latlng
-                        }, function(results, status) {
-                            if (status === google.maps.GeocoderStatus.OK) {
-                                if (results[1]) {
-                                    pc_id = results[1].place_id;
-
-                                    geocoder.geocode({
-                                        placeId: pc_id
-                                    }, (results, status) => {
-                                        if (status === "OK") {
-                                            console.log('ok');
-                                            if (results[0]) {
-                                                document.getElementById('location').value = results[0].formatted_address
-
-                                            }
-                                        }
-                                    });
-                                }
-                            }
+                        const map = new google.maps.Map(document.getElementById("map_loc"), {
+                            zoom: 14,
+                            center: myLatLng,
                         });
-
-                    }
-                </script>
-
-                <script>
-                    function Get_map() {
-                        x = document.getElementById('map_src')
-                        x.style.display = 'block'
+                        new google.maps.Marker({
+                            position: myLatLng,
+                            map,
+                            title: "Hello World!",
+                        });
                     }
                 </script>
 </body>

@@ -9,6 +9,13 @@
                     <div class="card-title">
                         <h3 class="card-label">Ambulance Request Report</h3>
                     </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-5">
+                        <button class="btn btn-info">Last 30 days</button>
+                        <button class="btn btn-info">Last 7 days</button>
+                        <button class="btn btn-info">Yestarday</button>
+                        <button class="btn btn-info">Today</button>
+                    </div>
                 </div>
             </div>
             {% if messages %}
@@ -33,40 +40,19 @@
             </div>
             {% endif %} -->
             <div class="table-responsive">
-                <table id="data-table" class="display table text-center">
+                <table id="my_table" class="display table text-center">
                     <thead>
                         <tr class="text-center">
                             <th>Name</th>
+                            <th>Contact</th>
                             <th>Email</th>
-                            <th>Ampunt</th>
-                            <th>Report</th>
+                            <th>Reason</th>
+                            <th>Location</th>
                             <th class="text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-center">
 
-                            <td>Plabon Datta</td>
-                            <td>plabondatta26@gmail.com</td>
-                            <td>R 1000</td>
-                            <td><input type="button" value="View File" onClick="contentDisp();"></td>
-
-                            <td>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Details"><i
-                                                class="fas fa-clipboard-list text-hover-primary mr-2"></i></a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fas fa-edit text-hover-primary mr-2"></i></a>
-                                    </div>
-                                    <div class="col-md-2 mt-2">
-                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
                 <div id="contentArea"></div>
@@ -74,14 +60,30 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function contentDisp() {
+<script>
+    $(document).ready(function() {
+        endpoint1 = '/api/ambulance/today/'
+        endpoint2 = '/api/ambulance/week/'
+        endpoint3 = '/api/ambulance/month/'
         $.ajax({
-            url: '/' + 'static/file/style.pdf',
+            method: "GET",
+            url: endpoint1,
             success: function(data) {
-                $("#contentArea").html(data);
+                $.each(data, function(key, value) {
+                    act = '<div class="row"><div class="col-md-2"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"> <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                    if (value === 'nothing') {
+                        alert("Nothing to show for this user");
+                    } else {
+                        $('#my_table').append('<tr>' + '<td>' + value.Name + '</td> <td>' + value.contact + '</td> <td>' + value.email + '</td> <td>' + value.reason + '</td> <td>' + value.location + '</td> <td>' + act + '</td> </tr>');
+                    }
+                });
             }
         });
+    });
+
+
+    function clear_table() {
+        $('#my_table > tbody').empty();
     }
 </script>
 {% endblock %}

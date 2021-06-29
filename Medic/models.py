@@ -7,12 +7,14 @@ from django.dispatch import receiver
 from Accounts.models import User
 # Create your models here.
 
+
 class Panic(models.Model):
-    panic_sender = models.ForeignKey(User,blank=True,null=True,on_delete=models.CASCADE)
-    reason = models.CharField(max_length = 200, blank = False, null = False)
-    lat = models.CharField(max_length=200,blank=True,null=True)
-    lng = models.CharField(max_length=200,blank=True,null=True)
-    timestamp = models.DateTimeField(auto_now_add = True)
+    panic_sender = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=200, blank=False, null=False)
+    lat = models.CharField(max_length=200, blank=True, null=True)
+    lng = models.CharField(max_length=200, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.panic_sender.username
@@ -50,6 +52,16 @@ class Occurrence(models.Model):
         return str(self.occurrence_id)
 
 
-
-
-
+class AmbulanceModel(models.Model):
+    user = models.ForeignKey(User, null= True, on_delete=models.CASCADE)
+    Name = models.CharField(max_length=100, blank=False, null=False)
+    contact = models.CharField(max_length=100, blank=False, null=False)
+    email = models.CharField(
+        max_length=100, blank=False, null=False, default="")
+    reason = models.TextField(max_length=250, blank=False, null=False)
+    location = models.CharField(max_length=250, blank=False, null=False)
+    latitude = models.CharField(
+        max_length=100, blank=False, null=False, default='')
+    longitude = models.CharField(
+        max_length=100, blank=False, null=False, default='')
+    created_on = models.DateTimeField(auto_now_add=True)

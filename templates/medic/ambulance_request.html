@@ -917,21 +917,28 @@
 
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-6 mb-0" id="package">
-                                                <label for="package_price">Reason</label>
-                                                <textarea name="reason" id="reason" cols="30" rows="10" class="textinput textInput form-control" style="resize: none;"></textarea>
-                                                <label for="contact_number">Contact Number</label>
-                                                <input type="text" id="contact_number" name="contact_number" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-0" id="package">
+
+                                            <div class="form-group col-md-6 mb-0">
+                                                <input type="text" id="user" name="user" value="{{request.user.id}}" style="display: none;">
+                                                <label for="Name">Name</label>
+                                                <input type="text" id="Name" name="Name" class="form-control" value="{{request.user.first_name}} {{request.user.last_name}}">
+                                                <label for="contact">Contact Number</label>
+                                                <input type="text" id="contact" name="contact" class="form-control" value="{{request.user.contact}}">
+                                                <label for="Name">Email</label>
+                                                <input type="text" id="email" name="email" class="form-control" value="{{request.user.email}}">
                                                 <label for="to">Location</label>
-                                                <input type="text" id="address" name="address" class="form-control" readonly>
-                                                <input type="text" id="long" name="long">
-                                                <input type="text" id="lat" name="lat">
+                                                <input type="text" id="location" name="location" class="form-control" readonly>
+                                                <input type="text" id="longitude" name="longitude">
+                                                <input type="text" id="latitude" name="latitude">
                                                 <div id="map_src">
                                                     <input id="pac-input" class="controls" type="text" placeholder="Search place" />
-                                                    <div id="map"></div>
+                                                    <div id="map" class="mt-2"></div>
                                                 </div>
+                                                <label for="package_price">Reason</label>
+                                                <textarea name="reason" id="reason" cols="30" rows="10" class="textinput textInput form-control" style="resize: none;"></textarea>
+
+                                            </div>
+                                            <div class="form-group col-md-6 mb-0">
 
                                             </div>
 
@@ -1316,7 +1323,7 @@
                         <!--begin::Nav-->
                         <div class="navi navi-spacer-x-0 p-0">
                             <!--begin::Item-->
-                            <a href="{% url 'my_profile' %}" class="navi-item">
+                            <a href="{% url 'my_profile' request.user.id %}" class="navi-item">
                                 <div class="navi-link">
                                     <div class="symbol symbol-40 bg-light mr-3">
                                         <div class="symbol-label">
@@ -2429,8 +2436,8 @@
                     function showPosition(position) {
                         x = document.getElementById('map_src')
                         x.style.display = 'none'
-                        document.getElementById('lat').value = position.coords.latitude
-                        document.getElementById('long').value = position.coords.longitude
+                        document.getElementById('latitude').value = position.coords.latitude
+                        document.getElementById('longitude').value = position.coords.longitude
 
                         var geocoder = new google.maps.Geocoder();
                         var latlng = {
@@ -2450,7 +2457,7 @@
                                         if (status === "OK") {
                                             console.log('ok');
                                             if (results[0]) {
-                                                document.getElementById('address').value = results[0].formatted_address
+                                                document.getElementById('location').value = results[0].formatted_address
 
                                             }
                                         }
@@ -2458,34 +2465,6 @@
                                 }
                             }
                         });
-                        // Initialize the map.
-
-                        // a geocode of a place ID.
-                        // function geocodePlaceId() {
-                        //     var geocoder = new google.maps.Geocoder();
-                        //     geocoder.geocode({
-                        //         placeId: pc_id
-                        //     }, (results, status) => {
-                        //         if (status === "OK") {
-                        //             console.log('ok');
-                        //             if (results[0]) {
-                        //                 alert(results[0].geometry.location, 'hdfjhu')
-                        //                     // map.setZoom(11);
-                        //                     // map.setCenter(results[0].geometry.location);
-                        //                     // const marker = new google.maps.Marker({
-                        //                     //   map,
-                        //                     //   position: results[0].geometry.location,
-                        //                     // });
-                        //                     // infowindow.setContent(results[0].formatted_address);
-                        //                     // infowindow.open(map, marker);
-                        //             } else {
-                        //                 window.alert("No results found");
-                        //             }
-                        //         } else {
-                        //             window.alert("Geocoder failed due to: " + status);
-                        //         }
-                        //     });
-                        // }
 
 
                     }

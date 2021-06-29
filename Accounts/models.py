@@ -5,10 +5,12 @@ from django.dispatch import receiver
 
 # Create your models here.
 
+
 class User(AbstractUser):
     email = models.EmailField(blank=True,null=True,unique=True)
     profile_pic = models.ImageField(upload_to='media/profile_pictures')
-    contact = models.CharField(max_length=30, blank=False, null=False, unique = True)
+    contact = models.CharField(
+        max_length=30, blank=False, null=False, unique=True)
     address = models.CharField(max_length=150, blank=False, null=False)
     quote = models.CharField(max_length=250, blank=True,
                              null=True, default='Bio Here. . .')

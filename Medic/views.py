@@ -229,6 +229,27 @@ class AmbulanceRequestDetail(LoginRequiredMixin, View):
         return render(request, 'medic/ambulancereq_detail.html', context)
 
 
+class AmbulanceRequestUpdate(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        data = get_object_or_404(AmbulanceModel, pk=pk)
+        context = {
+            'data': data
+        }
+        return render(request, 'medic/ambulance_req_up.html', context)
+
+    def post(self, request, pk):
+        data = get_object_or_404(AmbulanceModel, pk=pk)
+        form = AmbulanceModelForm(request.POST, instance=data)
+        if form.is_valid():
+            form.save()
+            return redirect('ambulance_request_report')
+        context = {
+            'data': data
+        }
+
+        return render(request, 'medic/ambulance_req_up.html', context)
+
+
 class AmbulanceTrackLocation(LoginRequiredMixin, View):
     def get(self, request, pk):
         data = AmbulanceModel.objects.get(pk=pk)
@@ -236,6 +257,19 @@ class AmbulanceTrackLocation(LoginRequiredMixin, View):
             'data': data
         }
         return render(request, 'medic/trac_req.html', context)
+
+
+class AmbulanceRequestDelete(LoginRequiredMixin,View):
+
+    def get(self, request, pk):
+        try:
+            data = get_object_or_404(AmbulanceModel, pk=pk)
+            if data:
+                data.delete()
+            return redirect('ambulance_request_report')
+
+        except:
+            return redirect('ambulance_request_report')
 
 
 def dispatch_list(request):

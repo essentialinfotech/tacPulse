@@ -22,6 +22,8 @@ urlpatterns = [
          name='ambulance_request_report'),
     path('ambulance/request/detail/<int:pk>/', AmbulanceRequestDetail.as_view(),name='AmbulanceRequestDetail'),
     path('ambulance/track/<int:pk>/', AmbulanceTrackLocation.as_view(), name='AmbulanceTrackLocation'),
+    path('ambulance/request/update/<int:pk>/', AmbulanceRequestUpdate.as_view(), name='AmbulanceRequestUpdate'),
+    path('ambulance/request/delete/<int:pk>/', AmbulanceRequestDelete.as_view(), name='AmbulanceRequestDelete'),
 
     path('audit/report/', audit_report, name='audit_report'),
     path('inspection/report/', inspaction_report, name='inspaction_report'),

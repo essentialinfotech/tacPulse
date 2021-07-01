@@ -935,6 +935,8 @@
                             </div>
                             <input type="text" id="lat" name="lat" value="{{data.latitude}}">
                             <input type="text" id="lng" name="lng" value="{{data.longitude}}">
+                            <!-- <h2 id="crnt_lat"></h2>
+                            <h2 id="crnt_lng"></h2> -->
                             <input type="text" id="crnt_lat">
                             <input type="text" id="crnt_lng">
                             <div id="map"></div>
@@ -2469,9 +2471,6 @@
                 <script>
                     $(document).ready(function() {
 
-                        x = document.getElementById('crnt_lat')
-                        y = document.getElementById('crnt_lng')
-
                         if (navigator.geolocation) {
                             navigator.geolocation.getCurrentPosition(showPosition);
 
@@ -2481,8 +2480,8 @@
 
 
                         function showPosition(position) {
-                            x.value = position.coords.latitude
-                            y.value = position.coords.longitude;
+                            document.getElementById('crnt_lat').value = position.coords.latitude
+                            document.getElementById('crnt_lng').value = position.coords.longitude;
                         }
                     });
                 </script>

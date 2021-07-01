@@ -21,7 +21,12 @@ class User(AbstractUser):
     has_membership = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.username
+        user = self.first_name
+        if user !='':
+            return user
+        else:
+            user = self.username
+            return user
 
     @property
     def imageURL(self):

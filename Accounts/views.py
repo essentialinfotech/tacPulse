@@ -1,3 +1,4 @@
+from Medic.models import Panic, AmbulanceModel
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import PasswordChangeForm
@@ -8,9 +9,14 @@ from .models import *
 from .forms import *
 from django.http import JsonResponse
 from django.db.models import Q
-from .decorators import user_passes_test, has_perm_admin, has_perm_user, has_perm_dispatch, is_active, \
+from .decorators import has_perm_admin_dispatch, user_passes_test, has_perm_admin, has_perm_user, has_perm_dispatch, is_active, \
                          REDIRECT_FIELD_NAME, INACTIVE_REDIRECT_FIELD_NAME
 from django.contrib.auth import authenticate, login
+import datetime
+this_month = datetime.datetime.now().month
+this_day = datetime.datetime.today()
+this_year = datetime.datetime.now().year
+
 
 import re
 def regex_validation(number):
@@ -33,7 +39,7 @@ def dashboard(request):
         }
         return render(request,'accounts/admin_dashboard.html', context)
 
-    if request.user.is_staff:
+    if request.user.is_staff and not request.user.is_superuser:
         return redirect('dispatch_profile', id=request.user.id)
     else:
         return redirect('user_profile', id=request.user.id)
@@ -68,44 +74,63 @@ def register(request):
 
 def profile(request,id):
     user = User.objects.get(id=id)
-    if user.is_staff:
+    if user.is_staff and not user.is_superuser:
         return redirect('dispatch_profile', id)
     elif user.is_superuser:
-        return redirect('admin_profile', id)
+        return redirect('my_profile', id)
     else:
         return redirect('user_profile', id)
+
 
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def admin_profile(request, id):
     user = User.objects.filter(is_superuser = False, is_staff = False)
-    dispatch = User.objects.filter(is_staff = True)
+    dispatch = User.objects.filter(is_staff = True, is_superuser = False)
     all_user = User.objects.filter(is_superuser = False)
     me = User.objects.filter(id = id)
+
+    daily_req = AmbulanceModel.objects.filter(created_on__date = this_day).order_by('-id')
+
+    monthly_req = AmbulanceModel.objects.filter(created_on__month = this_month, created_on__year = this_year).order_by('-id')
+
+    weekly_req = AmbulanceModel.objects.filter(created_on__iso_week_day__gte = 1, \
+                                                 created_on__month = this_month,\
+                                                created_on__year = this_year).order_by('-id')
+    
+    print('Weekly:',weekly_req)
+
     context = {
         'user': user,
         'dispatch': dispatch,
         'me': me,
         'all_user': all_user,
+        'daily_req': daily_req,
+        'monthly_req': monthly_req,
+        'weekly_req': weekly_req,
+        'id': id,
     }
     return render(request,'accounts/admin_profile.html',context)
 
 
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
-@user_passes_test(has_perm_dispatch, REDIRECT_FIELD_NAME)
+@user_passes_test(has_perm_admin_dispatch, REDIRECT_FIELD_NAME)
 def dispatch_profile(request, id):
-    user = User.objects.filter(is_staff = True, id=id)
+    user = User.objects.filter(is_staff = True, id=id, is_superuser = False)
     patients = User.objects.filter(is_superuser = False, is_staff = False)  
+    panic_req_month = Panic.objects.filter(timestamp__month = this_month, \
+                                             timestamp__year = this_year).order_by('-id')
+
     context = {
         'user': user,
         'patients': patients,
+        'panic_req_month': panic_req_month,
         'id': id,
     }
     return render(request, 'accounts/dispacth_profile.html', context)
 
 
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
-@user_passes_test(has_perm_user, REDIRECT_FIELD_NAME)
 def user_profile(request, id):
     user = User.objects.filter(is_superuser = False, is_staff = False, id=id)
     context = {
@@ -115,10 +140,60 @@ def user_profile(request, id):
     return render(request, 'accounts/user_profile.html', context)
 
 
-def chart_admin_profile(request):
+def monthly_request_chart_ambulance(request):
     labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-    data = ['30','500','87','400','12','300','52','200','12','100','13','50']
-    
+    data = []
+    Jan = 0
+    Feb = 0
+    Mar = 0
+    Apr = 0
+    May = 0
+    Jun = 0
+    Jul = 0
+    Aug = 0
+    Sep = 0
+    Oct = 0
+    Nov = 0
+    Dec = 0
+
+    for i in range(0,13):
+        if i == 1:
+            Jan = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Jan)
+        if i == 2:
+            Feb = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Feb)
+        if i == 3:
+            Mar = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Mar)
+        if i == 4:
+            Apr = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Apr)
+        if i == 5:
+            May = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(May)
+        if i == 6:
+            Jun = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Jun)
+        if i == 7:
+            Jul = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Jul)  
+        if i == 8:
+            Aug = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Aug)   
+        if i == 9:
+            Sep = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Sep)  
+        if i == 10:
+            Oct = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Oct)  
+        if i == 11:
+            Nov = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Nov)  
+        if i == 12:
+            Dec = AmbulanceModel.objects.filter(created_on__month = i, created_on__year = this_year).count()
+            data.append(Dec)  
+
     return JsonResponse(data={
         'labels': labels,
         'data': data,
@@ -135,12 +210,44 @@ def chart_dispatch_profile(request):
     })
     
 
-def edit_profile_admin(request):
-    return render(request,'accounts/edit_profile_admin.html')
+@user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
+def edit_profile_admin(request,id):
+    data = User.objects.get(id = id)
+    form = EditProfile(instance=data)
+    if request.method == 'POST':
+        form = EditProfile(request.POST, request.FILES, instance=data)
+        if form.is_valid():
+            email = form.cleaned_data['username']
+            data.email = email
+            data.save()
+            form.save()
+            return redirect('profile',id)
+    context = {
+        'form': form,
+        'data': data,
+        'id': id,
+    }
+    return render(request,'accounts/edit_profile_admin.html', context)
 
 
-def edit_profile_dispatch(request):
-    return render(request,'accounts/edit_profile_dispatch.html')
+@user_passes_test(has_perm_dispatch, REDIRECT_FIELD_NAME)
+def edit_profile_dispatch(request,id):
+    data = User.objects.get(id = id)
+    form = EditProfile(instance=data)
+    if request.method == 'POST':
+        form = EditProfile(request.POST, request.FILES, instance=data)
+        if form.is_valid():
+            email = form.cleaned_data['username']
+            data.email = email
+            data.save()
+            form.save()
+            return redirect('profile',id)
+    context = {
+        'form': form,
+        'data': data,
+        'id': id,
+    }
+    return render(request,'accounts/edit_profile_dispatch.html', context)
 
 
 def edit_profile_user(request):
@@ -152,7 +259,6 @@ def change_pass(request):
     try:
         if request.method == 'POST':
             form = PasswordChangeForm(request.user, request.POST)
-            print(form.errors)
             if form.is_valid():
                 user = form.save()
                 update_session_auth_hash(request, user)
@@ -175,21 +281,26 @@ def delete_any_user(request,id):
 
 def deactivate(request,id):
     user = User.objects.get(id = id)
-    if user.is_active is True:
-        user.is_active = False
-        user.save()
-        return HttpResponse('Account Deactivated')
+    if request.user.is_superuser:
+        if user.is_active is True:
+            user.is_active = False
+            user.save()
+            return HttpResponse('Account Deactivated')
+    else:
+        return HttpResponse('This action can only be handled by admins')
 
 
 
 def activate(request,id):
-    user = User.objects.get(id = id)
     try:
+        user = User.objects.get(id = id)
         if request.user.is_superuser:
             if user.is_active is False:
                 user.is_active = True
                 user.save()
                 return HttpResponse('Account Activated')
+            else:
+                return HttpResponse('user not found or account already active')
         else:
             return HttpResponse('Only admins can deactivate your account')
     except:

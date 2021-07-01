@@ -402,15 +402,15 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'tools_form'%}" class="menu-link">
+                                            <a href="{% url 'property_add'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                 <span></span></i>
 
-                                                <span class="menu-text">Property Form</span>
+                                                <span class="menu-text">Add Property</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'members'%}" class="menu-link">
+                                            <a href="{% url 'property_report' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -1255,7 +1255,7 @@
             <!--begin::Nav-->
             <div class="navi navi-spacer-x-0 p-0">
                 <!--begin::Item-->
-                <a href="{% url 'my_profile' request.user.id %}" class="navi-item">
+                <a href="{% url 'profile' request.user.id %}" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">

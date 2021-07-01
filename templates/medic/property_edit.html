@@ -48,7 +48,7 @@
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center flex-wrap">
                 <!--begin::Button-->
-                <a href="#" class="
+                <a href="{% url 'register' %}" class="
             btn
             button-color
             btn-fixed-height
@@ -75,84 +75,6 @@
                     <span class="d-none d-md-inline">New Member</span>
                 </a>
                 <!--end::Button-->
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
-                    <a href="#" class="
-              btn btn-primary btn-fixed-height
-              font-weight-bold
-              px-2 px-lg-5
-              mr-2
-            " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="svg-icon svg-icon-lg">
-                            <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <polygon points="0 0 24 0 24 24 0 24" />
-                                    <path
-                                        d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z"
-                                        fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                    <rect fill="#000000" x="6" y="11" width="9" height="2" rx="1" />
-                                    <rect fill="#000000" x="6" y="15" width="5" height="2" rx="1" />
-                                </g>
-                            </svg>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <span class="d-none d-md-inline">New Report</span>
-                    </a>
-                    <div class="dropdown-menu p-0 m-0 dropdown-menu-md dropdown-menu-right">
-                        <!--begin::Navigation-->
-                        <ul class="navi navi-hover">
-                            <li class="navi-header font-weight-bold py-4">
-                                <span class="font-size-lg">Choose Label:</span>
-                                <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
-                            </li>
-                            <li class="navi-separator mb-3 opacity-70"></li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-success">Customer</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-danger">Partner</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-warning">Suplier</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-primary">Member</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-dark">Staff</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-separator mt-3 opacity-70"></li>
-                            <li class="navi-footer py-4">
-                                <a class="btn btn-clean font-weight-bold btn-sm" href="#">
-                                    <i class="ki ki-plus icon-sm"></i>Add new</a>
-                            </li>
-                        </ul>
-                        <!--end::Navigation-->
-                    </div>
-                </div>
-                <!--end::Dropdown-->
                 <!--begin::Button-->
                 <a href="#" class="btn btn-primary btn-icon font-weight-bold" data-toggle="modal" data-target="#kt_chat_modal">
                     <span class="svg-icon svg-icon-lg">
@@ -184,11 +106,12 @@
         <div class="container">
             <!--begin::Row-->
             <div class="row">
+                {{ form.errors }}
                 <!-- body that will take incoming dragged fields -->
                 <div class="col-lg-6 draggable-zone">
                     <div class="card draggable-zone" style="width: 100%; height: 100%;">
                         <!-- to submit form from dropped area -->
-                        <form method="post" action="{% url 'occurrence_form' %}" enctype="multipart/form-data" class="draggable-zone">
+                        <form method="post" action="{% url 'property_edit' id %}" class="draggable-zone">
                             {% csrf_token %}
 
                             <div class="card-body draggable-zone" id="tobedropped">
@@ -202,34 +125,85 @@
                 <!-- form fields -->
                 <div class="col-lg-6 draggable-zone">
                     <div class="draggable">
-                        <label class="draggable-handle required">Occurrence Type</label>
-                        <div class="draggable-handle">{{ form.occurrence_type }}</div>
+                        <label class="draggable-handle required">Property Type</label>
+                        <div name="area1" class="draggable-handle" id="p">{{ form.property_type }}</div>
                     </div>
 
-                    <div class="draggable">
-                        <label class="draggable-handle" >Related User(Optional)</label>
-                        <div class="draggable-handle">
-                            {{ form.related_user }}
+                    <div class="draggable" style="display: none">
+                        <label class="draggable-handle">Related User</label>
+                        <div name="area2" class="draggable-handle">
+                            {{ form.user }}
                         </div>
                     </div>
 
 
-                    <div style="display: none;">
-                        <input type="text" name="occurrence_giver" style="display: none;">
-                    </div>
-
-
                     <div class="draggable">
-                        <label class="draggable-handle required" >Occurrence
-                                Detail</label>
-                        <div class="draggable-handle">
-                            {{ form.occurrence_detail }}
+                        <label class="draggable-handle">Customer Name(if selling process)</label>
+                        <div name="area2" class="draggable-handle">
+                            {{ form.to_user }}
                         </div>
                     </div>
 
+
                     <div class="draggable">
-                        <div class="draggable-handle">{{ form.image|as_crispy_field }}</div>
-                    </div><br>
+                        <label class="draggable-handle">Customer Contact(if selling process)</label>
+                        <div name="area2" class="draggable-handle">
+                            {{ form.to_user_mobile }}
+                        </div>
+                    </div>
+
+
+                    <div class="draggable">
+                        <label class="draggable-handle required">Equipment</label>
+                        <div name="area3" class="draggable-handle" id="e">
+                            {{ form.equipement_name }}
+                        </div>
+                    </div>
+
+
+                    <div class="draggable">
+                        <label class="draggable-handle required">Manufacturer</label>
+                        <div class="draggable-handle" id="m">{{ form.manufacturer }}</div>
+                    </div>
+
+
+                    <div class="draggable">
+                        <label class="draggable-handle required">Model(Optional)</label>
+                        <div class="draggable-handle" id="mdl">{{ form.model }}</div>
+                    </div>
+
+
+                    <div class="draggable">
+                        <label class="draggable-handle required">Quantity</label>
+                        <div class="draggable-handle" id="q">{{ form.quantity }}</div>
+                    </div>
+
+                    <div class="draggable">
+                        <label class="draggable-handle required">Price</label>
+                        <div class="draggable-handle" id="pr">{{ form.price }}</div>
+                    </div>
+
+                    <div class="draggable" style="display: none">
+                        <label class="draggable-handle required">Total Price</label>
+                        <div class="draggable-handle">{{ form.total }}</div>
+                    </div>
+
+
+                    <div class="draggable">
+                        <label class="draggable-handle required">Condition</label>
+                        <div class="draggable-handle" id="c">{{ form.condition }}</div>
+                    </div>
+
+
+                    <div class="draggable">
+                        <label class="draggable-handle required">Status</label>
+                        <div class="draggable-handle" id="s">{{ form.status }}</div>
+                    </div>
+
+                    <div class="draggable">
+                        <label class="draggable-handle">Due Date(if Status is Due)</label> <br>
+                        <div class="draggable-handle">{{ form.due_date }}</div>
+                    </div> <br>
 
                     <button type="submit" id="to-be-clicked" class="btn btn-success">Save</button>
                     </form>
@@ -244,4 +218,61 @@
     <!--end::Entry-->
 </div>
 <!--end::Content-->
+
+<script>
+    m = document.getElementById('m')
+    p = document.getElementById('p')
+    e = document.getElementById('e')
+    mdl = document.getElementById('mdl')
+    q = document.getElementById('q')
+    c = document.getElementById('c')
+    s = document.getElementById('s')
+    pr = document.getElementById('pr')
+
+    pr.addEventListener('click', event => {
+        pr.focus();
+        pr.select();
+        $("#pr").focus();
+    })
+
+    m.addEventListener('click', event => {
+        m.focus();
+        m.select();
+        $("#m").focus();
+    })
+
+    p.addEventListener('click', event => {
+        p.focus();
+        p.select();
+        $("#p").focus();
+    })
+
+    e.addEventListener('click', event => {
+        e.focus();
+        e.select();
+        $("#e").focus();
+    })
+
+    mdl.addEventListener('click', event => {
+        mdl.focus();
+        mdl.select();
+        $("#mdl").focus();
+    })
+
+    q.addEventListener('click', event => {
+        q.focus();
+        q.select();
+        $("#q").focus();
+    })
+    s.addEventListener('click', event => {
+        s.focus();
+        s.select();
+        $("#s").focus();
+    })
+    c.addEventListener('click', event => {
+        c.focus();
+        c.select();
+        $("#c").focus();
+    })
+</script>
 {% endblock %}

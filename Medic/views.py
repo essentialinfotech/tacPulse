@@ -1,5 +1,8 @@
 from __future__ import division
-from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+from django.contrib.messages.api import success
+from django.http.response import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
@@ -10,15 +13,30 @@ from .forms import *
 import datetime
 from .serializer import *
 from django.views import View
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.template.loader import get_template
 from django.views.generic import UpdateView, DetailView
 from rest_framework.generics import ListAPIView
+from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
+from Accounts.decorators import \
+                                 user_passes_test,REDIRECT_FIELD_NAME,\
+                                INACTIVE_REDIRECT_FIELD_NAME, \
+                                has_perm_dispatch,has_perm_user,has_perm_admin,\
+                                has_perm_admin_dispatch
 
 
 # global
 this_month = datetime.datetime.now().month
 this_day = datetime.datetime.today()
 this_year = datetime.datetime.now().year
+
+def invoice_no(type):
+    date = datetime.datetime.now()
+    timestamp = datetime.datetime.timestamp(date)
+    invoice_no = '#'+str(type) +str(round(timestamp))
+    return invoice_no
 
 def unique_id(id):
     date = datetime.datetime.now()
@@ -64,10 +82,6 @@ def stock_req_reports(request):
     return render(request, 'medic/stock_req_reports.html')
 
 
-def tools_form(request):
-    return render(request, 'medic/tools_form.html')
-
-
 def occurrence_form(request):
     form = OccurrenceForm()
     if request.method == 'POST':
@@ -111,6 +125,8 @@ def common_delete(request,id):
         if occurrence:
             occurrence.delete()
             return HttpResponseRedirect(url)
+        else:
+            return HttpResponse('Not Found')
     except:
         return HttpResponseRedirect(url)
 
@@ -136,11 +152,6 @@ def edit_occurrence(request,id):
 
 def dragable_form(request):
     return render(request, 'medic/dragable_form.html')
-
-
-def tools_report(request):
-    return render(request, 'medic/tools_report.html')
-
 
 def schedule_report(request):
     return render(request, 'medic/schedule_report.html')
@@ -174,6 +185,21 @@ def rating(request):
                 print(average)
                 print(star_value)
     return render(request, 'medic/rate.html')
+
+
+@csrf_exempt
+def feedback(request):
+    url = request.META.get('HTTP_REFERER')
+    value = ''
+    if request.method == 'POST':
+        feedback = request.POST
+        for k,v in feedback.items():
+            if v:
+                value = v
+        if value!='':
+            Feedback.objects.create(author_id = request.user.id, feedback_text = value)
+            return HttpResponseRedirect(url)
+    return HttpResponseRedirect(url)
 
 
 class AmbulanceRequest(View):
@@ -223,14 +249,16 @@ def hospital_transfer(request):
 def hospital_transfer_report(request):
     return render(request, 'medic/hospita_transfer_report.html')
 
-
+@login_required
 def panic_system(request):
     panic = 'Give a panic request'
     if request.method == 'POST':
         reason = request.POST.get('reason')
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        my_panic = Panic.objects.create(panic_sender_id=request.user.id, reason=reason, lat=lat, lng=lng)
+        place = request.POST.get('place')
+        emmergency_contact = request.POST.get('emmergency_contact')
+        my_panic = Panic.objects.create(panic_sender_id=request.user.id, reason=reason, place = place ,lat=lat, lng=lng)
         return redirect('check_panic_requests_location', id=my_panic.id)
     return render(request, 'medic/panic.html', {'panic': panic})
 
@@ -256,8 +284,12 @@ def check_panic_requests_location(request, id):
         try:
             panic = Panic.objects.get(id=id)
             context = {
-                'name': panic.panic_sender.username,
+                'email': panic.panic_sender.username,
+                'first_name': panic.panic_sender.first_name,
+                'contact': panic.panic_sender.contact,
                 'reason': panic.reason,
+                'place': panic.place,
+                'timestamp': panic.timestamp,
                 'lat': panic.lat,
                 'lng': panic.lng,
                 'id': id,
@@ -276,3 +308,114 @@ def task_transfer_req(request):
 
 def get_route(request):
     return render(request, 'medic/route.html')
+
+
+class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
+    serializer_class = PanicNotiSerializer
+    def get_queryset(self):
+        return PanicNoti.objects.filter(is_responded = False)
+
+
+def property_report(request):
+    properties = PropertyTools.objects.all().order_by('-id')
+    context = {
+        'properties': properties,
+    }
+    return render(request,'medic/property_report.html',context)
+
+
+
+def property_add(request):
+    form = PropertyForm()
+    if request.method == 'POST':
+        form = PropertyForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            price = form.cleaned_data['price']
+            quantity = form.cleaned_data['quantity']
+            total = price*quantity
+            instance.total_price = total
+            type = instance.property_type
+            type = type[:1]
+            instance.invoice_id = invoice_no(type)
+            instance.save()
+            messages.success(request,'Property Report Created')
+            return redirect('property_report')
+    context = {
+        'form': form
+    }
+    return render(request,'medic/property_form.html',context)
+
+
+def property_edit(request,id):
+    data = PropertyTools.objects.get(id = id)
+    form = PropertyForm(instance=data)
+    if request.method == 'POST':
+        form = PropertyForm(request.POST,instance=data)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            price = form.cleaned_data['price']
+            quantity = form.cleaned_data['quantity']
+            total = price*quantity
+            instance.total_price = total
+            instance.user = request.user
+            type = instance.property_type
+            type = type[:1]
+            instance.invoice_id = invoice_no(type)
+            instance.save()
+            messages.success(request,'Property has been edited')
+            return redirect('property_report')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/property_edit.html',context)
+    
+
+def property_del(request,id):
+    url = request.META.get('HTTP_REFERER')
+    obj = get_object_or_404(PropertyTools, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(url)
+    
+
+def render_to_pdf(template,context):
+    html = template.render(context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(),content_type="application/pdf")
+
+
+def invoice_pdf_property(request,id):
+    property = PropertyTools.objects.get(id=id)
+    context = {
+        'property': property,
+        'id':id
+    }
+    template = get_template('medic/property_pdf_invoice.html')
+    pdf = render_to_pdf(template, context)
+    if pdf:
+        response = HttpResponse(pdf, content_type="application/pdf")
+        content = "inline; filename=invoice.pdf"
+        response['Content-Disposition']=content
+        return response
+    return HttpResponse("not found")
+
+
+
+
+# from django.contrib.sessions.models import Session
+# from django.utils import timezone
+
+
+# def get_current_user():
+#     active_sessions = Session.objects.filter(expire_date__gte=timezone.now())
+#     user_id_list = []
+#     for session in active_sessions:
+#         data = session.get_decoded()
+#         user_id_list.append(data.get('_auth_user_id', None))
+#     user = User.objects.get(id=user_id_list[0])
+#     return user

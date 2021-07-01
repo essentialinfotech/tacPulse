@@ -3,11 +3,11 @@
 <link rel="stylesheet" href="{% static 'assets/css/rating.css' %}" />
 
 <div class="d-flex flex-column-fluid">
-  <div class="container">
-    <div class="row shadow-margin">
-      <div class="col-md-6 offset-md-3 shadow p-3 mb-5 bg-white rounded" id="shadow">
-        <div class="star-source">
-          <svg>
+    <div class="container">
+        <div class="row shadow-margin">
+            <div class="col-md-6 offset-md-3 shadow p-3 mb-5 bg-white rounded" id="shadow">
+                <div class="star-source">
+                    <svg>
             <linearGradient x1="50%" y1="5.41294643%" x2="87.5527344%" y2="65.4921875%" id="grad">
               <stop stop-color="#bf209f" offset="0%"></stop>
               <stop stop-color="#d62a9d" offset="60%"></stop>
@@ -19,216 +19,277 @@
               </polygon>
             </symbol>
           </svg>
+                </div>
+                <div class="text-center">
+                    <strong id="rate-us">Rate our service</strong>
+                </div>
+                <div class="star-container fgh">
+                    <form method="post" action="{% url 'rating' %}">
+                        <input type="radio" name="star" id="five" />
+                        <label for="five" class="fgh">
+              <svg class="star">
+                <use xlink:href="#star" />
+              </svg>
+            </label>
+
+                        <input type="radio" name="star" id="four" />
+                        <label for="four" class="fgh">
+              <svg class="star">
+                <use xlink:href="#star" />
+              </svg>
+            </label>
+
+                        <input type="radio" name="star" id="three" />
+                        <label for="three" class="fgh">
+              <svg class="star">
+                <use xlink:href="#star" />
+              </svg>
+            </label>
+
+                        <input type="radio" name="star" id="two" />
+                        <label for="two" class="fgh">
+              <svg class="star">
+                <use xlink:href="#star" />
+              </svg>
+            </label>
+
+                        <input type="radio" name="star" id="one" />
+                        <label for="one" class="fgh">
+              <svg class="star">
+                <use xlink:href="#star" />
+              </svg>
+            </label>
+
+                    </form>
+                </div>
+                <textarea placeholder="Please leave us feedback" class="form-control" id="exampleFormControlTextarea1" rows="3" name="feedback"></textarea>
+                <div class="text-center">
+                    <button class="btn btn-success form-control" type="submit" id="feedback-btn">Send</button>
+                </div>
+            </div>
         </div>
-        <div class="text-center">
-          <strong id="rate-us">Rate our service</strong>
-        </div>
-        <div class="star-container fgh">
-          <form method="post" action="{% url 'rating' %}">
-          <input type="radio" name="star" id="five"  />
-          <label for="five" class="fgh">
-            <svg class="star">
-              <use xlink:href="#star" />
-            </svg>
-          </label>
-
-          <input type="radio" name="star" id="four"  />
-          <label for="four" class="fgh">
-            <svg class="star">
-              <use xlink:href="#star" />
-            </svg>
-          </label>
-
-          <input type="radio" name="star" id="three"  />
-          <label for="three" class="fgh">
-            <svg class="star">
-              <use xlink:href="#star" />
-            </svg>
-          </label>
-
-          <input type="radio" name="star" id="two"  />
-          <label for="two" class="fgh">
-            <svg class="star">
-              <use xlink:href="#star" />
-            </svg>
-          </label>
-
-          <input type="radio" name="star" id="one"  />
-          <label for="one" class="fgh">
-            <svg class="star">
-              <use xlink:href="#star" />
-            </svg>
-          </label>
-
-        </form>
-        </div>
-        <textarea placeholder="Please leave us feedback" class="form-control" id="exampleFormControlTextarea1"
-          rows="3"></textarea>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- sweet alert after clicking on star/passing star value through ajax -->
 <script>
-  const five = document.getElementById("five");
-  const four = document.getElementById("four");
-  const three = document.getElementById("three");
-  const two = document.getElementById("two");
-  const one = document.getElementById("one");
+    const five = document.getElementById("five");
+    const four = document.getElementById("four");
+    const three = document.getElementById("three");
+    const two = document.getElementById("two");
+    const one = document.getElementById("one");
+    var feedback_container = document.getElementById('exampleFormControlTextarea1');
+    const feedback_btn = document.getElementById("feedback-btn");
 
-  five.addEventListener('click', event => {
+    five.addEventListener('click', event => {
 
-    var jsonText = {'star':'5'};
-    $.ajax({
-        url: '/rate/feedback/',
-        type: 'POST',
-        data: jsonText,
-        traditional: true,
-        dataType: 'html',
-        success: function(result){
-            console.log(jsonText)
+        var jsonText = {
+            'star': '5'
+        };
+        $.ajax({
+            url: '/rate/feedback/',
+            type: 'POST',
+            data: jsonText,
+            traditional: true,
+            dataType: 'html',
+            success: function(result) {
+                console.log(jsonText)
             }
-    });  
+        });
 
-    $.confirm({
-      title: 'Thank You!',
-      content: 'You have rated us with 5 star!',
-      type: 'green',
-      typeAnimated: true,
-      buttons: {
-        tryAgain: {
-          text: 'Close',
-          btnClass: 'btn-green',
-          action: function () {
-          }
-        },
-      }
-    });
-  });
-
-
-  four.addEventListener('click', event => {
-
-    var jsonText = {'star':'4'};
-    $.ajax({
-        url: '/rate/feedback/',
-        type: 'POST',
-        data: jsonText,
-        traditional: true,
-        dataType: 'html',
-        success: function(result){
-            console.log(jsonText)
+        $.confirm({
+            title: 'Thank You!',
+            content: 'You have rated us with 5 star!',
+            type: 'green',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: 'Close',
+                    btnClass: 'btn-green',
+                    action: function() {}
+                },
             }
-    });  
-
-    $.confirm({
-      title: 'Thank You!',
-      content: 'You have rated us with 4 star!',
-      type: 'blue',
-      typeAnimated: true,
-      buttons: {
-        tryAgain: {
-          text: 'Close',
-          btnClass: 'btn-blue',
-          action: function () {
-          }
-        },
-      }
+        });
     });
-  });
 
 
-  three.addEventListener('click', event => {
+    four.addEventListener('click', event => {
 
-    var jsonText = {'star':'3'};
-    $.ajax({
-        url: '/rate/feedback/',
-        type: 'POST',
-        data: jsonText,
-        traditional: true,
-        dataType: 'html',
-        success: function(result){
-            console.log(jsonText)
+        var jsonText = {
+            'star': '4'
+        };
+        $.ajax({
+            url: '/rate/feedback/',
+            type: 'POST',
+            data: jsonText,
+            traditional: true,
+            dataType: 'html',
+            success: function(result) {
+                console.log(jsonText)
             }
-    });  
+        });
 
-    $.confirm({
-      title: 'Thank You!',
-      content: 'You have rated us with 3 star!',
-      type: 'purple',
-      typeAnimated: true,
-      buttons: {
-        tryAgain: {
-          text: 'Close',
-          btnClass: 'btn-purple',
-          action: function () {
-          }
-        },
-      }
-    });
-  });
-
-
-  two.addEventListener('click', event => {
-
-    var jsonText = {'star':'2'};
-    $.ajax({
-        url: '/rate/feedback/',
-        type: 'POST',
-        data: jsonText,
-        traditional: true,
-        dataType: 'html',
-        success: function(result){
-            console.log(jsonText)
+        $.confirm({
+            title: 'Thank You!',
+            content: 'You have rated us with 4 star!',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: 'Close',
+                    btnClass: 'btn-blue',
+                    action: function() {}
+                },
             }
-    });  
-
-    $.confirm({
-      title: 'Hello!',
-      content: 'You have rated us with 2 star!',
-      type: 'dark',
-      typeAnimated: true,
-      buttons: {
-        tryAgain: {
-          text: 'Close',
-          btnClass: 'btn-dark',
-          action: function () {
-          }
-        },
-      }
+        });
     });
-  });
 
 
-  one.addEventListener('click', event => {
+    three.addEventListener('click', event => {
 
-    var jsonText = {'star':'1'};
-    $.ajax({
-        url: '/rate/feedback/',
-        type: 'POST',
-        data: jsonText,
-        traditional: true,
-        dataType: 'html',
-        success: function(result){
-            console.log(jsonText)
+        var jsonText = {
+            'star': '3'
+        };
+        $.ajax({
+            url: '/rate/feedback/',
+            type: 'POST',
+            data: jsonText,
+            traditional: true,
+            dataType: 'html',
+            success: function(result) {
+                console.log(jsonText)
             }
-    });  
+        });
 
-    $.confirm({
-      title: 'Hello!',
-      content: 'You have rated us with 1 star!',
-      type: 'red',
-      typeAnimated: true,
-      buttons: {
-        tryAgain: {
-          text: 'Close',
-          btnClass: 'btn-red',
-          action: function () {
-          }
-        },
-      }
+        $.confirm({
+            title: 'Thank You!',
+            content: 'You have rated us with 3 star!',
+            type: 'purple',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: 'Close',
+                    btnClass: 'btn-purple',
+                    action: function() {}
+                },
+            }
+        });
     });
-  });
+
+
+    two.addEventListener('click', event => {
+
+        var jsonText = {
+            'star': '2'
+        };
+        $.ajax({
+            url: '/rate/feedback/',
+            type: 'POST',
+            data: jsonText,
+            traditional: true,
+            dataType: 'html',
+            success: function(result) {
+                console.log(jsonText)
+            }
+        });
+
+        $.confirm({
+            title: 'Hello!',
+            content: 'You have rated us with 2 star!',
+            type: 'dark',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: 'Close',
+                    btnClass: 'btn-dark',
+                    action: function() {}
+                },
+            }
+        });
+    });
+
+
+    one.addEventListener('click', event => {
+
+        var jsonText = {
+            'star': '1'
+        };
+        $.ajax({
+            url: '/rate/feedback/',
+            type: 'POST',
+            data: jsonText,
+            traditional: true,
+            dataType: 'html',
+            success: function(result) {
+                console.log(jsonText)
+            }
+        });
+
+        $.confirm({
+            title: 'Hello!',
+            content: 'You have rated us with 1 star!',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: 'Close',
+                    btnClass: 'btn-red',
+                    action: function() {}
+                },
+            }
+        });
+    });
+
+
+    feedback_btn.addEventListener('click', event => {
+        feedback = feedback_container.value;
+        if (feedback != '') {
+            jsonText = {
+                'text': feedback
+            };
+            console.log(jsonText)
+            $.ajax({
+                url: '/feedback/',
+                type: 'POST',
+                data: jsonText,
+                traditional: true,
+                dataType: 'json',
+                success: function(result) {
+                    console.log(jsonText)
+                }
+            })
+
+            $('#exampleFormControlTextarea1').val('');
+
+            $.confirm({
+                title: 'Hello!',
+                content: 'Thank you for your feedback',
+                type: 'green',
+                typeAnimated: true,
+                buttons: {
+                    tryAgain: {
+                        text: 'Close',
+                        btnClass: 'btn-green',
+                        action: function() {}
+                    },
+                }
+            });
+        } else {
+            $.confirm({
+                title: 'Hello!',
+                content: 'Empty feedbacks are not allowed',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    tryAgain: {
+                        text: 'Close',
+                        btnClass: 'btn-red',
+                        action: function() {}
+                    },
+                }
+            });
+        }
+
+    })
 </script>
 {% endblock %}

@@ -113,6 +113,7 @@
                         <textarea required name="reason" id="reason" class="form-control mb-1" style="resize: none;" placeholder="Reason for a panic request"></textarea>
                         <input readonly class="form-control mb-1" type="text" name="lat" id="lat" placeholder="Latitude" style="display: none;">
                         <input readonly class="form-control mb-1" type="text" name="lng" id="lng" placeholder="Longitude" style="display: none;">
+                        <input readonly class="form-control mb-1" type="text" name="place" id="place" placeholder="place">
                         <button id="btn" type="submit" class="form-control">Request</button>
                     </form>
                 </div>
@@ -125,6 +126,9 @@
         <div class="row">
             <div class="col-md-12">
                 <a id="btn-loc">My Location</a>
+                <div class="text-center">
+                    <input id="pac-input" style="width: 50%; margin: auto;" class="controls" type="text" placeholder="Search Box" />
+                </div>
                 <div style="height: 100vh;">
                     <div id="map"></div>
                 </div>
@@ -136,67 +140,84 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly" async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initAutocomplete&libraries=places&v=weekly" async></script>
+
     <script>
         let map, infoWindow;
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: {
-                    lat: -34.397,
-                    lng: 150.644
-                },
-                zoom: 10,
-            });
-            infoWindow = new google.maps.InfoWindow();
-            const locationButton = document.createElement("button");
-            locationButton.textContent = "Pan to Current Location";
-            locationButton.classList.add("custom-map-control-button");
-            map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-            locationButton.addEventListener('click', () => {
-                // Try HTML5 geolocation.
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                            };
-                            console.log(pos)
+        addEventListener('load', () => {
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
 
-                            for (var key in pos) {
-                                if (key == 'lat') {
-                                    var value = pos[key];
-                                    console.log(value)
-                                    document.getElementById("lat").setAttribute('value', value);
-                                } else if (key == 'lng') {
-                                    var value = pos[key];
-                                    console.log(value)
-                                    document.getElementById("lng").setAttribute('value', value);
+                        // current location place name by fahad
+                        var geocoder;
+                        geocoder = new google.maps.Geocoder();
+                        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        geocoder.geocode({
+                                'latLng': latlng
+                            },
+                            function(results, status) {
+                                if (status == google.maps.GeocoderStatus.OK) {
+                                    if (results[0]) {
+                                        var add = results[0].formatted_address;
+                                        console.log(add)
+                                        var value = add.split(",");
+                                        console.log(value)
+
+                                        count = value.length;
+                                        console.log(count)
+                                        country = value[count - 1];
+                                        console.log(country)
+                                        state = value[count - 2];
+                                        console.log(state)
+                                        city = value[count - 3];
+                                        console.log(city)
+                                        document.getElementById('place').value = city + ',' + state + ',' + country;
+                                        swal("Your current loction has been added to the box")
+                                    } else {
+                                        swal("address not found");
+                                    }
+                                } else {
+                                    swal("Geocoder failed due to: " + status);
                                 }
                             }
-                            // setting marker on map by zhf
-                            new google.maps.Marker({
-                                position: pos,
-                                map,
-                                title: "loacation found",
-                            });
+                        );
 
-                            // infoWindow.setPosition(pos);
-                            // infoWindow.setContent("Location found.");
-                            infoWindow.open(map);
-                            map.setCenter(pos);
-                        },
-                        () => {
-                            handleLocationError(true, infoWindow, map.getCenter());
+
+
+                        for (var key in pos) {
+                            if (key == 'lat') {
+                                var value = pos[key];
+                                console.log(value)
+                                document.getElementById("lat").setAttribute('value', value);
+                            } else if (key == 'lng') {
+                                var value = pos[key];
+                                console.log(value)
+                                document.getElementById("lng").setAttribute('value', value);
+                            }
                         }
-                    );
-                } else {
-                    // Browser doesn't support Geolocation
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
-            });
-        }
+                        // setting marker on map by zhf
+                        new google.maps.Marker({
+                            position: pos,
+                            map,
+                            title: "loacation found",
+                        });
+                    },
+                    () => {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    }
+                );
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        });
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
@@ -205,12 +226,81 @@
                 "Error: The Geolocation service failed." :
                 "Error: Your browser doesn't support geolocation."
             );
-            infoWindow.open(map);
+        }
+
+        function initAutocomplete() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: {
+                    lat: -33.8688,
+                    lng: 151.2195
+                },
+                zoom: 13,
+                mapTypeId: "roadmap",
+            });
+
+            // Create the search box and link it to the UI element.
+            const input = document.getElementById("pac-input");
+            const searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener("bounds_changed", () => {
+                searchBox.setBounds(map.getBounds());
+            });
+            let markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener("places_changed", () => {
+                const places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+                // Clear out the old markers.
+                markers.forEach((marker) => {
+                    marker.setMap(null);
+                });
+                markers = [];
+                // For each place, get the icon, name and location.
+                const bounds = new google.maps.LatLngBounds();
+                places.forEach((place) => {
+                    if (!place.geometry || !place.geometry.location) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    const icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25),
+                    };
+                    // Create a marker for each place.
+                    markers.push(
+                        new google.maps.Marker({
+                            map,
+                            icon,
+                            title: place.name,
+                            position: place.geometry.location,
+                        })
+                    );
+
+                    // on search place name and lat lng by fahad
+                    document.getElementById('place').value = place.name;
+                    document.getElementById('lat').value = place.geometry.location.lat();
+                    document.getElementById('lng').value = place.geometry.location.lng();
+                    swal("Your searched Location has been added to the box.")
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
         }
     </script>
-
-
-
 
     <!-- form submit no reload by zhf / reseting the input fields after submission-->
     <!-- <script>

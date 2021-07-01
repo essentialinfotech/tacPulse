@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Example 2</title>
+    <style>
+        th {
+            font-size: 15px;
+        }
+        
+        td {
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="clearfix">
+        <table>
+            <tr>
+                <td>
+                    <div id="company">
+                        <h2 class="name">Tac Pulse</h2>
+                        <div>South Africa</div>
+                        <div>Admin Contact</div>
+                        <div><a href="mailto:admin@admin.com">admin@admin.com</a></div>
+                    </div>
+                </td>
+                <td style="float: right;">
+                    <div id="related_user">
+                        <div>
+                            <h2>Related User <br>{{ property.user.first_name }} {{ i.user.last_name }}</h2>
+                            {{ property.user.contact}} <br>
+                            <a href="mailto:{{ property.user.username }}">{{ property.user.username }}</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </header>
+
+    <main>
+        <div>
+            <div id="invoice">
+                <h1>Invoive No: {{ property.invoice_id }}</h1>
+                <div class="date">Date of Invoice: 01/06/2014</div>
+            </div>
+        </div>
+        <table border="1" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Property Type</th>
+                    <th>Equipment Name</th>
+                    <th style="font-size: 13px;">Manufacturer</th>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th>Condition</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ property.property_type }}</td>
+                    <td>{{ property.equipement_name }}</td>
+                    <td>{{ property.manufacturer }}</td>
+                    <td>{{ property.model }}</td>
+                    <td>{{ property.quantity }}</td>
+                    <td>{{ property.condition }}</td>
+                    <td>{{ property.price }}</td>
+                    <td>{{ property.total_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <div id="thanks" style="color: brown;">Thank you!</div>
+    </main>
+    <footer id="thanks" style="color: red;">
+        Invoice was created on a computer and is valid without the signature and seal.
+    </footer>
+</body>
+
+</html>

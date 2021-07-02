@@ -63,13 +63,10 @@
                     <span class="d-none d-md-inline">New Member</span>
                 </a>
                 <!--end::Button-->
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
+
                     <a href="{% url 'edit_profile_admin' id %}" class="btn btn-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2">
                         <span class="d-none d-md-inline">Edit Profile</span>
                     </a>
-                </div>
-                <!--end::Dropdown-->
                 <!--begin::Button-->
                 <a href="#" class="btn btn-primary btn-icon font-weight-bold" data-toggle="modal" data-target="#kt_chat_modal">
                     <span class="svg-icon svg-icon-lg">
@@ -249,9 +246,7 @@
                                                 <td>{{ i.contact }}</td>
                                                 <td>{{ i.email }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-secondary" data-theme="dark" data-container="{{ i.reason }}" data-toggle="tooltip" data-placement="top" title="{{ i.reason }}">
-                                                        See Reasin
-                                                    </button>
+                                                    {{ i.reason }}
                                                 </td>
                                                 <td>{{ i.location }}</td>
                                                 <td>{{ i.created_on }}</td>
@@ -288,9 +283,7 @@
                                                 <td>{{ i.contact }}</td>
                                                 <td>{{ i.email }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-secondary" data-theme="dark" data-container="{{ i.reason }}" data-toggle="tooltip" data-placement="top" title="{{ i.reason }}">
-                                                        See Reasin
-                                                    </button>
+                                                    {{ i.reason }}
                                                 </td>
                                                 <td>{{ i.location }}</td>
                                                 <td>{{ i.created_on }}</td>
@@ -345,8 +338,7 @@
                             <div class="card-title py-5">
                                 <h3 class="card-label">
                                     <span class="d-block text-dark font-weight-bolder">Monthly Patients Requests</span>
-                                    <span class="d-block text-muted mt-2 font-size-sm">More than 500+ new
-                                        Patients</span>
+                                    <span class="d-block text-muted mt-2 font-size-sm">This Years ambulance requests</span>
                                 </h3>
                             </div>
                             <div class="card-toolbar">

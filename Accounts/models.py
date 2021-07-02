@@ -37,3 +37,23 @@ class User(AbstractUser):
         return url
 
 
+class Assesment(models.Model):
+    RATE = [
+        ('Good','Good'),
+        ('Satisfactory','Satisfactory'),
+        ('Excellent','Excellent'),
+        ('Poor','Poor'),
+        ('Very Poor','Very Poor'),
+    ]
+
+    by_user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True)
+    to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user_that_will_be_assisted')
+    msg = models.CharField(max_length=100,blank=True, null=True)
+    rate = models.CharField(max_length=30,choices=RATE)
+    warning = models.BooleanField(default=False,help_text="want to warn?")
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.rate
+
+

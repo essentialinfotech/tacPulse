@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'Accounting',
     'Accounts',
-    'Medic'
+    'Medic',
+    'django_toggle_switch_widget',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

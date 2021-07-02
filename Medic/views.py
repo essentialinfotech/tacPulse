@@ -54,10 +54,6 @@ def audit_report(request):
     return render(request, 'medic/audit_report.html')
 
 
-def assetment_form(request):
-    return render(request, 'medic/assesment_form.html')
-
-
 def inspection_form(request):
     return render(request, 'medic/inspection_form.html')
 
@@ -109,7 +105,6 @@ def occurrence_report(request):
                                                      created__month = this_month,\
                                                     created__year = this_year)
 
-    print('week:',weekly_occurences)
     context = {
         'monthly_occurences': monthly_occurences,
         'daily_occurences': daily_occurences,
@@ -351,12 +346,18 @@ class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
 
 
 def property_report(request):
-    properties = PropertyTools.objects.all().order_by('-id')
+    day_property = PropertyTools.objects.filter(created__date = this_day)
+    week_property = PropertyTools.objects.filter(created__iso_week_day__gte = 1,\
+                                                created__month = this_month, \
+                                                created__year = this_year)
+    month_property = PropertyTools.objects.filter(created__month = this_month, \
+                                                created__year = this_year)
     context = {
-        'properties': properties,
+        'day_property': day_property,
+        'week_property': week_property,
+        'month_property': month_property,
     }
     return render(request,'medic/property_report.html',context)
-
 
 
 def property_add(request):

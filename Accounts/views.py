@@ -1,24 +1,25 @@
 from Medic.models import Panic, AmbulanceModel
+from Accounting.models import TaskModel
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import authenticate, update_session_auth_hash
+from django.contrib.auth import  update_session_auth_hash,authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
 from .forms import *
 from django.http import JsonResponse
 from django.db.models import Q
+from django.db.models import Sum
 from .decorators import has_perm_admin_dispatch, user_passes_test, has_perm_admin, has_perm_user, has_perm_dispatch, is_active, \
                          REDIRECT_FIELD_NAME, INACTIVE_REDIRECT_FIELD_NAME
-from django.contrib.auth import authenticate, login
 import datetime
+import re
+
 this_month = datetime.datetime.now().month
 this_day = datetime.datetime.today()
 this_year = datetime.datetime.now().year
 
-
-import re
 def regex_validation(number):
     regex= "^(?:\+27|0)(?:6\d|7[0-4]|7[6-9]|8[1-4])\d{7}$"
     if re.search(regex, number):
@@ -120,11 +121,13 @@ def dispatch_profile(request, id):
     patients = User.objects.filter(is_superuser = False, is_staff = False)  
     panic_req_month = Panic.objects.filter(timestamp__month = this_month, \
                                              timestamp__year = this_year).order_by('-id')
+    task = TaskModel.objects.filter(dispatch_id = id)
 
     context = {
         'user': user,
         'patients': patients,
         'panic_req_month': panic_req_month,
+        'task': task,
         'id': id,
     }
     return render(request, 'accounts/dispacth_profile.html', context)
@@ -290,7 +293,6 @@ def deactivate(request,id):
         return HttpResponse('This action can only be handled by admins')
 
 
-
 def activate(request,id):
     try:
         user = User.objects.get(id = id)
@@ -302,6 +304,110 @@ def activate(request,id):
             else:
                 return HttpResponse('user not found or account already active')
         else:
-            return HttpResponse('Only admins can deactivate your account')
+            return HttpResponse('Only admins can activate your account')
     except:
         return HttpResponse('Internal Server Error')
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def assetment_form(request):
+    form = AssesmentForm()
+    if request.method == 'POST':
+        form = AssesmentForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.by_user = request.user
+            instance.save()
+            messages.success(request,'Assessment Created')
+            return redirect('assesment_list_users')
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/assesment_form.html', context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def assetment_form_edit(request,id):
+    data = Assesment.objects.get(id = id)
+    form = AssesmentForm(instance = data)
+    if request.method == 'POST':
+        form = AssesmentForm(request.POST, instance = data)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.by_user = request.user
+            instance.save()
+            messages.success(request,'Assessment Created')
+            return redirect('assesment_list_users')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request, 'accounts/assesment_form_edit.html', context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def del_assesment(request,id):
+    url = request.META.get('HTTP_REFERER')
+    obj = get_object_or_404(Assesment, id = id)
+    obj.delete()
+    return HttpResponseRedirect(url)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def assessment_report_individually(request,id):
+    diff = ''
+    month_assesments = Assesment.objects.filter(to_user_id = id,created__month = this_month,
+                                            created__year = this_year).order_by('-id')
+    year_assesments = Assesment.objects.filter(to_user_id = id,created__year = this_year).order_by('-id')
+
+    good_category = Assesment.objects.filter(rate = 'Good',created__month = this_month, 
+                                                created__year = this_year,\
+                                                to_user_id = id).count()
+    excellent_category = Assesment.objects.filter(rate = 'Excellent',created__month = this_month, 
+                                                created__year = this_year,\
+                                                to_user_id = id).count()
+    satisfactory_category = Assesment.objects.filter(rate = 'Satisfactory',created__month = this_month, 
+                                                created__year = this_year,\
+                                                to_user_id = id).count()
+    poor_category = Assesment.objects.filter(rate = 'Poor',created__month = this_month, 
+                                                created__year = this_year,\
+                                                to_user_id = id).count()
+    very_poor_category = Assesment.objects.filter(rate = 'Very Poor',created__month = this_month, 
+                                                created__year = this_year,\
+                                                to_user_id = id).count()
+    good = good_category + excellent_category + satisfactory_category
+    bad = poor_category + very_poor_category
+    if good > bad:
+        diff = str(good - bad) + ' positive rating more than negative rating'
+    elif good < bad:
+        diff = str(bad - good) + ' negative rating more than positive rating'
+    elif good == bad:
+        diff = 'Negative and Positive ratios are equal'
+    else:
+        diff = ''
+    context = {
+        'month_assesments': month_assesments,
+        'year_assesments': year_assesments,
+        'diff': diff,
+        'id': id,
+    }
+    return render(request,'accounts/assessment_report.html', context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def assesment_list_users(request):
+    users = []
+    user = Assesment.objects.values_list('to_user_id', flat=True).distinct()
+    id = None
+    for i in user:
+        id = i
+        data = User.objects.filter(id = id)
+        users.append(data)
+    print('result:',users)
+    context = {
+        'users': users,
+    }
+    return render(request,'accounts/assesments_list_users.html', context)
+
+        
+

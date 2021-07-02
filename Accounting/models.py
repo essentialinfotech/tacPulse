@@ -1,5 +1,6 @@
 from django import dispatch
 from django.db import models
+from django.db.models.aggregates import Count
 from django.db.models.expressions import F
 from Accounts.models import User
 from Medic.models import AmbulanceModel
@@ -26,6 +27,7 @@ class TaskModel(models.Model):
     task_description = models.CharField(
         max_length=100, blank=False, null=False, default='')
     ambulance_req = models.ForeignKey(AmbulanceModel, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True,blank=True, null=True)
 
     def __str__(self):
         return self.dispatch.first_name + ' ' + self.dispatch.last_name
@@ -63,3 +65,6 @@ class ScheduleModel(models.Model):
     status = models.CharField(
         choices=status_type, max_length=100, default='Pending')
     created_on = models.DateTimeField(auto_now_add=True)
+
+
+

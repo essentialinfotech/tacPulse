@@ -1,0 +1,75 @@
+{%extends '../base.html'%}
+{%load static%}
+{%block content%}
+<style>
+
+</style>
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+     {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        <div class="row">
+            {% for user in users %}
+            {%  for i in user %}
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b card-stretch mt-5">
+                    <!--begin::Body-->
+                    <div class="card-body text-center pt-4">
+                        <!--begin::User-->
+                        <div class="mt-7">
+                            <div class="symbol symbol-circle symbol-lg-75">
+                                <img src="{{ i.imageURL }}" alt="image" />
+                            </div>
+                            <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
+                                <span class="font-size-h3 font-weight-boldest">JB</span>
+                            </div>
+                        </div>
+                        <!--end::User-->
+                        <!--begin::Name-->
+                        <div class="my-2">
+                            <a href="#"
+                                class="text-dark font-weight-bold text-hover-primary font-size-h4">{{i.first_name}} {{i.last_name}}</a>
+                        </div>
+                        <!--end::Name-->
+                        <!--begin::Label-->
+
+                        <span
+                            class="label label-inline label-lg label-light-warning btn-sm font-weight-bold">{{i.contact}}</span><br>
+                        
+                            <span
+                                class="label label-inline label-lg label-light-warning btn-sm font-weight-bold">Contact</span>
+                        
+                        <!--end::Label-->
+                        <!--begin::Buttons-->
+                        <div class="mt-9 mb-6">
+                            <a href="{%url 'assessment_report_individually' i.id%}">
+                                <i class="fa fa-star"></i>
+                                View Assessments</a>
+                        </div>
+
+                        <!--end::Buttons-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+            </div>
+            <!--end::Col-->
+            {%endfor%}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{%endblock%}

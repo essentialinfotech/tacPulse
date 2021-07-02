@@ -62,6 +62,11 @@ urlpatterns = [
     path('activate/<hashid:id>/', activate, name = 'activate'),
     path('inactive/', inactive, name = 'inactive'),
     path('forbidden/', forbidden, name='forbidden'),
+    path('assesment/form/', assetment_form, name = 'assetment_form'),
+    path('del_assesment/<hashid:id>/', del_assesment, name = 'del_assesment'),
+    path('assessment/<hashid:id>/', assessment_report_individually, name = 'assessment_report_individually'),
+    path('assessment/list/', assesment_list_users, name = 'assesment_list_users'),
+    path('edit/assessment/<hashid:id>/', assetment_form_edit, name = 'assetment_form_edit'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

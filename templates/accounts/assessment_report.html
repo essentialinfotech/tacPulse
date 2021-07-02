@@ -1,0 +1,176 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/property_report.css' %}">
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <a style="border-radius: 0; color: red">{{ diff }}(This month)</a>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-info ml-auto mr-1" type="submit" id="m-btn" style="float: right;">Monthly</button>
+                    <button class="btn btn-info ml-auto mr-1" type="submit" id="y-btn" style="float: right;">Yearly</button>
+                </div>
+            </div>
+
+
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div id="monthly">
+                <a>Monthly</a>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Assessment By</th>
+                                <th>Assessment For</th>
+                                <th>Message</th>
+                                <th>Rated Status</th>
+                                <th>Warning</th>
+                                <th>Assessment Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in month_assesments %}
+                            <tr class="text-center">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ i.by_user.first_name|title }} {{ i.by_user.last_name|title }}
+                                </td>
+                                <td>
+                                    <a href="{% url 'profile' i.to_user.id %}">{{ i.to_user.first_name|title }}
+                                        {{ i.to_user.last_name|title }}
+                                    </a>
+                                </td>
+                                <td>{{ i.msg }}</td>
+                                {% if i.rate == 'Very Poor' or i.rate == 'Poor' %}
+                                <td><span class="custom-badge status-red">{{ i.rate }}</span></td>
+                                {% elif i.rate == 'Satisfactory' %}
+                                <td><span class="custom-badge status-purple">{{ i.rate }}</span></td>
+                                {% else %}
+                                <td><span class="custom-badge status-green">{{ i.rate }}</span></td>
+                                {% endif %} {% if i.warning == True %}
+                                <td><span class="custom-badge status-red">Warned</span></td>
+                                {% else %}
+                                <td><span class="custom-badge status-green">No Warning</span></td>
+                                {% endif %}
+                                <td>{{ i.created }}</td>
+
+                                <td class="p-5">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <a href="{% url 'assetment_form_edit' i.id %}"><i
+                                            class="fas fa-edit text-hover-primary mr-2"></i></a>
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <a href="{% url 'del_assesment' i.id %}"><i
+                                            class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="yearly" style="display: none;">
+                <a>Yearly</a>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Assessment By</th>
+                                <th>Assessment For</th>
+                                <th>Message</th>
+                                <th>Rated Status</th>
+                                <th>Warning</th>
+                                <th>Assessment Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in year_assesments %}
+                            <tr class="text-center">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ i.by_user.first_name }}</td>
+                                <td>{{ i.to_user.first_name }}</td>
+                                <td>{{ i.msg }}</td>
+                                {% if i.rate == 'Very Poor' or i.rate == 'Poor' %}
+                                <td><span class="custom-badge status-red">{{ i.rate }}</span></td>
+                                {% elif i.rate == 'Satisfactory' %}
+                                <td><span class="custom-badge status-purple">{{ i.rate }}</span></td>
+                                {% else %}
+                                <td><span class="custom-badge status-green">{{ i.rate }}</span></td>
+                                {% endif %} {% if i.warning == True %}
+                                <td><span class="custom-badge status-red">Warned</span></td>
+                                {% else %}
+                                <td><span class="custom-badge status-green">No Warning</span></td>
+                                {% endif %}
+                                <td>{{ i.created }}</td>
+
+                                <td class="p-5">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <a href="{% url 'assetment_form_edit' i.id %}"><i
+                                            class="fas fa-edit text-hover-primary mr-2"></i></a>
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <a href="{% url 'del_assesment' i.id %}"><i
+                                            class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var m_btn = document.getElementById('m-btn');
+    var y_btn = document.getElementById('y-btn');
+    var monthly = document.getElementById('monthly')
+    var yearly = document.getElementById('yearly')
+
+    y_btn.addEventListener('click', function() {
+        if (yearly.style.display === "none") {
+            yearly.style.display = "block";
+            monthly.style.display = "none";
+        } else {
+            yearly.style.display = "";
+        }
+    })
+
+    m_btn.addEventListener('click', function() {
+        if (monthly.style.display === "none") {
+            monthly.style.display = "block";
+            yearly.style.display = "none";
+        } else {
+            monthly.style.display = "";
+        }
+    })
+</script>
+{% endblock %}

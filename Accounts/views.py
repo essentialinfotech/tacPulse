@@ -1,4 +1,5 @@
 from Medic.models import Panic, AmbulanceModel
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from Accounting.models import TaskModel
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -356,6 +357,8 @@ def del_assesment(request,id):
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def assessment_report_individually(request,id):
     diff = ''
+    warning = Assesment.objects.filter(to_user_id = id,warning = True,created__month = this_month,
+                                            created__year = this_year).count()
     month_assesments = Assesment.objects.filter(to_user_id = id,created__month = this_month,
                                             created__year = this_year).order_by('-id')
     year_assesments = Assesment.objects.filter(to_user_id = id,created__year = this_year).order_by('-id')
@@ -389,6 +392,7 @@ def assessment_report_individually(request,id):
         'month_assesments': month_assesments,
         'year_assesments': year_assesments,
         'diff': diff,
+        'warning': warning,
         'id': id,
     }
     return render(request,'accounts/assessment_report.html', context)

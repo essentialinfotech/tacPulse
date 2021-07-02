@@ -8,16 +8,16 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <a style="border-radius: 0; color: red">{{ diff }}(This month)</a>
+                    <a style="border-radius: 0; color: red">{{ diff }}(This month)</a><br>
+                    <a style="border-radius: 0; color: red">Warned- <strong style="color: red; font-size: 15px;">{{ warning }}</strong></a>
+
                 </div>
                 <div class="col-md-6">
                     <button class="btn btn-info ml-auto mr-1" type="submit" id="m-btn" style="float: right;">Monthly</button>
                     <button class="btn btn-info ml-auto mr-1" type="submit" id="y-btn" style="float: right;">Yearly</button>
                 </div>
             </div>
-
-
-            {% if messages %}
+            <hr> {% if messages %}
             <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
                 <div class="alert-text">
@@ -91,6 +91,8 @@
                 </div>
             </div>
 
+
+
             <div id="yearly" style="display: none;">
                 <a>Yearly</a>
                 <div class="table-responsive">
@@ -110,8 +112,13 @@
                             {% for i in year_assesments %}
                             <tr class="text-center">
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ i.by_user.first_name }}</td>
-                                <td>{{ i.to_user.first_name }}</td>
+                                <td>{{ i.by_user.first_name|title }} {{ i.by_user.last_name|title }}
+                                </td>
+                                <td>
+                                    <a href="{% url 'profile' i.to_user.id %}">{{ i.to_user.first_name|title }}
+                                        {{ i.to_user.last_name|title }}
+                                    </a>
+                                </td>
                                 <td>{{ i.msg }}</td>
                                 {% if i.rate == 'Very Poor' or i.rate == 'Poor' %}
                                 <td><span class="custom-badge status-red">{{ i.rate }}</span></td>

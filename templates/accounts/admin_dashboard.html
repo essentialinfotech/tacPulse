@@ -1,6 +1,11 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
 
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
 <!--begin::Content-->
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
@@ -146,21 +151,46 @@
                     <div class="card card-custom gutter-b card-stretch card-shadowless">
                         <div class="card-body p-0 d-flex">
                             <div class="d-flex align-items-start justify-content-start flex-grow-1 bg-light-warning p-8 card-rounded flex-grow-1 position-relative">
-                                <div class="d-flex flex-column align-items-start flex-grow-1 h-100">
-                                    <div class="p-0 flex-grow-1">
-                                        <h4 class="text-warning font-weight-bolder">Deactivated Users</h4>
-                                    </div>
-                                    <div class="w-100" style="height: 100px;overflow-y: scroll ;">
-                                        {% for i in deactivated_users %} {% if i.is_staff %}
-                                        <div class="alert alert-success" role="alert">
-                                            {{ i.first_name|title }} <a href="{% url 'activate' i.id %}" class="btn btn-success">Activate</a> <br> Role: Dispatch({{ i.contact }})
+                                <div class="d-flex flex-column align-items-center flex-grow-1 h-100">
+                                    <div class="text-center">
+                                        <h4 class="text-warning font-weight-bolder">Companies Rating</h4>
+                                        <div style="display: block;" class="top mt-7">
+                                            <!-- 1star -->
+                                            {% if star1 is True %}
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span> {% endif %}
+                                            <!-- 2star -->
+                                            {% if star2 is True %}
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span> {% endif %}
+                                            <!-- 3star -->
+                                            {% if star3 is True %}
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span> {% endif %}
+                                            <!-- 4star -->
+                                            {% if star4 is True %}
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span> {% endif %}
+                                            <!-- 5star -->
+                                            {% if star5 is True %}
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span> {% endif %}
                                         </div>
-                                        {% else %}
-                                        <div class="alert alert-success" role="alert">
-                                            {{ i.first_name|title }} <a href="{% url 'activate' i.id %}" class="btn btn-success">Activate</a> <br> Role: Customer({{ i.contact }})
-                                        </div>
-                                        {% endif %} {% endfor %}
-
                                     </div>
 
                                 </div>

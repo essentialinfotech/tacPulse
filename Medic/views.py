@@ -485,3 +485,4 @@ def del_faq(request,id):
     obj = get_object_or_404(FAQ, id = id)
     obj.delete()
     return redirect('faq')
+

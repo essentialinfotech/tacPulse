@@ -23,6 +23,7 @@ class Panic(models.Model):
     def __str__(self):
         return self.panic_sender.first_name
 
+
 class Rating(models.Model):
     rated_value = models.IntegerField(blank = True, null = True , default = 0)
     all_time_rated_value_store = models.IntegerField(blank = True, null = True , default = 0)

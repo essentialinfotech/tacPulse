@@ -1,4 +1,5 @@
-from Medic.models import Panic, AmbulanceModel
+from Medic.views import rating
+from Medic.models import Panic, AmbulanceModel, Rating
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from Accounting.models import TaskModel
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -36,7 +37,30 @@ def regex_validation(number):
 def dashboard(request):
     if request.user.is_superuser:
         deactivated_users =  User.objects.filter(is_active = False)
+        rating = Rating.objects.all()
+        star1 = False
+        star2 = False
+        star3 = False
+        star4 = False
+        star5 = False
+        for i in rating:
+            if i.avg_rating <=1:
+                star1 =True
+            if i.avg_rating <=2 and i.avg_rating > 1:
+                star2 =True
+            if i.avg_rating <=3 and i.avg_rating > 2:
+                star3 = True
+            if i.avg_rating <=4 and i.avg_rating > 3:
+                star4 = True
+            if i.avg_rating <=5 and i.avg_rating > 4:
+                star5 = True
+                
         context = {
+            'star1': star1,
+            'star2': star2,
+            'star3': star3,
+            'star4': star4,
+            'star5': star5,
             'deactivated_users': deactivated_users,
         }
         return render(request,'accounts/admin_dashboard.html', context)

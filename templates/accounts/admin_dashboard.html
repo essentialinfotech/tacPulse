@@ -5,6 +5,10 @@
     .checked {
         color: orange;
     }
+    
+    .half {
+        color: orange;
+    }
 </style>
 <!--begin::Content-->
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -156,40 +160,65 @@
                                         <h4 class="text-warning font-weight-bolder">Companies Rating</h4>
                                         <div style="display: block;" class="top mt-7">
                                             <!-- 1star -->
-                                            {% if star1 is True %}
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span> {% endif %}
+                                            {% if star0_5 is True %}
+                                            <i class="fa fa-star-half-o fa-2x half"></i>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star1_5 is True %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <i class="fa fa-star-half-o fa-2x half"></i>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star2_5 is True %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <i class="fa fa-star-half-o fa-2x half"></i>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star3_5 is True %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <i class="fa fa-star-half-o fa-2x half"></i>
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star4_5 is True %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <i class="fa fa-star-half-o fa-2x half"></i> {% endif %} {% if star1 is True %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span> {% endif %}
                                             <!-- 2star -->
                                             {% if star2 is True %}
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span> {% endif %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x"></span> {% endif %}
                                             <!-- 3star -->
                                             {% if star3 is True %}
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span> {% endif %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x"></span>
+                                            <span class="fa fa-star fa-2x fa-2x"></span> {% endif %}
                                             <!-- 4star -->
                                             {% if star4 is True %}
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span> {% endif %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x"></span> {% endif %}
                                             <!-- 5star -->
                                             {% if star5 is True %}
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span> {% endif %}
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span>
+                                            <span class="fa fa-star fa-2x checked"></span> {% endif %}
                                         </div>
                                     </div>
 

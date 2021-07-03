@@ -43,17 +43,43 @@ def dashboard(request):
         star3 = False
         star4 = False
         star5 = False
+        star0_5 = False
+        star1_5 = False
+        star2_5 = False
+        star3_5 = False
+        star4_5 = False
+
         for i in rating:
-            if i.avg_rating <=1:
-                star1 =True
-            if i.avg_rating <=2 and i.avg_rating > 1:
-                star2 =True
-            if i.avg_rating <=3 and i.avg_rating > 2:
+            avg = i.avg_rating
+            if avg <= 0.5 and avg > 0:
+                star0_5 = True
+
+            if avg <=1 and avg > 0.5:
+                star1 = True
+
+            if avg <=1.5 and avg > 1:
+                star1_5 = True
+
+            if avg <=2 and avg > 1.5:
+                star2 = True
+
+            if avg <= 2.5 and avg > 2:
+                star2_5 = True
+
+            if avg <=3 and avg > 2.5:
                 star3 = True
-            if i.avg_rating <=4 and i.avg_rating > 3:
+
+            if avg <=3.5 and avg > 3:
+                star3_5 = True
+
+            if avg <=4 and avg > 3.5:
                 star4 = True
-            if i.avg_rating <=5 and i.avg_rating > 4:
-                star5 = True
+            
+            if avg <=4.5 and avg > 4:
+                star4_5 = True
+
+            if avg <=5 and avg > 4.5:
+                star5 = True        
                 
         context = {
             'star1': star1,
@@ -61,6 +87,11 @@ def dashboard(request):
             'star3': star3,
             'star4': star4,
             'star5': star5,
+            'star0_5': star0_5,
+            'star1_5': star1_5,
+            'star2_5': star2_5,
+            'star3_5': star3_5,
+            'star4_5': star4_5,
             'deactivated_users': deactivated_users,
         }
         return render(request,'accounts/admin_dashboard.html', context)

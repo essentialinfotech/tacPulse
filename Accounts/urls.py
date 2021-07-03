@@ -19,13 +19,11 @@ urlpatterns = [
     path('user/profile/<hashid:id>/', user_profile, name = 'user_profile'),
 
     path('monthly_request_chart_ambulance/', monthly_request_chart_ambulance, name='monthly_request_chart_ambulance'),
-    path('chart_dispatch_profile,/', chart_dispatch_profile,
-         name='chart_dispatch_profile'),
 
     path('edit/profile/admin/<hashid:id>/', edit_profile_admin, name='edit_profile_admin'),
     path('edit/profile/dispatch/<hashid:id>/', edit_profile_dispatch,
          name='edit_profile_dispatch'),
-    path('edit/profile/user/', edit_profile_user, name='edit_profile_user'),
+    path('edit/profile/user/<hashid:id>/', edit_profile_user, name='edit_profile_user'),
 
     path('registration/', register, name='register'),
 

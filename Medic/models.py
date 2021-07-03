@@ -1,6 +1,7 @@
 from typing import Set
 from django.db import models
 from django.db.models.aggregates import Count
+from django.db.models.deletion import SET_NULL
 from Accounts.models import *
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -10,7 +11,7 @@ from Accounts.models import User
 
 #emmergency contact template e boshano baki
 class Panic(models.Model):
-    emmergency_contact = models.CharField(max_length=40, blank=True, null=True)
+    emergency_contact = models.CharField(max_length=40, blank=True, null=True)
     panic_sender = models.ForeignKey(
         User, blank=True, null=True, on_delete=models.CASCADE)
     reason = models.CharField(max_length=200, blank=False, null=False)
@@ -128,6 +129,17 @@ class PropertyTools(models.Model):
 
     def __str__(self):
         return self.invoice_id
+
+
+class FAQ(models.Model):
+    author = models.ForeignKey(User,on_delete=SET_NULL,blank=True, null=True)
+    img = models.ImageField(upload_to = 'FAQ', blank=True, null=True)
+    ques = models.CharField(max_length=500,blank=True, null=True)
+    ans = models.TextField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.ques
 
 
 @receiver(post_save, sender=Panic)

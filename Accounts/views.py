@@ -116,29 +116,36 @@ def admin_profile(request, id):
 
 
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
-@user_passes_test(has_perm_admin_dispatch, REDIRECT_FIELD_NAME)
 def dispatch_profile(request, id):
     user = User.objects.filter(is_staff = True, id=id, is_superuser = False)
     patients = User.objects.filter(is_superuser = False, is_staff = False)  
     panic_req_month = Panic.objects.filter(timestamp__month = this_month, \
                                              timestamp__year = this_year).order_by('-id')
     task = TaskModel.objects.filter(dispatch_id = id)
-
+    assesments = Assesment.objects.filter(to_user_id = id)
     context = {
         'user': user,
         'patients': patients,
         'panic_req_month': panic_req_month,
         'task': task,
+        'assesments': assesments,
         'id': id,
     }
     return render(request, 'accounts/dispacth_profile.html', context)
 
 
-@user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def user_profile(request, id):
     user = User.objects.filter(is_superuser = False, is_staff = False, id=id)
+    ambulance_req = AmbulanceModel.objects.filter(user_id = id,created_on__year = this_year)
+    panic_req_yearly = Panic.objects.filter(panic_sender_id = id, timestamp__year = this_year)
+    ambulance_req_total = AmbulanceModel.objects.filter(user_id = id,created_on__year = this_year).count()
+    dispatch = User.objects.filter(is_staff = True, is_superuser = False)
     context = {
         'user': user,
+        'dispatch': dispatch,
+        'ambulance_req': ambulance_req,
+        'ambulance_req_total': ambulance_req_total,
+        'panic_req_yearly': panic_req_yearly,
         'id': id,
     }
     return render(request, 'accounts/user_profile.html', context)
@@ -202,17 +209,7 @@ def monthly_request_chart_ambulance(request):
         'labels': labels,
         'data': data,
     })
-
-
-def chart_dispatch_profile(request):
-    labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-    data = ['30','500','87','400','12','300','52','200','12','100','13','50']
-    
-    return JsonResponse(data={
-        'labels': labels,
-        'data': data,
-    })
-    
+ 
 
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def edit_profile_admin(request,id):
@@ -253,9 +250,24 @@ def edit_profile_dispatch(request,id):
     }
     return render(request,'accounts/edit_profile_dispatch.html', context)
 
-
-def edit_profile_user(request):
-    return render(request,'accounts/edit_profile_user.html')
+@user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
+def edit_profile_user(request,id):
+    data = User.objects.get(id = id)
+    form = EditProfile(instance=data)
+    if request.method == 'POST':
+        form = EditProfile(request.POST, request.FILES, instance=data)
+        if form.is_valid():
+            email = form.cleaned_data['username']
+            data.email = email
+            data.save()
+            form.save()
+            return redirect('profile',id)
+    context = {
+        'form': form,
+        'data': data,
+        'id': id,
+    }
+    return render(request,'accounts/edit_profile_user.html',context)
 
 
 def change_pass(request):
@@ -354,7 +366,7 @@ def del_assesment(request,id):
     return HttpResponseRedirect(url)
 
 
-@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def assessment_report_individually(request,id):
     diff = ''
     warning = Assesment.objects.filter(to_user_id = id,warning = True,created__month = this_month,

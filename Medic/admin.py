@@ -11,3 +11,4 @@ admin.site.register(AmbulanceModel)
 admin.site.register(PanicNoti)
 admin.site.register(Feedback)
 admin.site.register(PropertyTools)
+admin.site.register(FAQ),

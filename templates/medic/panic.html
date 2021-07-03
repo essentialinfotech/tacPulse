@@ -111,6 +111,7 @@
                     <form id="form" method="post" action="{% url 'panic_system' %}">
                         {% csrf_token %}
                         <textarea required name="reason" id="reason" class="form-control mb-1" style="resize: none;" placeholder="Reason for a panic request"></textarea>
+                        <input type="text" name="emergency_contact" id="emergency_contact" class="form-control mb-1" placeholder="Emergency Contact">
                         <input readonly class="form-control mb-1" type="text" name="lat" id="lat" placeholder="Latitude" style="display: none;">
                         <input readonly class="form-control mb-1" type="text" name="lng" id="lng" placeholder="Longitude" style="display: none;">
                         <input readonly class="form-control mb-1" type="text" name="place" id="place" placeholder="place">

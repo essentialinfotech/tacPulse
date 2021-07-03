@@ -39,3 +39,13 @@ class PropertyForm(forms.ModelForm):
             'due_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})     
         }
         
+
+class FAQFORM(forms.ModelForm):
+    class Meta:
+        model = FAQ
+        fields = '__all__'
+        widgets = {
+            'ques': forms.TextInput(attrs={'class': 'form-control','required': True}),
+            'ans': forms.Textarea(attrs={'class': 'form-control','required': True}),
+        }
+        

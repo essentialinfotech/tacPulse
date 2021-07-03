@@ -1,0 +1,47 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+    
+    textarea {
+        resize: none;
+        /* border-radius: 0px!important; */
+        width: fit-content;
+    }
+</style>
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="shadow-lg p-3 mb-5 bg-white rounded m-auto w-50">
+                        <div class="text-center m-50">
+                            <form method="POST" action="{% url 'edit_faq' id %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div>
+                                <label for="ques" class="required">Question</label><br>
+                                {{ form.ques }}
+                                </div>
+
+                                <div>
+                                <label for="ans" class="required">Answer</label><br>
+                                {{ form.ans }}
+                                </div> <br>
+                                <button type="submit" class="btn btn-transparent-success font-weight-bold mr-2 form-control">Create</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -283,11 +283,12 @@ def panic_system(request):
     panic = 'Give a panic request'
     if request.method == 'POST':
         reason = request.POST.get('reason')
+        emergency_contact = request.POST.get('emergency_contact')
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         place = request.POST.get('place')
         emmergency_contact = request.POST.get('emmergency_contact')
-        my_panic = Panic.objects.create(panic_sender_id=request.user.id, reason=reason, place = place ,lat=lat, lng=lng)
+        my_panic = Panic.objects.create(panic_sender_id=request.user.id, emergency_contact = emergency_contact , reason=reason, place = place ,lat=lat, lng=lng)
         return redirect('check_panic_requests_location', id=my_panic.id)
     return render(request, 'medic/panic.html', {'panic': panic})
 
@@ -316,6 +317,7 @@ def check_panic_requests_location(request, id):
                 'email': panic.panic_sender.username,
                 'first_name': panic.panic_sender.first_name,
                 'contact': panic.panic_sender.contact,
+                'emergency_contact': panic.emergency_contact,
                 'reason': panic.reason,
                 'place': panic.place,
                 'timestamp': panic.timestamp,
@@ -440,17 +442,46 @@ def invoice_pdf_property(request,id):
     return HttpResponse("not found")
 
 
+def faq(request):
+    faqs = FAQ.objects.all()
+    context = {
+        'faqs': faqs,
+    }
+    return render(request,'medic/faq.html',context)
 
 
-# from django.contrib.sessions.models import Session
-# from django.utils import timezone
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def create_faq(request):
+    if request.method == 'POST':
+        qs = request.POST.get('ques')
+        ans = request.POST.get('ans')
+        FAQ.objects.create(author = request.user, ques = qs, ans = ans)
+        messages.success(request,'FAQ was created')
+        return redirect('faq')
+    return render(request,'medic/create_faq.html')
 
 
-# def get_current_user():
-#     active_sessions = Session.objects.filter(expire_date__gte=timezone.now())
-#     user_id_list = []
-#     for session in active_sessions:
-#         data = session.get_decoded()
-#         user_id_list.append(data.get('_auth_user_id', None))
-#     user = User.objects.get(id=user_id_list[0])
-#     return user
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def edit_faq(request,id):
+    data = FAQ.objects.get(id =id)
+    form = FAQFORM(instance=data)
+    if request.method == 'POST':
+        form = FAQFORM(request.POST,request.FILES,instance=data)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.author = request.user
+            instance.save()
+            messages.success(request,'FAQ was Edited')
+            return redirect('faq')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/edit_faq.html',context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def del_faq(request,id):
+    obj = get_object_or_404(FAQ, id = id)
+    obj.delete()
+    return redirect('faq')

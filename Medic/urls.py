@@ -45,4 +45,8 @@ urlpatterns = [
      path('feedback/', feedback, name = 'feedback'),
      path('delete/property/<hashid:id>/', property_del, name = 'property_del'),
      path('invoice/<hashid:id>/', invoice_pdf_property, name = 'invoice_pdf_property'),
+     path('FAQ/', faq, name = 'faq'),
+     path('create/FAQ/', create_faq, name = 'create_faq'),
+     path('edit/FAQ/<hashid:id>/', edit_faq, name = 'edit_faq'),
+     path('delete/faq/<hashid:id>/', del_faq, name = 'del_faq'),
 ]

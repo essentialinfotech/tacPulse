@@ -4,21 +4,15 @@ from django.views.generic import View
 from .forms import *
 from .serializer import *
 from rest_framework.views import APIView
+from django.contrib import messages
+from Accounts.decorators import user_passes_test,has_perm_admin,\
+                                has_perm_admin_dispatch,has_perm_user,\
+                                has_perm_dispatch,REDIRECT_FIELD_NAME
 # Create your views here.
 
 
 def add_member(request):
     return redirect('register')
-
-
-def add_package(request):
-    if request.method == 'POST':
-        return redirect('packages')
-    return render(request, 'Accounting/add_package.html')
-
-
-def packages(request):
-    return render(request, 'Accounting/packages.html')
 
 
 def getmembership(request):
@@ -62,3 +56,51 @@ def add_paystub(request):
 
 def paystub_report(request):
     return render(request, 'Accounting/paystub_report.html')
+
+
+def packages(request):
+    packages = Package.objects.all()
+    context = {
+        'packages': packages,
+    }
+    return render(request, 'Accounting/packages.html',context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def add_package(request):
+    form = PackageForm()
+    if request.method == 'POST':
+        form = PackageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Package Created')
+            return redirect('packages')
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/add_package.html',context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def edit_package(request,id):
+    data = Package.objects.get(id = id)
+    form = PackageForm(instance=data)
+    if request.method == 'POST':
+        form = PackageForm(request.POST,instance=data)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Package Edited')
+            return redirect('packages')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/edit_package.html',context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def del_package(request,id):
+    obj = get_object_or_404(Package, id=id)
+    obj.delete()
+    messages.success(request,'Package deleted')
+    return redirect('packages')

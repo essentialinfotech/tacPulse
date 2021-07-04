@@ -1,4 +1,5 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/property_report.css' %}">
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
@@ -27,50 +28,58 @@
             </div>
             {% endif %}
             </a>
-            {% if request.user.is_user %}
-            <div class="row">
-                <div class="col-md-10"></div>
-                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
-            </div>
-            {% endif %}
             <div class="table-responsive">
                 <table id="data-table" class="display table">
                     <thead>
                         <tr class="text-center">
-                            <th>Serial No</th>
+                            <th>#</th>
                             <th>Name</th>
                             <th>Price</th>
-                            <th>Limit</th>
                             <th>Description</th>
-
+                            <th>Validity Confirmation</th>
+                            <th>Valid Till</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for i in packages %}
                         <tr class="text-center">
 
-                            <td>1</td>
-                            <td>Helth support</td>
-                            <td>R 120</td>
-                            <td>Everyone of your family member will get emergency treatment free</td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.p_name }}</td>
+                            <td class="fa-zar">{{ i.p_price }}</td>
+                            <td>{{ i.description }}</td>
 
+                            {% if i.is_valid == 'Date will be declared' %}
+                            <td><span class="custom-badge status-blue">{{ i.is_valid }}</span></td>
+                            {% elif i.is_valid == 'Date Declared' %}
+                            <td><span class="custom-badge status-orange">{{ i.is_valid }}</span></td>
+                            {% elif i.is_valid == 'Constant' %}
+                            <td><span class="custom-badge status-green">{{ i.is_valid }}</span></td>
+                            {% else %}
+                            <td><span class="custom-badge status-red">No Declaration</span></td>
+                            {% endif %}
 
+                            <td>{{ i.valid_till }}</td>
 
-                            <td class="p-5">
+                            {% if i.status == 'Active' %}
+                            <td><span class="custom-badge status-green">{{ i.status }}</span></td>
+                            {% else %}
+                            <td><span class="custom-badge status-grey">{{ i.status }}</span></td>
+                            {% endif %}
+                            <td>
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Details"><i
-                                                class="fas fa-clipboard-list text-hover-primary mr-2"></i></a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                        <a href="{% url 'edit_package' i.id %}"><i
                                                 class="fas fa-edit text-hover-primary mr-2"></i></a>
                                     </div>
                                     <div class="col-md-2 mt-2">
-                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        <a href="{% url 'del_package' i.id %}"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

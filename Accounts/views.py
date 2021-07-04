@@ -189,6 +189,7 @@ def dispatch_profile(request, id):
     return render(request, 'accounts/dispacth_profile.html', context)
 
 
+@user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def user_profile(request, id):
     user = User.objects.filter(is_superuser = False, is_staff = False, id=id)
     ambulance_req = AmbulanceModel.objects.filter(user_id = id,created_on__year = this_year)

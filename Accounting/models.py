@@ -6,7 +6,27 @@ from Accounts.models import User
 from Medic.models import AmbulanceModel
 
 # Create your models here.
+class Package(models.Model):
+    STATUS = [
+        ('Active','Active'),
+        ('Inactive','Inactive')
+    ]
 
+    Declaration = [
+        ('Date will be declared','Date will be declared'),
+        ('Date Declared','Date Declared'),
+        ('Constant','Constant'),
+    ]
+
+    p_name = models.CharField(max_length=100)
+    p_price = models.IntegerField()
+    description = models.TextField(blank=True, null=True)
+    is_valid = models.CharField(max_length=100,choices=Declaration)
+    valid_till = models.DateField(blank=True, null=True)
+    status = models.CharField(max_length=50,choices=STATUS)
+
+    def __str__(self):
+        return self.p_name
 
 class PaystubModel(models.Model):
     dispatch = models.ForeignKey(User, on_delete=models.CASCADE)

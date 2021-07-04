@@ -9,7 +9,7 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <a class="btn btn-info" style="border-radius: 0;">Property Reports</a>
+
                 </div>
                 <div class="col-md-6">
                     <button class="btn btn-info ml-auto mr-1" type="submit" id="d-btn" style="float: right;">Day</button>
@@ -51,6 +51,7 @@
                                 <th>Model</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Vat%</th>
                                 <th>Total Price</th>
                                 <th>Condition</th>
                                 <th>Purchased On</th>
@@ -72,6 +73,7 @@
                                 <td>{{ i.model }}</td>
                                 <td>{{ i.quantity }}</td>
                                 <td class="fa-zar"> {{ i.price }}</td>
+                                <td>{{ i.vat }}%</td>
                                 <td class="fa-zar"> {{ i.total_price }}</td>
                                 <td>{{ i.condition }}</td>
                                 <td>{{ i.created }}</td>
@@ -88,11 +90,11 @@
                                 <td class="p-5">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <a href="{% url 'property_edit' i.id %}" ><i
+                                            <a href="{% url 'property_edit' i.id %}"><i
                                                     class="fas fa-edit text-hover-primary mr-2"></i></a>
                                         </div>
                                         <div class="col-md-2 mt-2">
-                                            <a href="{% url 'property_del' i.id %}" ><i
+                                            <a href="{% url 'property_del' i.id %}"><i
                                                     class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                         </div>
                                     </div>
@@ -122,6 +124,7 @@
                                 <th>Model</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Vat%</th>
                                 <th>Total Price</th>
                                 <th>Condition</th>
                                 <th>Purchased On</th>
@@ -143,6 +146,7 @@
                                 <td>{{ i.model }}</td>
                                 <td>{{ i.quantity }}</td>
                                 <td class="fa-zar"> {{ i.price }}</td>
+                                <td>{{ i.vat }}%</td>
                                 <td class="fa-zar"> {{ i.total_price }}</td>
                                 <td>{{ i.condition }}</td>
                                 <td>{{ i.created }}</td>
@@ -163,7 +167,7 @@
                                                     class="fas fa-edit text-hover-primary mr-2"></i></a>
                                         </div>
                                         <div class="col-md-2 mt-2">
-                                            <a href="{% url 'property_del' i.id %}" ><i
+                                            <a href="{% url 'property_del' i.id %}"><i
                                                     class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                         </div>
                                     </div>
@@ -193,6 +197,7 @@
                                 <th>Model</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Vat%</th>
                                 <th>Total Price</th>
                                 <th>Condition</th>
                                 <th>Purchased On</th>
@@ -214,6 +219,7 @@
                                 <td>{{ i.model }}</td>
                                 <td>{{ i.quantity }}</td>
                                 <td class="fa-zar"> {{ i.price }}</td>
+                                <td>{{ i.vat }}%</td>
                                 <td class="fa-zar"> {{ i.total_price }}</td>
                                 <td>{{ i.condition }}</td>
                                 <td>{{ i.created }}</td>
@@ -230,7 +236,7 @@
                                 <td class="p-5">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <a href="{% url 'property_edit' i.id %}" ><i
+                                            <a href="{% url 'property_edit' i.id %}"><i
                                                     class="fas fa-edit text-hover-primary mr-2"></i></a>
                                         </div>
                                         <div class="col-md-2 mt-2">

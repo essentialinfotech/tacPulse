@@ -367,12 +367,15 @@ def property_add(request):
     if request.method == 'POST':
         form = PropertyForm(request.POST)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.user = request.user
-            price = form.cleaned_data['price']
             quantity = form.cleaned_data['quantity']
-            total = price*quantity
+            vat = form.cleaned_data['vat']
+            price = form.cleaned_data['price']
+            vat_amount = price*(vat/100)
+            price_with_vat = price + vat_amount
+            total = price_with_vat*quantity
+            instance = form.save(commit=False)
             instance.total_price = total
+            instance.user = request.user
             type = instance.property_type
             type = type[:1]
             instance.invoice_id = invoice_no(type)
@@ -392,9 +395,12 @@ def property_edit(request,id):
         form = PropertyForm(request.POST,instance=data)
         if form.is_valid():
             instance = form.save(commit=False)
-            price = form.cleaned_data['price']
-            quantity = form.cleaned_data['quantity']
-            total = price*quantity
+            quantity = instance.quantity
+            vat = instance.vat
+            price = instance.price
+            vat_amount = price*(vat/100)
+            price_with_vat = price + vat_amount
+            total = price_with_vat*quantity
             instance.total_price = total
             instance.user = request.user
             type = instance.property_type

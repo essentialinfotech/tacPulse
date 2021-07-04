@@ -125,6 +125,7 @@ class PropertyTools(models.Model):
     price = models.IntegerField(blank=True, null=True)
     total_price = models.IntegerField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    vat = models.IntegerField(blank=True, null=True)
     due_date = models.DateField(blank=True, null=True)
 
 

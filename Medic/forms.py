@@ -34,6 +34,7 @@ class PropertyForm(forms.ModelForm):
             'to_user_mobile': forms.TextInput(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control'}),
             'total': forms.NumberInput(attrs={'class': 'form-control'}),
+            'vat': forms.NumberInput(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}), 
             'due_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})     

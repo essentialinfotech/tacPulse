@@ -1,0 +1,53 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="data-table" class="table-hover display table table-separate table-head-custom table-checkable" style="width:100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>#</th>
+                                    <td> <i class="fa fa-user"></i></td>
+                                    <th>Author</th>
+                                    <th>Feedback</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in feedbacks %}
+                                <tr class="text-center">
+
+                                    <td>{{ forloop.counter }}</td>
+
+                                    <td> <img class="rounded" src="{{ i.author.imageURL }}" height="30px" width="30px" alt=""> </td>
+                                    <td>
+                                        <a href="{% url 'profile' i.author.id %}">{{ i.author.first_name|title }} {{ i.author.last_name|title }}</a>
+                                    </td>
+                                    <td>
+                                        {{ i.feedback_text }}
+                                    </td>
+                                    <td>
+                                        {{ i.created }}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'del_feedback' i.id %}"> <i class="fa fa-trash"></i> </a>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

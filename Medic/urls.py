@@ -49,4 +49,6 @@ urlpatterns = [
      path('create/FAQ/', create_faq, name = 'create_faq'),
      path('edit/FAQ/<hashid:id>/', edit_faq, name = 'edit_faq'),
      path('delete/faq/<hashid:id>/', del_faq, name = 'del_faq'),
+     path('showing/feedbacks/', feedbacks, name = 'feedbacks'),
+     path('deleting/feedback/<hashid:id>/', del_feedback, name = 'del_feedback'),
 ]

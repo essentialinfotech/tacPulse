@@ -33,6 +33,7 @@ class Rating(models.Model):
 class Feedback(models.Model):
     author = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     feedback_text = models.CharField(max_length = 200, blank = True, null = True )
+    created = models.DateTimeField(auto_now_add=True,blank=True, null=True)
 
     @property
     def name(self):

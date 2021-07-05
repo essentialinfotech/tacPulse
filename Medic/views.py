@@ -197,6 +197,20 @@ def feedback(request):
     return HttpResponseRedirect(url)
 
 
+def feedbacks(request):
+    feedbacks = Feedback.objects.all().order_by('-id')
+    context = {
+        'feedbacks': feedbacks,
+    }
+    return render(request,'medic/feedbacks_view.html',context)
+
+def del_feedback(request,id):
+    obj = get_object_or_404(Feedback, id=id)
+    obj.delete()
+    messages.success(request,'Feedback Removed')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 class AmbulanceRequest(View):
 
     def get(self, request):
@@ -291,6 +305,7 @@ def panic_system(request):
         my_panic = Panic.objects.create(panic_sender_id=request.user.id, emergency_contact = emergency_contact , reason=reason, place = place ,lat=lat, lng=lng)
         return redirect('check_panic_requests_location', id=my_panic.id)
     return render(request, 'medic/panic.html', {'panic': panic})
+
 
 
 def del_panic(request, id):

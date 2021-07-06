@@ -2,7 +2,8 @@ from django import dispatch
 from django.db import models
 from django.db.models.expressions import F
 from Accounts.models import User
-from Medic.models import AmbulanceModel
+from Medic.models import *
+from Accounts.models import *
 
 # Create your models here.
 
@@ -21,21 +22,14 @@ class MembershipModel(models.Model):
     pass
 
 
-class TaskModel(models.Model):
-    dispatch = models.ForeignKey(User, on_delete=models.CASCADE)
-    task_description = models.CharField(
-        max_length=100, blank=False, null=False, default='')
-    ambulance_req = models.ForeignKey(AmbulanceModel, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.dispatch.first_name + ' ' + self.dispatch.last_name
-
-
 class StockRequestModel(models.Model):
     receiver = models.CharField(max_length=100, blank=False, null=False)
     subject = models.CharField(max_length=100, blank=False, null=False)
     message_body = models.CharField(max_length=1000, blank=False, null=False)
     attachment = models.FileField('attachment/', blank=True)
+    requested = models.BooleanField(default=False)
+    cancel = models.BooleanField(default=False)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.subject
@@ -46,6 +40,11 @@ class ScheduleModel(models.Model):
         ('Pending', 'Pending'),
         ('Approved', 'Approved'),
         ('Declined', 'Declined'),
+    ]
+    trip_type = [
+        ('Single', 'Single'),
+        ('Return', 'Return'),
+        ('Both', 'Both'),
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=False, null=False)
@@ -61,5 +60,47 @@ class ScheduleModel(models.Model):
     latitude = models.CharField(max_length=100, blank=False, null=False)
     longitude = models.CharField(max_length=100, blank=False, null=False)
     status = models.CharField(
-        choices=status_type, max_length=100, default='Pending')
+        choices=status_type, max_length=100, blank=True, null=True, default='Pending')
+    trip = models.CharField(choices=trip_type, max_length=100, blank=True, null=True, default='Single')
+    distance = models.CharField(max_length=100, blank=True, null=True)
+    amount = models.CharField(max_length=100, blank=True, null=True, default=0)
+    duration = models.CharField(max_length=100, blank=True, null=True)
+    assigned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
+
+
+class TaskModel(models.Model):
+    status_type = [
+        ('Assigned', 'Assigned'),
+        ('Transferred', 'Transferred'),
+        ('Completed', 'Completed'),
+    ]
+    typeof =[
+        ('sch', 'Scheduled Task'),
+        ('ambr', 'Ambulance Request'),
+        ('pan', 'Panic Request'),
+    ]
+    task_type = models.CharField(choices=typeof, max_length=100, blank=True, null=True)
+    dispatch = models.ForeignKey(User, on_delete=models.CASCADE)
+    task_title = models.CharField(max_length=100, blank=False, null=False)
+    task_desc = models.TextField(max_length=1000, blank=True, null=True)
+    scheduled_task = models.ForeignKey(ScheduleModel, on_delete=models.CASCADE, null=True, blank=True)
+    ambulance_task = models.ForeignKey(AmbulanceModel, on_delete=models.CASCADE, blank=True, null=True)
+    panic_task = models.ForeignKey(Panic, on_delete=models.CASCADE, blank=True, null=True)
+    status = models.CharField(choices=status_type, max_length=100, blank=True, null=True, default='Assigned')
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.dispatch.first_name + ' ' + self.dispatch.last_name
+
+
+class TaskTransferModel(models.Model):
+    dispatch = models.ForeignKey(User, on_delete=models.CASCADE)
+    transferred_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='by', blank=True, null=True)
+    task = models.ForeignKey(TaskModel, on_delete=models.CASCADE, blank=True, null=True)
+    transfer_reason = models.TextField(max_length=100, blank=False, null=False)
+    transfer_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to')
+    created_on = models.DateTimeField(auto_now_add=True)
+
+
+

@@ -14,6 +14,7 @@ class Panic(models.Model):
     reason = models.CharField(max_length=200, blank=False, null=False)
     lat = models.CharField(max_length=200, blank=True, null=True)
     lng = models.CharField(max_length=200, blank=True, null=True)
+    assigned = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -64,4 +65,8 @@ class AmbulanceModel(models.Model):
         max_length=100, blank=False, null=False, default='')
     longitude = models.CharField(
         max_length=100, blank=False, null=False, default='')
+    assigned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.location

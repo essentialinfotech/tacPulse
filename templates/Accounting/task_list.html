@@ -1,0 +1,170 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Assigned Task Report</h3>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-4">
+                        <button class="btn btn-info" id="month" onclick="data_caller(30)">Last 30 days</button>
+                        <button class="btn btn-info" id="week" onclick="data_caller(7)">Last 7 days</button>
+                        <button class="btn btn-info" id="td" onclick="data_caller(0)">Today</button>
+                    </div>
+                </div>
+            </div>
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            </a>
+            <!-- {% if request.user.is_user %}
+            <div class="row">
+                <div class="col-md-10"></div>
+                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
+            </div>
+            {% endif %} -->
+            <input type="text" id="admin_check" value="{{request.user.is_superuser}}">
+            <input type="text" id="dispatch_check" value="{{request.user.is_staff}}">
+            <input type="text" id="user_id" value="{{request.user.id}}">
+            <div class="table-responsive">
+                <table id="my_table" class="display table text-center">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Task Title</th>
+                            <th>Task Description</th>
+                            <th>Route</th>
+                            <th class="text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <div id="contentArea"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        var admin = document.getElementById('admin_check').value
+        var dispatch = document.getElementById('dispatch_check').value
+        var user_id = document.getElementById('user_id').value
+        var route = ''
+        endpoint1 = '/api/task/today/'
+        $.ajax({
+            method: "GET",
+            url: endpoint1,
+            success: function(data) {
+                $.each(data, function(key, value) {
+                    console.log(value.scheduled_task);
+                    if (value === 'nothing') {
+                        alert("Nothing to show for this user");
+                    } else {
+
+                        if (admin === 'True') {
+                            act = '<div class="row"><div class="col-md-2"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                        } else if (user_id === value.dispatch.id) {
+                            act = '<div class"text-center"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div>'
+                        }
+                        if (value.scheduled_task != null) {
+                            console.log('a');
+                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+
+                        } else if (value.ambulance_task != null) {
+                            console.log('b');
+                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+
+                        } else if (value.panic_task != null) {
+                            console.log('c');
+                            route = '<div class="row"><div class="col-md-2"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div></div>'
+
+                        }
+
+                        $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
+                    }
+                });
+            }
+        });
+    });
+
+
+    function clear_table() {
+        $('#my_table > tbody').empty();
+    }
+</script>
+
+<script>
+    var admin = document.getElementById('admin_check').value
+    var dispatch = document.getElementById('dispatch_check').value
+    endpoint = ''
+    endpoint1 = '/api/task/today/'
+    endpoint2 = '/api/task/week/'
+    endpoint3 = '/api/task/month/'
+
+    function data_caller(day) {
+        if (day === 30) {
+            endpoint = endpoint3
+        } else if (day === 7) {
+            endpoint = endpoint2
+        } else if (day === 0) {
+            endpoint = endpoint1
+
+        }
+
+        $.ajax({
+            method: "GET",
+            url: endpoint,
+            success: function(data) {
+                $('#my_table > tbody').empty();
+
+                $.each(data, function(key, value) {
+
+                    if (value === 'nothing') {
+                        alert("Nothing to show for this user");
+                    } else {
+
+                        if (admin === 'True') {
+                            act = '<div class="row"><div class="col-md-2"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                        } else if (user_id === value.dispatch.id) {
+                            act = '<div class"text-center"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div>'
+                        }
+                        if (value.task_type === 'sch') {
+                            console.log('a');
+                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+
+                        } else if (value.task_type === 'ambr') {
+                            console.log('b');
+                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+
+                        } else if (value.task_type === 'pan') {
+                            console.log('c');
+                            route = '<div class="row"><div class="col-md-2"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div></div>'
+
+                        }
+
+                        $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
+                    }
+                });
+            }
+        });
+    }
+</script>
+{% endblock %}

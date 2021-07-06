@@ -24,6 +24,7 @@
     <link href="{% static 'assets/css/mapStyle.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'assets/js/moment.js' %}"></script>
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
@@ -236,26 +237,35 @@
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
 											<i class="fas fa-search-plus"></i>
 										</span>
-                                    <span class="menu-text">Transfer task</span>
+                                    <span class="menu-text">Task</span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="custom/apps/user/list-default.html" class="menu-link">
+                                            <a href="{% url 'task_create'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Add Transfer task Report</span>
+                                                <span class="menu-text">Add task</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="custom/apps/user/list-datatable.html" class="menu-link">
+                                            <a href="{% url 'task_list'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Transfer task Reports</span>
+                                                <span class="menu-text">Task Reports</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'transferred_task'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Transferred Task Report</span>
                                             </a>
                                         </li>
 
@@ -274,10 +284,10 @@
 											<i class="fas fa-search-plus"></i>
 										</span>
                                     <span class="menu-text">Dispatch List</span>
-                                    <i class="menu-arrow"></i>
                                 </a>
 
                             </li>
+
 
                             <li class="menu-section">
                                 <h4 class="menu-text">Accounting</h4>
@@ -2292,11 +2302,15 @@
         </li>
         <!--end::Item-->
         <!--begin::Item-->
-        <li class="nav-item" id="kt_sticky_toolbar_chat_toggler" data-toggle="tooltip" title="Chat Example" data-placement="left">
-            <a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#" data-toggle="modal" data-target="#kt_chat_modal">
-                <i class="flaticon2-chat-1"></i>
-            </a>
-        </li>
+
+
+        <!--        <li class="nav-item" id="kt_sticky_toolbar_chat_toggler" data-toggle="tooltip" title="Chat Example" data-placement="left">-->
+        <!--            <a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#" data-toggle="modal" data-target="#kt_chat_modal">-->
+        <!--                <i class="flaticon2-chat-1"></i>-->
+        <!--            </a>-->
+        <!--        </li>-->
+
+
         <!--end::Item-->
     </ul>
     <!--end::Sticky Toolbar-->
@@ -2406,7 +2420,7 @@
     <script src="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
     <script src="{% static 'assets/plugins/custom/leaflet/leaflet.bundle.js' %}"></script>
     <script src="{% static 'assets/js/pages/widgets.js' %}"></script>
-    <!-- <script src="{% static 'assets/plugins/custom/draggable/draggable.bundle.js' %}" type="text/javascript"></script> -->
+    <script src="{% static 'assets/plugins/custom/draggable/draggable.bundle.js' %}" type="text/javascript"></script>
     <script src="{% static 'assets/js/pages/features/cards/draggable.js' %}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>

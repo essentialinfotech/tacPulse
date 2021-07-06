@@ -7,6 +7,8 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.http import JsonResponse
+from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from .decorators import user_passes_test, has_perm_admin, has_perm_user, has_perm_dispatch, is_active, \
                          REDIRECT_FIELD_NAME, INACTIVE_REDIRECT_FIELD_NAME
@@ -194,3 +196,9 @@ def activate(request,id):
             return HttpResponse('Only admins can deactivate your account')
     except:
         return HttpResponse('Internal Server Error')
+
+
+class TrackDispatches(LoginRequiredMixin, View):
+    def get(self, request):
+        if request.user.is_superuser:
+            return render(request, 'accounts/track_dispatches.html')

@@ -62,6 +62,7 @@ urlpatterns = [
     path('activate/<hashid:id>/', activate, name = 'activate'),
     path('inactive/', inactive, name = 'inactive'),
     path('forbidden/', forbidden, name='forbidden'),
+    path('track/dispatches/', TrackDispatches.as_view(), name='track_dispatches')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

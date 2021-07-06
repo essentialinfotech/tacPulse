@@ -82,7 +82,15 @@
                 </table>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="distance-duration">
+
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <!-- map container -->
     <div class="container">
@@ -102,81 +110,92 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly" async></script>
 
 
-    <!-- show reason -->
-    <script>
-        const button = document.getElementById('reason-btn');
-        button.addEventListener('click', event => {
-            const input_reason = document.getElementById('reason');
-            if (input_reason.style.display === 'none') {
-                input_reason.style.display = 'block';
-            }
-        });
-    </script>
-
 
     <script>
-        // dynamic lat,lng from database
-        var data_lat = parseFloat(document.getElementById('lat').value);
-        var data_lng = parseFloat(document.getElementById('lng').value);
-        let map, infoWindow;
+        data_lat = parseFloat(document.getElementById('lat').value);
+        data_lng = parseFloat(document.getElementById('lng').value);
 
         function initMap() {
-            const myLatLng = {
-                lat: data_lat,
-                lng: data_lng
-            };
+            const geocoder = new google.maps.Geocoder();
+            const service = new google.maps.DistanceMatrixService();
+            // my location to panic sender distance duration
+            navigator.geolocation.getCurrentPosition((position) => {
+                var mylat = position.coords.latitude;
+                var mylng = position.coords.longitude
+
+                const origin = {
+                    lat: mylat,
+                    lng: mylng
+                };
+                const destination = {
+                    lat: data_lat,
+                    lng: data_lng
+                };
+                const request = {
+                    origins: [origin],
+                    destinations: [destination],
+                    travelMode: google.maps.TravelMode.DRIVING,
+                    unitSystem: google.maps.UnitSystem.METRIC,
+                    avoidHighways: false,
+                    avoidTolls: false,
+                };
+
+                service.getDistanceMatrix(request).then((response) => {
+                    console.log(response)
+                    if (response) {
+                        var distance = response.rows[0].elements[0].distance.text;
+                        var duration = response.rows[0].elements[0].duration.text;
+                        console.log(distance, duration)
+                        $('#distance-duration').append(
+                            "<table className='table table-striped'><thead><th id='th'>Distance</th><th>Duration</th><tbody><tr> <td> " + distance + " </td> <td>" + duration + "</td> </tr></tbody></thead></table>"
+                        )
+                    } else {
+                        console.log('no response found')
+                    }
+                });
+            })
+
+
+
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 10,
-                center: myLatLng,
+                zoom: 7,
+                center: {
+                    lat: data_lat,
+                    lng: data_lng
+                },
             });
-
-            // panic sender
-            infoWindow1 = new google.maps.InfoWindow();
-            infoWindow1.setPosition(myLatLng);
-            infoWindow1.setContent("Panic sender Location");
-            infoWindow1.open(map);
-            map.setCenter(myLatLng);
-
-            infoWindow = new google.maps.InfoWindow();
-            const locationButton = document.createElement("button");
-            locationButton.textContent = "Pan to Current Location";
-            locationButton.classList.add("custom-map-control-button");
-            map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-            locationButton.addEventListener('click', () => {
-                // Try HTML5 geolocation.
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                            };
-
-                            // current location
-                            infoWindow.setPosition(pos);
-                            infoWindow.setContent("My Location");
-                            infoWindow.open(map);
-                            map.setCenter(pos);
-                        },
-                        () => {
-                            handleLocationError(true, infoWindow, map.getCenter());
-                        }
-                    );
-                } else {
-                    // Browser doesn't support Geolocation
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
-            });
+            directionsRenderer.setMap(map);
+            calculateAndDisplayRoute(directionsService, directionsRenderer)
         }
 
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(
-                browserHasGeolocation ?
-                "Error: The Geolocation service failed." :
-                "Error: Your browser doesn't support geolocation."
-            );
-            infoWindow.open(map);
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+            // current location to panic location route by zhf
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    directionsService.route({
+                            origin: {
+                                // my location
+                                query: `${position.coords.latitude}, ${position.coords.longitude}`,
+                            },
+                            // panic location
+                            destination: {
+                                query: `${data_lat}, ${data_lng}`,
+                            },
+                            travelMode: google.maps.TravelMode.DRIVING,
+                        },
+                        (response, status) => {
+                            if (status === "OK") {
+                                directionsRenderer.setDirections(response);
+                            } else {
+                                alert("Directions request failed due to " + status);
+                            }
+                        }
+                    );
+                }
+            )
         }
     </script>
 

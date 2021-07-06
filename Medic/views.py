@@ -301,7 +301,6 @@ def panic_system(request):
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         place = request.POST.get('place')
-        emmergency_contact = request.POST.get('emmergency_contact')
         my_panic = Panic.objects.create(panic_sender_id=request.user.id, emergency_contact = emergency_contact , reason=reason, place = place ,lat=lat, lng=lng)
         return redirect('check_panic_requests_location', id=my_panic.id)
     return render(request, 'medic/panic.html', {'panic': panic})

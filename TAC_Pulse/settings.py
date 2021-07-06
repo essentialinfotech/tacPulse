@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'Accounting',
     'Accounts',
-    'Medic'
+    'Medic',
+    'django_toggle_switch_widget',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,7 +61,7 @@ AUTH_USER_MODEL = 'Accounts.User'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIRS,],
+        'DIRS': [TEMPLATES_DIRS, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,7 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TAC_Pulse.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

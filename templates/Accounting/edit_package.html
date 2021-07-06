@@ -1,11 +1,14 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
-
+<style>
+    textarea {
+        resize: none;
+    }
+</style>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-
             {% if messages %}
             <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
@@ -20,46 +23,51 @@
                 </div>
             </div>
             {% endif %}
-            <form class="form" id="kt_form" method="POST">
+            <form class="form" method="POST" action="{% url 'edit_package' id %}">
                 {% csrf_token %} {{form.errors}}
                 <!--end::Form-->
                 <div class="card card-custom card-sticky" id="kt_page_sticky_card">
                     <div class="card-header">
                         <div class="card-title">
-                            <h3 class="card-label">Request for a Ambulance</h3>
+                            <h3 class="card-label">Edit Package</h3>
                         </div>
                         <div class="card-toolbar">
-                            <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
+                            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-light-primary font-weight-bolder mr-2">
                                 <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
                             <button type="submit" class="btn btn-primary font-weight-bolder">
-                                <i class="ki ki-check icon-xs"></i>Send Request</button>
+                                <i class="ki ki-check icon-xs"></i>Save Package</button>
                         </div>
                     </div>
                     <div class="card-body">
 
-
                         <div class="form-row">
-                            <div class="form-group col-md-6 mb-0" id="package">
-                                <label for="package_price">Reason</label>
-                                <textarea name="reason" id="reason" cols="30" rows="10" class="textinput textInput form-control" style="resize: none;"></textarea>
-
+                            <div class="form-group col-md-6 mb-2">
+                                <label for="package_name">Package Name</label> {{ form.p_name }}
                             </div>
-                            <div class="form-group col-md-6 mb-0" id="package">
-                                <label for="to">To</label>
-                                <input id="pac-input" class="controls" type="text" placeholder="Search place" />
-                                <div id="map"></div>
+                            <div class="form-group col-md-6 mb-2">
+                                <label for="package_price">Package Price</label> {{ form.p_price }}
                             </div>
 
+                            <div class="form-group col-md-6 mb-2">
+                                <label for="package_description">Validity</label> {{ form.is_valid }}
+                            </div>
+
+                            <div class="form-group col-md-6 mb-2">
+                                <label for="package_description">Validate till</label> {{ form.valid_till }}
+                            </div>
+
+                            <div class="form-group col-md-6 mb-2">
+                                <label for="package_description">Package Description</label> {{ form.description }}
+                            </div>
+                            <div class="form-group col-md-6 mb-2">
+                                <label for="package_description">Package Status</label> {{ form.status }}
+                            </div>
                         </div>
-
                     </div>
-
-
-
-
                     <!--end::Card-->
             </form>
-
             </div>
-           
-            {% endblock %}
+        </div>
+    </div>
+
+    {% endblock %}

@@ -1,6 +1,6 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
 <style>
-    .tab {
+.tab {
         overflow: hidden;
         border: 1px solid #ccc;
         background-color: #f1f1f1;
@@ -31,6 +31,7 @@
         border: 1px solid #ccc;
         border-top: none;
     }
+}
 </style>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -93,20 +94,19 @@
                                     <a href="{% url 'profile' i.related_user.id %}">{{ i.related_user.first_name|title }}</a> {% else %} No User {% endif %}
                                 </td>
                                 <td style="text-decoration: underline; color: brown;">{{ i.occurrence_id }}</td>
-                                <td><button type="button" class="btn btn-secondary" data-theme="dark" data-container="{{ i.occurrence_detail }}" data-toggle="tooltip" data-placement="top" title="{{ i.occurrence_detail }}">
-                                        See Details
-                                    </button>
-                                </td>
+
+                                <td>{{ i.occurrence_detail }}</td>
+
                                 <td><img style="height: 30px;width: 30px;" src="{{i.imagesURL}}" alt=""></td>
                                 <td>{{ i.created }}</td>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <a href="{% url 'edit_occurrence' i.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                            <a href="{% url 'edit_occurrence' i.id %}"><i
                                                     class="fas fa-edit text-hover-primary mr-2"></i></a>
                                         </div>
                                         <div class="col-md-2 mt-2">
-                                            <a href="{% url 'common_delete' i.id %}" data-toggle="tooltip" title="Delete"><i
+                                            <a href="{% url 'common_delete' i.id %}" ><i
                                                     class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                         </div>
                                     </div>
@@ -145,20 +145,17 @@
                                     <a href="{% url 'profile' i.related_user.id %}">{{ i.related_user.first_name|title }}</a> {% else %} No User {% endif %}
                                 </td>
                                 <td style="text-decoration: underline; color: brown;">{{ i.occurrence_id }}</td>
-                                <td><button type="button" class="btn btn-secondary" data-theme="dark" data-container="{{ i.occurrence_detail }}" data-toggle="tooltip" data-placement="top" title="{{ i.occurrence_detail }}">
-                                        See Details
-                                    </button>
-                                </td>
+                                <td>{{ i.occurrence_detail }}</td>
                                 <td><img style="height: 30px;width: 30px;" src="{{i.imagesURL}}" alt=""></td>
                                 <td>{{ i.created }}</td>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <a href="{% url 'edit_occurrence' i.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                            <a href="{% url 'edit_occurrence' i.id %}" ><i
                                                     class="fas fa-edit text-hover-primary mr-2"></i></a>
                                         </div>
                                         <div class="col-md-2 mt-2">
-                                            <a href="{% url 'common_delete' i.id %}" data-toggle="tooltip" title="Delete"><i
+                                            <a href="{% url 'common_delete' i.id %}"><i
                                                     class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                         </div>
                                     </div>
@@ -196,20 +193,17 @@
                                     <a href="{% url 'profile' i.related_user.id %}">{{ i.related_user.first_name|title }}</a> {% else %} No User {% endif %}
                                 </td>
                                 <td style="text-decoration: underline; color: brown;">{{ i.occurrence_id }}</td>
-                                <td><button type="button" class="btn btn-secondary" data-theme="dark" data-container="{{ i.occurrence_detail }}" data-toggle="tooltip" data-placement="top" title="{{ i.occurrence_detail }}">
-                                        See Details
-                                    </button>
-                                </td>
+                                <td>{{ i.occurrence_detail }}</td>
                                 <td><img style="height: 30px;width: 30px;" src="{{i.imagesURL}}" alt=""></td>
                                 <td>{{ i.created }}</td>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <a href="{% url 'edit_occurrence' i.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                            <a href="{% url 'edit_occurrence' i.id %}" ><i
                                                     class="fas fa-edit text-hover-primary mr-2"></i></a>
                                         </div>
                                         <div class="col-md-2 mt-2">
-                                            <a href="{% url 'common_delete' i.id %}" data-toggle="tooltip" title="Delete"><i
+                                            <a href="{% url 'common_delete' i.id %}" ><i
                                                     class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                         </div>
                                     </div>
@@ -238,5 +232,12 @@
         document.getElementById(filter).style.display = "block";
         evt.currentTarget.className += " active";
     }
+</script>
+
+
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 {% endblock %}

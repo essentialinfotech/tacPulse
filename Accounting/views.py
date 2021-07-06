@@ -10,21 +10,14 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 
 
+from rest_framework.views import APIView
+from django.contrib import messages
+from Accounts.decorators import user_passes_test, has_perm_admin, has_perm_admin_dispatch, has_perm_user, has_perm_dispatch, REDIRECT_FIELD_NAME
 # Create your views here.
 
 
 def add_member(request):
     return redirect('register')
-
-
-def add_package(request):
-    if request.method == 'POST':
-        return redirect('packages')
-    return render(request, 'Accounting/add_package.html')
-
-
-def packages(request):
-    return render(request, 'Accounting/packages.html')
 
 
 def getmembership(request):
@@ -193,7 +186,8 @@ class TransferTask(LoginRequiredMixin, View):
             form = TransferTaskForm()
             data = get_object_or_404(TaskModel, pk=pk)
             user_id = data.dispatch.id
-            dispatches = User.objects.filter(~Q(is_superuser=True), ~Q(pk=user_id), is_staff=True)
+            dispatches = User.objects.filter(
+                ~Q(is_superuser=True), ~Q(pk=user_id), is_staff=True)
             context = {
                 'form': form,
                 'pk': pk,
@@ -209,7 +203,8 @@ class TransferTask(LoginRequiredMixin, View):
             form = TransferTaskForm(request.POST)
             data = get_object_or_404(TaskModel, pk=pk)
             user_id = data.dispatch.id
-            dispatches = User.objects.filter(~Q(is_superuser=True), ~Q(pk=user_id), is_staff=True)
+            dispatches = User.objects.filter(
+                ~Q(is_superuser=True), ~Q(pk=user_id), is_staff=True)
             if form.is_valid():
                 data.status = 'Transferred'
                 data.save()
@@ -298,7 +293,7 @@ class StockRequestDetail(LoginRequiredMixin, View):
     def get(self, request, pk):
         if request.user.is_superuser:
             data = get_object_or_404(StockRequestModel, pk=pk)
-            return render(request, 'Accounting/stc_req_detail.html', {'data':data})
+            return render(request, 'Accounting/stc_req_detail.html', {'data': data})
         else:
             return render(request, 'accounts/forbidden.html')
 
@@ -308,3 +303,51 @@ class DeleteStock(LoginRequiredMixin, View):
         if request.user.is_superuser:
             data = get_object_or_404(StockRequestModel, pk=pk)
             return redirect('stock_requests')
+
+
+def packages(request):
+    packages = Package.objects.all()
+    context = {
+        'packages': packages,
+    }
+    return render(request, 'Accounting/packages.html', context)
+
+
+@user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
+def add_package(request):
+    form = PackageForm()
+    if request.method == 'POST':
+        form = PackageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Package Created')
+            return redirect('packages')
+    context = {
+        'form': form,
+    }
+    return render(request, 'Accounting/add_package.html', context)
+
+
+@user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
+def edit_package(request, id):
+    data = Package.objects.get(id=id)
+    form = PackageForm(instance=data)
+    if request.method == 'POST':
+        form = PackageForm(request.POST, instance=data)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Package Edited')
+            return redirect('packages')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request, 'Accounting/edit_package.html', context)
+
+
+@user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
+def del_package(request, id):
+    obj = get_object_or_404(Package, id=id)
+    obj.delete()
+    messages.success(request, 'Package deleted')
+    return redirect('packages')

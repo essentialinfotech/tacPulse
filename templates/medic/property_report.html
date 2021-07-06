@@ -1,0 +1,299 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/property_report.css' %}">
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-6">
+
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-info ml-auto mr-1" type="submit" id="d-btn" style="float: right;">Day</button>
+                    <button class="btn btn-info ml-auto mr-1" type="submit" id="w-btn" style="float: right;">Week</button>
+                    <button class="btn btn-info ml-auto mr-1" type="submit" id="m-btn" style="float: right;">Month</button>
+                </div>
+            </div>
+
+
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div id="month" style="display: none;">
+                <a href="#" style="color: purple;">Monthly</a>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Corporate User</th>
+                                <th>Customer Name(Optional) <br> (if selling process)</th>
+                                <th>Customer Contact(Optional) <br> (if selling process)
+                                </th>
+                                <th>Property Type</th>
+                                <th>Equipment</th>
+                                <th>Manufacturer</th>
+                                <th>Model</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Vat%</th>
+                                <th>Total Price</th>
+                                <th>Condition</th>
+                                <th>Purchased On</th>
+                                <th>Status</th>
+                                <th>Due Date(if status is DUE)</th>
+                                <th>Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in month_property %}
+                            <tr class="text-center">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ i.user.first_name }}</td>
+                                <td>{{ i.to_user }}</td>
+                                <td>{{ i.to_user_mobile }}</td>
+                                <td>{{ i.property_type }}</td>
+                                <td>{{ i.equipement_name }}</td>
+                                <td>{{ i.manufacturer }}</td>
+                                <td>{{ i.model }}</td>
+                                <td>{{ i.quantity }}</td>
+                                <td class="fa-zar"> {{ i.price }}</td>
+                                <td>{{ i.vat }}%</td>
+                                <td class="fa-zar"> {{ i.total_price }}</td>
+                                <td>{{ i.condition }}</td>
+                                <td>{{ i.created }}</td>
+                                {% if i.status == 'PAID' %}
+                                <td><span class="custom-badge status-green">{{ i.status }}</span></td>
+                                {% elif i.status == 'DUE' %}
+                                <td><span class="custom-badge status-red">{{ i.status }}</span></td>
+                                {% else %}
+                                <td><span class="custom-badge status-purple">{{ i.status }}</span></td>
+                                {% endif %}
+                                <td>{{ i.due_date }}</td>
+                                <td><a href="{% url 'invoice_pdf_property' i.id %}"><i
+                                            class="fas fa-file-invoice"></i></a></td>
+                                <td class="p-5">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <a href="{% url 'property_edit' i.id %}"><i
+                                                    class="fas fa-edit text-hover-primary mr-2"></i></a>
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <a href="{% url 'property_del' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div id="week" style="display: none;">
+                <a href="#" style="color: purple;">Weekly</a>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Corporate User</th>
+                                <th>Customer Name(Optional) <br> (if selling process)</th>
+                                <th>Customer Contact(Optional) <br> (if selling process)
+                                </th>
+                                <th>Property Type</th>
+                                <th>Equipment</th>
+                                <th>Manufacturer</th>
+                                <th>Model</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Vat%</th>
+                                <th>Total Price</th>
+                                <th>Condition</th>
+                                <th>Purchased On</th>
+                                <th>Status</th>
+                                <th>Due Date(if status is DUE)</th>
+                                <th>Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in week_property %}
+                            <tr class="text-center">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ i.user.first_name }}</td>
+                                <td>{{ i.to_user }}</td>
+                                <td>{{ i.to_user_mobile }}</td>
+                                <td>{{ i.property_type }}</td>
+                                <td>{{ i.equipement_name }}</td>
+                                <td>{{ i.manufacturer }}</td>
+                                <td>{{ i.model }}</td>
+                                <td>{{ i.quantity }}</td>
+                                <td class="fa-zar"> {{ i.price }}</td>
+                                <td>{{ i.vat }}%</td>
+                                <td class="fa-zar"> {{ i.total_price }}</td>
+                                <td>{{ i.condition }}</td>
+                                <td>{{ i.created }}</td>
+                                {% if i.status == 'PAID' %}
+                                <td><span class="custom-badge status-green">{{ i.status }}</span></td>
+                                {% elif i.status == 'DUE' %}
+                                <td><span class="custom-badge status-red">{{ i.status }}</span></td>
+                                {% else %}
+                                <td><span class="custom-badge status-purple">{{ i.status }}</span></td>
+                                {% endif %}
+                                <td>{{ i.due_date }}</td>
+                                <td><a href="{% url 'invoice_pdf_property' i.id %}"><i
+                                            class="fas fa-file-invoice"></i></a></td>
+                                <td class="p-5">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <a href="{% url 'property_edit' i.id %}"><i
+                                                    class="fas fa-edit text-hover-primary mr-2"></i></a>
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <a href="{% url 'property_del' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div id="day">
+                <a href="#" style="color: purple;">Daily</a>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Corporate User</th>
+                                <th>Customer Name(Optional) <br> (if selling process)</th>
+                                <th>Customer Contact(Optional) <br> (if selling process)
+                                </th>
+                                <th>Property Type</th>
+                                <th>Equipment</th>
+                                <th>Manufacturer</th>
+                                <th>Model</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Vat%</th>
+                                <th>Total Price</th>
+                                <th>Condition</th>
+                                <th>Purchased On</th>
+                                <th>Status</th>
+                                <th>Due Date(if status is DUE)</th>
+                                <th>Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in day_property %}
+                            <tr class="text-center">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ i.user.first_name }}</td>
+                                <td>{{ i.to_user }}</td>
+                                <td>{{ i.to_user_mobile }}</td>
+                                <td>{{ i.property_type }}</td>
+                                <td>{{ i.equipement_name }}</td>
+                                <td>{{ i.manufacturer }}</td>
+                                <td>{{ i.model }}</td>
+                                <td>{{ i.quantity }}</td>
+                                <td class="fa-zar"> {{ i.price }}</td>
+                                <td>{{ i.vat }}%</td>
+                                <td class="fa-zar"> {{ i.total_price }}</td>
+                                <td>{{ i.condition }}</td>
+                                <td>{{ i.created }}</td>
+                                {% if i.status == 'PAID' %}
+                                <td><span class="custom-badge status-green">{{ i.status }}</span></td>
+                                {% elif i.status == 'DUE' %}
+                                <td><span class="custom-badge status-red">{{ i.status }}</span></td>
+                                {% else %}
+                                <td><span class="custom-badge status-purple">{{ i.status }}</span></td>
+                                {% endif %}
+                                <td>{{ i.due_date }}</td>
+                                <td><a href="{% url 'invoice_pdf_property' i.id %}"><i
+                                            class="fas fa-file-invoice"></i></a></td>
+                                <td class="p-5">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <a href="{% url 'property_edit' i.id %}"><i
+                                                    class="fas fa-edit text-hover-primary mr-2"></i></a>
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <a href="{% url 'property_del' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    day_btn = document.getElementById('d-btn');
+    month_btn = document.getElementById('m-btn');
+    week_btn = document.getElementById('w-btn')
+
+    day = document.getElementById('day');
+    month = document.getElementById('month');
+    week = document.getElementById('week');
+
+
+    month_btn.addEventListener('click', function() {
+        if (month.style.display === "none") {
+            month.style.display = "block";
+            day.style.display = "none";
+            week.style.display = "none";
+        } else {
+            month.style.display = ""
+        }
+    })
+
+    day_btn.addEventListener('click', function() {
+        if (day.style.display === "none") {
+            day.style.display = "block";
+            month.style.display = "none";
+            week.style.display = "none";
+        } else {
+            day.style.display = ""
+        }
+    })
+
+    week_btn.addEventListener('click', function() {
+        if (week.style.display === "none") {
+            week.style.display = "block";
+            month.style.display = "none";
+            day.style.display = "none";
+        } else {
+            week.style.display = "";
+        }
+    })
+</script>
+
+{% endblock %}

@@ -47,7 +47,7 @@
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center flex-wrap">
                 <!--begin::Button-->
-                <a href="#" class="
+                <a href="{% url 'register' %}" class="
             btn
             button-color
             btn-fixed-height
@@ -74,84 +74,6 @@
                     <span class="d-none d-md-inline">New Member</span>
                 </a>
                 <!--end::Button-->
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
-                    <a href="#" class="
-              btn btn-primary btn-fixed-height
-              font-weight-bold
-              px-2 px-lg-5
-              mr-2
-            " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="svg-icon svg-icon-lg">
-                            <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <polygon points="0 0 24 0 24 24 0 24" />
-                                    <path
-                                        d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z"
-                                        fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                    <rect fill="#000000" x="6" y="11" width="9" height="2" rx="1" />
-                                    <rect fill="#000000" x="6" y="15" width="5" height="2" rx="1" />
-                                </g>
-                            </svg>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <span class="d-none d-md-inline">New Report</span>
-                    </a>
-                    <div class="dropdown-menu p-0 m-0 dropdown-menu-md dropdown-menu-right">
-                        <!--begin::Navigation-->
-                        <ul class="navi navi-hover">
-                            <li class="navi-header font-weight-bold py-4">
-                                <span class="font-size-lg">Choose Label:</span>
-                                <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
-                            </li>
-                            <li class="navi-separator mb-3 opacity-70"></li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-success">Customer</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-danger">Partner</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-warning">Suplier</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-primary">Member</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-dark">Staff</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-separator mt-3 opacity-70"></li>
-                            <li class="navi-footer py-4">
-                                <a class="btn btn-clean font-weight-bold btn-sm" href="#">
-                                    <i class="ki ki-plus icon-sm"></i>Add new</a>
-                            </li>
-                        </ul>
-                        <!--end::Navigation-->
-                    </div>
-                </div>
-                <!--end::Dropdown-->
                 <!--begin::Button-->
                 <a href="#" class="btn btn-primary btn-icon font-weight-bold" data-toggle="modal" data-target="#kt_chat_modal">
                     <span class="svg-icon svg-icon-lg">
@@ -202,16 +124,15 @@
                     align-self-start align-self-xxl-center
                   ">
                                     <div class="symbol-label" style="
-                      background-image: url('assets/media/users/300_21.jpg');
+                      background-image: url({{ data.imageURL }});
                     "></div>
                                     <i class="symbol-badge bg-success"></i>
                                 </div>
                                 <div>
-                                    <a href="#" class="
-                      font-weight-bolder font-size-h5
-                      text-dark-75 text-hover-primary
-                    ">Divan</a>
-                                    <div class="text-muted">Application Developer</div>
+                                    <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">{{ data.first_name }}</a>
+                                    <div class="text-muted">
+                                        {% if data.is_superuser %} Admin {% elif data.is_staff and not data.is_superuser %} Dispatch {% else %} User {% endif %}
+                                    </div>
                                     <div class="mt-2">
                                         <a href="#" class="
                         btn btn-sm btn-primary
@@ -229,15 +150,15 @@
                             <div class="py-9">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <span class="font-weight-bold mr-2">Email:</span>
-                                    <a href="#" class="text-muted text-hover-primary">matt@fifestudios.com</a>
+                                    <a href="#" class="text-muted text-hover-primary">{{ data.username }}</a>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <span class="font-weight-bold mr-2">Phone:</span>
-                                    <span class="text-muted">44(76)34254578</span>
+                                    <span class="text-muted">{{ data.contact }}</span>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="font-weight-bold mr-2">Location:</span>
-                                    <span class="text-muted">South Africa</span>
+                                    <span class="text-muted">{{ data.address }}</span>
                                 </div>
                             </div>
                             <!--end::Contact-->
@@ -245,7 +166,7 @@
                             <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
 
                                 <div class="navi-item mb-2">
-                                    <a href="custom/apps/profile/profile-1/account-information.html" class="navi-link py-4 active">
+                                    <a href="" class="navi-link py-4 active">
                                         <span class="navi-icon mr-2">
                                             <span class="svg-icon">
                                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Code/Compiling.svg-->
@@ -269,7 +190,7 @@
                                     </a>
                                 </div>
                                 <div class="navi-item mb-2">
-                                    <a href="{% url 'reset_password' %}" class="navi-link py-4">
+                                    <a href="{% url 'change_pass' %}" class="navi-link py-4">
                                         <span class="navi-icon mr-2">
                                             <span class="svg-icon">
                                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Shield-user.svg-->
@@ -292,7 +213,7 @@
                                                 <!--end::Svg Icon-->
                                             </span>
                                         </span>
-                                        <span class="navi-text font-size-lg">Change Passwort</span>
+                                        <span class="navi-text font-size-lg">Change Password</span>
                                         <span class="navi-label">
                                             <span class="
                           label label-light-danger label-rounded
@@ -322,67 +243,76 @@
                                 <span class="text-muted font-weight-bold font-size-sm mt-1">Change your account
                                     settings</span>
                             </div>
-                            <div class="card-toolbar">
-                                <button type="reset" class="btn btn-success mr-2">
-                                    Save Changes
-                                </button>
-                                <button type="reset" class="btn btn-secondary">Cancel</button>
-                            </div>
+                            <form method="post" action="{% url 'edit_profile_dispatch' id %}" class="form" enctype="multipart/form-data">
+                                <div class="card-toolbar">
+                                    <button type="submit" class="btn btn-success mr-2">
+                                        Save Changes
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                </div>
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
-                        <form class="form">
-                            <div class="card-body">
-                                <!--begin::Heading-->
-                                <div class="row">
-                                    <label class="col-xl-3"></label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <h5 class="font-weight-bold mb-6">Account:</h5>
-                                    </div>
-                                </div>
-                                <!--begin::Form Group-->
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label">First Name</label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <div class="">
-                                            <input class="form-control form-control-lg form-control-solid" type="text" value="nick84" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <div class="">
-                                            <input class="form-control form-control-lg form-control-solid" type="text" value="nick84" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--begin::Form Group-->
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <div class="input-group input-group-lg input-group-solid">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="la la-at"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control form-control-lg form-control-solid" value="nick.watson@loop.com" placeholder="Email" readonly />
-                                        </div>
-                                        <span class="form-text text-muted">Email will not be publicly displayed.
-                                            <a href="#" class="font-weight-bold">Learn more</a>.</span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label">Contact</label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <div class="">
-                                            <input class="form-control form-control-lg form-control-solid" type="text" value="nick84" readonly/>
-                                        </div>
-                                    </div>
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <!--begin::Heading-->
+                            <div class="row">
+                                <label class="col-xl-3"></label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <h5 class="font-weight-bold mb-6">Account:</h5>
                                 </div>
                             </div>
+                            <!--begin::Form Group-->
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    {{ form.profile_pic }}
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">First Name</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+                            <!--begin::Form Group-->
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Contact</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    {{ form.contact }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Address</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    {{ form.address }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Bio/Quote</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    {{ form.quote }}
+                                </div>
+                            </div>
+                        </div>
                         </form>
                         <!--end::Form-->
                     </div>

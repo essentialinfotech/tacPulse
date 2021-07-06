@@ -4,14 +4,13 @@
 
 <head>
     <title>Tac-Pulse</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <style>
         #map {
             height: 90%;
         }
-
+        
         html,
         body {
             background-color: url(static/assets/ma.jpg);
@@ -19,7 +18,7 @@
             margin: 0;
             padding: 0;
         }
-
+        
         .custom-map-control-button {
             background-color: #fff;
             border: 0;
@@ -32,7 +31,7 @@
             height: 40px;
             cursor: pointer;
         }
-
+        
         .custom-map-control-button:hover {
             background: #ebebeb;
         }
@@ -43,23 +42,55 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="text-center">
-                    <div class="card-body">
-                        <button class="btn btn-success form-control m-auto w-50 mb-1" id="reason-btn">Reason</button>
-                        <input id="reason" type="text" class="form-control w-50 m-auto" value="Reason->{{ reason }}.      requested by-> {{ name|title }}" readonly
-                            style="display: none;">
-                            <div class="text-center" id="distance-duration">
-
-                            </div>
-                        <input class="form-control mb-1" readonly type="number" value="{{lat}}" id="lat"
-                            style="display: none;">
-                        <input class="form-control" readonly type="number" value="{{lng}}" id="lng"
-                            style="display: none;">
-                    </div>
+                <input class="form-control mb-1" readonly type="number" value="{{lat}}" id="lat" style="display: none;">
+                <input class="form-control" readonly type="number" value="{{lng}}" id="lng" style="display: none;">
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Panic Sender</th>
+                            <th scope="col">Contact</th>
+                            <th scope="col">Emergency Contact</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ first_name|title }}</td>
+                            <td>{{ contact }}</td>
+                            <td>{{ emergency_contact }}</td>
+                            <td>{{ timestamp }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Place</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ reason }}</td>
+                            <td>{{ place }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="distance-duration">
+                    From <strong>A</strong>(my location) to <strong>B</strong>(Destination)
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- map container -->
     <div class="container">
@@ -72,217 +103,99 @@
         </div>
     </div>
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly"
-        async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly" async></script>
 
-
-    <!-- show reason -->
-    <script>
-        const button = document.getElementById('reason-btn');
-        button.addEventListener('click', event => {
-            const input_reason = document.getElementById('reason');
-            if (input_reason.style.display === 'none') {
-                input_reason.style.display = 'block';
-            }
-        });
-    </script>
 
 
     <script>
-        // dynamic lat,lng from database
-        var data_lat = parseFloat(document.getElementById('lat').value);
-        var data_lng = parseFloat(document.getElementById('lng').value);
+        data_lat = parseFloat(document.getElementById('lat').value);
+        data_lng = parseFloat(document.getElementById('lng').value);
 
         function initMap() {
+            const geocoder = new google.maps.Geocoder();
+            const service = new google.maps.DistanceMatrixService();
+            // my location to panic sender distance duration
+            navigator.geolocation.getCurrentPosition((position) => {
+                var mylat = position.coords.latitude;
+                var mylng = position.coords.longitude
+
+                const origin = {
+                    lat: mylat,
+                    lng: mylng
+                };
+                const destination = {
+                    lat: data_lat,
+                    lng: data_lng
+                };
+                const request = {
+                    origins: [origin],
+                    destinations: [destination],
+                    travelMode: google.maps.TravelMode.DRIVING,
+                    unitSystem: google.maps.UnitSystem.METRIC,
+                    avoidHighways: false,
+                    avoidTolls: false,
+                };
+
+                service.getDistanceMatrix(request).then((response) => {
+                    if (response) {
+                        var distance = response.rows[0].elements[0].distance.text;
+                        var duration = response.rows[0].elements[0].duration.text;
+                        console.log(distance, duration)
+                        $('#distance-duration').append(
+                            "<table className='table table-striped'><thead><th id='th'>Distance</th><th>Duration</th><tbody><tr> <td> " + distance + " </td> <td>" + duration + "</td> </tr></tbody></thead></table>"
+                        )
+                    } else {
+                        console.log('no response found')
+                    }
+                });
+            })
+
+
+
             const directionsService = new google.maps.DirectionsService();
             const directionsRenderer = new google.maps.DirectionsRenderer();
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 6,
-                center: { lat: 23.876719650908374, lng: 90.39049891799795 },
+                zoom: 7,
+                center: {
+                    lat: data_lat,
+                    lng: data_lng
+                },
             });
             directionsRenderer.setMap(map);
             calculateAndDisplayRoute(directionsService, directionsRenderer)
-
-            const geocoder = new google.maps.Geocoder();
-            const service = new google.maps.DistanceMatrixService();
-            const origin = { lat: data_lat, lng: data_lng };
-            const destination = { lat: 23.870845736427867, lng: 90.39092265021631 };
-            const request = {
-                origins: [origin],
-                destinations: [destination],
-                travelMode: google.maps.TravelMode.DRIVING,
-                unitSystem: google.maps.UnitSystem.METRIC,
-                avoidHighways: false,
-                avoidTolls: false,
-            };
-
-            service.getDistanceMatrix(request).then((response) => {
-                console.log(response)
-                const distance = response.rows[0].elements[0].distance.text;
-                const duration = response.rows[0].elements[0].duration.text;
-                console.log(distance,duration)
-                const distance_duration = "<u><strong>Distance: "+ distance +"</strong> </br><strong>Duration: "+ duration+"</strong></u>";
-                    $('#distance-duration').append(distance_duration);
-
-
-                // show on map
-                const originList = response.originAddresses;
-                const destinationList = response.destinationAddresses;
-                deleteMarkers(markersArray);
-
-                const showGeocodedAddressOnMap = function (asDestination) {
-                    return function (results, status) {
-                        if (status === "OK") {
-                            map.fitBounds(bounds.extend(results[0].geometry.location));
-                            markersArray.push(
-                                new google.maps.Marker({
-                                    map,
-                                    position: results[0].geometry.location,
-                                    label: asDestination ? "D" : "O",
-                                })
-                            );
-                        } else {
-                            alert("Geocode was not successful due to: " + status);
-                        }
-                    };
-                };
-
-                for (let i = 0; i < originList.length; i++) {
-                    const results = response.rows[i].elements;
-                    geocoder.geocode(
-                        { address: originList[i] },
-                        showGeocodedAddressOnMap(false)
-                    );
-
-                    for (let j = 0; j < results.length; j++) {
-                        geocoder.geocode(
-                            { address: destinationList[j] },
-                            showGeocodedAddressOnMap(true)
-                        );
-                    }
-                }
-            });
         }
 
 
         function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-            directionsService.route(
-                {
-                    origin: {
-                        query: `${data_lat}, ${data_lng}`,
-                    },
-                    destination: {
-                        query: '23.870845736427867, 90.39092265021631',
-                    },
-                    travelMode: google.maps.TravelMode.DRIVING,
-                },
-                (response, status) => {
-                    if (status === "OK") {
-                        directionsRenderer.setDirections(response);
-                    } else {
-                        window.alert("Directions request failed due to " + status);
-                    }
+            // current location to panic location route by zhf
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    directionsService.route({
+                            origin: {
+                                // my location
+                                query: `${position.coords.latitude}, ${position.coords.longitude}`,
+                            },
+                            // panic location
+                            destination: {
+                                query: `${data_lat}, ${data_lng}`,
+                            },
+                            travelMode: google.maps.TravelMode.DRIVING,
+                        },
+                        (response, status) => {
+                            if (status === "OK") {
+                                directionsRenderer.setDirections(response);
+                            } else {
+                                alert("Directions request failed due to " + status);
+                            }
+                        }
+                    );
                 }
-            );
+            )
         }
-
-
     </script>
 
 </html>
-
-
-
-
-<!-- <script>
-    function initMap() {
-  const bounds = new google.maps.LatLngBounds();
-  const markersArray = [];
-  const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 55.53, lng: 9.4 },
-    zoom: 10,
-  });
-  // initialize services
-  const geocoder = new google.maps.Geocoder();
-  const service = new google.maps.DistanceMatrixService();
-  // build request
-  const origin1 = { lat: 55.93, lng: -3.118 };
-  const origin2 = "Greenwich, England";
-  const destinationA = "Stockholm, Sweden";
-  const destinationB = { lat: 50.087, lng: 14.421 };
-  const request = {
-    origins: [origin1, origin2],
-    destinations: [destinationA, destinationB],
-    travelMode: google.maps.TravelMode.DRIVING,
-    unitSystem: google.maps.UnitSystem.METRIC,
-    avoidHighways: false,
-    avoidTolls: false,
-  };
-  // put request on page
-  document.getElementById("request").innerText = JSON.stringify(
-    request,
-    null,
-    2
-  );
-  // get distance matrix response
-  service.getDistanceMatrix(request).then((response) => {
-    // put response
-    document.getElementById("response").innerText = JSON.stringify(
-      response,
-      null,
-      2
-    );
-    // show on map
-    const originList = response.originAddresses;
-    const destinationList = response.destinationAddresses;
-    deleteMarkers(markersArray);
-
-    const showGeocodedAddressOnMap = function (asDestination) {
-      return function (results, status) {
-        if (status === "OK") {
-          map.fitBounds(bounds.extend(results[0].geometry.location));
-          markersArray.push(
-            new google.maps.Marker({
-              map,
-              position: results[0].geometry.location,
-              label: asDestination ? "D" : "O",
-            })
-          );
-        } else {
-          alert("Geocode was not successful due to: " + status);
-        }
-      };
-    };
-
-    for (let i = 0; i < originList.length; i++) {
-      const results = response.rows[i].elements;
-      geocoder.geocode(
-        { address: originList[i] },
-        showGeocodedAddressOnMap(false)
-      );
-
-      for (let j = 0; j < results.length; j++) {
-        geocoder.geocode(
-          { address: destinationList[j] },
-          showGeocodedAddressOnMap(true)
-        );
-      }
-    }
-  });
-}
-
-function deleteMarkers(markersArray) {
-  for (let i = 0; i < markersArray.length; i++) {
-    markersArray[i].setMap(null);
-  }
-  markersArray = [];
-}
-</script> -->

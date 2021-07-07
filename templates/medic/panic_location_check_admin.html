@@ -88,6 +88,10 @@
                     From <strong>A</strong>(my location) to <strong>B</strong>(Destination)
                 </div>
             </div>
+            <div class="com-md-6">
+                {% for i in this_panic %}
+                <a href="{% url 'case_note_create' i.id %}">Create Case Note</a> {% endfor %}
+            </div>
         </div>
     </div>
 

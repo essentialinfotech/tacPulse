@@ -49,4 +49,14 @@ class FAQFORM(forms.ModelForm):
             'ques': forms.TextInput(attrs={'class': 'form-control','required': True}),
             'ans': forms.Textarea(attrs={'class': 'form-control','required': True}),
         }
-        
+
+    
+class CaseForm(forms.ModelForm):
+    class Meta:
+        model = CaseNote
+        fields = '__all__'
+        widgets = {
+            'case_panic': forms.Select(attrs={'class': 'form-control'}),
+            'case_ambulance': forms.Select(attrs={'class': 'form-control'}),
+            'case_note': forms.Textarea(attrs={'class': 'form-control','required': True}),
+        }      

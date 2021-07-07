@@ -166,15 +166,7 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'case_note_form'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                <span class="menu-text">Add Case  Report</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'case_reports'%}" class="menu-link">
+                                            <a href="{% url 'case_notes' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -624,8 +616,55 @@
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'rating'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot"></i>
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                <span></span></i>
                                                 <span class="menu-text">Rate Us(Customer app)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'feedbacks'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                <span></span></i>
+                                                <span class="menu-text">Feedbacks</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="menu-section">
+                                <h4 class="menu-text">FAQ</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<i class="fas fa-question"></i>
+										</span>
+                                    <span class="menu-text">Frequently Asked Questions</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'create_faq'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"></i>
+                                                <span class="menu-text">Create FAQ</span>
+                                            </a>
+                                        </li>
+
+                                         <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'faq'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot"></i>
+                                                <span class="menu-text">FAQ</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -1129,8 +1168,10 @@
                 </div>
                 <!--end::Item-->
             </div>
+            
             <div class="row gutter-b">
                 <!--begin::Item-->
+                {% if request.user.is_superuser %}
                 <div class="col-6">
                     <a href="{% url 'check_panic_requests' %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
                         <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
@@ -1147,6 +1188,7 @@
                         <span class="d-block font-weight-bold font-size-h6 mt-2">Panic Requests</span>
                     </a>
                 </div>
+                {% endif %}
                 <!--end::Item-->
                 <!--begin::Item-->
                 <div class="col-6">

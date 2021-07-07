@@ -45,6 +45,13 @@ def unique_id(id):
     return unique_id
 
 
+def case_number():
+    date = datetime.datetime.now()
+    timestamp = datetime.datetime.timestamp(date)
+    case_no = '#C'+str(round(timestamp))
+    return case_no
+
+
 # Create your views here.
 def audit_form(request):
     return render(request, 'medic/audit_form.html')
@@ -60,14 +67,6 @@ def inspection_form(request):
 
 def inspaction_report(request):
     return render(request, 'medic/inspaction_report.html')
-
-
-def case_note_form(request):
-    return render(request, 'medic/case_note_form.html')
-
-
-def case_reports(request):
-    return render(request, 'medic/case_reports.html')
 
 
 def stock_req_form(request):
@@ -326,6 +325,7 @@ def check_panic_requests_location(request, id):
     context = {}
     if request.user.is_authenticated:
         try:
+            this_panic =Panic.objects.filter(id = id)
             panic = Panic.objects.get(id=id)
             context = {
                 'email': panic.panic_sender.username,
@@ -337,7 +337,8 @@ def check_panic_requests_location(request, id):
                 'timestamp': panic.timestamp,
                 'lat': panic.lat,
                 'lng': panic.lng,
-                'id': id,
+                'this_panic':this_panic,
+                'id':id,
             }
             print(context)
         except:
@@ -505,3 +506,48 @@ def del_faq(request,id):
     obj = get_object_or_404(FAQ, id = id)
     obj.delete()
     return redirect('faq')
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def case_notes(request):
+    cases = CaseNote.objects.all().order_by('-id')
+    context = {
+        'cases': cases,
+    }
+    return render(request,'medic/case_reports.html',context)
+
+
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def case_note_create(request,id):
+    panic = Panic.objects.get(id = id)
+    case = CaseNote.objects.filter(case_panic_id = panic)
+    if case:
+        return HttpResponse('Case already created')
+    else:
+        form = CaseForm()
+        if request.method == 'POST':
+            form = CaseForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.creator = request.user
+                instance.case_no = case_number()
+                instance.case_panic = panic
+                instance.is_created = True
+                instance.save()
+                messages.success(request,'Case Note created')
+                return redirect('case_notes')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request, 'medic/case_note_form.html',context)
+
+
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def case_del(request,id):
+    obj = CaseNote.objects.get(id=id)
+    obj.delete()
+    messages.success(request,'Note Deleted')
+    return redirect('case_notes')
+
+

@@ -256,7 +256,6 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Assesment By</th>
-                                            <th scope="col">Message</th>
                                             <th scope="col">Rating Status</th>
                                             <th scope="col">Warnings</th>
                                             <th scope="col">Date</th>
@@ -268,7 +267,6 @@
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{ i.by_user.first_name|title }} {{ i.by_user.last_name|title }}
                                             </td>
-                                            <td>{{ i.msg }}</td>
                                             {% if i.rate == 'Very Poor' or i.rate == 'Poor' %}
                                             <td><span class="custom-badge status-red">{{ i.rate }}</span></td>
                                             {% elif i.rate == 'Satisfactory' %}

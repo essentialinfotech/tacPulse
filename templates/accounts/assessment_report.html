@@ -58,7 +58,7 @@
                                         {{ i.to_user.last_name|title }}
                                     </a>
                                 </td>
-                                <td>{{ i.msg }}</td>
+                                <td style="word-break: break-all!important" >{{ i.msg }}</td>
                                 {% if i.rate == 'Very Poor' or i.rate == 'Poor' %}
                                 <td><span class="custom-badge status-red">{{ i.rate }}</span></td>
                                 {% elif i.rate == 'Satisfactory' %}

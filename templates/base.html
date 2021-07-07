@@ -42,7 +42,9 @@
     <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
         <!--begin::Logo-->
         <a href="">
-            <img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-default max-h-30px" />
+            <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
+            </div>
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -78,7 +80,11 @@
                     <div id="kt_aside_menu" class="aside-menu min-h-lg-800px" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-
+                            <a href="">
+                                <div style="display: flex;" class="ml-7"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                                    <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
+                                </div>
+                            </a>
                             <li class="menu-section">
                                 <h4 class="menu-text">Inspection</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -179,16 +185,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="{% url 'get_route'%}" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-route"></i>
-										</span>
-                                    <span class="menu-text">Get Route</span>
 
-                                </a>
-                            </li>
                             <li class="menu-section">
                                 <h4 class="menu-text">Audit</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -226,39 +223,55 @@
                                     </ul>
                                 </div>
                             </li>
+
+                            <li class="menu-section">
+                                <h4 class="menu-text">Task</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'task_create' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <i class="fas fa-pencil-alt"></i>
+										</span>
+
+                                    <span class="menu-text">Assign Task</span>
+
+                                </a>
+                            </li>
+
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
 											<i class="fas fa-exchange-alt"></i>
 										</span>
-                                    <span class="menu-text">Transfer task</span>
+                                    <span class="menu-text">Report</span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="#" class="menu-link">
+                                            <a href="{% url 'task_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Add Transfer task Report</span>
+                                                <span class="menu-text">Task Reports</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="#" class="menu-link">
+                                            <a href="{% url 'transferred_task' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Transfer task Reports</span>
+                                                <span class="menu-text">Transfer Reports</span>
                                             </a>
                                         </li>
 
                                     </ul>
                                 </div>
                             </li>
-
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -272,7 +285,16 @@
                                     <span class="menu-text">Dispatch List</span>
 
                                 </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+										<i class="fas fa-car"></i>
+										</span>
+                                    <span class="menu-text">Track Dispatches</span>
 
+                                </a>
                             </li>
 
                             <li class="menu-section">
@@ -402,7 +424,7 @@
                                                 <i class="menu-bullet menu-bullet-dot">
                                                 <span></span></i>
 
-                                                <span class="menu-text">Property Form</span>
+                                                <span class="menu-text">Property I/O</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
@@ -436,7 +458,7 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'stock_req_form'%}" class="menu-link">
+                                            <a href="{% url 'stock_request'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -444,7 +466,15 @@
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'stock_req_reports' %}" class="menu-link">
+                                            <a href="{% url 'cancel_stock_request'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Cancel Stock Request</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'stock_requests' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -532,7 +562,7 @@
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Accepted Schecdule</span>
+                                                <span class="menu-text">Completed Schecdules</span>
                                             </a>
                                         </li>
 
@@ -635,7 +665,9 @@
                             <!--end::Aside Toggle-->
                             <!--begin::Logo-->
                             <a href="">
-                                <img alt="Logo" src="{% static 'images\logo1.png'%}" class="logo-sticky max-h-35px" />
+                                <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                                    <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
+                                </div>
                             </a>
                             <!--end::Logo-->
                             <!--begin::Desktop Search-->
@@ -2288,21 +2320,21 @@
         </li>
         <!--end::Item-->
         <!--begin::Item-->
-        <<<<<<< HEAD <!-- <li class="nav-item" id="kt_sticky_toolbar_chat_toggler" data-toggle="tooltip" title="Chat Example" data-placement="left">-->
-            <!--            <a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#" data-toggle="modal" data-target="#kt_chat_modal">-->
-            <!--                <i class="flaticon2-chat-1"></i>-->
-            <!--            </a>-->
-            <!--        </li>-->
+        <!-- <li class="nav-item" id="kt_sticky_toolbar_chat_toggler" data-toggle="tooltip" title="Chat Example" data-placement="left">-->
+        <!--            <a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#" data-toggle="modal" data-target="#kt_chat_modal">-->
+        <!--                <i class="flaticon2-chat-1"></i>-->
+        <!--            </a>-->
+        <!--        </li>-->
 
 
-            =======
-            <li class="nav-item" id="kt_sticky_toolbar_chat_toggler">
-                <a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#">
-                    <i class="flaticon2-chat-1"></i>
-                </a>
-            </li>
-            >>>>>>> 563dd75091740872583d7f876e7928901efce806
-            <!--end::Item-->
+
+        <li class="nav-item" id="kt_sticky_toolbar_chat_toggler">
+            <a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#">
+                <i class="flaticon2-chat-1"></i>
+            </a>
+        </li>
+
+        <!--end::Item-->
     </ul>
     <!--end::Sticky Toolbar-->
     <!--begin::Demo Panel-->

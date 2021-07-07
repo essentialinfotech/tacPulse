@@ -302,6 +302,7 @@ class DeleteStock(LoginRequiredMixin, View):
     def get(self, request, pk):
         if request.user.is_superuser:
             data = get_object_or_404(StockRequestModel, pk=pk)
+            data.delete()
             return redirect('stock_requests')
 
 

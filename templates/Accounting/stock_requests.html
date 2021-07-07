@@ -44,7 +44,6 @@
                             <th>Message</th>
                             <th>Attachment</th>
                             <th class="text-left">Action</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -75,7 +74,7 @@
                         } else {
                             at = "No attachment"
                         }
-                        act = '<div class="row"><div class="col-md-2"><a href="/stock/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/api/stock/request/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                        act = '<div class="row"><div class="col-md-2"><a href="/stock/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/stock/request/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
                         if (value.requested === true) {
                             values = '<tr style="background-color: #c9f7f5;">' + '<td>' + creation_date + '</td><td>' + value.receiver + '</td> <td>' + value.subject + '</td> <td>' + value.message_body + '</td> <td> <a target="_blank" href="' + value.attachment + '">Document</a> </td><td>' + act + '</td> </tr>'
                         } else {
@@ -102,7 +101,7 @@
     endpoint3 = '/api/stock/request/month/'
     endpoint4 = '/api/stock/requested/'
     endpoint5 = '/api/stock/request/canceled/'
-    endpoint6 = '/api/stock/request/delete/'
+    endpoint6 = '/stock/request/delete/'
 
     function data_caller(day) {
         if (day === 30) {
@@ -117,37 +116,30 @@
         $.ajax({
             method: "GET",
             url: endpoint,
+
             success: function(data) {
                 $('#my_table > tbody').empty();
+                if (data.length === 0) {
+                    alert("Nothing to show");
+                } else {
+                    // style="background-color: brown;"
+                    $.each(data, function(key, value) {
+                        creation_date = moment(value.created_on).format('lll');
 
-                $.each(data, function(key, value) {
-
-                    if (value === 'nothing') {
-                        alert("Nothing to show for this user");
-                    } else {
-
-                        if (admin === 'True') {
-                            act = '<div class="row"><div class="col-md-2"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
-                        } else if (user_id === value.dispatch.id) {
-                            act = '<div class"text-center"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div>'
+                        if (value.attachment != '' || value.attachment != null) {
+                            at = "available"
+                        } else {
+                            at = "No attachment"
                         }
-                        if (value.task_type === 'sch') {
-                            console.log('a');
-                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
-
-                        } else if (value.task_type === 'ambr') {
-                            console.log('b');
-                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
-
-                        } else if (value.task_type === 'pan') {
-                            console.log('c');
-                            route = '<div class="row"><div class="col-md-2"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div></div>'
-
+                        act = '<div class="row"><a href="/stock/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a><a href="/stock/request/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div>'
+                        if (value.requested === true) {
+                            values = '<tr style="background-color: #c9f7f5;">' + '<td>' + creation_date + '</td><td>' + value.receiver + '</td> <td>' + value.subject + '</td> <td>' + value.message_body + '</td> <td> <a target="_blank" href="' + value.attachment + '">Document</a> </td><td>' + act + '</td> </tr>'
+                        } else {
+                            values = '<tr>' + '<td>' + creation_date + '</td><td>' + value.receiver + '</td> <td>' + value.subject + '</td> <td>' + value.message_body + '</td> <td> <a target="_blank" href="' + value.attachment + '">Document</a> </td><td>' + act + '</td> </tr>'
                         }
-
-                        $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
-                    }
-                });
+                        $('#my_table').append(values);
+                    });
+                }
             }
         });
     }

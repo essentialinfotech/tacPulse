@@ -9,7 +9,10 @@ urlpatterns = [
     path('task/today/', TaskToday.as_view(), name='TaskToday'),
     path('task/week/', TaskWeek.as_view(), name='TaskWeek'),
     path('task/month/', TaskMonth.as_view(), name='TaskMonth'),
-    path('task/month/', TaskMonth.as_view(), name='TaskMonth'),
+
+    path('transferred/today/', TransferredToday.as_view(), name='TaskToday'),
+    path('transferred/week/', TransferredWeek.as_view(), name='TaskWeek'),
+    path('transferred/month/', TransferredMonth.as_view(), name='TaskMonth'),
 
     path('stock/request/today/', StockRequestToday.as_view(), name='StockRequestToday'),
     path('stock/request/week/', StockRequestWeek.as_view(), name='StockRequestWeek'),

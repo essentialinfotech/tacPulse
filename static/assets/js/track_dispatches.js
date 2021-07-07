@@ -4,9 +4,9 @@ function initMap() {
     my_title = []
 
 
-    const myLatLng = { lat: -25.363, lng: 131.044 };
+    const myLatLng = { lat: 23.7808875, lng: 90.2792371 };
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 4,
+        zoom: 8,
         center: myLatLng,
     });
     $.ajax({

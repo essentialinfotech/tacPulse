@@ -74,31 +74,32 @@
             url: endpoint1,
             success: function(data) {
                 $.each(data, function(key, value) {
-                    console.log(value.scheduled_task);
                     if (value === 'nothing') {
                         alert("Nothing to show for this user");
                     } else {
 
                         if (admin === 'True') {
-                            act = '<div class="row"><div class="col-md-2"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                            act = '<div class="row" style="display: flex;"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a</div>'
                         } else if (user_id === value.dispatch.id) {
                             act = '<div class"text-center"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div>'
                         }
                         if (value.scheduled_task != null) {
                             console.log('a');
-                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
+                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
 
                         } else if (value.ambulance_task != null) {
                             console.log('b');
-                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
+                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
 
                         } else if (value.panic_task != null) {
                             console.log('c');
-                            route = '<div class="row"><div class="col-md-2"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div></div>'
+                            route = '<div class="text-center"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
+                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
 
                         }
 
-                        $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
                     }
                 });
             }
@@ -142,25 +143,27 @@
                     } else {
 
                         if (admin === 'True') {
-                            act = '<div class="row"><div class="col-md-2"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                            act = '<div class="row"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a</div>'
                         } else if (user_id === value.dispatch.id) {
                             act = '<div class"text-center"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div>'
                         }
                         if (value.task_type === 'sch') {
                             console.log('a');
-                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
+                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
 
                         } else if (value.task_type === 'ambr') {
                             console.log('b');
-                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div>'
+                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
+                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
 
                         } else if (value.task_type === 'pan') {
                             console.log('c');
-                            route = '<div class="row"><div class="col-md-2"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary mr-2"></i></a></div></div>'
+                            route = '<div class="text-center"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div></div>'
+                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
 
                         }
 
-                        $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
                     }
                 });
             }

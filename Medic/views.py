@@ -515,7 +515,7 @@ def case_notes(request):
 
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def case_note_create(request,id):
-    panic = Panic.objects.get(id = id)
+    panic = get_object_or_404(Panic,id = id)
     case = CaseNote.objects.filter(case_panic_id = panic)
     if case:
         return HttpResponse('Case already created')
@@ -528,7 +528,6 @@ def case_note_create(request,id):
                 instance.creator = request.user
                 instance.case_no = case_number()
                 instance.case_panic = panic
-                instance.is_created = True
                 instance.save()
                 messages.success(request,'Case Note created')
                 return redirect('case_notes')

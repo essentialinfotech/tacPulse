@@ -143,10 +143,6 @@ def edit_occurrence(request,id):
     return render(request,'medic/edit_occurence.html', context)
 
 
-
-def dragable_form(request):
-    return render(request, 'medic/dragable_form.html')
-
 def schedule_report(request):
     return render(request, 'medic/schedule_report.html')
 

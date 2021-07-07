@@ -532,7 +532,7 @@
                                         </li>
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'schedule_report' %}" class="menu-link">
+                                            <a href="{% url 'accepted_schedule' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -550,7 +550,7 @@
                                         </li>
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'members'%}" class="menu-link">
+                                            <a href="{% url 'complete_schedule'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -661,7 +661,7 @@
                                             </a>
                                         </li>
 
-                                         <li class="menu-item" aria-haspopup="true">
+                                        <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'faq'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"></i>
                                                 <span class="menu-text">FAQ</span>
@@ -1168,7 +1168,7 @@
                 </div>
                 <!--end::Item-->
             </div>
-            
+
             <div class="row gutter-b">
                 <!--begin::Item-->
                 {% if request.user.is_superuser %}

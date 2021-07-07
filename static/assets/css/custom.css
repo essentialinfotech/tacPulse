@@ -4,6 +4,7 @@
 }
 
 #map_src,
+#map_src2,
 #longitude,
 #latitude,
 #crnt_lat,
@@ -12,8 +13,17 @@
 #lng,
 #admin_check,
 #dispatch_check,
-#user_id {
+#user_id,
+#from_long,
+#from_lat,
+#des,
+#deu {
     display: none;
+}
+
+.deractinal {
+    width: 100%;
+    height: 400px;
 }
 
 .detail_field {
@@ -27,4 +37,27 @@
 
 .detail_child h2 {
     font-size: 16px;
+}
+
+#st,
+#at,
+#pt {
+    display: none;
+}
+
+#tobedropped #st,
+#tobedropped #at,
+#tobedropped #pt {
+    display: block;
+}
+
+.update_form {
+    padding: 15px 30px;
+}
+
+#to_loca,
+#from_loca {
+    border: solid #f64e60;
+    padding: 3px;
+    border-radius: 6px;
 }

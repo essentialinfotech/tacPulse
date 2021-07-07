@@ -1,4 +1,4 @@
-from django.urls import path,register_converter
+from django.urls import path, register_converter
 from .views import *
 from Accounts.utils import HashIdConverter
 register_converter(HashIdConverter, "hashid")
@@ -10,19 +10,19 @@ urlpatterns = [
     path('inspection/form/', inspection_form, name = 'inspection_form'),
     path('case/note/add/<hashid:id>/', case_note_create, name = 'case_note_create'),
     path('stock/request/form/', stock_req_form, name = 'stock_req_form'),
-    path('property/form/', property_add, name = 'property_add'),
-    path('property/<hashid:id>/', property_edit, name = 'property_edit'),
-    path('occurrence/form/', occurrence_form, name = 'occurrence_form'),
-    path('occurrence/report/', occurrence_report, name = 'occurrence_report'),
+    path('property/form/', property_add, name='property_add'),
+    path('property/<hashid:id>/', property_edit, name='property_edit'),
+    path('occurrence/form/', occurrence_form, name='occurrence_form'),
+    path('occurrence/report/', occurrence_report, name='occurrence_report'),
     path('panic/request/', panic_system, name = 'panic_system'),
     path('draggable/form/', dragable_form, name = 'dragable_form'),
     path('ambulance/request/', AmbulanceRequest.as_view(), name='ambulance_request'),
     path('ambulance/request/report/', AmbulanceRequestReport.as_view(),
          name='ambulance_request_report'),
-    path('ambulance/request/detail/<int:pk>/', AmbulanceRequestDetail.as_view(),name='AmbulanceRequestDetail'),
-    path('ambulance/track/<int:pk>/', AmbulanceTrackLocation.as_view(), name='AmbulanceTrackLocation'),
-    path('ambulance/request/update/<int:pk>/', AmbulanceRequestUpdate.as_view(), name='AmbulanceRequestUpdate'),
-    path('ambulance/request/delete/<int:pk>/', AmbulanceRequestDelete.as_view(), name='AmbulanceRequestDelete'),
+    path('ambulance/request/detail/<hashid:pk>/', AmbulanceRequestDetail.as_view(),name='AmbulanceRequestDetail'),
+    path('ambulance/track/<hashid:pk>/', AmbulanceTrackLocation.as_view(), name='AmbulanceTrackLocation'),
+    path('ambulance/request/update/<hashid:pk>/', AmbulanceRequestUpdate.as_view(), name='AmbulanceRequestUpdate'),
+    path('ambulance/request/delete/<hashid:pk>/', AmbulanceRequestDelete.as_view(), name='AmbulanceRequestDelete'),
 
     path('audit/report/', audit_report, name='audit_report'),
     path('inspection/report/', inspaction_report, name='inspaction_report'),
@@ -32,7 +32,7 @@ urlpatterns = [
     path('hospital/transfer/request/',
          hospital_transfer, name='hospital_transfer'),
      path('panic/requests/', check_panic_requests, name = 'check_panic_requests'),
-      path('transfer/task/', task_transfer_req, name = 'task_transfer_req'),
+     path('transfer/task/', task_transfer_req, name = 'task_transfer_req'),
      path('find/route/', get_route, name = 'get_route'),
      path('individual/panic/location/<hashid:id>/', check_panic_requests_location, name = 'check_panic_requests_location'),
      path('delete/panic/request/<hashid:id>/', del_panic, name = 'del_panic'),

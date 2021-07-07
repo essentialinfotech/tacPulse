@@ -61,7 +61,7 @@ AUTH_USER_MODEL = 'Accounts.User'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIRS,],
+        'DIRS': [TEMPLATES_DIRS, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,13 +137,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'mail.essential-infotech.dev'
+EMAIL_HOST_USER = 'djangoapptest@essential-infotech.dev'
+EMAIL_HOST_PASSWORD = 'djangodevelopers'
+EMAIL_PORT = 465
+#
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_USE_SSL = True
-# EMAIL_HOST = 'mail.essential-infotech.dev'
-# EMAIL_HOST_USER = 'djangoapptest@essential-infotech.dev'
-# EMAIL_HOST_PASSWORD = 'djangodevelopers'
-# EMAIL_PORT = 465
-
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'zh.fahad123@gmail.com'
+# EMAIL_HOST_PASSWORD = 'djangodeveloper@eit.com'
 
 
 # Default primary key field type

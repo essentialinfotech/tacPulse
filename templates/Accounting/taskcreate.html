@@ -1,0 +1,173 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-3 py-lg-8 subheader-transparent" id="kt_subheader">
+        <div class="
+        container
+        d-flex
+        align-items-center
+        justify-content-between
+        flex-wrap flex-sm-nowrap
+      ">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h2 class="d-flex align-items-center text-dark font-weight-bold my-1 mr-3">
+                        <h2>Assign Task</h2>
+                        <!-- <div class="col-md-6">
+                            <button type="submit" class="btn btn-danger">Back</button>
+                        </div> -->
+                        <!-- <div class="col-md-6">
+                            <button type="reset" class="btn btn-success">Save</button>
+                        </div> -->
+                    </h2>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold my-2 p-0">
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+
+            <div class="container">
+
+                <!--begin::Row-->
+                <div class="row">
+                    <!-- body that will take incoming dragged fields -->
+
+                    <div class="col-lg-6 draggable-zone">
+
+                        <div class="card draggable-zone" style="width: 100%; height: 100%;">
+
+                            <div class="card-body draggable-zone" id="tobedropped">
+
+                            </div>
+                            <h2 class="d-flex align-items-center text-dark font-weight-bold my-1 mr-3">
+                                <div class="col-md-6 text-right">
+
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <button type="reset" class="btn btn-danger">Cancel</button>
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                </div>
+
+                            </h2>
+                        </div>
+                    </div>
+                    <!-- end  -->
+
+                    <!-- draggable fields by fahad -->
+                    <div class="col-lg-6 draggable-zone">
+
+                        <div class="draggable">
+                            <label class="draggable-handle" for="dispatch">Dispatch*</label>
+                            <select name="dispatch" class="form-control mb-2 draggable-handle" id="dispatch" name="dispatch">
+                            {% for i in dispatch %}
+                            <option value="{{i.id}}">{{i.first_name}} {{i.last_name}}</option>
+                          {% endfor %}
+                        </select>
+                        </div>
+                        <div class="draggable">
+                            <label class="draggable-handle" for="task_type">Task Type*</label>
+                            <select class="form-control mb-2 draggable-handle" id="task_type" name="task_type" onchange="task_type_change()">            
+                            <option value="">-----Select-----</option>
+                                <option value="sch">Scheduled Task</option>
+                            <option value="ambr">Ambulance Request</option>
+                            <option value="pan">Panic Request</option>
+                        </select> </div>
+
+                        <div class="draggable">
+                            <label class="draggable-handle" for="task_title">Task Title*</label>
+                            <input type="text" class="form-control mb-2 draggable-handle" id="task_title" name="task_title">
+                        </div>
+
+                        <div class="draggable">
+                            <label class="draggable-handle" for="task_desc">Task Description</label>
+                            <textarea class="form-control mb-2 draggable-handle" name="task_desc" id="task_desc" cols="30" rows="10"></textarea>
+                        </div>
+
+                        <div class="draggable" id="st">
+                            <label class="draggable-handle" for="scheduled_task">Scheduled Task*</label>
+                            <select class="form-control mb-2 draggable-handle" id="scheduled_task" name="scheduled_task">
+                            {% for s in schedule %}
+                            <option value="{{s.id}}">{{s.from_loc}} - {{s.location}}</option>
+                          {% endfor %}
+                        </select> </div>
+
+                        <div class="draggable" id="at">
+                            <label class="draggable-handle" for="ambulance_task">Ambulance Task*</label>
+                            <select class="form-control mb-2 draggable-handle" id="ambulance_task" name="ambulance_task">
+                            {% for a in ambulance %}
+                            <option value="{{a.id}}" class="draggable-handle">{{a.location}}</option>
+                          {% endfor %}
+                        </select> </div>
+
+
+                        <div class="draggable" id="pt">
+                            <label class="draggable-handle" for="area6" id="l6">Panic Task*</label>
+                            <select class="form-control mb-2 draggable-handle" id="panic_task" name="panic_task">
+                            {% for p in panic %}
+                            <option value="{{p.id}}">{{p.panic_sender.username}}</option>
+                          {% endfor %}
+                        </select> </div>
+                    </div>
+                    <!-- fields end draggable -->
+
+                </div>
+                <!--end:: Row-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+
+    </form>
+
+</div>
+<!--end::Content-->
+
+
+<script>
+    function task_type_change() {
+        console.log('ok');
+        x = document.getElementById('task_type').value
+        console.log(x);
+        sc = document.getElementById('st')
+        am = document.getElementById('at')
+        pn = document.getElementById('pt')
+        if (x === "sch") {
+            sc.style.display = "block";
+            am.style.display = "none";
+            pn.style.display = "none";
+        } else if (x === 'ambr') {
+            am.style.display = "block";
+            sc.style.display = "none";
+            pn.style.display = "none";
+        } else if (x === 'pan') {
+            pn.style.display = "block";
+            am.style.display = "none";
+            sc.style.display = "none";
+        }
+
+    }
+</script>
+
+
+
+
+
+{% endblock %}

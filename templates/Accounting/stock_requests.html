@@ -1,0 +1,147 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Assigned Task Report</h3>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-4">
+                        <button class="btn btn-info" id="month" onclick="data_caller(30)">Last 30 days</button>
+                        <button class="btn btn-info" id="week" onclick="data_caller(7)">Last 7 days</button>
+                        <button class="btn btn-info" id="td" onclick="data_caller(0)">Today</button>
+                    </div>
+                </div>
+            </div>
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            </a>
+
+            <input type="text" id="user_id" value="{{request.user.id}}">
+            <div class="table-responsive">
+                <table id="my_table" class="display table text-center">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Create On</th>
+                            <th>Receiver Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Attachment</th>
+                            <th class="text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <div id="contentArea"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+
+        endpoint1 = '/api/stock/request/today/'
+        $.ajax({
+            method: "GET",
+            url: endpoint1,
+            success: function(data) {
+                if (data.length === 0) {
+                    alert("Nothing to show");
+                } else {
+                    // style="background-color: brown;"
+                    $.each(data, function(key, value) {
+                        creation_date = moment(value.created_on).format('lll');
+                        if (value.attachment != '' || value.attachment != null) {
+                            at = "available"
+                        } else {
+                            at = "No attachment"
+                        }
+                        act = '<div class="row"><div class="col-md-2"><a href="/stock/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/stock/request/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                        if (value.requested === true) {
+                            values = '<tr style="background-color: #c9f7f5;">' + '<td>' + creation_date + '</td><td>' + value.receiver + '</td> <td>' + value.subject + '</td> <td>' + value.message_body + '</td> <td> <a target="_blank" href="' + value.attachment + '">Document</a> </td><td>' + act + '</td> </tr>'
+                        } else {
+                            values = '<tr>' + '<td>' + creation_date + '</td><td>' + value.receiver + '</td> <td>' + value.subject + '</td> <td>' + value.message_body + '</td> <td> <a target="_blank" href="' + value.attachment + '">Document</a> </td><td>' + act + '</td> </tr>'
+                        }
+                        console.log(values);
+                        $('#my_table').append(values);
+                    });
+                }
+            }
+        });
+    });
+
+
+    function clear_table() {
+        $('#my_table > tbody').empty();
+    }
+</script>
+
+<script>
+    endpoint = ''
+    endpoint1 = '/api/stock/request/today/'
+    endpoint2 = '/api/stock/request/week/'
+    endpoint3 = '/api/stock/request/month/'
+    endpoint4 = '/api/stock/requested/'
+    endpoint5 = '/api/stock/request/canceled/'
+    endpoint6 = '/stock/request/delete/'
+
+    function data_caller(day) {
+        if (day === 30) {
+            endpoint = endpoint3
+        } else if (day === 7) {
+            endpoint = endpoint2
+        } else if (day === 0) {
+            endpoint = endpoint1
+
+        }
+
+        $.ajax({
+            method: "GET",
+            url: endpoint,
+
+            success: function(data) {
+                $('#my_table > tbody').empty();
+                if (data.length === 0) {
+                    alert("Nothing to show");
+                } else {
+                    // style="background-color: brown;"
+                    $.each(data, function(key, value) {
+                        creation_date = moment(value.created_on).format('lll');
+
+                        if (value.attachment != '' || value.attachment != null) {
+                            at = "available"
+                        } else {
+                            at = "No attachment"
+                        }
+                        act = '<div class="row"><a href="/stock/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a><a href="/stock/request/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div>'
+                        if (value.requested === true) {
+                            values = '<tr style="background-color: #c9f7f5;">' + '<td>' + creation_date + '</td><td>' + value.receiver + '</td> <td>' + value.subject + '</td> <td>' + value.message_body + '</td> <td> <a target="_blank" href="' + value.attachment + '">Document</a> </td><td>' + act + '</td> </tr>'
+                        } else {
+                            values = '<tr>' + '<td>' + creation_date + '</td><td>' + value.receiver + '</td> <td>' + value.subject + '</td> <td>' + value.message_body + '</td> <td> <a target="_blank" href="' + value.attachment + '">Document</a> </td><td>' + act + '</td> </tr>'
+                        }
+                        $('#my_table').append(values);
+                    });
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

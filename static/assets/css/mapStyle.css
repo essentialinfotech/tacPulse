@@ -1,4 +1,5 @@
-#map {
+#map,
+#map2 {
     height: 270px;
     border-radius: 0.85rem;
 }
@@ -17,7 +18,8 @@
     display: none;
 }
 
-#map #infowindow-content {
+#map #infowindow-content,
+#map2 #infowindow-content {
     display: inline;
 }
 
@@ -48,7 +50,8 @@
     font-weight: 300;
 }
 
-#pac-input {
+#pac-input,
+#pac-input1 {
     background-color: #fff;
     font-family: Roboto;
     font-size: 15px;
@@ -61,6 +64,7 @@
     border-radius: 6px;
 }
 
+#pac-input:focus,
 #pac-input:focus {
     border-color: #4d90fe;
 }

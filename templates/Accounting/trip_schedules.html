@@ -10,11 +10,10 @@
                         <h3 class="card-label">Schedules</h3>
                     </div>
                     <div class="col-md-3"></div>
-                    <div class="col-md-5">
-                        <button class="btn btn-info">Last 30 days</button>
-                        <button class="btn btn-info">Last 7 days</button>
-                        <button class="btn btn-info">Yestarday</button>
-                        <button class="btn btn-info">Today</button>
+                    <div class="col-md-4">
+                        <button class="btn btn-info" onclick="data_caller(30)">Last 30 days</button>
+                        <button class="btn btn-info" onclick="data_caller(7)">Last 7 days</button>
+                        <button class="btn btn-info" onclick="data_caller(0)">Today</button>
                     </div>
 
                 </div>
@@ -40,10 +39,14 @@
                 <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
             </div>
             {% endif %}
+
+            <input type="text" id="admin_check" value="{{request.user.is_superuser}}">
+            <input type="text" id="dispatch_check" value="{{request.user.is_staff}}">
+            <input type="text" id="user_id" value="{{request.user.id}}">
             <div class="table-responsive">
-                <table id="data-table" class="display table text-center">
+                <table id="my_table" class="display table text-center">
                     <thead>
-                        <tr class="text-center">
+                        <tr class="text-center" id="my_table">
                             <th>Name</th>
                             <th>Contact</th>
                             <th>Email</th>
@@ -52,57 +55,11 @@
                             <th>From</th>
                             <th>To</th>
                             <th>Status</th>
-                            <th class="text-left">Action</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for obj in data %}
-                        <tr class="text-center">
-                            <td>{{obj.name}}</td>
-                            <td>{{obj.contact}}</td>
-                            <td>{{obj.email}}</td>
-                            <td>{{obj.start_datetime}}</td>
-                            <td>{{obj.end_datetime}}</td>
-                            <td>{{obj.from_loc}}</td>
-                            <td>{{obj.location}}</td>
-                            <td>
-                                {% if obj.status == 'Pending'%}
-                                <p class="alert alert-info">{{obj.status}}</p>
-                                {% elif obj.status == 'Approved'%}
-                                <p class="alert alert-success">{{obj.status}}</p>
-                                {% else %}
-                                <p class="alert alert-danger">{{obj.status}}</p>
-                                {% endif %}
-                            </td>
-                            <!-- <td>
-                                <div class="btn-group">
-                                    <button id="status" type="button" style="background-color: rgb(19, 180, 180); border:none" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        status
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a id="accept" class="dropdown-item">Accept</a>
-                                        <a id="decline" class="dropdown-item">Decline</a>
-                                    </div>
-                                </div>
-                            </td> -->
-                            <td>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Details"><i
-                                                class="fas fa-clipboard-list text-hover-primary mr-2"></i></a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fas fa-edit text-hover-primary mr-2"></i></a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" title="Delete"><i
-                                                class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
+
                     </tbody>
                 </table>
                 <div id="contentArea"></div>
@@ -112,25 +69,98 @@
 </div>
 
 
-<!-- <script>
-    const accept = document.getElementById('accept');
-    const decline = document.getElementById('decline');
-    const status = document.getElementById('status');
-
-    accept.addEventListener('click', event => {
-        console.log('dsjhgdujhsd');
-        status.innerHTML = "Accept";
+<script>
+    $(document).ready(function() {
+        var admin = document.getElementById('admin_check').value
+        var dispatch = document.getElementById('dispatch_check').value
+        var user_id = document.getElementById('user_id').value
+        endpoint1 = '/api/schedule/today/'
+        $.ajax({
+            method: "GET",
+            url: endpoint1,
+            success: function(data) {
+                $.each(data, function(key, value) {
+                    start_datetime = moment(value.start_datetime).format('lll');
+                    end_datetime = moment(value.end_datetime).format('lll');
+                    if (value === 'nothing') {
+                        alert("Nothing to show for this user");
+                    } else {
+                        if (value.status === 'Pending') {
+                            status = '<td><p class="alert alert-info">' + value.status + '</p></td>'
+                        } else if (value.status === 'Approved') {
+                            status = '<td><p class="alert alert-success">' + value.status + '</p></td>'
+                        } else {
+                            status = '<td><p class="alert alert-danger">' + value.status + '</p></td>'
+                        }
+                        if (admin === 'True') {
+                            act = '<div class="row"><div class="col-md-2"><a href="/scheduled/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/scheduled/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/scheduled/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                        } else if (user_id === value.user.id) {
+                            act = '<div class="row"><div class="col-md-2"><a href="/scheduled/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/scheduled/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div></div>'
+                        } else {
+                            act = '<div class="row"><div class="col-md-2"><a href="/scheduled/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div></div>'
+                        }
+                        $('#my_table').append('<tr>' + '<td>' + value.name + '</td> <td>' + value.contact + '</td> <td>' + value.email + '</td> <td>' + start_datetime + '</td> <td>' + end_datetime + '</td><td>' + value.from_loc + '</td><td>' + value.location + '</td> <td>' + status + '</td><td>' + act + '</td></tr>');
+                    }
+                });
+            }
+        });
     });
 
-    decline.addEventListener('click', event => {
-        console.log('dsjhgdujhsd');
-        status.innerHTML = "Decline";
-    });
-</script> -->
+
+    function clear_table() {
+        $('#my_table > tbody').empty();
+    }
+</script>
 
 <script>
-    $(document).read(function() {
+    var admin = document.getElementById('admin_check').value
+    var dispatch = document.getElementById('dispatch_check').value
+    endpoint = ''
+    endpoint1 = '/api/schedule/today/'
+    endpoint2 = '/api/schedule/week/'
+    endpoint3 = '/api/schedule/month/'
 
-    });
+    function data_caller(day) {
+        if (day === 30) {
+            endpoint = endpoint3
+        } else if (day === 7) {
+            endpoint = endpoint2
+        } else if (day === 0) {
+            endpoint = endpoint1
+
+        }
+
+        $.ajax({
+            method: "GET",
+            url: endpoint,
+            success: function(data) {
+                $('#my_table > tbody').empty();
+                $.each(data, function(key, value) {
+                    start_datetime = moment(value.start_datetime).format('lll');
+                    end_datetime = moment(value.end_datetime).format('lll');
+                    if (value === 'nothing') {
+                        alert("Nothing to show for this user");
+                    } else {
+                        if (value.status === 'Pending') {
+                            status = '<td><p class="alert alert-info">' + value.status + '</p></td>'
+                        } else if (value.status === 'Approved') {
+                            status = '<td><p class="alert alert-success">' + value.status + '</p></td>'
+                        } else {
+                            status = '<td><p class="alert alert-danger">' + value.status + '</p></td>'
+                        }
+                        if (admin === 'True') {
+                            act = '<div class="row"><div class="col-md-2"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/ambulance/request/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/ambulance/request/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a></div></div>'
+                        } else if (user_id === value.user.id) {
+                            act = '<div class="row"><div class="col-md-2"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><div class="col-md-2"><a href="/ambulance/request/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-edit text-hover-primary mr-2"></i></a></div></div>'
+                        } else {
+                            act = '<div class="row"><div class="col-md-2"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div></div>'
+                        }
+
+                        $('#my_table').append('<tr>' + '<td>' + value.name + '</td> <td>' + value.contact + '</td> <td>' + value.email + '</td> <td>' + start_datetime + '</td> <td>' + end_datetime + '</td><td>' + value.from_loc + '</td><td>' + value.location + '</td> <td>' + status + '</td><td>' + act + '</td></tr>');
+                    }
+                });
+            }
+        });
+    }
 </script>
 {% endblock %}

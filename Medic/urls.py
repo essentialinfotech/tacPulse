@@ -8,7 +8,7 @@ urlpatterns = [
     path('rate/feedback/', rating, name = 'rating'),
     path('dispatch/list/', dispatch_list , name = 'dispatch_list'),
     path('inspection/form/', inspection_form, name = 'inspection_form'),
-    path('case/note/form/', case_note_form, name = 'case_note_form'),
+    path('case/note/add/<hashid:id>/', case_note_create, name = 'case_note_create'),
     path('stock/request/form/', stock_req_form, name = 'stock_req_form'),
     path('property/form/', property_add, name = 'property_add'),
     path('property/<hashid:id>/', property_edit, name = 'property_edit'),
@@ -26,7 +26,6 @@ urlpatterns = [
 
     path('audit/report/', audit_report, name='audit_report'),
     path('inspection/report/', inspaction_report, name='inspaction_report'),
-    path('case/note/reports/', case_reports, name='case_reports'),
     path('stock/request/report/', stock_req_reports, name='stock_req_reports'),
     path('hospital/transfer/report/', hospital_transfer_report,
          name='hospital_transfer_report'),
@@ -51,4 +50,6 @@ urlpatterns = [
      path('delete/faq/<hashid:id>/', del_faq, name = 'del_faq'),
      path('showing/feedbacks/', feedbacks, name = 'feedbacks'),
      path('deleting/feedback/<hashid:id>/', del_feedback, name = 'del_feedback'),
+     path('delete/case/<hashid:id>/', case_del, name = 'case_del'),
+     path('case/notes/all/', case_notes, name = 'case_notes'),
 ]

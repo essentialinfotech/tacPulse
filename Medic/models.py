@@ -52,7 +52,7 @@ class Occurrence(models.Model):
     ]
     occurrence_giver = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     related_user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True, related_name='for_user')
-    occurrence_id = models.CharField(max_length=300,blank=True, null=True)
+    occurrence_id = models.CharField(max_length=30000,blank=True, null=True)
     occurrence_type = models.CharField(max_length = 20, choices = OCCURRENCE_TYPE)
     occurrence_detail = models.CharField(max_length=600)
     image = models.ImageField(upload_to='media/Occurrence', blank=True, null=True)
@@ -143,6 +143,17 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.ques
+
+
+class CaseNote(models.Model):
+    creator = models.ForeignKey(User,on_delete=SET_NULL,blank=True, null=True)
+    case_panic = models.ForeignKey(Panic,on_delete=models.CASCADE,blank=True, null=True)
+    case_no = models.TextField(blank=True, null=True)
+    case_note = models.TextField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.case_no)
 
 
 @receiver(post_save, sender=Panic)

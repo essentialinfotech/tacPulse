@@ -169,16 +169,11 @@
                                         var add = results[0].formatted_address;
                                         console.log(add)
                                         var value = add.split(",");
-                                        console.log(value)
 
                                         count = value.length;
-                                        console.log(count)
                                         country = value[count - 1];
-                                        console.log(country)
                                         state = value[count - 2];
-                                        console.log(state)
                                         city = value[count - 3];
-                                        console.log(city)
                                         document.getElementById('place').value = city + ',' + state + ',' + country;
                                         swal("Your current loction has been added to the box")
                                     } else {

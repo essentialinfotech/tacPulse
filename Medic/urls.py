@@ -19,10 +19,10 @@ urlpatterns = [
     path('ambulance/request/', AmbulanceRequest.as_view(), name='ambulance_request'),
     path('ambulance/request/report/', AmbulanceRequestReport.as_view(),
          name='ambulance_request_report'),
-    path('ambulance/request/detail/<hashid:pk>/', AmbulanceRequestDetail.as_view(),name='AmbulanceRequestDetail'),
+    path('ambulance/request/detail/<int:pk>/', AmbulanceRequestDetail.as_view(),name='AmbulanceRequestDetail'),
     path('ambulance/track/<hashid:pk>/', AmbulanceTrackLocation.as_view(), name='AmbulanceTrackLocation'),
-    path('ambulance/request/update/<hashid:pk>/', AmbulanceRequestUpdate.as_view(), name='AmbulanceRequestUpdate'),
-    path('ambulance/request/delete/<hashid:pk>/', AmbulanceRequestDelete.as_view(), name='AmbulanceRequestDelete'),
+    path('ambulance/request/update/<int:pk>/', AmbulanceRequestUpdate.as_view(), name='AmbulanceRequestUpdate'),
+    path('ambulance/request/delete/<int:pk>/', AmbulanceRequestDelete.as_view(), name='AmbulanceRequestDelete'),
 
     path('audit/report/', audit_report, name='audit_report'),
     path('inspection/report/', inspaction_report, name='inspaction_report'),

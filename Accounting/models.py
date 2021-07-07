@@ -64,6 +64,7 @@ class ScheduleModel(models.Model):
         ('Pending', 'Pending'),
         ('Approved', 'Approved'),
         ('Declined', 'Declined'),
+        ('Completed', 'Declined'),
     ]
     trip_type = [
         ('Single', 'Single'),

@@ -164,3 +164,13 @@ class FAQ(models.Model):
 def create_panic_noti(sender, instance=None, created=False, **kwargs):
     if created:
         PanicNoti.objects.create(panic=instance)
+
+
+class HospitalTransferModel(models.Model):
+    current_hos = models.CharField(max_length=200, blank=False, null=False)
+    current_add = models.CharField(max_length=200, blank=False, null=False)
+    target_hos = models.CharField(max_length=200, blank=False, null=False)
+    target_add = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return self.target_hos

@@ -97,6 +97,12 @@ class TrackSchedule(LoginRequiredMixin, View):
         return render(request, 'Accounting/track_schedule.html', {'data': data})
 
 
+class AcceptedSchedule(LoginRequiredMixin, View):
+    def get(self, request):
+        data = ScheduleModel.objects.filter(status='Approved')
+        return render(request, 'Accounting/track_schedule.html', {'data': data})
+
+
 def task_create(request):
     if request.user.is_superuser:
         form = TaskModelForm()

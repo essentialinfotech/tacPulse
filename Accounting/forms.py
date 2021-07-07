@@ -55,3 +55,10 @@ class PackageForm(forms.ModelForm):
             'is_valid': forms.Select(attrs={'class': 'form-control', 'required': True}),
             'valid_till': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
+
+
+class PaystubForm(forms.ModelForm):
+    class Meta:
+        model = PaystubModel
+        fields = '__all__'
+

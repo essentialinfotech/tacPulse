@@ -34,8 +34,8 @@ class Package(models.Model):
 
 class PaystubModel(models.Model):
     dispatch = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.CharField(max_length=100, blank=False, null=False)
-    file = models.FileField(upload_to='paystub/')
+    amount = models.CharField(max_length=100, blank=True, null=True)
+    file = models.FileField(upload_to='paystub/', blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -64,12 +64,11 @@ class ScheduleModel(models.Model):
         ('Pending', 'Pending'),
         ('Approved', 'Approved'),
         ('Declined', 'Declined'),
-        ('Completed', 'Declined'),
+        ('Completed', 'Completed'),
     ]
     trip_type = [
         ('Single', 'Single'),
-        ('Return', 'Return'),
-        ('Both', 'Both'),
+        ('Round Trip', 'Round Trip'),
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=False, null=False)

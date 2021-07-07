@@ -9,10 +9,17 @@ from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.conf import settings
 
-
 from rest_framework.views import APIView
 from django.contrib import messages
-from Accounts.decorators import user_passes_test, has_perm_admin, has_perm_admin_dispatch, has_perm_user, has_perm_dispatch, REDIRECT_FIELD_NAME
+from Accounts.decorators import user_passes_test, has_perm_admin, has_perm_admin_dispatch, has_perm_user, \
+    has_perm_dispatch, REDIRECT_FIELD_NAME
+from datetime import datetime, timedelta
+
+today = datetime.today()
+week = datetime.today().date() - timedelta(days=7)
+month = datetime.today().date() - timedelta(days=30)
+
+
 # Create your views here.
 
 
@@ -99,8 +106,16 @@ class TrackSchedule(LoginRequiredMixin, View):
 
 class AcceptedSchedule(LoginRequiredMixin, View):
     def get(self, request):
-        data = ScheduleModel.objects.filter(status='Approved')
-        return render(request, 'Accounting/track_schedule.html', {'data': data})
+        title = "Accepted Schedule"
+        data = ScheduleModel.objects.filter(status='Approved').order_by('-id')
+        return render(request, 'Accounting/Sch_filter_rep.html', {'data': data, 'title': title})
+
+
+class CompletedSchedule(LoginRequiredMixin, View):
+    def get(self, request):
+        title = "Completed Schedule"
+        data = ScheduleModel.objects.filter(status='Completed').order_by('-id')
+        return render(request, 'Accounting/Sch_filter_rep.html', {'data': data, 'title': title})
 
 
 def task_create(request):
@@ -233,11 +248,68 @@ class TransferredTasks(LoginRequiredMixin, View):
 
 
 def add_paystub(request):
-    return render(request, 'Accounting/add_paystub.html')
+    if request.user.is_superuser:
+        form = PaystubForm()
+        dispatch = User.objects.filter(is_staff=True, is_superuser=False)
+        if request.method == 'POST':
+            form = PaystubForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('paystub_report')
+        context = {
+            'form': form,
+            'dispatch': dispatch
+        }
+        return render(request, 'Accounting/add_paystub.html', context)
+    else:
+        return redirect('forbidden')
 
 
 def paystub_report(request):
-    return render(request, 'Accounting/paystub_report.html')
+    if request.user.is_superuser:
+        daily = PaystubModel.objects.filter(created_on__gte=today.date())
+        weekly = PaystubModel.objects.filter(created_on__gte=week)
+        monthly = PaystubModel.objects.filter(created_on__gte=month)
+    else:
+        user_id = request.user.id
+        daily = PaystubModel.objects.filter(dispatch=user_id, created_on__gte=today.date())
+        weekly = PaystubModel.objects.filter(dispatch=user_id, created_on__gte=week)
+        monthly = PaystubModel.objects.filter(dispatch=user_id, created_on__gte=month)
+    context = {
+        'daily': daily,
+        'weekly': weekly,
+        'monthly': monthly
+    }
+    return render(request, 'Accounting/paystub_report.html', context)
+
+
+def update_paystub_report(request, pk):
+    if request.user.is_superuser:
+        data = get_object_or_404(PaystubModel, pk=pk)
+        data_user = data.dispatch.id
+        dispatch = User.objects.filter(~Q(id=data_user), is_staff=True, is_superuser=False)
+        form = PaystubForm(instance=data)
+        if request.method == 'POST':
+            form = PaystubForm(request.POST, request.FILES, instance=data)
+            if form.is_valid():
+                form.save()
+                return redirect('paystub_report')
+        context = {
+            'form': form,
+            'dispatch': dispatch,
+            'data': data
+        }
+        return render(request, 'Accounting/update_paystub.html', context)
+    else:
+        return redirect('forbidden')
+
+
+def delete_paystub(request, pk):
+    if request.user.is_superuser:
+        data = get_object_or_404(PaystubModel, pk=pk)
+        # data.delete()
+        print('ok')
+        return redirect('paystub_report')
 
 
 def stock_request(request):

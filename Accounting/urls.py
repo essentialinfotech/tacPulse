@@ -19,8 +19,14 @@ urlpatterns = [
          DeleteSchedule.as_view(), name='schedule_delete'),
     path('track/schedule/<hashid:pk>/',
          TrackSchedule.as_view(), name='track_schedule'),
+
+    path('complete/schedule/', CompletedSchedule.as_view(), name='complete_schedule'),
+    path('accepted/schedule/', AcceptedSchedule.as_view(), name='accepted_schedule'),
+
     path('add/paystub/', add_paystub, name='add_paystub'),
     path('paystub/report', paystub_report, name='paystub_report'),
+    path('paystub/update/<hashid:pk>/', update_paystub_report, name='update_paystub_report'),
+    path('paystub/delete/<hashid:pk>/', delete_paystub, name='delete_paystub'),
     path('create/task/', task_create, name='task_create'),
     path('task/report/', TasksList.as_view(), name='task_list'),
     path('task/update/<hashid:pk>/', UpdateTask.as_view(), name='update_task'),

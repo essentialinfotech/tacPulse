@@ -1,5 +1,5 @@
 from Medic.views import rating
-from Medic.models import Panic, AmbulanceModel, Rating
+from Medic.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from Accounting.models import TaskModel
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -84,6 +84,8 @@ def dashboard(request):
             if avg <= 5 and avg > 4.5:
                 star5 = True
 
+        hos_transfer = HospitalTransferModel.objects.filter(completed=True).order_by('-id')
+
         context = {
             'star1': star1,
             'star2': star2,
@@ -96,6 +98,7 @@ def dashboard(request):
             'star3_5': star3_5,
             'star4_5': star4_5,
             'deactivated_users': deactivated_users,
+            'hos_transfer': hos_transfer
         }
         return render(request, 'accounts/admin_dashboard.html', context)
 

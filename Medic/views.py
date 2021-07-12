@@ -97,13 +97,15 @@ def occurrence_form(request):
 
 
 def occurrence_report(request):
+    from datetime import datetime, timedelta
+    last_seven_days = datetime.today() - timedelta(days=7)
     monthly_occurences = Occurrence.objects.filter(created__month = this_month, \
                                                     created__year = this_year)
 
     daily_occurences = Occurrence.objects.filter(created__date = this_day)
 
-    weekly_occurences = Occurrence.objects.filter(created__iso_week_day__gte = 1,\
-                                                     created__month = this_month,\
+    weekly_occurences = Occurrence.objects.filter(created__gte = last_seven_days,\
+                                                     created__month = this_month,
                                                     created__year = this_year)
 
     context = {
@@ -420,8 +422,10 @@ class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
 
 
 def property_report(request):
+    from datetime import datetime, timedelta
+    last_seven_days = datetime.today() - timedelta(days=7)
     day_property = PropertyTools.objects.filter(created__date = this_day)
-    week_property = PropertyTools.objects.filter(created__iso_week_day__gte = 1,\
+    week_property = PropertyTools.objects.filter(created__gte = last_seven_days,\
                                                 created__month = this_month, \
                                                 created__year = this_year)
     month_property = PropertyTools.objects.filter(created__month = this_month, \

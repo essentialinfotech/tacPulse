@@ -32,9 +32,7 @@ from Accounts.decorators import \
 this_month = datetime.datetime.now().month
 this_day = datetime.datetime.today()
 this_year = datetime.datetime.now().year
-# today = datetime.today()
-# week = datetime.today().date() - timedelta(days=7)
-# month = datetime.today().date() - timedelta(days=30)
+
 
 def invoice_no(type):
     date = datetime.datetime.now()
@@ -294,10 +292,9 @@ def hospital_transfer(request):
     return render(request, 'medic/hospital_transfer.html', {'form': form})
 
 
-from datetime import datetime, timedelta
-
 
 def hospital_transfer_report(request):
+    from datetime import datetime, timedelta
     today = datetime.today()
     week = datetime.today().date() - timedelta(days=7)
     month = datetime.today().date() - timedelta(days=30)
@@ -364,7 +361,6 @@ def panic_system(request):
         my_panic = Panic.objects.create(panic_sender_id=request.user.id, emergency_contact = emergency_contact , reason=reason, place = place ,lat=lat, lng=lng)
         return redirect('check_panic_requests_location', id=my_panic.id)
     return render(request, 'medic/panic.html', {'panic': panic})
-
 
 
 def del_panic(request, id):

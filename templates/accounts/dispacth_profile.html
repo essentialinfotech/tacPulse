@@ -169,18 +169,26 @@
                                             <thead>
                                                 <tr class="table-secondary">
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Task</th>
-                                                    <th scope="col">Requested By(Ambulance)</th>
-                                                    <th scope="col">Assigned On</th>
+                                                    <th scope="col">Task Title</th>
+                                                    <th scope="col">Task Description</th>
+                                                    <th scope="col">Schedule Task</th>
+                                                    <th scope="col">Ambulance Task</th>
+                                                    <th scope="col">Panic Task</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Assigned Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for i in task %}
                                                 <tr>
                                                     <th scope="row">{{ forloop.counter }}</th>
-                                                    <td>{{ i.task_description }}</td>
-                                                    <td>{{ i.ambulance_req.name }}</td>
-                                                    <td>{{ i.created }}</td>
+                                                    <td>{{ i.task_title }}</td>
+                                                    <td style="word-break: break-all;">{{ i.task_desc }}</td>
+                                                    <td>{{ i.scheduled_task }}</td>
+                                                    <td>{{ i.ambulance_task }}</td>
+                                                    <td>{{ i.panic_task }}</td>
+                                                    <td>{{ i.status }}</td>
+                                                    <td>{{ i.created_on }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>

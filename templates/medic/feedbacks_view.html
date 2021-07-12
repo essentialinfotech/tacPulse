@@ -29,7 +29,7 @@
                                     <td>
                                         <a href="{% url 'profile' i.author.id %}">{{ i.author.first_name|title }} {{ i.author.last_name|title }}</a>
                                     </td>
-                                    <td>
+                                    <td style="word-break: break-all!important;">
                                         {{ i.feedback_text }}
                                     </td>
                                     <td>

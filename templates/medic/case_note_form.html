@@ -4,6 +4,12 @@
         content: " *";
         color: red;
     }
+    
+    textarea {
+        resize: none;
+        border-color: brown;
+        border-width: 2px!important;
+    }
 </style>
 </style>
 <!--begin::Content-->
@@ -108,15 +114,15 @@
             <div class="row">
                 {{ form.errors }}
                 <!-- body that will take incoming dragged fields -->
-                <div class="col-lg-6 draggable-zone">
-                    <div class="card draggable-zone" style="width: 100%; height: 100%;">
-                        <!-- to submit form from dropped area -->
-                        <form method="post" class="draggable-zone" action="{% url 'case_note_create' id %}">
-                            {% csrf_token %}
+                <div class="col-lg-6 ">
+                    <!-- to submit form from dropped area -->
+                    <form method="post" class="draggable-zone" action="{% url 'case_note_create' id %}">
+                        {% csrf_token %} Drop into that box
+                        <div class="card draggable-zone" style="width: 100%; height: 100%;">
                             <div class="card-body draggable-zone" id="tobedropped">
 
                             </div>
-                    </div>
+                        </div>
                 </div>
                 <!-- end  -->
 

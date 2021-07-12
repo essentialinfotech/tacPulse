@@ -9,7 +9,6 @@ from Accounts.models import User
 # Create your models here.
 
 
-# emmergency contact template e boshano baki
 class Panic(models.Model):
     emergency_contact = models.CharField(max_length=40, blank=True, null=True)
     panic_sender = models.ForeignKey(
@@ -99,7 +98,6 @@ class PanicNoti(models.Model):
         Panic, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=100, default='has sent a panic request')
     created = models.DateTimeField(auto_now_add=True)
-    is_responded = models.BooleanField(default=False)
 
     def __str__(self):
         return self.panic.panic_sender.first_name

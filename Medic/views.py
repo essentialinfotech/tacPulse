@@ -355,7 +355,7 @@ def get_route(request):
 class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
     serializer_class = PanicNotiSerializer
     def get_queryset(self):
-        return PanicNoti.objects.filter(is_responded = False)
+        return PanicNoti.objects.all()
 
 
 def property_report(request):

@@ -132,7 +132,7 @@ class TransferredMonth(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = TaskTransferModel.objects.filter(created_on__gte=month)
-        elif self.request.user.is_user:
+        elif self.request.user.is_staff:
             data = TaskTransferModel.objects.filter(Q(dispatch=user_id) or Q(transfer_to=user_id), created_on__gte=month).distinct('id')
         else:
             data = {'data': 'nothing'}

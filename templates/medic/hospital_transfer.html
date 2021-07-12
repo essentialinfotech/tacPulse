@@ -1,0 +1,82 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<style>
+    .form-group {
+        width: 90%;
+        margin: auto;
+    }
+</style>
+
+
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <form method="post" class="form" id="kt_form">
+                    {% csrf_token %}
+                    <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h3 class="card-label">Hospital Transfer Form</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <button type="submit" class="btn btn-primary font-weight-bolder">
+                                    <i class="ki ki-check icon-xs"></i>Save Form</button>
+                            </div>
+                        </div>
+                        <br>
+                        <input type="text" name="requested_by" id="requested_by" value="{{request.user.id}}" style="display: none;">
+                        <div class="form-row" style="display: flex;">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="current_hos">Current Hospital</label>
+                                    <input type="text" class="form-control mb-2" id="current_hos" name="current_hos">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="current_add">Address</label>
+                                    <input type="text" class="form-control mb-2" id="current_add" name="current_add">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row" style="display: flex;">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="target_hos">Preferred Hospital</label>
+                                    <input type="text" class="form-control mb-2" id="target_hos" name="target_hos">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="target_add">Address</label>
+                                    <input type="text" class="form-control mb-2" id="target_add" name="target_add">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row" style="display: flex;">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="transfer_speed">Transfer Type</label> {{form.transfer_speed}} </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="reason">Transfer Reason</label>
+                                    <textarea name="reason" id="reason" class="form-control" cols="30" rows="5"></textarea>
+                                    <!-- <input type="text" class="form-control mb-2" id="reason" name="reason"> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

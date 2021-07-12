@@ -20,6 +20,7 @@ from django.views.generic import UpdateView, DetailView
 from rest_framework.generics import ListAPIView
 from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 from Accounts.decorators import \
                                  user_passes_test,REDIRECT_FIELD_NAME,\
                                 INACTIVE_REDIRECT_FIELD_NAME, \
@@ -31,6 +32,9 @@ from Accounts.decorators import \
 this_month = datetime.datetime.now().month
 this_day = datetime.datetime.today()
 this_year = datetime.datetime.now().year
+# today = datetime.today()
+# week = datetime.today().date() - timedelta(days=7)
+# month = datetime.today().date() - timedelta(days=30)
 
 def invoice_no(type):
     date = datetime.datetime.now()
@@ -281,11 +285,61 @@ def dispatch_list(request):
 
 
 def hospital_transfer(request):
-    return render(request, 'medic/hospita_transfer.html')
+    form = HospitalTransferForm()
+    if request.method == 'POST':
+        form = HospitalTransferForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('hospital_transfer_report')
+    return render(request, 'medic/hospital_transfer.html', {'form': form})
+
+
+from datetime import datetime, timedelta
 
 
 def hospital_transfer_report(request):
-    return render(request, 'medic/hospita_transfer_report.html')
+    today = datetime.today()
+    week = datetime.today().date() - timedelta(days=7)
+    month = datetime.today().date() - timedelta(days=30)
+    if request.user.is_superuser:
+        daily = HospitalTransferModel.objects.filter(created_on__gte=today.date()).order_by('-id')
+        weekly = HospitalTransferModel.objects.filter(created_on__gte=week).order_by('-id')
+        monthly = HospitalTransferModel.objects.filter(created_on__gte=month).order_by('-id')
+    elif request.user.is_user:
+        user_id = request.user.id
+        daily = HospitalTransferModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
+        weekly = HospitalTransferModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
+        monthly = HospitalTransferModel.objects.filter(dispatch=user_id, created_on__gte=month).order_by('-id')
+    context = {
+        'daily': daily,
+        'weekly': weekly,
+        'monthly': monthly
+    }
+    return render(request, 'medic/hospita_transfer_report.html', context)
+
+
+def update_hospital_request(request, pk):
+    data = get_object_or_404(HospitalTransferModel, pk=pk)
+    form = HospitalTransferForm(instance=data)
+    if request.method == 'POST':
+        form = HospitalTransferForm(request.POST, instance=data)
+        if form.is_valid():
+            form.save()
+            return redirect('hospital_transfer_report')
+    return render(request, 'medic/hospital_transfer_up.html', {'form': form, 'data': data})
+
+
+def delete_hospital_request(request, pk):
+    if not request.user.is_staff or request.user.is_superuser:
+        data = get_object_or_404(HospitalTransferModel, pk=pk)
+        data.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def details_hospital_request(request, pk):
+    data = get_object_or_404(HospitalTransferModel, pk=pk)
+    return render(request, 'medic/hos_request_detail.html', {'object':data})
+
 
 @login_required
 def panic_system(request):

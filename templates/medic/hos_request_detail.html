@@ -1,0 +1,258 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card card-custom gutter-b bg-diagonal">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between p-4 flex-lg-wrap flex-xl-nowrap">
+                                <div class="d-flex flex-column mr-5">
+                                    <a href="#" class="h4 text-dark text-hover-primary mb-5">
+                                        Receiver Number
+                                    </a>
+                                </div>
+                                <div class="ml-6 ml-lg-0 ml-xxl-6 flex-shrink-0" style="position: absolute; left: 35%;">
+                                    <a href="tel:{{object.receiver_Contact}}" target="_blank" class="btn font-weight-bolder text-uppercase btn-light-info py-4 px-6">
+                                        <i class="icon-xl la la-phone"></i> {{object.receiver_Contact}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row text-right">
+                        <div style="margin-top: 27px; padding: 10px;" class="text-right">
+
+                            {% if object.delivery_Status == 'Complete' %}
+                            <a href="{% url 'invoice_generator' object.id %}" class="btn btn-twitter"> <i class="fas fa-file-invoice"></i> Download</a>
+                            {% endif %} {% if request.user.is_driver or request.user.is_delivery_man%}
+                            <a href="{% url 'finish_otp' object.id %}" class="btn btn-warning">Finish</a> {% elif request.user.is_user and object.delivery_Status == 'Pending' %}
+                            <button id="large_press" class="btn btn-danger">Cancel Order</button> {%endif%}
+                            <input type="text" value="{{object.id}}" style="display: none;" id="obj_id">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li {% if message.tags %} class="alert alert-{{ message.tags }} font-size-h5" {% endif %}>
+                            {{message}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="text-center alert alert-info">
+                                <h3>Hospital Transfer Details</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-center alert alert-info">
+                                <h3>Requested By</h3>
+                            </div>
+                            <div class="csm-from-group">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label> Name</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="la la-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" value="{{object.requested_by.first_name}} {{object.requested_by.last_name}}" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label> Contact</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-id-badge"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" value="{{object.requested_by.contact}}" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" value="{{object.requested_by.email}}" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form- group">
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-address-card"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" value="{{object.requested_by.address}}" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label>Current Hospital</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-hospital"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" value="{{object.current_hos}}" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-address-card"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" value="{{object.current_add}}" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="text-center alert alert-info">
+                                <h3>Details</h3>
+                            </div>
+                            <div class="csm-from-group">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label>Transfer Priority</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-list"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" value="{{object.transfer_speed}}" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label> Reason</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" value="{{object.reason}}" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label>Preffered Hospital</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-hospital"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" value="{{object.target_hos}}" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form- group">
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-address-card"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" value="{{object.target_add}}" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if request.user.is_staff or request.user.is_superuser %}
+                                <div class="form- group">
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label>Priority</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-list"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" value="{{object.target_add}}" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="form- group">
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label>Is Transferred?</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-address-card"></i></span>
+                                                </div>
+                                                {% if i.completed == True %}
+                                                <input type="text" class="form-control" value="Done" readonly /> {% else %}
+                                                <input type="text" class="form-control" value="Pending" readonly /> {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

@@ -52,9 +52,21 @@ class ScheduleTrip(LoginRequiredMixin, View):
 
 class TripSchedules(LoginRequiredMixin, View):
     def get(self, request):
-        data = ScheduleModel.objects.all()
+        title = "Schedule Requests"
+        if self.request.user.is_superuser:
+            daily = ScheduleModel.objects.filter(created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(created_on__gte=month).order_by('-id')
+        elif self.request.user.is_user:
+            user_id = request.user.id
+            daily = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=month).order_by('-id')
         context = {
-            'data': data,
+            'title': title,
+            'daily': daily,
+            'weekly': weekly,
+            'monthly': monthly
         }
         return render(request, 'Accounting/trip_schedules.html', context)
 
@@ -65,8 +77,8 @@ class DeleteSchedule(LoginRequiredMixin, View):
             data = get_object_or_404(ScheduleModel, pk=pk)
             if data:
                 data.delete()
-                return redirect('shcedule_trip')
-            return redirect('shcedule_trip')
+                return redirect('trip_schedules')
+            return redirect('trip_schedules')
         else:
             return render(request, 'accounts/forbidden.html')
 
@@ -76,7 +88,7 @@ class UpdateSchedule(LoginRequiredMixin, View):
         data = get_object_or_404(ScheduleModel, pk=pk)
         if request.user.is_superuser or request.user.id == data.user.id:
             form = ScheduleModelForm(instance=data)
-            return render(request, 'Accounting/update_scedule.html', {'form': form})
+            return render(request, 'Accounting/update_scedule.html', {'form': form, 'data':data})
         else:
             return render(request, 'accounts/forbidden.html')
 
@@ -88,7 +100,7 @@ class UpdateSchedule(LoginRequiredMixin, View):
                 if form.is_valid():
                     form.save()
                     return redirect('trip_schedules')
-                return render(request, 'Accounting/update_scedule.html', {'form': form})
+                return render(request, 'Accounting/update_scedule.html', {'form': form, 'data': data})
         else:
             return render(request, 'accounts/forbidden.html')
 
@@ -107,21 +119,53 @@ class TrackSchedule(LoginRequiredMixin, View):
 class AcceptedSchedule(LoginRequiredMixin, View):
     def get(self, request):
         title = "Accepted Schedule"
-        data = ScheduleModel.objects.filter(status='Approved').order_by('-id')
-        return render(request, 'Accounting/Sch_filter_rep.html', {'data': data, 'title': title})
+        if self.request.user.is_superuser:
+            daily = ScheduleModel.objects.filter(status='Approved', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(status='Approved', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(status='Approved', created_on__gte=month).order_by('-id')
+        elif self.request.user.is_user:
+            user_id = request.user.id
+            daily = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=month).order_by('-id')
+        context = {
+            'title': title,
+            'daily': daily,
+            'weekly': weekly,
+            'monthly': monthly
+        }
+        return render(request, 'Accounting/trip_schedules.html', context)
 
 
 class CompletedSchedule(LoginRequiredMixin, View):
     def get(self, request):
         title = "Completed Schedule"
-        data = ScheduleModel.objects.filter(status='Completed').order_by('-id')
-        return render(request, 'Accounting/Sch_filter_rep.html', {'data': data, 'title': title})
+        if self.request.user.is_superuser:
+            daily = ScheduleModel.objects.filter(status='Completed', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(status='Completed', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(status='Completed', created_on__gte=month).order_by('-id')
+        elif self.request.user.is_user:
+            user_id = request.user.id
+            daily = ScheduleModel.objects.filter(dispatch=user_id, status='Completed',
+                                                 created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(dispatch=user_id, status='Completed', created_on__gte=week).order_by(
+                '-id')
+            monthly = ScheduleModel.objects.filter(dispatch=user_id, status='Completed', created_on__gte=month).order_by(
+                '-id')
 
+
+        context = {
+            'title': title,
+            'daily': daily,
+            'weekly': weekly,
+            'monthly': monthly
+        }
+        return render(request, 'Accounting/trip_schedules.html', context)
 
 def task_create(request):
     if request.user.is_superuser:
         form = TaskModelForm()
-        dispatch = User.objects.filter(is_staff=True)
+        dispatch = User.objects.filter(is_staff=True, is_superuser=False)
         schedule = ScheduleModel.objects.filter(assigned=False)
         ambulance = AmbulanceModel.objects.filter(assigned=False)
         panic = Panic.objects.filter(assigned=False)
@@ -142,7 +186,7 @@ def task_create(request):
                     data.assigned = True
                     data.save()
                 else:
-                    data = get_object_or_404(PaystubModel, pk=pt)
+                    data = get_object_or_404(Panic, pk=pt)
                     data.assigned = True
                     data.save()
                 form.save()
@@ -162,7 +206,22 @@ def task_create(request):
 
 class TasksList(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'Accounting/task_list.html')
+        if self.request.user.is_superuser:
+            daily = TaskModel.objects.filter(created_on__gte=today.date()).order_by('-id')
+            weekly = TaskModel.objects.filter(created_on__gte=week).order_by('-id')
+            monthly = TaskModel.objects.filter(created_on__gte=month).order_by('-id')
+        elif self.request.user.is_staff:
+            user_id = request.user.id
+            daily = TaskModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
+            weekly = TaskModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
+            monthly = TaskModel.objects.filter(dispatch=user_id, created_on__gte=month).order_by('-id')
+
+        context = {
+            'daily': daily,
+            'weekly': weekly,
+            'monthly': monthly
+        }
+        return render(request, 'Accounting/task_list.html', context)
 
 
 class UpdateTask(LoginRequiredMixin, View):
@@ -201,14 +260,18 @@ class DeleteTask(LoginRequiredMixin, View):
             return render(request, 'accounts/forbidden.html')
 
 
+def task_detail(request,pk):
+    data = get_object_or_404(TaskModel, pk=pk)
+    return render(request, 'Accounting/task_detail.html', {'object':data})
+
+
 class TransferTask(LoginRequiredMixin, View):
     def get(self, request, pk):
         if request.user.is_staff or request.user.is_superuser:
             form = TransferTaskForm()
             data = get_object_or_404(TaskModel, pk=pk)
             user_id = data.dispatch.id
-            dispatches = User.objects.filter(
-                ~Q(is_superuser=True), ~Q(pk=user_id), is_staff=True)
+            dispatches = User.objects.filter(~Q(pk=user_id), is_staff=True, is_superuser=False)
             context = {
                 'form': form,
                 'pk': pk,
@@ -307,8 +370,7 @@ def update_paystub_report(request, pk):
 def delete_paystub(request, pk):
     if request.user.is_superuser:
         data = get_object_or_404(PaystubModel, pk=pk)
-        # data.delete()
-        print('ok')
+        data.delete()
         return redirect('paystub_report')
 
 
@@ -362,7 +424,15 @@ def cancel_stock_request(request):
 class StockRequest(LoginRequiredMixin, View):
     def get(self, request):
         if request.user.is_superuser:
-            return render(request, 'Accounting/stock_requests.html')
+            daily = StockRequestModel.objects.filter(created_on__gte=today.date()).order_by('-id')
+            weekly = StockRequestModel.objects.filter(created_on__gte=week).order_by('-id')
+            monthly = StockRequestModel.objects.filter(created_on__gte=month).order_by('-id')
+            context = {
+                'daily': daily,
+                'weekly': weekly,
+                'monthly': monthly
+            }
+            return render(request, 'Accounting/stock_requests.html', context)
         else:
             return render(request, 'accounts/forbidden.html')
 

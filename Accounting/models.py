@@ -104,6 +104,7 @@ class TaskModel(models.Model):
         ('sch', 'Scheduled Task'),
         ('ambr', 'Ambulance Request'),
         ('pan', 'Panic Request'),
+        ('HT', 'Hospital Transfer')
     ]
     task_type = models.CharField(
         choices=typeof, max_length=100, blank=True, null=True)
@@ -116,6 +117,7 @@ class TaskModel(models.Model):
         AmbulanceModel, on_delete=models.CASCADE, blank=True, null=True)
     panic_task = models.ForeignKey(
         Panic, on_delete=models.CASCADE, blank=True, null=True)
+    hos_tra = models.ForeignKey(HospitalTransferModel, on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(
         choices=status_type, max_length=100, blank=True, null=True, default='Assigned')
     created_on = models.DateTimeField(auto_now_add=True)

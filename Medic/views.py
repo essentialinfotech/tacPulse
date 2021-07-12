@@ -338,6 +338,17 @@ def details_hospital_request(request, pk):
     return render(request, 'medic/hos_request_detail.html', {'object':data})
 
 
+def hospital_transfered(request, pk):
+    if request.user.is_staff:
+        data = get_object_or_404(HospitalTransferModel, pk=pk)
+        print(data)
+        data.completed = True
+        data.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return redirect('forbidden')
+
+
 @login_required
 def panic_system(request):
     panic = 'Give a panic request'

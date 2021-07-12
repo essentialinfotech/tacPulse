@@ -13,3 +13,4 @@ admin.site.register(Feedback)
 admin.site.register(PropertyTools)
 admin.site.register(FAQ),
 admin.site.register(CaseNote)
+admin.site.register(HospitalTransferModel)

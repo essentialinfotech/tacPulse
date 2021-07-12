@@ -91,7 +91,7 @@
                                 <td>{{ i.dispatch.contact }}</td>
                                 <td>{{ i.task_title }}</td>
                                 <td>
-                                    {% if i.task_type == 'sch' %} Schedule Request {% elif i.task_type == 'ambr' %} Ambulance Request {%else%} Panic Request {%endif%}
+                                    {% if i.task_type == 'sch' %} Schedule Request {% elif i.task_type == 'ambr' %} Ambulance Request {% elif i.task_type == 'HT' %} Hospital Transfer {%else%} Panic Request {%endif%}
                                 </td>
                                 <td> {{i.task_desc}}</td>
                                 <td>
@@ -104,10 +104,16 @@
                                         {% endif %} {% elif i.task_type == "ambr" %} {% if i.ambulance_task %}
                                         <a href="{% url 'AmbulanceRequestDetail' i.ambulance_task.id %}">
                                             <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
-                                        </a>{% endif %} {% else %} {% if i.panic_task %}
+                                        </a>
+                                        {% endif %} {% elif i.task_type == "HT" %} {% if i.hos_tra %}
+                                        <a href="{% url 'details_hospital_request' i.hos_tra.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+                                        {% endif %} {% else %} {% if i.panic_task %}
                                         <a href="{% url 'check_panic_requests_location' i.panic_task.id %}">
                                             <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
-                                        </a>{% endif %} {% endif %} {% if request.user.is_superuser %}
+                                        </a>
+                                        {% endif %} {% endif %} {% if request.user.is_superuser %}
                                         <a href="{% url 'update_task' i.id %}">
                                             <i class="fas fa-edit text-hover-primary mr-2"></i>
                                         </a>

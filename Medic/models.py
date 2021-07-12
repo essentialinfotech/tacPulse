@@ -195,6 +195,7 @@ class HospitalTransferModel(models.Model):
     target_hos = models.CharField(max_length=200, blank=False, null=False)
     target_add = models.CharField(max_length=200, blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
+    assigned = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
 
     def __str__(self):

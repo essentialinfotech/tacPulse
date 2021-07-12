@@ -168,6 +168,7 @@ def task_create(request):
         dispatch = User.objects.filter(is_staff=True, is_superuser=False)
         schedule = ScheduleModel.objects.filter(assigned=False)
         ambulance = AmbulanceModel.objects.filter(assigned=False)
+        hospital = HospitalTransferModel.objects.filter(assigned=False)
         panic = Panic.objects.filter(assigned=False)
         if request.method == 'POST':
             form = TaskModelForm(request.POST)
@@ -175,6 +176,7 @@ def task_create(request):
             at = request.POST.get('ambulance_task')
             st = request.POST.get('scheduled_task')
             pt = request.POST.get('panic_task')
+            ht =request.POST.get('hos_tra')
             if form.is_valid():
                 form.save(commit=False)
                 if x == 'sch':
@@ -183,6 +185,10 @@ def task_create(request):
                     data.save()
                 elif x == 'ambr':
                     data = get_object_or_404(AmbulanceModel, pk=at)
+                    data.assigned = True
+                    data.save()
+                elif x == 'HT':
+                    data = get_object_or_404(HospitalTransferModel, pk=ht)
                     data.assigned = True
                     data.save()
                 else:
@@ -197,7 +203,8 @@ def task_create(request):
             'dispatch': dispatch,
             'schedule': schedule,
             'ambulance': ambulance,
-            'panic': panic
+            'panic': panic,
+            'hospital': hospital,
         }
         return render(request, 'Accounting/taskcreate.html', context)
     else:

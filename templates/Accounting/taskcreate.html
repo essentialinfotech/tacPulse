@@ -89,6 +89,7 @@
                                 <option value="sch">Scheduled Task</option>
                             <option value="ambr">Ambulance Request</option>
                             <option value="pan">Panic Request</option>
+                            <option value="HT">Hospital Transfer</option>
                         </select> </div>
 
                         <div class="draggable">
@@ -117,6 +118,13 @@
                           {% endfor %}
                         </select> </div>
 
+                        <div class="draggable" id="ht">
+                            <label class="draggable-handle" for="hos_tra">Hospital Transfer*</label>
+                            <select class="form-control mb-2 draggable-handle" id="hos_tra" name="hos_tra">
+                            {% for h in hospital %}
+                            <option value="{{h.id}}" class="draggable-handle">{{h.current_hos}}</option>
+                          {% endfor %}
+                        </select> </div>
 
                         <div class="draggable" id="pt">
                             <label class="draggable-handle" for="area6" id="l6">Panic Task*</label>
@@ -149,18 +157,27 @@
         sc = document.getElementById('st')
         am = document.getElementById('at')
         pn = document.getElementById('pt')
+        ht = document.getElementById('ht')
         if (x === "sch") {
             sc.style.display = "block";
             am.style.display = "none";
             pn.style.display = "none";
+            ht.style.display = "none";
         } else if (x === 'ambr') {
             am.style.display = "block";
             sc.style.display = "none";
             pn.style.display = "none";
+            ht.style.display = "none";
         } else if (x === 'pan') {
             pn.style.display = "block";
             am.style.display = "none";
             sc.style.display = "none";
+            ht.style.display = "none";
+        } else if (x === 'HT') {
+            ht.style.display = "block";
+            am.style.display = "none";
+            sc.style.display = "none";
+            pn.style.display = "none";
         }
 
     }

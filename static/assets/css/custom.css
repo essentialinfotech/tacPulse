@@ -41,13 +41,15 @@
 
 #st,
 #at,
-#pt {
+#pt,
+#ht {
     display: none;
 }
 
 #tobedropped #st,
 #tobedropped #at,
-#tobedropped #pt {
+#tobedropped #pt,
+#tobedropped #ht {
     display: block;
 }
 

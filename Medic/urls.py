@@ -32,6 +32,7 @@ urlpatterns = [
          hospital_transfer, name='hospital_transfer'),
     path('hospital/transfer/up/<hashid:pk>/', update_hospital_request, name='update_hospital_request'),
     path('hospital/transfer/details/<hashid:pk>/', details_hospital_request, name='details_hospital_request'),
+    path('hospital/transfer/status/<hashid:pk>/', hospital_transfered, name='hospital_transfered'),
     path('hospital/transfer/delete/<hashid:pk>/', delete_hospital_request, name='delete_hospital_request'),
      path('panic/requests/', check_panic_requests, name = 'check_panic_requests'),
      path('transfer/task/', task_transfer_req, name = 'task_transfer_req'),

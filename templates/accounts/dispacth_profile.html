@@ -170,23 +170,37 @@
                                                 <tr class="table-secondary">
                                                     <th scope="col">#</th>
                                                     <th scope="col">Task Title</th>
-                                                    <th scope="col">Task Description</th>
                                                     <th scope="col">Schedule Task</th>
                                                     <th scope="col">Ambulance Task</th>
                                                     <th scope="col">Panic Task</th>
+                                                    <th scope="col">Hospital Transfer</th>
                                                     <th scope="col">Status</th>
                                                     <th scope="col">Assigned Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for i in task %}
-                                                <tr>
+                                                <tr class="text-center">
                                                     <th scope="row">{{ forloop.counter }}</th>
                                                     <td>{{ i.task_title }}</td>
-                                                    <td style="word-break: break-all;">{{ i.task_desc }}</td>
-                                                    <td>{{ i.scheduled_task }}</td>
-                                                    <td>{{ i.ambulance_task }}</td>
-                                                    <td>{{ i.panic_task }}</td>
+                                                    <td>
+                                                        <a href="{% url 'schedule_details' i.id %}">
+                                                            {{ i.scheduled_task }}
+                                                        </a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="{% url 'AmbulanceRequestDetail' i.id %}">
+                                                            {{ i.ambulance_task }}
+                                                        </a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="{% url 'check_panic_requests_location' i.id %}">
+                                                            {{ i.panic_task }}
+                                                        </a>
+                                                    </td>
+                                                    <td>.....</td>
                                                     <td>{{ i.status }}</td>
                                                     <td>{{ i.created_on }}</td>
                                                 </tr>

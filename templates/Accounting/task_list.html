@@ -1,4 +1,38 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
+<style>
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+    
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+    
+    .tab button:hover {
+        background-color: #ddd;
+    }
+    
+    .tab button.active {
+        background-color: #ccc;
+    }
+    
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+</style>
+
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
@@ -7,16 +41,11 @@
             <div class="card card-custom card-sticky" id="kt_page_sticky_card">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">Assigned Task Report</h3>
-                    </div>
-                    <div class="col-md-3"></div>
-                    <div class="col-md-4">
-                        <button class="btn btn-info" id="month" onclick="data_caller(30)">Last 30 days</button>
-                        <button class="btn btn-info" id="week" onclick="data_caller(7)">Last 7 days</button>
-                        <button class="btn btn-info" id="td" onclick="data_caller(0)">Today</button>
+                        <h3 class="card-label">{{title}}</h3>
                     </div>
                 </div>
             </div>
+
             {% if messages %}
             <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
@@ -31,143 +60,223 @@
                 </div>
             </div>
             {% endif %}
-            </a>
-            <!-- {% if request.user.is_user %}
-            <div class="row">
-                <div class="col-md-10"></div>
-                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
-            </div>
-            {% endif %} -->
-            <input type="text" id="admin_check" value="{{request.user.is_superuser}}">
-            <input type="text" id="dispatch_check" value="{{request.user.is_staff}}">
-            <input type="text" id="user_id" value="{{request.user.id}}">
-            <div class="table-responsive">
-                <table id="my_table" class="display table text-center">
-                    <thead>
-                        <tr class="text-center">
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Task Title</th>
-                            <th>Task Description</th>
-                            <th>Route</th>
-                            <th class="text-left">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
 
-                    </tbody>
-                </table>
-                <div id="contentArea"></div>
+            <div class="tab">
+                <button class="tablinks" onclick="filtering(event, 'Daily')">Daily</button>
+                <button class="tablinks" onclick="filtering(event, 'Monthly')">Monthly</button>
+                <button class="tablinks" onclick="filtering(event, 'Weekly')">Weekly</button>
             </div>
+
+            <div id="Daily" class="tabcontent">
+                <h3>Daily</h3>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table text-center">
+                        <thead>
+                            <tr class="text-center" id="my_table">
+                                <th>Creation Date</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Task Title</th>
+                                <th>Task Type</th>
+                                <th>Task Description</th>
+                                <th class="text-left">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- daily -->
+                            {% for i in daily %}
+                            <tr class="text-center" id="monthly">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.dispatch.first_name}} {{i.dispatch.last_name}}</td>
+                                <td>{{ i.dispatch.contact }}</td>
+                                <td>{{ i.task_title }}</td>
+                                <td>
+                                    {% if i.task_type == 'sch' %} Schedule Request {% elif i.task_type == 'ambr' %} Ambulance Request {%else%} Panic Request {%endif%}
+                                </td>
+                                <td> {{i.task_desc}}</td>
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+
+                                        {% if i.task_type == "sch" %} {% if i.scheduled_task %}
+                                        <a href="{% url 'schedule_details' i.scheduled_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+                                        {% endif %} {% elif i.task_type == "ambr" %} {% if i.ambulance_task %}
+                                        <a href="{% url 'AmbulanceRequestDetail' i.ambulance_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>{% endif %} {% else %} {% if i.panic_task %}
+                                        <a href="{% url 'check_panic_requests_location' i.panic_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>{% endif %} {% endif %} {% if request.user.is_superuser %}
+                                        <a href="{% url 'update_task' i.id %}">
+                                            <i class="fas fa-edit text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'delete_task' i.id %}">
+                                            <i class="fas fa-trash-alt text-hover-primary mr-2"></i>
+                                        </a> {% else %}
+                                        <a href="{% url 'transfer_task' i.id %}">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </a> {% endif %}
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="Monthly" class="tabcontent">
+                <h3>Monthly</h3>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table text-center">
+                        <thead>
+                            <tr class="text-center" id="my_table">
+                                <th>Creation Date</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Task Title</th>
+                                <th>Task Type</th>
+                                <th>Task Description</th>
+                                <th class="text-left">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- daily -->
+                            {% for i in monthly %}
+                            <tr class="text-center" id="monthly">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.dispatch.first_name}} {{i.dispatch.last_name}}</td>
+                                <td>{{ i.dispatch.contact }}</td>
+                                <td>{{ i.task_title }}</td>
+                                <td>
+                                    {% if i.task_type == 'sch' %} Schedule Request {% elif i.task_type == 'ambr' %} Ambulance Request {%else%} Panic Request {%endif%}
+                                </td>
+
+                                <td> {{i.task_desc}}</td>
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+
+                                        {% if i.task_type == "sch" %} {% if i.scheduled_task %}
+                                        <a href="{% url 'schedule_details' i.scheduled_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+                                        {% endif %} {% elif i.task_type == "ambr" %} {% if i.ambulance_task %}
+                                        <a href="{% url 'AmbulanceRequestDetail' i.ambulance_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>{% endif %} {% else %} {% if i.panic_task %}
+                                        <a href="{% url 'check_panic_requests_location' i.panic_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>{% endif %} {% endif %} {% if request.user.is_superuser %}
+                                        <a href="{% url 'update_task' i.id %}">
+                                            <i class="fas fa-edit text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'delete_task' i.id %}">
+                                            <i class="fas fa-trash-alt text-hover-primary mr-2"></i>
+                                        </a> {% else %}
+                                        <a href="{% url 'transfer_task' i.id %}">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </a> {% endif %}
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="Weekly" class="tabcontent">
+                <h3>Weekly</h3>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table text-center">
+                        <thead>
+                            <tr class="text-center" id="my_table">
+                                <th>Creation Date</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Task Title</th>
+                                <th>Task Type</th>
+                                <th>Task Description</th>
+                                <th class="text-left">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- daily -->
+                            {% for i in weekly %}
+                            <tr class="text-center" id="monthly">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.dispatch.first_name}} {{i.dispatch.last_name}}</td>
+                                <td>{{ i.dispatch.contact }}</td>
+                                <td>{{ i.task_title }}</td>
+                                <td>
+                                    {% if i.task_type == 'sch' %} Schedule Request {% elif i.task_type == 'ambr' %} Ambulance Request {%else%} Panic Request {%endif%}
+                                </td>
+                                <td> {{i.task_desc}}</td>
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+
+                                        {% if i.task_type == "sch" %} {% if i.scheduled_task %}
+                                        <a href="{% url 'schedule_details' i.scheduled_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+                                        {% endif %} {% elif i.task_type == "ambr" %} {% if i.ambulance_task %}
+                                        <a href="{% url 'AmbulanceRequestDetail' i.ambulance_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>{% endif %} {% else %} {% if i.panic_task %}
+                                        <a href="{% url 'check_panic_requests_location' i.panic_task.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>{% endif %} {% endif %} {% if request.user.is_superuser %}
+                                        <a href="{% url 'update_task' i.id %}">
+                                            <i class="fas fa-edit text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'delete_task' i.id %}">
+                                            <i class="fas fa-trash-alt text-hover-primary mr-2"></i>
+                                        </a> {% else %}
+                                        <a href="{% url 'transfer_task' i.id %}">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </a> {% endif %}
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        var admin = document.getElementById('admin_check').value
-        var dispatch = document.getElementById('dispatch_check').value
-        var user_id = document.getElementById('user_id').value
-        var route = ''
-        endpoint1 = '/api/task/today/'
-        $.ajax({
-            method: "GET",
-            url: endpoint1,
-            success: function(data) {
-                $.each(data, function(key, value) {
-                    if (value === 'nothing') {
-                        alert("Nothing to show for this user");
-                    } else {
-
-                        if (admin === 'True') {
-                            act = '<div class="row" style="display: flex;"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a</div>'
-                        } else if (user_id === value.dispatch.id) {
-                            act = '<div class"text-center"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div>'
-                        }
-                        if (value.scheduled_task != null) {
-                            console.log('a');
-                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
-                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
-
-                        } else if (value.ambulance_task != null) {
-                            console.log('b');
-                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
-                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
-
-                        } else if (value.panic_task != null) {
-                            console.log('c');
-                            route = '<div class="text-center"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
-                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
-
-                        }
-
-                    }
-                });
-            }
-        });
-    });
-
-
-    function clear_table() {
-        $('#my_table > tbody').empty();
+    function filtering(evt, filter) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(filter).style.display = "block";
+        evt.currentTarget.className += " active";
     }
 </script>
 
+
 <script>
-    var admin = document.getElementById('admin_check').value
-    var dispatch = document.getElementById('dispatch_check').value
-    endpoint = ''
-    endpoint1 = '/api/task/today/'
-    endpoint2 = '/api/task/week/'
-    endpoint3 = '/api/task/month/'
-
-    function data_caller(day) {
-        if (day === 30) {
-            endpoint = endpoint3
-        } else if (day === 7) {
-            endpoint = endpoint2
-        } else if (day === 0) {
-            endpoint = endpoint1
-
-        }
-
-        $.ajax({
-            method: "GET",
-            url: endpoint,
-            success: function(data) {
-                $('#my_table > tbody').empty();
-
-                $.each(data, function(key, value) {
-
-                    if (value === 'nothing') {
-                        alert("Nothing to show for this user");
-                    } else {
-
-                        if (admin === 'True') {
-                            act = '<div class="row"><a href="#" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a><a href="/task/update/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit text-hover-primary mr-2"></i></a><a href="/task/delete/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a</div>'
-                        } else if (user_id === value.dispatch.id) {
-                            act = '<div class"text-center"><a href="/ambulance/request/detail/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-clipboard-list text-hover-primary mr-2"></i></a></div>'
-                        }
-                        if (value.task_type === 'sch') {
-                            console.log('a');
-                            route = '<div class"text-center"><a href="/track/schedule/' + value.scheduled_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
-                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
-
-                        } else if (value.task_type === 'ambr') {
-                            console.log('b');
-                            route = '<div class"text-center"><a href="/ambulance/track/' + value.ambulance_task.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div>'
-                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
-
-                        } else if (value.task_type === 'pan') {
-                            console.log('c');
-                            route = '<div class="text-center"><a href="/ambulance/track/' + value.id + '/" data-toggle="tooltip" data-placement="top" title="Details"><i class="fas fa-route text-hover-primary"></i></a></div></div>'
-                            $('#my_table').append('<tr>' + '<td>' + value.dispatch.first_name + ' ' + value.dispatch.last_name + '</td> <td>' + value.dispatch.contact + '</td> <td>' + value.task_title + '</td> <td>' + value.task_desc + '</td> <td>' + route + '</td> <td>' + act + '</td> </tr>');
-
-                        }
-
-                    }
-                });
-            }
-        });
-    }
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 {% endblock %}

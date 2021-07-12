@@ -174,10 +174,26 @@ def create_panic_noti(sender, instance=None, created=False, **kwargs):
 
 
 class HospitalTransferModel(models.Model):
+    transfer_type = [
+        ('Emergency', 'Emergency'),
+        ('Normally', 'Normally')
+    ]
+
+    priority_type = [
+        ('High', 'High'),
+        ('Medium', 'Medium'),
+        ('Low', 'Low'),
+    ]
+    requested_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    transfer_speed = models.CharField(max_length=100, choices=transfer_type, blank=False, null=False, default='Emergency')
+    reason = models.CharField(max_length=100, blank=False, null=False)
+    priority = models.CharField(max_length=100, choices=priority_type, blank=True, null=True, default='Low')
     current_hos = models.CharField(max_length=200, blank=False, null=False)
     current_add = models.CharField(max_length=200, blank=False, null=False)
     target_hos = models.CharField(max_length=200, blank=False, null=False)
     target_add = models.CharField(max_length=200, blank=False, null=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.target_hos

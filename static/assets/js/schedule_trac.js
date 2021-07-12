@@ -1,4 +1,5 @@
 function trackMap() {
+    alert('ok')
     const directionsRenderer = new google.maps.DirectionsRenderer();
     const directionsService = new google.maps.DirectionsService();
     const map = new google.maps.Map(document.getElementById("map"), {

@@ -1,4 +1,4 @@
-﻿function my_suggetion() {
+function update_suggetion() {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -27,6 +27,19 @@
 
 }
 
+
+$(document).ready(function() {
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 7,
+        center: { lat: 23.78182997116147, lng: 90.4199998114322 },
+    });
+    directionsRenderer.setMap(map);
+    calculateAndDisplayRoute(directionsService, directionsRenderer, map);
+});
+
+
 function calculateAndDisplayRoute(directionsService, directionsRenderer, map) {
     directionsService
         .route({
@@ -40,6 +53,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer, map) {
         })
         .then((response) => {
             directionsRenderer.setDirections(response);
+            console.log(response);
             // x = response.geocoded_waypoints[0].place_id
 
             document.getElementById('from_lat').value = response.routes[0].legs[0].start_location.lat()

@@ -185,7 +185,7 @@ def dispatch_profile(request, id):
     patients = User.objects.filter(is_superuser=False, is_staff=False)
     panic_req_month = Panic.objects.filter(timestamp__month=this_month,
                                            timestamp__year=this_year).order_by('-id')
-    task = TaskModel.objects.filter(dispatch_id=id)
+    task = TaskModel.objects.filter(dispatch_id=id, created_on__month = this_month)
     assesments = Assesment.objects.filter(to_user_id=id)
     context = {
         'user': user,

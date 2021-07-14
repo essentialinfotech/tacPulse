@@ -23,6 +23,8 @@
     <link href="{% static 'assets/css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'assets/css/mapStyle.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'assets/js/moment.js' %}"></script>
     <!--end::Global Theme Styles-->
@@ -85,6 +87,9 @@
                                     <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
                                 </div>
                             </a>
+
+
+                            {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Inspection</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -121,6 +126,11 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %} {% if request.user.is_superuser %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Occurrence</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -153,6 +163,11 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %} {% if request.user.is_superuser %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Cases</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -177,7 +192,7 @@
                                     </ul>
                                 </div>
                             </li>
-
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Audit</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -215,7 +230,7 @@
                                     </ul>
                                 </div>
                             </li>
-
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Task</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -244,6 +259,7 @@
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
+                                        {% if request.user.is_superuser or request.user.is_staff %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'task_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -260,10 +276,11 @@
                                                 <span class="menu-text">Transfer Reports</span>
                                             </a>
                                         </li>
-
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -278,6 +295,7 @@
 
                                 </a>
                             </li>
+
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -289,6 +307,7 @@
                                 </a>
                             </li>
 
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Assessments</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -325,6 +344,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
 
 
 
@@ -332,7 +352,9 @@
                                 <h4 class="menu-text">Accounting</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
+                            {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
@@ -364,6 +386,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -376,6 +399,8 @@
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
+
+                                        {% if request.user.is_superuser %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'add_package'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -384,6 +409,7 @@
                                                 <span class="menu-text">Add Packages</span>
                                             </a>
                                         </li>
+                                        {% endif %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'packages'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -438,6 +464,7 @@
                                 </div>
                             </li>
 
+                            {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -470,12 +497,14 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
 
 
                             <li class="menu-section">
                                 <h4 class="menu-text">Request</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
+                            {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -516,6 +545,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -662,6 +692,7 @@
                                         </li>
                                     </ul>
                                 </div>
+                                {% if request.user.is_superuser %}
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
@@ -674,6 +705,7 @@
                                         </li>
                                     </ul>
                                 </div>
+                                {% endif %}
                             </li>
 
                             <li class="menu-section">
@@ -693,19 +725,21 @@
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
+                                        {% if request.user.is_superuser %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'create_faq'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"></i>
                                                 <span class="menu-text">Create FAQ</span>
                                             </a>
                                         </li>
-
+                                        {% endif %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'faq'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"></i>
                                                 <span class="menu-text">FAQ</span>
                                             </a>
                                         </li>
+
                                     </ul>
                                 </div>
                             </li>
@@ -751,7 +785,7 @@
                             <!--begin::Desktop Search-->
                             <div class="quick-search quick-search-inline ml-20 w-300px" id="kt_quick_search_inline">
                                 <!--begin::Form-->
-                                <form method="get" class="quick-search-form">
+                                <form method="get" action="{% url 'search' %}" >
                                     <div class="input-group rounded bg-light">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -768,12 +802,7 @@
 													</span>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control h-45px" placeholder="Search..." />
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">
-													<i class="quick-search-close ki ki-close icon-sm text-muted"></i>
-												</span>
-                                        </div>
+                                        <input id="tags" name="q" type="text" class="form-control h-45px" placeholder="Search..." value="{{ request.GET.q }}" />
                                     </div>
                                 </form>
                                 <!--end::Form-->
@@ -1189,27 +1218,6 @@
                 </div>
                 <!--end::Item-->
                 <!--begin::Item-->
-                <div class="col-6">
-                    <a href="#" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
-                        <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
-								<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-attachment.svg-->
-								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-										<rect x="0" y="0" width="24" height="24" />
-										<path d="M14.8571499,13 C14.9499122,12.7223297 15,12.4263059 15,12.1190476 L15,6.88095238 C15,5.28984632 13.6568542,4 12,4 L11.7272727,4 C10.2210416,4 9,5.17258756 9,6.61904762 L10.0909091,6.61904762 C10.0909091,5.75117158 10.823534,5.04761905 11.7272727,5.04761905 L12,5.04761905 C13.0543618,5.04761905 13.9090909,5.86843034 13.9090909,6.88095238 L13.9090909,12.1190476 C13.9090909,12.4383379 13.8240964,12.7385644 13.6746497,13 L10.3253503,13 C10.1759036,12.7385644 10.0909091,12.4383379 10.0909091,12.1190476 L10.0909091,9.5 C10.0909091,9.06606198 10.4572216,8.71428571 10.9090909,8.71428571 C11.3609602,8.71428571 11.7272727,9.06606198 11.7272727,9.5 L11.7272727,11.3333333 L12.8181818,11.3333333 L12.8181818,9.5 C12.8181818,8.48747796 11.9634527,7.66666667 10.9090909,7.66666667 C9.85472911,7.66666667 9,8.48747796 9,9.5 L9,12.1190476 C9,12.4263059 9.0500878,12.7223297 9.14285008,13 L6,13 C5.44771525,13 5,12.5522847 5,12 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,12 C19,12.5522847 18.5522847,13 18,13 L14.8571499,13 Z" fill="#000000" opacity="0.3" />
-										<path d="M9,10.3333333 L9,12.1190476 C9,13.7101537 10.3431458,15 12,15 C13.6568542,15 15,13.7101537 15,12.1190476 L15,10.3333333 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9,10.3333333 Z M10.0909091,11.1212121 L12,12.5 L13.9090909,11.1212121 L13.9090909,12.1190476 C13.9090909,13.1315697 13.0543618,13.952381 12,13.952381 C10.9456382,13.952381 10.0909091,13.1315697 10.0909091,12.1190476 L10.0909091,11.1212121 Z" fill="#000000" />
-									</g>
-								</svg>
-								<!--end::Svg Icon-->
-							</span>
-                        <span class="d-block font-weight-bold font-size-h6 mt-2">Members</span>
-                    </a>
-                </div>
-                <!--end::Item-->
-            </div>
-
-            <div class="row gutter-b">
-                <!--begin::Item-->
                 {% if request.user.is_superuser %}
                 <div class="col-6">
                     <a href="{% url 'check_panic_requests' %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
@@ -1228,7 +1236,6 @@
                     </a>
                 </div>
                 {% endif %}
-                <!--end::Item-->
                 <!--begin::Item-->
                 <div class="col-6">
                     <a href="{% url 'user_profile' request.user.id %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
@@ -1248,68 +1255,20 @@
                 </div>
                 <!--end::Item-->
             </div>
+
             <div class="row gutter-b">
                 <!--begin::Item-->
-                <div class="col-6">
-                    <a href="#" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
-                        <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
-								<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Chart-bar1.svg-->
-								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-										<rect x="0" y="0" width="24" height="24" />
-										<rect fill="#000000" opacity="0.3" x="12" y="4" width="3" height="13" rx="1.5" />
-										<rect fill="#000000" opacity="0.3" x="7" y="9" width="3" height="8" rx="1.5" />
-										<path d="M5,19 L20,19 C20.5522847,19 21,19.4477153 21,20 C21,20.5522847 20.5522847,21 20,21 L4,21 C3.44771525,21 3,20.5522847 3,20 L3,4 C3,3.44771525 3.44771525,3 4,3 C4.55228475,3 5,3.44771525 5,4 L5,19 Z" fill="#000000" fill-rule="nonzero" />
-										<rect fill="#000000" opacity="0.3" x="17" y="11" width="3" height="6" rx="1.5" />
-									</g>
-								</svg>
-								<!--end::Svg Icon-->
-							</span>
-                        <span class="d-block font-weight-bold font-size-h6 mt-2">Email</span>
-                    </a>
-                </div>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <div class="col-6">
-                    <a href="#" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
-                        <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
-								<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Color-profile.svg-->
-								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-										<rect x="0" y="0" width="24" height="24" />
-										<path d="M12,10.9996338 C12.8356605,10.3719448 13.8743941,10 15,10 C17.7614237,10 20,12.2385763 20,15 C20,17.7614237 17.7614237,20 15,20 C13.8743941,20 12.8356605,19.6280552 12,19.0003662 C11.1643395,19.6280552 10.1256059,20 9,20 C6.23857625,20 4,17.7614237 4,15 C4,12.2385763 6.23857625,10 9,10 C10.1256059,10 11.1643395,10.3719448 12,10.9996338 Z M13.3336047,12.504354 C13.757474,13.2388026 14,14.0910788 14,15 C14,15.9088933 13.7574889,16.761145 13.3336438,17.4955783 C13.8188886,17.8206693 14.3938466,18 15,18 C16.6568542,18 18,16.6568542 18,15 C18,13.3431458 16.6568542,12 15,12 C14.3930587,12 13.8175971,12.18044 13.3336047,12.504354 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-										<circle fill="#000000" cx="12" cy="9" r="5" />
-									</g>
-								</svg>
-								<!--end::Svg Icon-->
-							</span>
-                        <span class="d-block font-weight-bold font-size-h6 mt-2">Settings</span>
-                    </a>
-                </div>
+
                 <!--end::Item-->
             </div>
             <div class="row">
                 <!--begin::Item-->
-                <div class="col-6">
-                    <a href="#" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
-                        <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
-								<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Euro.svg-->
-								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-										<rect x="0" y="0" width="24" height="24" />
-										<path d="M4.3618034,10.2763932 L4.8618034,9.2763932 C4.94649941,9.10700119 5.11963097,9 5.30901699,9 L15.190983,9 C15.4671254,9 15.690983,9.22385763 15.690983,9.5 C15.690983,9.57762255 15.6729105,9.65417908 15.6381966,9.7236068 L15.1381966,10.7236068 C15.0535006,10.8929988 14.880369,11 14.690983,11 L4.80901699,11 C4.53287462,11 4.30901699,10.7761424 4.30901699,10.5 C4.30901699,10.4223775 4.32708954,10.3458209 4.3618034,10.2763932 Z M14.6381966,13.7236068 L14.1381966,14.7236068 C14.0535006,14.8929988 13.880369,15 13.690983,15 L4.80901699,15 C4.53287462,15 4.30901699,14.7761424 4.30901699,14.5 C4.30901699,14.4223775 4.32708954,14.3458209 4.3618034,14.2763932 L4.8618034,13.2763932 C4.94649941,13.1070012 5.11963097,13 5.30901699,13 L14.190983,13 C14.4671254,13 14.690983,13.2238576 14.690983,13.5 C14.690983,13.5776225 14.6729105,13.6541791 14.6381966,13.7236068 Z" fill="#000000" opacity="0.3" />
-										<path d="M17.369,7.618 C16.976998,7.08599734 16.4660031,6.69750122 15.836,6.4525 C15.2059968,6.20749878 14.590003,6.085 13.988,6.085 C13.2179962,6.085 12.5180032,6.2249986 11.888,6.505 C11.2579969,6.7850014 10.7155023,7.16999755 10.2605,7.66 C9.80549773,8.15000245 9.45550123,8.72399671 9.2105,9.382 C8.96549878,10.0400033 8.843,10.7539961 8.843,11.524 C8.843,12.3360041 8.96199881,13.0779966 9.2,13.75 C9.43800119,14.4220034 9.7774978,14.9994976 10.2185,15.4825 C10.6595022,15.9655024 11.1879969,16.3399987 11.804,16.606 C12.4200031,16.8720013 13.1129962,17.005 13.883,17.005 C14.681004,17.005 15.3879969,16.8475016 16.004,16.5325 C16.6200031,16.2174984 17.1169981,15.8010026 17.495,15.283 L19.616,16.774 C18.9579967,17.6000041 18.1530048,18.2404977 17.201,18.6955 C16.2489952,19.1505023 15.1360064,19.378 13.862,19.378 C12.6999942,19.378 11.6325049,19.1855019 10.6595,18.8005 C9.68649514,18.4154981 8.8500035,17.8765035 8.15,17.1835 C7.4499965,16.4904965 6.90400196,15.6645048 6.512,14.7055 C6.11999804,13.7464952 5.924,12.6860058 5.924,11.524 C5.924,10.333994 6.13049794,9.25950479 6.5435,8.3005 C6.95650207,7.34149521 7.5234964,6.52600336 8.2445,5.854 C8.96550361,5.18199664 9.8159951,4.66400182 10.796,4.3 C11.7760049,3.93599818 12.8399943,3.754 13.988,3.754 C14.4640024,3.754 14.9609974,3.79949954 15.479,3.8905 C15.9970026,3.98150045 16.4939976,4.12149906 16.97,4.3105 C17.4460024,4.49950095 17.8939979,4.7339986 18.314,5.014 C18.7340021,5.2940014 19.0909985,5.62999804 19.385,6.022 L17.369,7.618 Z" fill="#000000" />
-									</g>
-								</svg>
-								<!--end::Svg Icon-->
-							</span>
-                        <span class="d-block font-weight-bold font-size-h6 mt-2">Orders</span>
-                    </a>
-                </div>
-                <!--end::Item-->
+
             </div>
+            <!--end::Item-->
         </div>
-        <!--end::Content-->
+    </div>
+    <!--end::Content-->
     </div>
     <!--end::Quick Actions Panel-->
     <!-- begin::User Panel-->
@@ -2530,8 +2489,25 @@
     <!-- google map key for current location keep it plabon vai cause cdn ekta ektar jnne alada -->
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly" async></script> -->
     <!-- endkey
+    <end::Page Scripts-->
 
-    <!--end::Page Scripts-->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#tags').keydown(function(event) {
+                if (event.keyCode == 13) {
+                    this.form.submit();
+                    return false;
+                }
+            });
+        });
+    </script>
+
+        <script>
+            $("#tags").autocomplete({
+                source: "{% url 'autocomplete' %}",
+            });
+        </script>
+
 </body>
 <!--end::Body-->
 

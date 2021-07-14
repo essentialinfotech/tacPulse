@@ -7,7 +7,7 @@ from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 import json
-from django.db.models import Q
+from django.db.models import Q, query
 from django.views.decorators.csrf import csrf_exempt
 from .forms import *
 import datetime
@@ -609,5 +609,35 @@ def case_del(request,id):
     obj.delete()
     messages.success(request,'Note Deleted')
     return redirect('case_notes')
+
+
+def search(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        if query:
+            user = User.objects.filter(Q(first_name__startswith = query) | Q(last_name__startswith = query) | \
+                                        Q(username__startswith = query) | Q(contact__startswith = query))
+            if user:
+                context = {
+                    'user': user,
+                }
+                return render(request,'medic/search_results.html',context)
+            else:
+                return HttpResponse('Not Found')
+        else:
+            return HttpResponse('Empty Query Field can not be found')
+        
+def autocomplete(request):
+    mylist = []
+    term = request.GET.get('term')
+    user = User.objects.filter(Q(first_name__startswith = term) | Q(last_name__startswith = term) | \
+                                Q(username__startswith = term) | Q(contact__startswith = term))
+    if user:
+        mylist += [i.first_name for i in user]
+    else:
+        mylist = ['No user found']
+    return JsonResponse(mylist, safe=False)
+        
+
 
 

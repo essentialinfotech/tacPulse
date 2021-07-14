@@ -55,4 +55,6 @@ urlpatterns = [
      path('deleting/feedback/<hashid:id>/', del_feedback, name = 'del_feedback'),
      path('delete/case/<hashid:id>/', case_del, name = 'case_del'),
      path('case/notes/all/', case_notes, name = 'case_notes'),
+     path('search/results/', search, name = 'search'),
+     path('autosuggest/', autocomplete, name = 'autocomplete'),
 ]

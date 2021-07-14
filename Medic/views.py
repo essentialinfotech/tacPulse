@@ -1,4 +1,5 @@
 from __future__ import division
+from django import dispatch
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.api import success
 from django.http.response import JsonResponse
@@ -281,7 +282,8 @@ class AmbulanceRequestDelete(LoginRequiredMixin,View):
 
 
 def dispatch_list(request):
-    return render(request, 'medic/dispatch_list.html')
+    dispatches = User.objects.filter(is_staff = True,is_superuser = False)
+    return render(request, 'medic/dispatch_list.html',{'dispatches': dispatches})
 
 
 def hospital_transfer(request):

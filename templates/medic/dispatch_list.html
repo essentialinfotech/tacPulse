@@ -1,1 +1,57 @@
-nothing
+{% extends '../base.html' %} {% load static %} {% block content %}
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Row-->
+            <div class="row">
+                <!--begin::Col-->
+                {% for i in dispatches %}
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b card-stretch">
+                        <!--begin::Body-->
+                        <div class="card-body text-center pt-4">
+                            <!--begin::User-->
+
+                            <div class="mt-7">
+                                <div class="symbol symbol-circle symbol-lg-75">
+                                    <img src="{{i.imageURL}}" alt="image" />
+                                </div>
+                                <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
+                                    <span class="font-size-h3 font-weight-boldest">JB</span>
+                                </div>
+                            </div>
+                            <!--end::User-->
+                            <!--begin::Name-->
+                            <div class="my-2">
+                                <a href="#" class="text-dark font-weight-bold text-hover-primary font-size-h4">{{i.first_name|title}} {{i.last_name|title}}</a>
+                            </div>
+                            <!--end::Name-->
+                            <!--begin::Label-->
+
+                            <span class="label label-inline label-lg label-light-warning btn-sm font-weight-bold">
+                                
+                                {{ i.contact }}
+                                </span><br>
+                            <!--end::Label-->
+                            <!--begin::Buttons-->
+                            <div class="mt-9 mb-6">
+                                <a href="{%url 'profile' i.id%}">
+                                    <i class="fa fa-user"></i> View Details</a>
+                            </div>
+
+                            <!--end::Buttons-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

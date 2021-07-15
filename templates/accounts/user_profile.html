@@ -175,11 +175,11 @@
                                             {% for i in ambulance_req %}
                                             <tr>
                                                 <th scope="row">{{ forloop.counter }}</th>
-                                                <td>{{ i.name|title }}</td>
+                                                <td>{{ i.Name|title }}</td>
                                                 <td>{{ i.contact }}</td>
-                                                <td>@{{ i.email }}</td>
-                                                <td>@{{ i.reason }}</td>
-                                                <td>@{{ i.created_on }}</td>
+                                                <td>{{ i.email }}</td>
+                                                <td>{{ i.reason }}</td>
+                                                <td>{{ i.created_on }}</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

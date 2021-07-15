@@ -398,7 +398,7 @@ def stock_request(request):
                 form_obj = form.save(commit=False)
                 form_obj.requested = True
                 form_obj.save()
-
+                # return redirect('where to redirect')
             except:
                 return HttpResponse('Something Went Wrong')
     return render(request, 'Accounting/stock_req.html', {'form': form})

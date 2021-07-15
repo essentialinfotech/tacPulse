@@ -18,6 +18,7 @@ class Panic(models.Model):
     lat = models.CharField(max_length=200, blank=True, null=True)
     lng = models.CharField(max_length=200, blank=True, null=True)
     assigned = models.BooleanField(default=False)
+    # is_accepted = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
 

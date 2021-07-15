@@ -64,7 +64,7 @@
             <div class="tab">
                 <button class="tablinks" onclick="filtering(event, 'Daily')">Daily</button>
                 <button class="tablinks" onclick="filtering(event, 'Monthly')">Monthly</button>
-                <button class="tablinks" onclick="filtering(event, 'Weekly')">Weekly</button>
+                <button class="tablinks" onclick="filtering(event, 'Weekly')">Last 7 days</button>
             </div>
 
             <div id="Daily" class="tabcontent">
@@ -216,7 +216,7 @@
             </div>
 
             <div id="Weekly" class="tabcontent">
-                <h3>Weekly</h3>
+                <h3>Last 7 days</h3>
                 <div class="table-responsive">
                     <table id="data-table" class="display table text-center">
                         <thead>
@@ -234,7 +234,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- daily -->
+                            <!-- weekly -->
                             {% for i in weekly %}
                             <tr class="text-center" id="monthly">
                                 <td>{{ i.created_on }}</td>

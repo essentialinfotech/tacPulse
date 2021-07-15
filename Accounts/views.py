@@ -149,6 +149,9 @@ def profile(request, id):
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def admin_profile(request, id):
+    from datetime import datetime, timedelta
+    last_seven_days = datetime.today() - timedelta(days=7)
+    
     user = User.objects.filter(is_superuser=False, is_staff=False)
     dispatch = User.objects.filter(is_staff=True, is_superuser=False)
     all_user = User.objects.filter(is_superuser=False)
@@ -160,7 +163,7 @@ def admin_profile(request, id):
     monthly_req = AmbulanceModel.objects.filter(
         created_on__month=this_month, created_on__year=this_year).order_by('-id')
 
-    weekly_req = AmbulanceModel.objects.filter(created_on__iso_week_day__gte=1,
+    weekly_req = AmbulanceModel.objects.filter(created_on__gte = last_seven_days,
                                                created_on__month=this_month,
                                                created_on__year=this_year).order_by('-id')
 
@@ -185,7 +188,7 @@ def dispatch_profile(request, id):
     patients = User.objects.filter(is_superuser=False, is_staff=False)
     panic_req_month = Panic.objects.filter(timestamp__month=this_month,
                                            timestamp__year=this_year).order_by('-id')
-    task = TaskModel.objects.filter(dispatch_id=id)
+    task = TaskModel.objects.filter(dispatch_id=id, created_on__month = this_month)
     assesments = Assesment.objects.filter(to_user_id=id)
     context = {
         'user': user,

@@ -1,4 +1,5 @@
 from __future__ import division
+from django import dispatch
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.api import success
 from django.http.response import JsonResponse
@@ -8,7 +9,7 @@ from Accounting.models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 import json
-from django.db.models import Q
+from django.db.models import Q, query
 from django.views.decorators.csrf import csrf_exempt
 from .forms import *
 import datetime
@@ -92,13 +93,15 @@ def occurrence_form(request):
 
 
 def occurrence_report(request):
+    from datetime import datetime, timedelta
+    last_seven_days = datetime.today() - timedelta(days=7)
     monthly_occurences = Occurrence.objects.filter(created__month = this_month, \
                                                     created__year = this_year)
 
     daily_occurences = Occurrence.objects.filter(created__date = this_day)
 
-    weekly_occurences = Occurrence.objects.filter(created__iso_week_day__gte = 1,\
-                                                     created__month = this_month,\
+    weekly_occurences = Occurrence.objects.filter(created__gte = last_seven_days,\
+                                                     created__month = this_month,
                                                     created__year = this_year)
 
     context = {
@@ -289,7 +292,8 @@ def ambulance_task_complete(request, pk):
 
 
 def dispatch_list(request):
-    return render(request, 'medic/dispatch_list.html')
+    dispatches = User.objects.filter(is_staff = True,is_superuser = False)
+    return render(request, 'medic/dispatch_list.html',{'dispatches': dispatches})
 
 
 def hospital_transfer(request):
@@ -462,8 +466,10 @@ class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
 
 
 def property_report(request):
+    from datetime import datetime, timedelta
+    last_seven_days = datetime.today() - timedelta(days=7)
     day_property = PropertyTools.objects.filter(created__date = this_day)
-    week_property = PropertyTools.objects.filter(created__iso_week_day__gte = 1,\
+    week_property = PropertyTools.objects.filter(created__gte = last_seven_days,\
                                                 created__month = this_month, \
                                                 created__year = this_year)
     month_property = PropertyTools.objects.filter(created__month = this_month, \
@@ -647,5 +653,35 @@ def case_del(request,id):
     obj.delete()
     messages.success(request,'Note Deleted')
     return redirect('case_notes')
+
+
+def search(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        if query:
+            user = User.objects.filter(Q(first_name__startswith = query) | Q(last_name__startswith = query) | \
+                                        Q(username__startswith = query) | Q(contact__startswith = query))
+            if user:
+                context = {
+                    'user': user,
+                }
+                return render(request,'medic/search_results.html',context)
+            else:
+                return HttpResponse('Not Found')
+        else:
+            return HttpResponse('Empty Query Field can not be found')
+        
+def autocomplete(request):
+    mylist = []
+    term = request.GET.get('term')
+    user = User.objects.filter(Q(first_name__startswith = term) | Q(last_name__startswith = term) | \
+                                Q(username__startswith = term) | Q(contact__startswith = term))
+    if user:
+        mylist += [i.first_name for i in user]
+    else:
+        mylist = ['No user found']
+    return JsonResponse(mylist, safe=False)
+        
+
 
 

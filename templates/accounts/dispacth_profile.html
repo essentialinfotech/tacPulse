@@ -152,7 +152,7 @@
                             <div class="card-toolbar">
                                 <ul class="nav nav-pills nav-pills-sm nav-dark-75">
                                     <li class="nav-item">
-                                        <a class="nav-link py-2 px-4 active" data-toggle="tab" href="#kt_tab_pane_11_3"></a>
+                                        <a class="nav-link py-2 px-4 active" data-toggle="tab" href="#kt_tab_pane_11_3">Monthly</a>
                                     </li>
                                 </ul>
                             </div>
@@ -184,23 +184,30 @@
                                                     <th scope="row">{{ forloop.counter }}</th>
                                                     <td>{{ i.task_title }}</td>
                                                     <td>
-                                                        <a href="{% url 'schedule_details' i.id %}">
+                                                        {% if i.task_type == "sch" %} {% if i.scheduled_task %}
+                                                        <a href="{% url 'schedule_details' i.scheduled_task.id %}">
                                                             {{ i.scheduled_task }}
-                                                        </a>
+                                                        </a> {% endif %} {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if i.task_type == "ambr" %} {% if i.ambulance_task %}
+                                                        <a href="{% url 'AmbulanceRequestDetail' i.ambulance_task.id %}">
+                                                            {{ i.ambulance_task }}                                                        </a> {% endif %} {% endif %}
                                                     </td>
 
                                                     <td>
-                                                        <a href="{% url 'AmbulanceRequestDetail' i.id %}">
-                                                            {{ i.ambulance_task }}
-                                                        </a>
+                                                        {% if i.task_type == "pan" %} {% if i.panic_task %}
+                                                        <a href="{% url 'check_panic_requests_location' i.panic_task.id %}">
+                                                            {{ i.panic_task.place }}
+                                                        </a> {% endif %} {% endif %}
                                                     </td>
 
                                                     <td>
-                                                        <a href="{% url 'check_panic_requests_location' i.id %}">
-                                                            {{ i.panic_task }}
-                                                        </a>
+                                                        {% if i.task_type == "HT" %} {% if i.hos_tra %}
+                                                        <a href="{% url 'details_hospital_request' i.hos_tra.id %}">
+                                                           {{ i.hos_tra }}
+                                                        </a> {% endif %} {% endif %}
                                                     </td>
-                                                    <td>.....</td>
                                                     <td>{{ i.status }}</td>
                                                     <td>{{ i.created_on }}</td>
                                                 </tr>

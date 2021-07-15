@@ -82,6 +82,17 @@
                 </table>
             </div>
         </div>
+        {% if request.user.is_staff %}
+        <div class="row">
+            <div class="col-md-10">
+                <h5>Task Description</h5>
+                <p class="form-control">{{task_data}}</p>
+            </div>
+            <div class="col-md-2">
+                <a href="{% url 'complete_panic_task' id%}" class="btn btn-warning"> Completed?</a>
+            </div>
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-md-12">
                 <div id="distance-duration">

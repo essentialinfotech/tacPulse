@@ -15,7 +15,7 @@ class AmbulanceRequestToday(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = AmbulanceModel.objects.filter(created_on__gte=today.date())
-        elif self.request.user.is_user:
+        elif not self.request.user.is_superuser and not self.request.user.is_staff:
             data = AmbulanceModel.objects.filter(user=user_id, created_on__gte=today.date())
         return data
 
@@ -27,7 +27,7 @@ class AmbulanceRequestWeek(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = AmbulanceModel.objects.filter(created_on__gte=week)
-        elif self.request.user.is_user:
+        elif not self.request.user.is_superuser and not self.request.user.is_staff:
             data = AmbulanceModel.objects.filter(user=user_id, created_on__gte=week)
         return data
 
@@ -39,7 +39,7 @@ class AmbulanceRequestMonth(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = AmbulanceModel.objects.filter(created_on__gte=month)
-        elif self.request.user.is_user:
+        elif not self.request.user.is_superuser and not self.request.user.is_staff:
             data = AmbulanceModel.objects.filter(user=user_id, created_on__gte=month)
         else:
             data = 'nothing'

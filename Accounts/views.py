@@ -408,6 +408,8 @@ class TrackDispatches(LoginRequiredMixin, View):
     def get(self, request):
         if request.user.is_superuser:
             return render(request, 'accounts/track_dispatches.html')
+        else:
+            return redirect('forbidden')
 
 
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)

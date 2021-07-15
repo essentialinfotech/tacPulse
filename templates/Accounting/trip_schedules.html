@@ -97,7 +97,31 @@
                                 <td>{{ i.end_datetime }}</td>
                                 <td>{{ i.from_loc }}</td>
                                 <td> {{i.location}}</td>
-                                <td>{{ i.status}}</td>
+                                <td>
+                                    <select name="{{i.id}}" id="id_schedule_status">
+                                        {% if i.status == 'Pending' %}
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Completed">Completed</option>
+                                        {% elif i.status == 'Approved' %}
+                                        <option value="Approved">Approved</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Completed">Completed</option>
+                                        {% elif i.status == 'Declined' %}
+                                        <option value="Declined">Declined</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Completed">Completed</option>
+                                        {% else %}    
+                                        <option value="Completed">Completed</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        {% endif %}
+                                    </select>
+                                </td>
 
                                 <td>
                                     <div style="display: flex;" class="text-center">
@@ -147,7 +171,31 @@
                                 <td>{{ i.end_datetime }}</td>
                                 <td>{{ i.from_loc }}</td>
                                 <td> {{i.location}}</td>
-                                <td>{{ i.status}}</td>
+                                <td>
+                                    <select name="{{i.id}}" id="id_schedule_status">
+                                        {% if i.status == 'Pending' %}
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Completed">Completed</option>
+                                        {% elif i.status == 'Approved' %}
+                                        <option value="Approved">Approved</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Completed">Completed</option>
+                                        {% elif i.status == 'Declined' %}
+                                        <option value="Declined">Declined</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Completed">Completed</option>
+                                        {% else %}    
+                                        <option value="Completed">Completed</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        {% endif %}
+                                    </select>
+                                </td>
 
                                 <td>
                                     <div style="display: flex;" class="text-center">
@@ -197,7 +245,29 @@
                                 <td>{{ i.end_datetime }}</td>
                                 <td>{{ i.from_loc }}</td>
                                 <td> {{i.location}}</td>
-                                <td>{{ i.status}}</td>
+                                <td> <select name="{{i.id}}" id="id_schedule_status">
+                                    {% if i.status == 'Pending' %}
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Declined">Declined</option>
+                                    <option value="Completed">Completed</option>
+                                    {% elif i.status == 'Approved' %}
+                                    <option value="Approved">Approved</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Declined">Declined</option>
+                                    <option value="Completed">Completed</option>
+                                    {% elif i.status == 'Declined' %}
+                                    <option value="Declined">Declined</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Completed">Completed</option>
+                                    {% else %}    
+                                    <option value="Completed">Completed</option>
+                                    <option value="Declined">Declined</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    {% endif %}
+                                </select></td>
 
                                 <td>
                                     <div style="display: flex;" class="text-center">
@@ -241,5 +311,22 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
+</script>
+
+<script>
+    $('#id_schedule_status').on('change', function(e) {
+        name = $('#id_schedule_status').attr('name')
+        $.ajax({
+            method: "POST",
+            url: '/api/schedule/status/change/' + name + '/',
+            data: {
+                val: this.value,
+            },
+            success: function(data) {
+                location.reload(true);
+            }
+        });
+
+    });
 </script>
 {% endblock %}

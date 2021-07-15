@@ -4,6 +4,7 @@ from django.contrib.messages.api import success
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from .models import *
+from Accounting.models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 import json
@@ -71,12 +72,6 @@ def inspaction_report(request):
     return render(request, 'medic/inspaction_report.html')
 
 
-def stock_req_form(request):
-    return render(request, 'medic/stock_req_form.html')
-
-
-def stock_req_reports(request):
-    return render(request, 'medic/stock_req_reports.html')
 
 
 def occurrence_form(request):
@@ -126,6 +121,7 @@ def common_delete(request,id):
     except:
         return HttpResponseRedirect(url)
 
+
 def edit_occurrence(request,id):
     data = Occurrence.objects.get(id=id)
     form = OccurrenceForm(instance=data)
@@ -143,10 +139,6 @@ def edit_occurrence(request,id):
         'id': id
     }
     return render(request,'medic/edit_occurence.html', context)
-
-
-def schedule_report(request):
-    return render(request, 'medic/schedule_report.html')
 
 
 @csrf_exempt
@@ -201,6 +193,7 @@ def feedbacks(request):
     }
     return render(request,'medic/feedbacks_view.html',context)
 
+
 def del_feedback(request,id):
     obj = get_object_or_404(Feedback, id=id)
     obj.delete()
@@ -229,8 +222,17 @@ class AmbulanceRequestReport(LoginRequiredMixin, View):
 class AmbulanceRequestDetail(LoginRequiredMixin, View):
     def get(self, request, pk):
         data = get_object_or_404(AmbulanceModel, pk=pk)
+        task = False
+        task_data = ''
+        if request.user.is_staff:
+            task_data = get_object_or_404(TaskModel, ambulance_task=pk)
+            if task_data.dispatch.id == request.user.id:
+                task = True
+                task_data = task_data.task_desc
         context = {
-            'data': data
+            'data': data,
+            'task': task,
+            'task_data': task_data
         }
         return render(request, 'medic/ambulancereq_detail.html', context)
 
@@ -278,6 +280,14 @@ class AmbulanceRequestDelete(LoginRequiredMixin,View):
             return redirect('ambulance_request_report')
 
 
+def ambulance_task_complete(request, pk):
+    TaskModel.objects.filter(task_type='ambr', ambulance_task=pk).update(status='Completed')
+    ambulance = get_object_or_404(AmbulanceModel, pk=pk)
+    ambulance.completed = True
+    ambulance.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def dispatch_list(request):
     return render(request, 'medic/dispatch_list.html')
 
@@ -290,7 +300,6 @@ def hospital_transfer(request):
             form.save()
             return redirect('hospital_transfer_report')
     return render(request, 'medic/hospital_transfer.html', {'form': form})
-
 
 
 def hospital_transfer_report(request):
@@ -341,7 +350,7 @@ def details_hospital_request(request, pk):
 def hospital_transfered(request, pk):
     if request.user.is_staff:
         data = get_object_or_404(HospitalTransferModel, pk=pk)
-        print(data)
+        TaskModel.objects.filter(task_type='HT', hos_tra=pk).update(status='Completed')
         data.completed = True
         data.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -380,10 +389,40 @@ def check_panic_requests(request):
 
 def check_panic_requests_location(request, id):
     context = {}
-    if request.user.is_authenticated:
+    if request.user.is_staff:
+        task = False
+        try:
+            this_panic = Panic.objects.filter(id=id)
+            panic = Panic.objects.get(id=id)
+            task_data = TaskModel.objects.filter(task_type='pan', panic_task=id)
+            for i in task_data:
+                task_data = i.task_desc
+            if task_data:
+                task = True
+
+            context = {
+                'task': task,
+                'task_data': task_data,
+                'email': panic.panic_sender.username,
+                'first_name': panic.panic_sender.first_name,
+                'contact': panic.panic_sender.contact,
+                'emergency_contact': panic.emergency_contact,
+                'reason': panic.reason,
+                'place': panic.place,
+                'timestamp': panic.timestamp,
+                'lat': panic.lat,
+                'lng': panic.lng,
+                'this_panic': this_panic,
+                'id': id,
+            }
+
+        except:
+            return HttpResponse('This panic data has been deleted/not found')
+    elif request.user.is_authenticated:
         try:
             this_panic =Panic.objects.filter(id = id)
             panic = Panic.objects.get(id=id)
+
             context = {
                 'email': panic.panic_sender.username,
                 'first_name': panic.panic_sender.first_name,
@@ -397,20 +436,23 @@ def check_panic_requests_location(request, id):
                 'this_panic':this_panic,
                 'id':id,
             }
-            print(context)
         except:
             return HttpResponse('This panic data has been deleted/not found')
+
     else:
         return HttpResponse('Please Login First')
     return render(request, 'medic/panic_location_check_admin.html', context)
 
 
-def task_transfer_req(request):
-    return render(request, 'medic/task_transfer_req.html')
-
-
-def get_route(request):
-    return render(request, 'medic/route.html')
+def complete_panic_task(request, pk):
+    if request.user.is_staff:
+        TaskModel.objects.filter(task_type='pan', panic_task=pk).update(status='Completed')
+        panic = get_object_or_404(Panic, pk=pk)
+        panic.completed = True
+        panic.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return redirect('forbidden')
 
 
 class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):

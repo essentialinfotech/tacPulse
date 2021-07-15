@@ -12,8 +12,8 @@ class ScheduleModelForm(forms.ModelForm):
         widgets = {
             'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
-            'trip': forms.Select(attrs={'class': 'form-control'})
-
+            'trip': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'})
         }
 
 

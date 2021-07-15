@@ -19,4 +19,5 @@ urlpatterns = [
     path('stock/request/month/', StockRequestMonth.as_view(), name='StockRequestMonth'),
     path('stock/requested/', StockRequested.as_view(), name='StockRequested'),
     path('stock/request/canceled/', StockRequestCanceled.as_view(), name='StockRequestCanceled'),
+    path('schedule/status/change/<int:pk>/', api_schedule_status_update , name='api_schedule_status_update'),
 ]

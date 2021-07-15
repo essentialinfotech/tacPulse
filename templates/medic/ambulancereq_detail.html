@@ -81,7 +81,7 @@
                     <div id="kt_aside_menu" class="aside-menu min-h-lg-800px" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-                            <a href="">
+                            <a href="/">
                                 <div style="display: flex;" class="ml-7"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
                                     <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
                                 </div>
@@ -289,6 +289,45 @@
 
                                 </a>
                             </li>
+
+                            <li class="menu-section">
+                                <h4 class="menu-text">Assessments</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <i class="fas fa-book-open"></i>
+										</span>
+                                    <span class="menu-text">Assessment</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'assetment_form' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Add Assessment</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'assesment_list_users' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">User Assessments</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+
+
 
                             <li class="menu-section">
                                 <h4 class="menu-text">Accounting</h4>
@@ -533,7 +572,7 @@
                                         </li>
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'schedule_report' %}" class="menu-link">
+                                            <a href="{% url 'accepted_schedule' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -551,7 +590,7 @@
                                         </li>
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'members'%}" class="menu-link">
+                                            <a href="{% url 'complete_schedule'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -985,6 +1024,8 @@
                                         <h3 class="card-label">Request Details</h3>
                                     </div>
                                     <div class="card-toolbar">
+                                        {% if not data.completed %}
+                                        <a href="{% url 'ambulance_task_complete' data.id %}" class="btn btn-warning mr-2">Completed ?</a> {% endif %}
                                         <a href="{% url 'AmbulanceTrackLocation' data.id %}" class="btn btn-light-primary font-weight-bolder mr-2">Track</a>
                                         <!-- <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
                                                 <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
@@ -1027,6 +1068,16 @@
                                                     <h2>{{data.reason}}</h2>
                                                 </div>
                                             </div>
+                                            {% if task %}
+                                            <div class="detail_field">
+                                                <div class="detail_parent">
+                                                    <h2>Task Details</h2>
+                                                </div>
+                                                <div class="detail_child ml-4">
+                                                    <h2>{{task_data}}</h2>
+                                                </div>
+                                            </div>
+                                            {% endif%}
                                         </div>
                                         <div class="col-md-6">
 

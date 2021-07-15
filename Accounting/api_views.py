@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -198,6 +200,24 @@ class StockRequestCanceled(ListAPIView):
             data = {'data': 'nothing'}
         return data
 
+
+@csrf_exempt
+def api_schedule_status_update(request, pk):
+    if request.method == 'POST':
+        data = get_object_or_404(ScheduleModel, pk=pk)
+        val = request.POST.get('val')
+        if val == 'Pending':
+            data.status = 'Pending'
+        elif val == 'Approved':
+            data.status = 'Approved'
+        elif val == 'Declined':
+            data.status = 'Declined'
+            task = get_object_or_404(TaskModel, scheduled_task=pk)
+            task.delete()
+        else:
+            data.status = 'Completed'
+        data.save()
+        return HttpResponse('Ok')
 
 
 

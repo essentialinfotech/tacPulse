@@ -126,11 +126,8 @@ class TaskModel(models.Model):
 
 class TaskTransferModel(models.Model):
     dispatch = models.ForeignKey(User, on_delete=models.CASCADE)
-    transferred_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='by', blank=True, null=True)
-    task = models.ForeignKey(
-        TaskModel, on_delete=models.CASCADE, blank=True, null=True)
+    transferred_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='by', blank=True, null=True)
+    task = models.ForeignKey(TaskModel, on_delete=models.CASCADE, blank=True, null=True)
     transfer_reason = models.TextField(max_length=100, blank=False, null=False)
-    transfer_to = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='to')
+    transfer_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to')
     created_on = models.DateTimeField(auto_now_add=True)

@@ -54,6 +54,9 @@ class ScheduleTrip(LoginRequiredMixin, View):
 class TripSchedules(LoginRequiredMixin, View):
     def get(self, request):
         title = "Schedule Requests"
+        daily = ''
+        weekly = ''
+        monthly = ''
         if self.request.user.is_superuser:
             daily = ScheduleModel.objects.filter(
                 created_on__gte=today.date()).order_by('-id')
@@ -61,15 +64,7 @@ class TripSchedules(LoginRequiredMixin, View):
                 created_on__gte=week).order_by('-id')
             monthly = ScheduleModel.objects.filter(
                 created_on__gte=month).order_by('-id')
-        elif self.request.user.is_staff:
-            user_id = request.user.id
-            daily = ScheduleModel.objects.filter(
-                dispatch=user_id, created_on__gte=today.date()).order_by('-id')
-            weekly = ScheduleModel.objects.filter(
-                dispatch=user_id, created_on__gte=week).order_by('-id')
-            monthly = ScheduleModel.objects.filter(
-                dispatch=user_id, created_on__gte=month).order_by('-id')
-        else:
+        elif not self.request.user.is_staff and not self.request.user.is_superuser:
             user_id = request.user.id
             daily = ScheduleModel.objects.filter(
                 user=user_id, created_on__gte=today.date()).order_by('-id')
@@ -393,7 +388,26 @@ class TransferTask(LoginRequiredMixin, View):
 
 class TransferredTasks(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'Accounting/transfered_tasks.html')
+        daily = ''
+        weekly = ''
+        monthly = ''
+        if request.user.is_superuser:
+            daily = TaskTransferModel.objects.filter(created_on__gte=today.date())
+            weekly = TaskTransferModel.objects.filter(created_on__gte=week)
+            monthly = TaskTransferModel.objects.filter(created_on__gte=month)
+        if request.user.is_staff and not request.user.is_superuser:
+            user_id = request.user.id
+            print('ok')
+            daily = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=today.date())
+            weekly = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=week)
+            monthly = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=month)
+        context = {
+           'daily': daily,
+           'weekly': weekly,
+           'monthly': monthly
+        }
+        context
+        return render(request, 'Accounting/transfered_tasks.html', context)
 
 
 def add_paystub(request):

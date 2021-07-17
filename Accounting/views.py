@@ -392,19 +392,23 @@ class TransferredTasks(LoginRequiredMixin, View):
         weekly = ''
         monthly = ''
         if request.user.is_superuser:
-            daily = TaskTransferModel.objects.filter(created_on__gte=today.date())
+            daily = TaskTransferModel.objects.filter(
+                created_on__gte=today.date())
             weekly = TaskTransferModel.objects.filter(created_on__gte=week)
             monthly = TaskTransferModel.objects.filter(created_on__gte=month)
         if request.user.is_staff and not request.user.is_superuser:
             user_id = request.user.id
             print('ok')
-            daily = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=today.date())
-            weekly = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=week)
-            monthly = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=month)
+            daily = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=today.date())
+            weekly = TaskTransferModel.objects.filter(
+                Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=week)
+            monthly = TaskTransferModel.objects.filter(
+                Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=month)
         context = {
-           'daily': daily,
-           'weekly': weekly,
-           'monthly': monthly
+            'daily': daily,
+            'weekly': weekly,
+            'monthly': monthly
         }
         context
         return render(request, 'Accounting/transfered_tasks.html', context)

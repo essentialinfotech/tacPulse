@@ -218,8 +218,31 @@ class AmbulanceRequest(View):
 
 
 class AmbulanceRequestReport(LoginRequiredMixin, View):
+    from datetime import datetime, timedelta
+
+    today = datetime.today()
+    week = datetime.today().date() - timedelta(days=7)
+    month = datetime.today().date() - timedelta(days=30)
+
     def get(self, request):
-        return render(request, 'medic/ambulance_request_report.html')
+        monthly=''
+        daily=''
+        weekly=''
+        user_id = request.user.id
+        if self.request.user.is_superuser:
+            daily = AmbulanceModel.objects.filter(created_on__gte=self.today.date())
+            weekly = AmbulanceModel.objects.filter(created_on__gte=self.week)
+            monthly = AmbulanceModel.objects.filter(created_on__gte=self.month)
+        elif not self.request.user.is_superuser and not self.request.user.is_staff:
+            daily = AmbulanceModel.objects.filter(user=user_id, created_on__gte=self.today.date())
+            weekly = AmbulanceModel.objects.filter(user=user_id, created_on__gte=self.week)
+            monthly = AmbulanceModel.objects.filter(user=user_id, created_on__gte=self.month)
+        context = {
+            'weekly': weekly,
+            'daily': daily,
+            'monthly': monthly
+        }
+        return render(request, 'medic/ambulance_request_report.html', context)
 
 
 class AmbulanceRequestDetail(LoginRequiredMixin, View):
@@ -227,11 +250,16 @@ class AmbulanceRequestDetail(LoginRequiredMixin, View):
         data = get_object_or_404(AmbulanceModel, pk=pk)
         task = False
         task_data = ''
+        desc = ''
+        dispatch_id= ''
         if request.user.is_staff:
-            task_data = get_object_or_404(TaskModel, ambulance_task=pk)
-            if task_data.dispatch.id == request.user.id:
+            task_data = TaskModel.objects.filter(task_type='ambr', ambulance_task=pk)
+            for i in task_data:
+                dispatch_id = i.dispatch.id
+                desc = i.task_desc
+            if dispatch_id == request.user.id:
                 task = True
-                task_data = task_data.task_desc
+                task_data = desc
         context = {
             'data': data,
             'task': task,

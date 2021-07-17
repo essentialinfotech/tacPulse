@@ -44,8 +44,10 @@
     <!--begin::Header Mobile-->
     <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
         <!--begin::Logo-->
-        <a href="">
-            <img alt="Logo" src="{% static 'images/logo.png'%}" class="logo-default max-h-30px" />
+        <a href="/">
+            <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
+            </div>
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -86,6 +88,9 @@
                                     <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
                                 </div>
                             </a>
+
+
+                            {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Inspection</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -122,6 +127,11 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %} {% if request.user.is_superuser %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Occurrence</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -154,6 +164,11 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %} {% if request.user.is_superuser %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Cases</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -178,7 +193,7 @@
                                     </ul>
                                 </div>
                             </li>
-
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Audit</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -216,11 +231,12 @@
                                     </ul>
                                 </div>
                             </li>
-
+                            {% endif %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Task</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
+                            {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'task_create' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -232,7 +248,7 @@
 
                                 </a>
                             </li>
-
+                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -245,6 +261,7 @@
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
+
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'task_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -265,6 +282,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -279,6 +297,7 @@
 
                                 </a>
                             </li>
+
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -290,6 +309,7 @@
                                 </a>
                             </li>
 
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Assessments</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -326,6 +346,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
 
 
 
@@ -333,7 +354,9 @@
                                 <h4 class="menu-text">Accounting</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
+                            {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
@@ -365,6 +388,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -377,6 +401,8 @@
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
+
+                                        {% if request.user.is_superuser %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'add_package'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -385,6 +411,7 @@
                                                 <span class="menu-text">Add Packages</span>
                                             </a>
                                         </li>
+                                        {% endif %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'packages'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -439,6 +466,7 @@
                                 </div>
                             </li>
 
+                            {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -471,12 +499,14 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
 
 
                             <li class="menu-section">
                                 <h4 class="menu-text">Request</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
+                            {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -517,6 +547,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -567,7 +598,7 @@
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                         </i>
-                                                <span class="menu-text">Request for Schecdule</span>
+                                                <span class="menu-text">Request for Schedule</span>
                                             </a>
                                         </li>
 
@@ -581,11 +612,11 @@
                                         </li>
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'trip_schedules'%}" class="menu-link">
+                                            <a href="{% url 'trip_schedules' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Schecduled requests</span>
+                                                <span class="menu-text">Schedule requests</span>
                                             </a>
                                         </li>
 
@@ -594,7 +625,7 @@
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text">Completed Schecdules</span>
+                                                <span class="menu-text">Completed Schedules</span>
                                             </a>
                                         </li>
 
@@ -663,6 +694,7 @@
                                         </li>
                                     </ul>
                                 </div>
+                                {% if request.user.is_superuser %}
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
@@ -675,6 +707,7 @@
                                         </li>
                                     </ul>
                                 </div>
+                                {% endif %}
                             </li>
 
                             <li class="menu-section">
@@ -694,19 +727,21 @@
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
+                                        {% if request.user.is_superuser %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'create_faq'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"></i>
                                                 <span class="menu-text">Create FAQ</span>
                                             </a>
                                         </li>
-
+                                        {% endif %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'faq'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"></i>
                                                 <span class="menu-text">FAQ</span>
                                             </a>
                                         </li>
+
                                     </ul>
                                 </div>
                             </li>
@@ -743,8 +778,10 @@
 								</button>
                             <!--end::Aside Toggle-->
                             <!--begin::Logo-->
-                            <a href="">
-                                <img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-sticky max-h-35px" />
+                            <a href="/">
+                                <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                                    <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
+                                </div>
                             </a>
                             <!--end::Logo-->
                             <!--begin::Desktop Search-->
@@ -1024,8 +1061,8 @@
                                         <h3 class="card-label">Request Details</h3>
                                     </div>
                                     <div class="card-toolbar">
-                                        {% if not data.completed %}
-                                        <a href="{% url 'ambulance_task_complete' data.id %}" class="btn btn-warning mr-2">Completed ?</a> {% endif %}
+                                        {% if request.user.is_staff %} {% if not data.completed %}
+                                        <a href="{% url 'ambulance_task_complete' data.id %}" class="btn btn-warning mr-2">Completed ?</a> {% endif %} {%endif%}
                                         <a href="{% url 'AmbulanceTrackLocation' data.id %}" class="btn btn-light-primary font-weight-bolder mr-2">Track</a>
                                         <!-- <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
                                                 <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
@@ -1071,7 +1108,7 @@
                                             {% if task %}
                                             <div class="detail_field">
                                                 <div class="detail_parent">
-                                                    <h2>Task Details</h2>
+                                                    <h2>Task Details:</h2>
                                                 </div>
                                                 <div class="detail_child ml-4">
                                                     <h2>{{task_data}}</h2>

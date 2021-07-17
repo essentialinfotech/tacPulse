@@ -22,7 +22,7 @@ class ScheduleToday(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = ScheduleModel.objects.filter(created_on__gte=today.date())
-        elif self.request.user.is_user:
+        elif self.request.user.is_staff:
             data = ScheduleModel.objects.filter(
                 user=user_id, created_on__gte=today.date())
         else:
@@ -37,7 +37,7 @@ class ScheduleWeek(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = ScheduleModel.objects.filter(created_on__gte=week)
-        elif self.request.user.is_user:
+        elif self.request.user.is_staff:
             data = ScheduleModel.objects.filter(
                 user=user_id, created_on__gte=week)
         else:
@@ -52,7 +52,7 @@ class ScheduleMonth(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = ScheduleModel.objects.filter(created_on__gte=month)
-        elif self.request.user.is_user:
+        elif self.request.user.is_staff:
             data = ScheduleModel.objects.filter(
                 user=user_id, created_on__gte=month)
         else:
@@ -82,7 +82,7 @@ class TaskWeek(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = TaskModel.objects.filter(created_on__gte=week)
-        elif self.request.user.is_user:
+        elif self.request.user.is_staff:
             data = TaskModel.objects.filter(user=user_id, created_on__gte=week)
         else:
             data = {'data': 'nothing'}
@@ -96,7 +96,7 @@ class TaskMonth(ListAPIView):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
             data = TaskModel.objects.filter(created_on__gte=month)
-        elif self.request.user.is_user:
+        elif self.request.user.is_staff:
             data = TaskModel.objects.filter(
                 user=user_id, created_on__gte=month)
         else:
@@ -113,7 +113,8 @@ class TransferredToday(ListAPIView):
             data = TaskTransferModel.objects.filter(
                 created_on__gte=today.date())
         elif self.request.user.is_staff:
-            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=month)
+            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=month)
         else:
             data = {'data': 'nothing'}
         return data
@@ -127,7 +128,8 @@ class TransferredWeek(ListAPIView):
         if self.request.user.is_superuser:
             data = TaskTransferModel.objects.filter(created_on__gte=week)
         elif self.request.user.is_staff:
-            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=month)
+            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=month)
 
         else:
             data = {'data': 'nothing'}
@@ -142,7 +144,8 @@ class TransferredMonth(ListAPIView):
         if self.request.user.is_superuser:
             data = TaskTransferModel.objects.filter(created_on__gte=month)
         elif self.request.user.is_staff:
-            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=month)
+            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=month)
         else:
             data = {'data': 'nothing'}
         return data

@@ -98,6 +98,7 @@
                                 <td>{{ i.from_loc }}</td>
                                 <td> {{i.location}}</td>
                                 <td>
+                                    {% if request.user.is_superuser %}
                                     <select name="{{i.id}}" id="id_schedule_status">
                                         {% if i.status == 'Pending' %}
                                         <option value="Pending">Pending</option>
@@ -121,6 +122,9 @@
                                         <option value="Approved">Approved</option>
                                         {% endif %}
                                     </select>
+                                    {% else %}
+                                    {{ i.status }}
+                                    {% endif %}
                                 </td>
 
                                 <td>
@@ -172,6 +176,7 @@
                                 <td>{{ i.from_loc }}</td>
                                 <td> {{i.location}}</td>
                                 <td>
+                                    {% if request.user.is_superuser %}
                                     <select name="{{i.id}}" id="id_schedule_status">
                                         {% if i.status == 'Pending' %}
                                         <option value="Pending">Pending</option>
@@ -195,6 +200,9 @@
                                         <option value="Approved">Approved</option>
                                         {% endif %}
                                     </select>
+                                    {% else %}
+                                    {{ i.status }}
+                                    {% endif %}
                                 </td>
 
                                 <td>
@@ -245,29 +253,35 @@
                                 <td>{{ i.end_datetime }}</td>
                                 <td>{{ i.from_loc }}</td>
                                 <td> {{i.location}}</td>
-                                <td> <select name="{{i.id}}" id="id_schedule_status">
-                                    {% if i.status == 'Pending' %}
-                                    <option value="Pending">Pending</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Declined">Declined</option>
-                                    <option value="Completed">Completed</option>
-                                    {% elif i.status == 'Approved' %}
-                                    <option value="Approved">Approved</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Declined">Declined</option>
-                                    <option value="Completed">Completed</option>
-                                    {% elif i.status == 'Declined' %}
-                                    <option value="Declined">Declined</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Completed">Completed</option>
-                                    {% else %}    
-                                    <option value="Completed">Completed</option>
-                                    <option value="Declined">Declined</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Approved">Approved</option>
+                                <td>
+                                    {% if request.user.is_superuser %}
+                                    <select name="{{i.id}}" id="id_schedule_status">
+                                        {% if i.status == 'Pending' %}
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Completed">Completed</option>
+                                        {% elif i.status == 'Approved' %}
+                                        <option value="Approved">Approved</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Completed">Completed</option>
+                                        {% elif i.status == 'Declined' %}
+                                        <option value="Declined">Declined</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Completed">Completed</option>
+                                        {% else %}    
+                                        <option value="Completed">Completed</option>
+                                        <option value="Declined">Declined</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        {% endif %}
+                                    </select>
+                                    {% else %}
+                                    {{ i.status }}
                                     {% endif %}
-                                </select></td>
+                                </td>
 
                                 <td>
                                     <div style="display: flex;" class="text-center">

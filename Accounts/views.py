@@ -39,6 +39,18 @@ def regex_validation(number):
 @login_required
 def dashboard(request):
     if request.user.is_superuser:
+        ambulance_requests_monthly = AmbulanceModel.objects.filter(created_on__month = this_month)
+        ambulance_requests_monthly = len(ambulance_requests_monthly)
+
+        ambulance_requests_daily = AmbulanceModel.objects.filter(created_on__date = this_day)
+        ambulance_requests_daily = len(ambulance_requests_daily)
+
+        panic_requests_daily = Panic.objects.filter(timestamp__date = this_day)
+        panic_requests_daily = len(panic_requests_daily)
+
+        total_customers = User.objects.filter(is_superuser = False,is_staff = False,is_active = True).count()
+        total_dispatch = User.objects.filter(is_superuser = False,is_staff = True,is_active = True).count()
+
         deactivated_users = User.objects.filter(is_active=False)
         rating = Rating.objects.all()
         star1 = False
@@ -98,7 +110,12 @@ def dashboard(request):
             'star3_5': star3_5,
             'star4_5': star4_5,
             'deactivated_users': deactivated_users,
-            'hos_transfer': hos_transfer
+            'hos_transfer': hos_transfer,
+            'ambulance_requests_monthly': ambulance_requests_monthly,
+            'ambulance_requests_daily': ambulance_requests_daily,
+            'panic_requests_daily': panic_requests_daily,
+            'total_customers': total_customers,
+            'total_dispatch': total_dispatch,
         }
         return render(request, 'accounts/admin_dashboard.html', context)
 

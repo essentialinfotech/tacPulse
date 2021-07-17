@@ -78,12 +78,12 @@ class TripSchedules(LoginRequiredMixin, View):
             monthly = ScheduleModel.objects.filter(
                 user=user_id, created_on__gte=month).order_by('-id')
 
-            context = {
-                'title': title,
-                'daily': daily,
-                'weekly': weekly,
-                'monthly': monthly
-            }
+        context = {
+            'title': title,
+            'daily': daily,
+            'weekly': weekly,
+            'monthly': monthly
+        }
         return render(request, 'Accounting/trip_schedules.html', context)
 
 

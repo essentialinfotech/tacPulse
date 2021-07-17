@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.views.decorators.csrf import csrf_exempt
 
 today = datetime.today()
@@ -23,7 +23,8 @@ class ScheduleToday(ListAPIView):
         if self.request.user.is_superuser:
             data = ScheduleModel.objects.filter(created_on__gte=today.date())
         elif self.request.user.is_staff:
-            data = ScheduleModel.objects.filter(user=user_id, created_on__gte=today.date())
+            data = ScheduleModel.objects.filter(
+                user=user_id, created_on__gte=today.date())
         else:
             data = {'data': 'nothing'}
         return data
@@ -37,7 +38,8 @@ class ScheduleWeek(ListAPIView):
         if self.request.user.is_superuser:
             data = ScheduleModel.objects.filter(created_on__gte=week)
         elif self.request.user.is_staff:
-            data = ScheduleModel.objects.filter(user=user_id, created_on__gte=week)
+            data = ScheduleModel.objects.filter(
+                user=user_id, created_on__gte=week)
         else:
             data = {'data': 'nothing'}
         return data
@@ -51,7 +53,8 @@ class ScheduleMonth(ListAPIView):
         if self.request.user.is_superuser:
             data = ScheduleModel.objects.filter(created_on__gte=month)
         elif self.request.user.is_staff:
-            data = ScheduleModel.objects.filter(user=user_id, created_on__gte=month)
+            data = ScheduleModel.objects.filter(
+                user=user_id, created_on__gte=month)
         else:
             data = {'data': 'nothing'}
         return data
@@ -65,7 +68,8 @@ class TaskToday(ListAPIView):
         if self.request.user.is_superuser:
             data = TaskModel.objects.filter(created_on__gte=today.date())
         elif self.request.user.is_staff:
-            data = TaskModel.objects.filter(user=user_id, created_on__gte=today.date())
+            data = TaskModel.objects.filter(
+                user=user_id, created_on__gte=today.date())
         else:
             data = {'data': 'nothing'}
         return data
@@ -93,7 +97,8 @@ class TaskMonth(ListAPIView):
         if self.request.user.is_superuser:
             data = TaskModel.objects.filter(created_on__gte=month)
         elif self.request.user.is_staff:
-            data = TaskModel.objects.filter(user=user_id, created_on__gte=month)
+            data = TaskModel.objects.filter(
+                user=user_id, created_on__gte=month)
         else:
             data = {'data': 'nothing'}
         return data
@@ -105,9 +110,11 @@ class TransferredToday(ListAPIView):
     def get_queryset(self):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
-            data = TaskTransferModel.objects.filter(created_on__gte=today.date())
+            data = TaskTransferModel.objects.filter(
+                created_on__gte=today.date())
         elif self.request.user.is_staff:
-            data = TaskTransferModel.objects.filter(Q(dispatch=user_id) or Q(transfer_to=user_id), created_on__gte=month).values('id').distinct() 
+            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=month)
         else:
             data = {'data': 'nothing'}
         return data
@@ -121,7 +128,9 @@ class TransferredWeek(ListAPIView):
         if self.request.user.is_superuser:
             data = TaskTransferModel.objects.filter(created_on__gte=week)
         elif self.request.user.is_staff:
-            data = TaskTransferModel.objects.filter(Q(dispatch=user_id) or Q(transfer_to=user_id), created_on__gte=month).values('id').distinct()
+            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=month)
+
         else:
             data = {'data': 'nothing'}
         return data
@@ -135,7 +144,8 @@ class TransferredMonth(ListAPIView):
         if self.request.user.is_superuser:
             data = TaskTransferModel.objects.filter(created_on__gte=month)
         elif self.request.user.is_staff:
-            data = TaskTransferModel.objects.filter(Q(dispatch=user_id) or Q(transfer_to=user_id), created_on__gte=month).values('id').distinct()
+            data = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=month)
         else:
             data = {'data': 'nothing'}
         return data
@@ -147,7 +157,8 @@ class StockRequestToday(ListAPIView):
     def get_queryset(self):
         user_id = self.request.user.id
         if self.request.user.is_superuser:
-            data = StockRequestModel.objects.filter(created_on__gte=today.date())
+            data = StockRequestModel.objects.filter(
+                created_on__gte=today.date())
         else:
             data = {'data': 'nothing'}
         return data
@@ -218,6 +229,3 @@ def api_schedule_status_update(request, pk):
             data.status = 'Completed'
         data.save()
         return HttpResponse('Ok')
-
-
-

@@ -129,10 +129,11 @@
 
                                         <a href="{% url 'delete_task' i.id %}">
                                             <i class="fas fa-trash-alt text-hover-primary mr-2"></i>
-                                        </a> {% else %}
+                                        </a> {% else %} {% if i.status == "Transferred" or i.status == "Completed"%} {%else%}
                                         <a href="{% url 'transfer_task' i.id %}">
                                             <i class="fas fa-exchange-alt"></i>
-                                        </a> {% endif %}
+                                        </a>
+                                        {% endif %}{% endif %}
 
 
                                     </div>
@@ -207,10 +208,11 @@
 
                                         <a href="{% url 'delete_task' i.id %}">
                                             <i class="fas fa-trash-alt text-hover-primary mr-2"></i>
-                                        </a> {% else %}
+                                        </a> {% else %} {% if i.status == "Transferred" or i.status == "Completed"%} {%else%}
                                         <a href="{% url 'transfer_task' i.id %}">
                                             <i class="fas fa-exchange-alt"></i>
-                                        </a> {% endif %}
+                                        </a>
+                                        {% endif %} {% endif %}
 
 
                                     </div>
@@ -284,10 +286,11 @@
 
                                         <a href="{% url 'delete_task' i.id %}">
                                             <i class="fas fa-trash-alt text-hover-primary mr-2"></i>
-                                        </a> {% else %}
+                                        </a> {% else %} {% if i.status == "Transferred" or i.status == "Completed"%} {%else%}
                                         <a href="{% url 'transfer_task' i.id %}">
                                             <i class="fas fa-exchange-alt"></i>
-                                        </a> {% endif %}
+                                        </a>
+                                        {% endif %}{% endif %}
 
 
                                     </div>

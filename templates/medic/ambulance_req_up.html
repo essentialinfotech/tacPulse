@@ -224,7 +224,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %} 
+                            {% endif %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Task</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -241,9 +241,7 @@
 
                                 </a>
                             </li>
-                            {% endif %}
-                            
-                            {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -256,7 +254,7 @@
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
-                                        
+
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'task_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -273,7 +271,7 @@
                                                 <span class="menu-text">Transfer Reports</span>
                                             </a>
                                         </li>
-                                        
+
                                     </ul>
                                 </div>
                             </li>
@@ -2483,38 +2481,7 @@
 			</span>
                 </div>
                 <!--end::Scrolltop-->
-                <!--begin::Sticky Toolbar-->
-                <ul class="sticky-toolbar nav flex-column pl-2 pr-2 pt-3 pb-3 mt-4">
-                    <!--begin::Item-->
-                    <li class="nav-item mb-2" id="kt_demo_panel_toggle" data-toggle="tooltip" title="Check out more demos" data-placement="right">
-                        <a class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" href="#">
-                            <i class="flaticon2-drop"></i>
-                        </a>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="nav-item mb-2" data-toggle="tooltip" title="Layout Builder" data-placement="left">
-                        <a class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" href="">
-                            <i class="flaticon2-gear"></i>
-                        </a>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="nav-item mb-2" data-toggle="tooltip" title="Documentation" data-placement="left">
-                        <a class="btn btn-sm btn-icon btn-bg-light btn-icon-warning btn-hover-warning" href="">
-                            <i class="flaticon2-telegram-logo"></i>
-                        </a>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="nav-item" id="kt_sticky_toolbar_chat_toggler" data-toggle="tooltip" title="Chat Example" data-placement="left">
-                        <a class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-danger" href="#" data-toggle="modal" data-target="#kt_chat_modal">
-                            <i class="flaticon2-chat-1"></i>
-                        </a>
-                    </li>
-                    <!--end::Item-->
-                </ul>
-                <!--end::Sticky Toolbar-->
+
                 <!--begin::Demo Panel-->
                 <div id="kt_demo_panel" class="offcanvas offcanvas-right p-10">
                     <!--begin::Header-->

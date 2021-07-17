@@ -489,6 +489,8 @@ def stock_request(request):
 
 def cancel_stock_request(request):
     form = StockRequestForm()
+    rcv = StockRequestModel.objects.filter(
+        requested=True).values('receiver').distinct()
     if request.method == 'POST':
         form = StockRequestForm(request.POST, request.FILES)
         if form.is_valid():
@@ -508,7 +510,7 @@ def cancel_stock_request(request):
 
             except:
                 return HttpResponse('Something Went Wrong')
-    return render(request, 'Accounting/cancel_stock_req.html', {'form': form})
+    return render(request, 'Accounting/cancel_stock_req.html', {'form': form, 'rcv': rcv})
 
 
 class StockRequest(LoginRequiredMixin, View):

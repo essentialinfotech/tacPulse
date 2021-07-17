@@ -32,12 +32,6 @@
             </div>
             {% endif %}
             </a>
-            <!-- {% if request.user.is_user %}
-            <div class="row">
-                <div class="col-md-10"></div>
-                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
-            </div>
-            {% endif %} -->
             <input type="text" id="admin_check" value="{{request.user.is_superuser}}">
             <input type="text" id="dispatch_check" value="{{request.user.is_staff}}">
             <input type="text" id="user_id" value="{{request.user.id}}">

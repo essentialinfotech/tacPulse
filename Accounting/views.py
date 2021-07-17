@@ -64,11 +64,11 @@ class TripSchedules(LoginRequiredMixin, View):
         elif self.request.user.is_staff:
             user_id = request.user.id
             daily = ScheduleModel.objects.filter(
-                dispatch=user_id, created_on__gte=today.date()).order_by('-id')
+                user=user_id, created_on__gte=today.date()).order_by('-id')
             weekly = ScheduleModel.objects.filter(
-                dispatch=user_id, created_on__gte=week).order_by('-id')
+                user=user_id, created_on__gte=week).order_by('-id')
             monthly = ScheduleModel.objects.filter(
-                dispatch=user_id, created_on__gte=month).order_by('-id')
+                user=user_id, created_on__gte=month).order_by('-id')
         else:
             user_id = request.user.id
             daily = ScheduleModel.objects.filter(

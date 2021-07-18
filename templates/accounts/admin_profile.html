@@ -226,7 +226,7 @@
                                                 <td>{{ i.contact }}</td>
                                                 <td>{{ i.email }}</td>
                                                 <td>
-                                                    {{ i.reason }}
+                                                    <a href="{% url 'AmbulanceRequestDetail' i.id %}">View</a>
                                                 </td>
                                                 <td>{{ i.location }}</td>
                                                 <td>{{ i.created_on }}</td>
@@ -253,7 +253,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- daily -->
+                                            
                                             <!-- monthly -->
                                             {% for i in monthly_req %}
                                             <tr>
@@ -263,7 +263,7 @@
                                                 <td>{{ i.contact }}</td>
                                                 <td>{{ i.email }}</td>
                                                 <td>
-                                                    {{ i.reason }}
+                                                    <a href="{% url 'AmbulanceRequestDetail' i.id %}">View</a>
                                                 </td>
                                                 <td>{{ i.location }}</td>
                                                 <td>{{ i.created_on }}</td>

@@ -312,160 +312,45 @@
                     <div class="card card-custom bg-light-success gutter-b card-stretch card-shadowless">
                         <!--begin::Header-->
                         <div class="card-header border-0">
-                            <h3 class="card-title font-weight-bolder text-success">Demo Panic Requestss</h3>
-                            <div class="card-toolbar">
-                                <div class="dropdown dropdown-inline">
-                                    <a href="#" class="btn btn-clean btn-hover-success btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="ki ki-bold-more-ver text-success"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-                                        <!--begin::Naviigation-->
-                                        <ul class="navi">
-                                            <li class="navi-header font-weight-bold py-5">
-                                                <span class="font-size-lg">Add New:</span>
-                                                <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
-                                            </li>
-                                            <li class="navi-separator mb-3 opacity-70"></li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-shopping-cart-1"></i>
-                                                    </span>
-                                                    <span class="navi-text">Order</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="navi-icon flaticon2-calendar-8"></i>
-                                                    </span>
-                                                    <span class="navi-text">Members</span>
-                                                    <span class="navi-label">
-                                                        <span
-                                                            class="label label-light-danger label-rounded font-weight-bold">3</span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="navi-icon flaticon2-telegram-logo"></i>
-                                                    </span>
-                                                    <span class="navi-text">Project</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="navi-icon flaticon2-new-email"></i>
-                                                    </span>
-                                                    <span class="navi-text">Record</span>
-                                                    <span class="navi-label">
-                                                        <span
-                                                            class="label label-light-success label-rounded font-weight-bold">5</span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-separator mt-3 opacity-70"></li>
-                                            <li class="navi-footer pt-5 pb-4">
-                                                <a class="btn btn-light-primary font-weight-bolder btn-sm" href="#">More
-                                                    options</a>
-                                                <a class="btn btn-clean font-weight-bold btn-sm d-none" href="#" data-toggle="tooltip" data-placement="right" title="Click to learn more...">Learn more</a>
-                                            </li>
-                                        </ul>
-                                        <!--end::Naviigation-->
-                                    </div>
-                                </div>
-                            </div>
+                            <h3 class="card-title font-weight-bolder text-success">Deactivated Users</h3>
                         </div>
                         <!--end::Header-->
                         <!--begin::Body-->
-                        <div class="card-body pt-2">
+                        <div class="card-body pt-2" style="height: 400px; overflow-y: scroll;">
                             <!--begin::Item-->
-                            <div class="d-flex align-items-center mb-10">
+                            {% for i in deactivated_users %}
+                            <div class="d-flex align-items-center mb-10" >
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-40 symbol-light-white mr-5">
                                     <div class="symbol-label">
-                                        <img src="assets/media/svg/avatars/004-boy-1.svg" class="h-75 align-self-end" alt="" />
+                                        <img src="{{ i.imageURL }}" class="h-75 align-self-end" alt="" />
                                     </div>
                                 </div>
                                 <!--end::Symbol-->
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column font-weight-bold">
-                                    <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Ricky Hunt</a>
-                                    <span class="text-muted">Dispatch</span>
+                                    <a href="{% url 'profile' i.id %}" class="text-dark text-hover-primary mb-1 font-size-lg">{{ i.first_name|title }} {{ i.last_name|title }}</a>
+                                    <span class="text-muted">{{ i.contact }}</span>
                                 </div>
-                                <!--end::Text-->
-                            </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center mb-10">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light-white mr-5">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/svg/avatars/002-girl.svg" class="h-75 align-self-end" alt="" />
+                                <div class="card-toolbar">
+                                    <div class="dropdown dropdown-inline">
+                                        <a href="#" class="btn btn-clean btn-hover-success btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="ki ki-bold-more-ver text-success"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                                            <!--begin::Naviigation-->
+                                            <ul class="navi">
+                                                <li class="navi-header font-weight-bold py-5">
+                                                    <a href="{% url 'activate' i.id %}">Activate</a>
+                                                </li>
+                                            </ul>
+                                            <!--end::Naviigation-->
+                                        </div>
                                     </div>
                                 </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column font-weight-bold">
-                                    <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Anne Clarc</a>
-                                    <span class="text-muted">Dispatch</span>
-                                </div>
                                 <!--end::Text-->
                             </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center mb-10">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light-white mr-5">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/svg/avatars/007-boy-2.svg" class="h-75 align-self-end" alt="" />
-                                    </div>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column font-weight-bold">
-                                    <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Kristaps
-                                        Zumman</a>
-                                    <span class="text-muted">Dispatch</span>
-                                </div>
-                                <!--end::Text-->
-                            </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center mb-10">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light-white mr-5">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/svg/avatars/008-boy-3.svg" class="h-75 align-self-end" alt="" />
-                                    </div>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column font-weight-bold">
-                                    <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Randy Trent</a>
-                                    <span class="text-muted">Dispatch</span>
-                                </div>
-                                <!--end::Text-->
-                            </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center mb-2">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light-white mr-5">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/svg/avatars/009-boy-4.svg" class="h-75 align-self-end" alt="" />
-                                    </div>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column font-weight-bold">
-                                    <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Carles Puyol</a>
-                                    <span class="text-muted">Dispatch</span>
-                                </div>
-                                <!--end::Text-->
-                            </div>
+                            {% endfor %}
                             <!--end::Item-->
                         </div>
                         <!--end::Body-->

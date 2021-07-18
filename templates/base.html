@@ -230,12 +230,17 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} 
 
+                            
+                            {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Task</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
+
+
+
                             {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'task_create' %}" class="menu-link menu-toggle">
@@ -248,7 +253,9 @@
 
                                 </a>
                             </li>
-                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} 
+                            
+                            {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -280,7 +287,12 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %}{% endif %} {% if request.user.is_superuser %}
+                            {% endif %}{% endif %} 
+
+
+
+                            
+                            {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

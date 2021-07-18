@@ -76,7 +76,11 @@
         <div class="row">
             <div class="col-md-10">
                 <h5>Task Description</h5>
+                {% if task_data %}
                 <p class="form-control">{{task_data}}</p>
+                {% else %}
+                <p class="form-control">Not Assigned</p>
+                {% endif %}
             </div>
             <div class="col-md-2">
                 <a href="{% url 'complete_panic_task' id%}" class="btn btn-warning"> Completed?</a>
@@ -103,6 +107,7 @@
             <div class="col-md-12">
                 <div style="height: 100vh;">
                     <div id="map"></div>
+                    <u> <a href="{% url 'dashboard' %}">Go back</a> </u>
                 </div>
             </div>
         </div>

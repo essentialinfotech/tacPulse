@@ -400,7 +400,10 @@ def panic_system(request):
         lng = request.POST.get('lng')
         place = request.POST.get('place')
         my_panic = Panic.objects.create(panic_sender_id=request.user.id, emergency_contact = emergency_contact , reason=reason, place = place ,lat=lat, lng=lng)
-        return redirect('check_panic_requests_location', id=my_panic.id)
+        if request.user.is_staff:
+            return redirect('check_panic_requests_location', id=my_panic.id)
+        else:
+            return HttpResponse('Panic request sent successfully')
     return render(request, 'medic/panic.html', {'panic': panic})
 
 

@@ -42,4 +42,8 @@ urlpatterns = [
     path('add/package/', add_package, name='add_package'),
     path('edit/package/<hashid:id>/', edit_package, name='edit_package'),
     path('delete/package/<hashid:id>/', del_package, name='del_package'),
+    path('create/inspection/', create_inspection, name = 'create_inspection'),
+    path('inspection/reports/', inpection_reports, name = 'inpection_reports'),
+    path('delete/inspection/<hashid:id>/', del_inspection, name = 'del_inspection'),
+    path('update/inspection/<hashid:id>/', edit_inspection, name = 'edit_inspection'),
 ]

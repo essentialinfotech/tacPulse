@@ -93,6 +93,9 @@ class ScheduleModel(models.Model):
     assigned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.location
+
 
 class TaskModel(models.Model):
     status_type = [
@@ -131,3 +134,30 @@ class TaskTransferModel(models.Model):
     transfer_reason = models.TextField(max_length=100, blank=False, null=False)
     transfer_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to')
     created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Transferred to { self.transfer_to }"
+
+
+class InspectionModel(models.Model):
+    Type = [
+        ('Property', 'Property'),
+        ('Dispatch', 'Dispatch')
+    ]
+
+    Result = [
+        ('Good', 'Good'),
+        ('Bad', 'Bad'),
+    ]
+
+    inspector = models.ForeignKey(User,on_delete=SET_NULL,blank=True,null=True)
+    inspection_for = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name='inpected_user')
+    inspection_type = models.CharField(max_length=20,blank=False,null=False,choices=Type)
+    inspection_output = models.CharField(max_length=20,blank=True,null=True,choices=Result)
+    inspection_detail = models.CharField(max_length=300, blank=False, null=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.inspection_type}"
+
+

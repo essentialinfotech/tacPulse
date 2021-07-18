@@ -613,3 +613,51 @@ def del_package(request, id):
     obj.delete()
     messages.success(request, 'Package deleted')
     return redirect('packages')
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def create_inspection(request):
+    form = InspectionForm()
+    if request.method == 'POST':
+        form = InspectionForm(request.POST)
+        if form.is_valid():
+            print(form.errors)
+            instance = form.save(commit=False)
+            instance.inspector = request.user
+            instance.save()
+            messages.success(request,'Inspection Report Created')
+            return redirect('inpection_reports')
+    return render(request,'Accounting/inspection_create.html',{'form': form})
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def inpection_reports(request):
+    reports = InspectionModel.objects.all()
+    context = {
+        'inspection_reports': reports,
+    }
+    return render(request,'Accounting/inspection_reports.html',context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def edit_inspection(request,id):
+    data = get_object_or_404(InspectionModel, id = id)
+    form = InspectionForm(instance = data)
+    if request.method == 'POST':
+        form = InspectionForm(request.POST,instance = data)
+        if form.is_valid():
+            print(form.errors)
+            instance = form.save(commit=False)
+            instance.inspector = request.user
+            instance.save()
+            messages.success(request,'Inspection Report Edited')
+            return redirect('inpection_reports')
+    return render(request,'Accounting/inspection_edit.html',{'form': form, 'id': id})
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def del_inspection(request,id):
+    obj = get_object_or_404(InspectionModel , id = id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

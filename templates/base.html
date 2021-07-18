@@ -107,7 +107,7 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'inspection_form' %}" class="menu-link">
+                                            <a href="{% url 'create_inspection' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -115,7 +115,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'inspaction_report'%}" class="menu-link">
+                                            <a href="{% url 'inpection_reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -1232,8 +1232,9 @@
                 </div>
                 {% endif %}
                 <!--begin::Item-->
+                {% if request.user.is_superuser %}
                 <div class="col-6">
-                    <a href="{% url 'user_profile' request.user.id %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
+                    <a href="{% url 'customer_list' %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
                         <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
 								<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Group.svg-->
 								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1248,6 +1249,7 @@
                         <span class="d-block font-weight-bold font-size-h6 mt-2">Customers</span>
                     </a>
                 </div>
+                {% endif %}
                 <!--end::Item-->
             </div>
 

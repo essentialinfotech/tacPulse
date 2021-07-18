@@ -535,3 +535,12 @@ def assesment_list_users(request):
         'users': users,
     }
     return render(request, 'accounts/assesments_list_users.html', context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def customer_list(request):
+    customers = User.objects.filter(is_superuser = False, is_staff = False)
+    context = {
+        'customers': customers,
+    }
+    return render(request,'accounts/customer_list.html',context)

@@ -33,6 +33,9 @@ class Rating(models.Model):
     count = models.IntegerField(blank=True, null=True, default=0)
     avg_rating = models.FloatField(blank=True, null=True, default=0.0)
 
+    def __str__(self):
+        return str(self.avg_rating)
+
 
 class Feedback(models.Model):
     author = models.ForeignKey(
@@ -200,4 +203,4 @@ class HospitalTransferModel(models.Model):
     completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.target_hos
+        return f"Transferred to {self.target_hos}"

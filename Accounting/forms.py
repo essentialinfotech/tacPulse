@@ -63,3 +63,23 @@ class PaystubForm(forms.ModelForm):
         model = PaystubModel
         fields = '__all__'
 
+
+
+class InspectionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(InspectionForm, self).__init__(*args, **kwargs)
+        instance = kwargs.pop('instance', User)
+        if self.instance:
+            self.fields["inspection_for"].queryset = User.objects.filter(is_staff=True,
+                                                                         is_superuser=False,
+                                                                         is_active = True)
+    class Meta:
+        model = InspectionModel
+        fields = '__all__'
+        widgets = {
+            'inspection_for': forms.Select(attrs={'class': 'form-control'}),
+            'inspection_type': forms.Select(attrs={'class': 'form-control'}),
+            'inspection_output': forms.Select(attrs={'class': 'form-control'}),
+            'inspection_detail': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+

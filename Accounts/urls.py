@@ -72,6 +72,7 @@ urlpatterns = [
     path('assessment/list/', assesment_list_users, name='assesment_list_users'),
     path('edit/assessment/<hashid:id>/',
          assetment_form_edit, name='assetment_form_edit'),
+     path('customers/', customer_list, name = 'customer_list'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -138,9 +138,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
-EMAIL_HOST = 'mail.essential-infotech.dev'
-EMAIL_HOST_USER = 'djangoapptest@essential-infotech.dev'
-EMAIL_HOST_PASSWORD = 'djangodevelopers'
+EMAIL_HOST = 'mail.essential-infotech.com'
+EMAIL_HOST_USER = 'djangodeveloper@essential-infotech.com'
+EMAIL_HOST_PASSWORD = 'Eit2020@@'
 EMAIL_PORT = 465
 
 

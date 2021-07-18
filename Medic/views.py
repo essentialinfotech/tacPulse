@@ -343,11 +343,11 @@ def hospital_transfer_report(request):
         daily = HospitalTransferModel.objects.filter(created_on__gte=today.date()).order_by('-id')
         weekly = HospitalTransferModel.objects.filter(created_on__gte=week).order_by('-id')
         monthly = HospitalTransferModel.objects.filter(created_on__gte=month).order_by('-id')
-    elif request.user.is_user:
+    elif not request.user.is_staff:
         user_id = request.user.id
-        daily = HospitalTransferModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
-        weekly = HospitalTransferModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
-        monthly = HospitalTransferModel.objects.filter(dispatch=user_id, created_on__gte=month).order_by('-id')
+        daily = HospitalTransferModel.objects.filter(requested_by=user_id, created_on__gte=today.date()).order_by('-id')
+        weekly = HospitalTransferModel.objects.filter(requested_by=user_id, created_on__gte=week).order_by('-id')
+        monthly = HospitalTransferModel.objects.filter(requested_by=user_id, created_on__gte=month).order_by('-id')
     context = {
         'daily': daily,
         'weekly': weekly,

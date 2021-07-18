@@ -161,7 +161,9 @@
                                                 <td>{{ i.Name|title }}</td>
                                                 <td>{{ i.contact }}</td>
                                                 <td>{{ i.email }}</td>
-                                                <td>{{ i.reason }}</td>
+                                                <td>
+                                                    <a href="{% url 'AmbulanceRequestDetail' i.id %}">View</a>
+                                                </td>
                                                 <td>{{ i.created_on }}</td>
                                             </tr>
                                             {% endfor %}

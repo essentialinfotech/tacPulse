@@ -41,9 +41,7 @@
     <!--begin::Header Mobile-->
     <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
         <!--begin::Logo-->
-        <a href="">
-            <img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-default max-h-30px" />
-
+        <a href="/">
             <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
                 <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
             </div>
@@ -777,9 +775,7 @@
 								</button>
                             <!--end::Aside Toggle-->
                             <!--begin::Logo-->
-                            <a href="">
-                                <!--<img alt="Logo" src="{% static 'images\logo.png'%}" class="logo-default max-h-30px" />-->
-
+                            <a href="/">
                                 <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
                                     <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
                                 </div>
@@ -788,7 +784,7 @@
                             <!--begin::Desktop Search-->
                             <div class="quick-search quick-search-inline ml-20 w-300px" id="kt_quick_search_inline">
                                 <!--begin::Form-->
-                                <form method="get" action="{% url 'search' %}" >
+                                <form method="get" action="{% url 'search' %}">
                                     <div class="input-group rounded bg-light">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -1400,15 +1396,15 @@
                     </div>
                     <!--end::Item-->
                 </div>
-    
+
                 <div class="row gutter-b">
                     <!--begin::Item-->
-    
+
                     <!--end::Item-->
                 </div>
                 <div class="row">
                     <!--begin::Item-->
-    
+
                 </div>
                 <!--end::Item-->
             </div>
@@ -1435,13 +1431,7 @@
                     </div>
                     <div class="d-flex flex-column">
                         <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ request.user.first_name }}</a>
-                        <div class="text-muted mt-1">{% if request.user.is_superuser %}
-                        Admin 
-                        {% elif request.user.is_staff and not request.user.is_superuser %}
-                        Dispatch
-                        {% else %}
-                        User
-                        {% endif %}
+                        <div class="text-muted mt-1">{% if request.user.is_superuser %} Admin {% elif request.user.is_staff and not request.user.is_superuser %} Dispatch {% else %} User {% endif %}
                         </div>
                         <div class="navi mt-2">
                             <a href="#" class="navi-item">
@@ -1516,7 +1506,7 @@
                     </a>
                     <!--end:Item-->
                     <!--begin::Item-->
-                    
+
                     <!--end:Item-->
                     <!--begin::Item-->
                     <a href="#" class="navi-item">
@@ -1550,119 +1540,119 @@
                 <!--end::Separator-->
                 <!--begin::Notifications-->
                 <div>
-                    
-            </div>
-            <!--end::Content-->
-        </div>
-        <!-- end::User Panel-->
-        <!--begin::Quick Panel-->
-        <div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10">
-            <!--begin::Header-->
-            <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
-                <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#kt_quick_panel_logs">Audit Logs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#kt_quick_panel_notifications">Notifications</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#kt_quick_panel_settings">Settings</a>
-                    </li>
-                </ul>
-                <div class="offcanvas-close mt-n1 pr-5">
-                    <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
-                        <i class="ki ki-close icon-xs text-muted"></i>
-                    </a>
+
                 </div>
+                <!--end::Content-->
             </div>
-            <!--end::Header-->
-            <!--begin::Content-->
-            <div class="offcanvas-content px-10">
-                <div class="tab-content">
-                    <!--begin::Tabpane-->
-                    <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_panel_logs" role="tabpanel">
-                        <!--begin::Section-->
-                        <div class="mb-15">
-                            <h5 class="font-weight-bold mb-5">System Messages</h5>
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center flex-wrap mb-5">
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
+            <!-- end::User Panel-->
+            <!--begin::Quick Panel-->
+            <div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10">
+                <!--begin::Header-->
+                <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+                    <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#kt_quick_panel_logs">Audit Logs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#kt_quick_panel_notifications">Notifications</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#kt_quick_panel_settings">Settings</a>
+                        </li>
+                    </ul>
+                    <div class="offcanvas-close mt-n1 pr-5">
+                        <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
+                            <i class="ki ki-close icon-xs text-muted"></i>
+                        </a>
+                    </div>
+                </div>
+                <!--end::Header-->
+                <!--begin::Content-->
+                <div class="offcanvas-content px-10">
+                    <div class="tab-content">
+                        <!--begin::Tabpane-->
+                        <div class="tab-pane fade show pt-3 pr-5 mr-n5 active" id="kt_quick_panel_logs" role="tabpanel">
+                            <!--begin::Section-->
+                            <div class="mb-15">
+                                <h5 class="font-weight-bold mb-5">System Messages</h5>
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center flex-wrap mb-5">
+                                    <div class="symbol symbol-50 symbol-light mr-5">
+                                        <span class="symbol-label">
 										<img src="assets/media/svg/misc/006-plurk.svg" class="h-50 align-self-center" alt="" />
 									</span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Top Authors</a>
+                                        <span class="text-muted font-weight-bold">Most Successful Fellas</span>
+                                    </div>
+                                    <span class="btn btn-sm btn-light font-weight-bolder py-1 my-lg-0 my-2 text-dark-50">+82$</span>
                                 </div>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Top Authors</a>
-                                    <span class="text-muted font-weight-bold">Most Successful Fellas</span>
-                                </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder py-1 my-lg-0 my-2 text-dark-50">+82$</span>
-                            </div>
-                            <!--end: Item-->
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center flex-wrap mb-5">
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
+                                <!--end: Item-->
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center flex-wrap mb-5">
+                                    <div class="symbol symbol-50 symbol-light mr-5">
+                                        <span class="symbol-label">
 										<img src="assets/media/svg/misc/015-telegram.svg" class="h-50 align-self-center" alt="" />
 									</span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Popular Authors</a>
+                                        <span class="text-muted font-weight-bold">Most Successful Fellas</span>
+                                    </div>
+                                    <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+280$</span>
                                 </div>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Popular Authors</a>
-                                    <span class="text-muted font-weight-bold">Most Successful Fellas</span>
-                                </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+280$</span>
-                            </div>
-                            <!--end: Item-->
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center flex-wrap mb-5">
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
+                                <!--end: Item-->
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center flex-wrap mb-5">
+                                    <div class="symbol symbol-50 symbol-light mr-5">
+                                        <span class="symbol-label">
 										<img src="assets/media/svg/misc/003-puzzle.svg" class="h-50 align-self-center" alt="" />
 									</span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">New Users</a>
+                                        <span class="text-muted font-weight-bold">Most Successful Fellas</span>
+                                    </div>
+                                    <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
                                 </div>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">New Users</a>
-                                    <span class="text-muted font-weight-bold">Most Successful Fellas</span>
-                                </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
-                            </div>
-                            <!--end: Item-->
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center flex-wrap mb-5">
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
+                                <!--end: Item-->
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center flex-wrap mb-5">
+                                    <div class="symbol symbol-50 symbol-light mr-5">
+                                        <span class="symbol-label">
 										<img src="assets/media/svg/misc/005-bebo.svg" class="h-50 align-self-center" alt="" />
 									</span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Active Customers</a>
+                                        <span class="text-muted font-weight-bold">Most Successful Fellas</span>
+                                    </div>
+                                    <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
                                 </div>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Active Customers</a>
-                                    <span class="text-muted font-weight-bold">Most Successful Fellas</span>
-                                </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
-                            </div>
-                            <!--end: Item-->
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center flex-wrap">
-                                <div class="symbol symbol-50 symbol-light mr-5">
-                                    <span class="symbol-label">
+                                <!--end: Item-->
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="symbol symbol-50 symbol-light mr-5">
+                                        <span class="symbol-label">
 										<img src="assets/media/svg/misc/014-kickstarter.svg" class="h-50 align-self-center" alt="" />
 									</span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Bestseller Theme</a>
+                                        <span class="text-muted font-weight-bold">Most Successful Fellas</span>
+                                    </div>
+                                    <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
                                 </div>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Bestseller Theme</a>
-                                    <span class="text-muted font-weight-bold">Most Successful Fellas</span>
-                                </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
+                                <!--end: Item-->
                             </div>
-                            <!--end: Item-->
-                        </div>
-                        <!--end::Section-->
-                        <!--begin::Section-->
-                        <div class="mb-5">
-                            <h5 class="font-weight-bold mb-5">Notifications</h5>
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-5">
-                                <span class="svg-icon svg-icon-warning mr-5">
+                            <!--end::Section-->
+                            <!--begin::Section-->
+                            <div class="mb-5">
+                                <h5 class="font-weight-bold mb-5">Notifications</h5>
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-5">
+                                    <span class="svg-icon svg-icon-warning mr-5">
 									<span class="svg-icon svg-icon-lg">
 										<!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
 										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1674,17 +1664,17 @@
 										</svg>
 										<!--end::Svg Icon-->
 									</span>
-                                </span>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Another purpose persuade</a>
-                                    <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </span>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Another purpose persuade</a>
+                                        <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </div>
+                                    <span class="font-weight-bolder text-warning py-1 font-size-lg">+28%</span>
                                 </div>
-                                <span class="font-weight-bolder text-warning py-1 font-size-lg">+28%</span>
-                            </div>
-                            <!--end: Item-->
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center bg-light-success rounded p-5 mb-5">
-                                <span class="svg-icon svg-icon-success mr-5">
+                                <!--end: Item-->
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center bg-light-success rounded p-5 mb-5">
+                                    <span class="svg-icon svg-icon-success mr-5">
 									<span class="svg-icon svg-icon-lg">
 										<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
 										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1696,17 +1686,17 @@
 										</svg>
 										<!--end::Svg Icon-->
 									</span>
-                                </span>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Would be to people</a>
-                                    <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </span>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Would be to people</a>
+                                        <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </div>
+                                    <span class="font-weight-bolder text-success py-1 font-size-lg">+50%</span>
                                 </div>
-                                <span class="font-weight-bolder text-success py-1 font-size-lg">+50%</span>
-                            </div>
-                            <!--end: Item-->
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center bg-light-danger rounded p-5 mb-5">
-                                <span class="svg-icon svg-icon-danger mr-5">
+                                <!--end: Item-->
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center bg-light-danger rounded p-5 mb-5">
+                                    <span class="svg-icon svg-icon-danger mr-5">
 									<span class="svg-icon svg-icon-lg">
 										<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Group-chat.svg-->
 										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1718,17 +1708,17 @@
 										</svg>
 										<!--end::Svg Icon-->
 									</span>
-                                </span>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">Purpose would be to persuade</a>
-                                    <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </span>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">Purpose would be to persuade</a>
+                                        <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </div>
+                                    <span class="font-weight-bolder text-danger py-1 font-size-lg">-27%</span>
                                 </div>
-                                <span class="font-weight-bolder text-danger py-1 font-size-lg">-27%</span>
-                            </div>
-                            <!--end: Item-->
-                            <!--begin: Item-->
-                            <div class="d-flex align-items-center bg-light-info rounded p-5">
-                                <span class="svg-icon svg-icon-info mr-5">
+                                <!--end: Item-->
+                                <!--begin: Item-->
+                                <div class="d-flex align-items-center bg-light-info rounded p-5">
+                                    <span class="svg-icon svg-icon-info mr-5">
 									<span class="svg-icon svg-icon-lg">
 										<!--begin::Svg Icon | path:assets/media/svg/icons/General/Attachment2.svg-->
 										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1742,354 +1732,354 @@
 										</svg>
 										<!--end::Svg Icon-->
 									</span>
-                                </span>
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">The best product</a>
-                                    <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </span>
+                                    <div class="d-flex flex-column flex-grow-1 mr-2">
+                                        <a href="#" class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">The best product</a>
+                                        <span class="text-muted font-size-sm">Due in 2 Days</span>
+                                    </div>
+                                    <span class="font-weight-bolder text-info py-1 font-size-lg">+8%</span>
                                 </div>
-                                <span class="font-weight-bolder text-info py-1 font-size-lg">+8%</span>
+                                <!--end: Item-->
                             </div>
-                            <!--end: Item-->
+                            <!--end::Section-->
                         </div>
-                        <!--end::Section-->
-                    </div>
-                    <!--end::Tabpane-->
-                    <!--begin::Tabpane-->
-                    <div class="tab-pane fade pt-2 pr-5 mr-n5" id="kt_quick_panel_notifications" role="tabpanel">
-                        <!--begin::Nav-->
-                        <div class="navi navi-icon-circle navi-spacer-x-0">
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-bell text-success icon-lg"></i>
+                        <!--end::Tabpane-->
+                        <!--begin::Tabpane-->
+                        <div class="tab-pane fade pt-2 pr-5 mr-n5" id="kt_quick_panel_notifications" role="tabpanel">
+                            <!--begin::Nav-->
+                            <div class="navi navi-icon-circle navi-spacer-x-0">
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-bell text-success icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">5 new user generated report</div>
+                                            <div class="text-muted">Reports based on sales</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">5 new user generated report</div>
-                                        <div class="text-muted">Reports based on sales</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon2-box text-danger icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon2-box text-danger icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">2 new items submited</div>
+                                            <div class="text-muted">by Grog John</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">2 new items submited</div>
-                                        <div class="text-muted">by Grog John</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-psd text-primary icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-psd text-primary icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">79 PSD files generated</div>
+                                            <div class="text-muted">Reports based on sales</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">79 PSD files generated</div>
-                                        <div class="text-muted">Reports based on sales</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon2-supermarket text-warning icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon2-supermarket text-warning icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">$2900 worth producucts sold</div>
+                                            <div class="text-muted">Total 234 items</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">$2900 worth producucts sold</div>
-                                        <div class="text-muted">Total 234 items</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-paper-plane-1 text-success icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-paper-plane-1 text-success icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">4.5h-avarage response time</div>
+                                            <div class="text-muted">Fostest is Barry</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">4.5h-avarage response time</div>
-                                        <div class="text-muted">Fostest is Barry</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-safe-shield-protection text-danger icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-safe-shield-protection text-danger icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">3 Defence alerts</div>
+                                            <div class="text-muted">40% less alerts thar last week</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">3 Defence alerts</div>
-                                        <div class="text-muted">40% less alerts thar last week</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-notepad text-primary icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-notepad text-primary icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">Avarage 4 blog posts per author</div>
+                                            <div class="text-muted">Most posted 12 time</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">Avarage 4 blog posts per author</div>
-                                        <div class="text-muted">Most posted 12 time</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-users-1 text-warning icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-users-1 text-warning icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">16 authors joined last week</div>
+                                            <div class="text-muted">9 photodrapehrs, 7 designer</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">16 authors joined last week</div>
-                                        <div class="text-muted">9 photodrapehrs, 7 designer</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon2-box text-info icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon2-box text-info icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">2 new items have been submited</div>
+                                            <div class="text-muted">by Grog John</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">2 new items have been submited</div>
-                                        <div class="text-muted">by Grog John</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon2-download text-success icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon2-download text-success icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">2.8 GB-total downloads size</div>
+                                            <div class="text-muted">Mostly PSD end AL concepts</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">2.8 GB-total downloads size</div>
-                                        <div class="text-muted">Mostly PSD end AL concepts</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon2-supermarket text-danger icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon2-supermarket text-danger icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">$2900 worth producucts sold</div>
+                                            <div class="text-muted">Total 234 items</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">$2900 worth producucts sold</div>
-                                        <div class="text-muted">Total 234 items</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-bell text-primary icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-bell text-primary icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">7 new user generated report</div>
+                                            <div class="text-muted">Reports based on sales</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">7 new user generated report</div>
-                                        <div class="text-muted">Reports based on sales</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <a href="#" class="navi-item">
-                                <div class="navi-link rounded">
-                                    <div class="symbol symbol-50 mr-3">
-                                        <div class="symbol-label">
-                                            <i class="flaticon-paper-plane-1 text-success icon-lg"></i>
+                                </a>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <a href="#" class="navi-item">
+                                    <div class="navi-link rounded">
+                                        <div class="symbol symbol-50 mr-3">
+                                            <div class="symbol-label">
+                                                <i class="flaticon-paper-plane-1 text-success icon-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div class="navi-text">
+                                            <div class="font-weight-bold font-size-lg">4.5h-avarage response time</div>
+                                            <div class="text-muted">Fostest is Barry</div>
                                         </div>
                                     </div>
-                                    <div class="navi-text">
-                                        <div class="font-weight-bold font-size-lg">4.5h-avarage response time</div>
-                                        <div class="text-muted">Fostest is Barry</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!--end::Item-->
+                                </a>
+                                <!--end::Item-->
+                            </div>
+                            <!--end::Nav-->
                         </div>
-                        <!--end::Nav-->
-                    </div>
-                    <!--end::Tabpane-->
-                    <!--begin::Tabpane-->
-                    <div class="tab-pane fade pt-3 pr-5 mr-n5" id="kt_quick_panel_settings" role="tabpanel">
-                        <form class="form">
-                            <!--begin::Section-->
-                            <div>
-                                <h5 class="font-weight-bold mb-3">Customer Care</h5>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Enable Notifications:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-success switch-sm">
+                        <!--end::Tabpane-->
+                        <!--begin::Tabpane-->
+                        <div class="tab-pane fade pt-3 pr-5 mr-n5" id="kt_quick_panel_settings" role="tabpanel">
+                            <form class="form">
+                                <!--begin::Section-->
+                                <div>
+                                    <h5 class="font-weight-bold mb-3">Customer Care</h5>
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Enable Notifications:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-success switch-sm">
 											<label>
 												<input type="checkbox" checked="checked" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Enable Case Tracking:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-success switch-sm">
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Enable Case Tracking:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-success switch-sm">
 											<label>
 												<input type="checkbox" name="quick_panel_notifications_2" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Support Portal:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-success switch-sm">
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Support Portal:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-success switch-sm">
 											<label>
 												<input type="checkbox" checked="checked" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!--end::Section-->
-                            <div class="separator separator-dashed my-6"></div>
-                            <!--begin::Section-->
-                            <div class="pt-2">
-                                <h5 class="font-weight-bold mb-3">Reports</h5>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Generate Reports:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-sm switch-danger">
+                                <!--end::Section-->
+                                <div class="separator separator-dashed my-6"></div>
+                                <!--begin::Section-->
+                                <div class="pt-2">
+                                    <h5 class="font-weight-bold mb-3">Reports</h5>
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Generate Reports:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-sm switch-danger">
 											<label>
 												<input type="checkbox" checked="checked" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Enable Report Export:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-sm switch-danger">
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Enable Report Export:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-sm switch-danger">
 											<label>
 												<input type="checkbox" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Allow Data Collection:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-sm switch-danger">
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Allow Data Collection:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-sm switch-danger">
 											<label>
 												<input type="checkbox" checked="checked" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!--end::Section-->
-                            <div class="separator separator-dashed my-6"></div>
-                            <!--begin::Section-->
-                            <div class="pt-2">
-                                <h5 class="font-weight-bold mb-3">Memebers</h5>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Enable Member singup:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-sm switch-primary">
+                                <!--end::Section-->
+                                <div class="separator separator-dashed my-6"></div>
+                                <!--begin::Section-->
+                                <div class="pt-2">
+                                    <h5 class="font-weight-bold mb-3">Memebers</h5>
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Enable Member singup:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-sm switch-primary">
 											<label>
 												<input type="checkbox" checked="checked" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Allow User Feedbacks:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-sm switch-primary">
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Allow User Feedbacks:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-sm switch-primary">
 											<label>
 												<input type="checkbox" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group mb-0 row align-items-center">
-                                    <label class="col-8 col-form-label">Enable Customer Portal:</label>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <span class="switch switch-sm switch-primary">
+                                    <div class="form-group mb-0 row align-items-center">
+                                        <label class="col-8 col-form-label">Enable Customer Portal:</label>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="switch switch-sm switch-primary">
 											<label>
 												<input type="checkbox" checked="checked" name="select" />
 												<span></span>
-                                        </label>
-                                        </span>
+                                            </label>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!--end::Section-->
-                        </form>
+                                <!--end::Section-->
+                            </form>
+                        </div>
+                        <!--end::Tabpane-->
                     </div>
-                    <!--end::Tabpane-->
                 </div>
+                <!--end::Content-->
             </div>
-            <!--end::Content-->
-        </div>
-        <!--end::Quick Panel-->
-        <!--begin::Chat Panel-->
+            <!--end::Quick Panel-->
+            <!--begin::Chat Panel-->
 
-        <!--end::Chat Panel-->
-        <!--begin::Scrolltop-->
-        <div id="kt_scrolltop" class="scrolltop">
-            <span class="svg-icon">
+            <!--end::Chat Panel-->
+            <!--begin::Scrolltop-->
+            <div id="kt_scrolltop" class="scrolltop">
+                <span class="svg-icon">
 				<!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Up-2.svg-->
 				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -2100,213 +2090,213 @@
 				</svg>
 				<!--end::Svg Icon-->
 			</span>
-        </div>
-        <!--end::Scrolltop-->
-        <!--begin::Sticky Toolbar-->
-
-        <!--end::Sticky Toolbar-->
-        <!--begin::Demo Panel-->
-        <div id="kt_demo_panel" class="offcanvas offcanvas-right p-10">
-            <!--begin::Header-->
-            <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
-                <h4 class="font-weight-bold m-0">Select A Demo</h4>
-                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_demo_panel_close">
-                    <i class="ki ki-close icon-xs text-muted"></i>
-                </a>
             </div>
-            <!--end::Header-->
-            <!--begin::Content-->
-            <div class="offcanvas-content">
-                <!--begin::Wrapper-->
+            <!--end::Scrolltop-->
+            <!--begin::Sticky Toolbar-->
 
-                <!--end::Wrapper-->
-                <!--begin::Purchase-->
+            <!--end::Sticky Toolbar-->
+            <!--begin::Demo Panel-->
+            <div id="kt_demo_panel" class="offcanvas offcanvas-right p-10">
+                <!--begin::Header-->
+                <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
+                    <h4 class="font-weight-bold m-0">Select A Demo</h4>
+                    <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_demo_panel_close">
+                        <i class="ki ki-close icon-xs text-muted"></i>
+                    </a>
+                </div>
+                <!--end::Header-->
+                <!--begin::Content-->
+                <div class="offcanvas-content">
+                    <!--begin::Wrapper-->
 
-                <!--end::Purchase-->
+                    <!--end::Wrapper-->
+                    <!--begin::Purchase-->
+
+                    <!--end::Purchase-->
+                </div>
+                <!--end::Content-->
             </div>
-            <!--end::Content-->
         </div>
-    </div>
-    <!--end::Demo Panel-->
-    <script>
-        var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
-    </script>
-    <script>
-        var KTAppSettings = {
-            "breakpoints": {
-                "sm": 576,
-                "md": 768,
-                "lg": 992,
-                "xl": 1200,
-                "xxl": 1200
-            },
-            "colors": {
-                "theme": {
-                    "base": {
-                        "white": "#ffffff",
-                        "primary": "#6993FF",
-                        "secondary": "#E5EAEE",
-                        "success": "#1BC5BD",
-                        "info": "#8950FC",
-                        "warning": "#FFA800",
-                        "danger": "#F64E60",
-                        "light": "#F3F6F9",
-                        "dark": "#212121"
+        <!--end::Demo Panel-->
+        <script>
+            var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
+        </script>
+        <script>
+            var KTAppSettings = {
+                "breakpoints": {
+                    "sm": 576,
+                    "md": 768,
+                    "lg": 992,
+                    "xl": 1200,
+                    "xxl": 1200
+                },
+                "colors": {
+                    "theme": {
+                        "base": {
+                            "white": "#ffffff",
+                            "primary": "#6993FF",
+                            "secondary": "#E5EAEE",
+                            "success": "#1BC5BD",
+                            "info": "#8950FC",
+                            "warning": "#FFA800",
+                            "danger": "#F64E60",
+                            "light": "#F3F6F9",
+                            "dark": "#212121"
+                        },
+                        "light": {
+                            "white": "#ffffff",
+                            "primary": "#E1E9FF",
+                            "secondary": "#ECF0F3",
+                            "success": "#C9F7F5",
+                            "info": "#EEE5FF",
+                            "warning": "#FFF4DE",
+                            "danger": "#FFE2E5",
+                            "light": "#F3F6F9",
+                            "dark": "#D6D6E0"
+                        },
+                        "inverse": {
+                            "white": "#ffffff",
+                            "primary": "#ffffff",
+                            "secondary": "#212121",
+                            "success": "#ffffff",
+                            "info": "#ffffff",
+                            "warning": "#ffffff",
+                            "danger": "#ffffff",
+                            "light": "#464E5F",
+                            "dark": "#ffffff"
+                        }
                     },
-                    "light": {
-                        "white": "#ffffff",
-                        "primary": "#E1E9FF",
-                        "secondary": "#ECF0F3",
-                        "success": "#C9F7F5",
-                        "info": "#EEE5FF",
-                        "warning": "#FFF4DE",
-                        "danger": "#FFE2E5",
-                        "light": "#F3F6F9",
-                        "dark": "#D6D6E0"
-                    },
-                    "inverse": {
-                        "white": "#ffffff",
-                        "primary": "#ffffff",
-                        "secondary": "#212121",
-                        "success": "#ffffff",
-                        "info": "#ffffff",
-                        "warning": "#ffffff",
-                        "danger": "#ffffff",
-                        "light": "#464E5F",
-                        "dark": "#ffffff"
+                    "gray": {
+                        "gray-100": "#F3F6F9",
+                        "gray-200": "#ECF0F3",
+                        "gray-300": "#E5EAEE",
+                        "gray-400": "#D6D6E0",
+                        "gray-500": "#B5B5C3",
+                        "gray-600": "#80808F",
+                        "gray-700": "#464E5F",
+                        "gray-800": "#1B283F",
+                        "gray-900": "#212121"
                     }
                 },
-                "gray": {
-                    "gray-100": "#F3F6F9",
-                    "gray-200": "#ECF0F3",
-                    "gray-300": "#E5EAEE",
-                    "gray-400": "#D6D6E0",
-                    "gray-500": "#B5B5C3",
-                    "gray-600": "#80808F",
-                    "gray-700": "#464E5F",
-                    "gray-800": "#1B283F",
-                    "gray-900": "#212121"
+                "font-family": "Poppins"
+            };
+        </script>
+        <!--begin::Global Config(global config for global JS scripts)-->
+        <script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
+        <script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+        <script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+        <script src="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
+        <!-- <script src="{% static 'assets/plugins/custom/leaflet/leaflet.bundle.js' %}"></script> -->
+        <script src="{% static 'assets/js/pages/widgets.js' %}"></script>
+        <!-- <script src="{% static 'assets/plugins/custom/draggable/draggable.bundle.js' %}" type="text/javascript"></script> -->
+        <script src="{% static 'assets/js/pages/features/cards/draggable.js' %}"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <!--end::Page Scripts-->
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=DrirectionalMap&libraries=&v=weekly" async></script> -->
+
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=my_suggetion&libraries=places&v=weekly" async></script> -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=my_suggetion&libraries=places&v=weekly" defer></script>
+
+        <script>
+            var pc_id = ''
+
+            function getLocation(b) {
+                if (navigator.geolocation) {
+                    if (b === 0) {
+                        navigator.geolocation.getCurrentPosition(showPosition1);
+                    } else if (b === 1) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    }
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
                 }
-            },
-            "font-family": "Poppins"
-        };
-    </script>
-    <!--begin::Global Config(global config for global JS scripts)-->
-    <script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
-    <script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
-    <script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
-    <script src="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-
-    <!-- <script src="{% static 'assets/plugins/custom/leaflet/leaflet.bundle.js' %}"></script> -->
-    <script src="{% static 'assets/js/pages/widgets.js' %}"></script>
-    <!-- <script src="{% static 'assets/plugins/custom/draggable/draggable.bundle.js' %}" type="text/javascript"></script> -->
-    <script src="{% static 'assets/js/pages/features/cards/draggable.js' %}"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-    <!--end::Page Scripts-->
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=DrirectionalMap&libraries=&v=weekly" async></script> -->
-
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=my_suggetion&libraries=places&v=weekly" async></script> -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=my_suggetion&libraries=places&v=weekly" defer></script>
-
-    <script>
-        var pc_id = ''
-
-        function getLocation(b) {
-            if (navigator.geolocation) {
-                if (b === 0) {
-                    navigator.geolocation.getCurrentPosition(showPosition1);
-                } else if (b === 1) {
-                    navigator.geolocation.getCurrentPosition(showPosition);
-                }
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
             }
-        }
 
-        function showPosition(position) {
-            document.getElementById('latitude').value = position.coords.latitude
-            document.getElementById('longitude').value = position.coords.longitude
+            function showPosition(position) {
+                document.getElementById('latitude').value = position.coords.latitude
+                document.getElementById('longitude').value = position.coords.longitude
 
-            var geocoder = new google.maps.Geocoder();
-            var latlng = {
-                lat: parseFloat(position.coords.latitude),
-                lng: parseFloat(position.coords.longitude)
-            };
-            geocoder.geocode({
-                'location': latlng
-            }, function(results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    if (results[1]) {
-                        pc_id = results[1].place_id;
+                var geocoder = new google.maps.Geocoder();
+                var latlng = {
+                    lat: parseFloat(position.coords.latitude),
+                    lng: parseFloat(position.coords.longitude)
+                };
+                geocoder.geocode({
+                    'location': latlng
+                }, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        if (results[1]) {
+                            pc_id = results[1].place_id;
 
-                        geocoder.geocode({
-                            placeId: pc_id
-                        }, (results, status) => {
-                            if (status === "OK") {
-                                console.log('ok');
-                                if (results[0]) {
-                                    document.getElementById('location').value = results[0].formatted_address
+                            geocoder.geocode({
+                                placeId: pc_id
+                            }, (results, status) => {
+                                if (status === "OK") {
+                                    console.log('ok');
+                                    if (results[0]) {
+                                        document.getElementById('location').value = results[0].formatted_address
 
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
-            });
+                });
 
-        }
+            }
 
-        function showPosition1(position) {
-            document.getElementById('from_lat').value = position.coords.latitude
-            document.getElementById('from_long').value = position.coords.longitude
-            var geocoder = new google.maps.Geocoder();
-            var latlng = {
-                lat: parseFloat(position.coords.latitude),
-                lng: parseFloat(position.coords.longitude)
-            };
-            geocoder.geocode({
-                'location': latlng
-            }, function(results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    if (results[1]) {
-                        pc_id = results[1].place_id;
+            function showPosition1(position) {
+                document.getElementById('from_lat').value = position.coords.latitude
+                document.getElementById('from_long').value = position.coords.longitude
+                var geocoder = new google.maps.Geocoder();
+                var latlng = {
+                    lat: parseFloat(position.coords.latitude),
+                    lng: parseFloat(position.coords.longitude)
+                };
+                geocoder.geocode({
+                    'location': latlng
+                }, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        if (results[1]) {
+                            pc_id = results[1].place_id;
 
-                        geocoder.geocode({
-                            placeId: pc_id
-                        }, (results, status) => {
-                            if (status === "OK") {
-                                console.log('ok');
-                                if (results[0]) {
-                                    document.getElementById('from_loc').value = results[0].formatted_address
+                            geocoder.geocode({
+                                placeId: pc_id
+                            }, (results, status) => {
+                                if (status === "OK") {
+                                    console.log('ok');
+                                    if (results[0]) {
+                                        document.getElementById('from_loc').value = results[0].formatted_address
 
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
+                });
+            }
+        </script>
+
+
+        <script>
+            function change() {
+                [document.getElementById('from_loc').value, document.getElementById('location').value] = [document.getElementById('location').value, document.getElementById('from_loc').value];
+                [document.getElementById('from_lat').value, document.getElementById('latitude').value] = [document.getElementById('latitude').value, document.getElementById('from_lat').value];
+                [document.getElementById('from_long').value, document.getElementById('longitude').value] = [document.getElementById('longitude').value, document.getElementById('from_long').value];
+            }
+        </script>
+
+        <script>
+            $("#tags").autocomplete({
+                source: "{% url 'autocomplete' %}",
             });
-        }
-    </script>
-
-
-    <script>
-        function change() {
-            [document.getElementById('from_loc').value, document.getElementById('location').value] = [document.getElementById('location').value, document.getElementById('from_loc').value];
-            [document.getElementById('from_lat').value, document.getElementById('latitude').value] = [document.getElementById('latitude').value, document.getElementById('from_lat').value];
-            [document.getElementById('from_long').value, document.getElementById('longitude').value] = [document.getElementById('longitude').value, document.getElementById('from_long').value];
-        }
-    </script>
-
-<script>
-    $("#tags").autocomplete({
-        source: "{% url 'autocomplete' %}",
-    });
-</script>
+        </script>
 
 </body>
 <!--end::Body-->

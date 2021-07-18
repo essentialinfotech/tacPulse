@@ -802,7 +802,7 @@
                             <!--begin::Desktop Search-->
                             <div class="quick-search quick-search-inline ml-20 w-300px" id="kt_quick_search_inline">
                                 <!--begin::Form-->
-                                <form method="get" action="{% url 'search' %}">
+                                <form id="searchform" method="get" action="{% url 'search' %}">
                                     <div class="input-group rounded bg-light">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -2475,6 +2475,10 @@
 <script>
     $("#tags").autocomplete({
         source: "{% url 'autocomplete' %}",
+        select: function(event, ui) { 
+        $("input#tags").val(ui.item.value);
+        $("#searchform").submit();
+    }
     });
 </script>
 </body>

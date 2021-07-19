@@ -63,7 +63,7 @@ svg {
     </g>
   </svg>
 <h1>You are not allowed to enter here</h1>
-<h2>Go <a target="_blank" href="{% url 'profile' request.user.id %}">Home!</a></h2>
+<h2>Go <a href="{% url 'profile' request.user.id %}">Home!</a></h2>
 
 <script>
     var root = document.documentElement;

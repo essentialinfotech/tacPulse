@@ -25,7 +25,7 @@ month = datetime.today().date() - timedelta(days=30)
 
 
 def add_member(request):
-    return redirect('register')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def getmembership(request):

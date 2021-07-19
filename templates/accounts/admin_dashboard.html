@@ -402,7 +402,11 @@
                                         {% for i in hos_trans %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td>{{ i.requested_by.first_name|title }} {{ i.requested_by.last_name|title }}</td>
+                                            <td>
+                                                <a href="{% url 'profile' i.requested_by.id %}">
+                                                    {{ i.requested_by.first_name|title }} {{ i.requested_by.last_name|title }}
+                                                </a>
+                                            </td>
                                             <td>{{ i.transfer_speed }}</td>
                                             <td style="word-break: break-all;">{{ i.reason }}</td>
                                             <td>{{ i.priority }}</td>

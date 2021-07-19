@@ -56,6 +56,7 @@ def dashboard(request):
         deactivated_users = User.objects.filter(is_active=False)
         rating = Rating.objects.all()
         average_rating = Rating.objects.values_list('avg_rating',flat=True)
+        recent_panics = Panic.objects.filter(timestamp__year = this_year)[:10]
         star1 = False
         star2 = False
         star3 = False
@@ -121,6 +122,7 @@ def dashboard(request):
             'total_customers': total_customers,
             'total_dispatch': total_dispatch,
             'hos_trans': hos_trans,
+            'recent_panics': recent_panics,
         }
         return render(request, 'accounts/admin_dashboard.html', context)
 

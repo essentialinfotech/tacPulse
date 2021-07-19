@@ -51,6 +51,8 @@ def dashboard(request):
         total_customers = User.objects.filter(is_superuser = False,is_staff = False,is_active = True).count()
         total_dispatch = User.objects.filter(is_superuser = False,is_staff = True,is_active = True).count()
 
+        hos_trans = HospitalTransferModel.objects.filter(created_on__month = this_month, created_on__year = this_year)
+
         deactivated_users = User.objects.filter(is_active=False)
         rating = Rating.objects.all()
         star1 = False
@@ -116,6 +118,7 @@ def dashboard(request):
             'panic_requests_daily': panic_requests_daily,
             'total_customers': total_customers,
             'total_dispatch': total_dispatch,
+            'hos_trans': hos_trans,
         }
         return render(request, 'accounts/admin_dashboard.html', context)
 

@@ -55,6 +55,7 @@ def dashboard(request):
 
         deactivated_users = User.objects.filter(is_active=False)
         rating = Rating.objects.all()
+        average_rating = Rating.objects.values_list('avg_rating',flat=True)
         star1 = False
         star2 = False
         star3 = False
@@ -111,6 +112,7 @@ def dashboard(request):
             'star2_5': star2_5,
             'star3_5': star3_5,
             'star4_5': star4_5,
+            'average_rating': average_rating,
             'deactivated_users': deactivated_users,
             'hos_transfer': hos_transfer,
             'ambulance_requests_monthly': ambulance_requests_monthly,

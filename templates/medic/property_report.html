@@ -58,6 +58,7 @@
                                 <th>Purchased On</th>
                                 <th>Status</th>
                                 <th>Due Date(if status is DUE)</th>
+                                <th>Invoice Number</th>
                                 <th>Invoice</th>
                             </tr>
                         </thead>
@@ -86,6 +87,7 @@
                                 <td><span class="custom-badge status-purple">{{ i.status }}</span></td>
                                 {% endif %}
                                 <td>{{ i.due_date }}</td>
+                                <td style="text-decoration: underline; color: brown;">{{ i.invoice_id }}</td>
                                 <td><a href="{% url 'invoice_pdf_property' i.id %}"><i
                                             class="fas fa-file-invoice"></i></a></td>
                                 <td class="p-5">
@@ -131,6 +133,7 @@
                                 <th>Purchased On</th>
                                 <th>Status</th>
                                 <th>Due Date(if status is DUE)</th>
+                                <th>Invoice Number</th>
                                 <th>Invoice</th>
                             </tr>
                         </thead>
@@ -159,6 +162,7 @@
                                 <td><span class="custom-badge status-purple">{{ i.status }}</span></td>
                                 {% endif %}
                                 <td>{{ i.due_date }}</td>
+                                <td  style="text-decoration: underline; color: brown;">{{ i.invoice_id }}</td>
                                 <td><a href="{% url 'invoice_pdf_property' i.id %}"><i
                                             class="fas fa-file-invoice"></i></a></td>
                                 <td class="p-5">
@@ -204,6 +208,7 @@
                                 <th>Purchased On</th>
                                 <th>Status</th>
                                 <th>Due Date(if status is DUE)</th>
+                                <th>Invoice Number</th>
                                 <th>Invoice</th>
                             </tr>
                         </thead>
@@ -232,6 +237,7 @@
                                 <td><span class="custom-badge status-purple">{{ i.status }}</span></td>
                                 {% endif %}
                                 <td>{{ i.due_date }}</td>
+                                <td  style="text-decoration: underline; color: brown;">{{ i.invoice_id }}</td>
                                 <td><a href="{% url 'invoice_pdf_property' i.id %}"><i
                                             class="fas fa-file-invoice"></i></a></td>
                                 <td class="p-5">

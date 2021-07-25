@@ -11,9 +11,10 @@ urlpatterns = [
     path('members/', members, name='members'),
     path('schedule/trip/', ScheduleTrip.as_view(), name='shcedule_trip'),
     path('scheduled/trips/', TripSchedules.as_view(), name='trip_schedules'),
-    path('scheduled/detail/<hashid:pk>/', ScheduleDetails.as_view(), name='schedule_details'),
+    path('scheduled/detail/<hashid:pk>/', ScheduleDetails, name='schedule_details'),
     path('scheduled/update/<hashid:pk>/', UpdateSchedule.as_view(), name='schedule_update'),
     path('scheduled/delete/<hashid:pk>/', DeleteSchedule.as_view(), name='schedule_delete'),
+    path('scheduled/complete/<hashid:pk>/', schedule_status_change, name='schedule_status_change'),
     path('track/schedule/<hashid:pk>/',
          TrackSchedule.as_view(), name='track_schedule'),
 
@@ -41,4 +42,8 @@ urlpatterns = [
     path('add/package/', add_package, name='add_package'),
     path('edit/package/<hashid:id>/', edit_package, name='edit_package'),
     path('delete/package/<hashid:id>/', del_package, name='del_package'),
+    path('create/inspection/', create_inspection, name = 'create_inspection'),
+    path('inspection/reports/', inpection_reports, name = 'inpection_reports'),
+    path('delete/inspection/<hashid:id>/', del_inspection, name = 'del_inspection'),
+    path('update/inspection/<hashid:id>/', edit_inspection, name = 'edit_inspection'),
 ]

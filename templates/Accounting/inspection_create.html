@@ -1,0 +1,71 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    #card-body{
+        width: 50%;
+        margin: auto;
+    }
+
+    #kt_page_sticky_card{
+        width: 50%!important;
+        margin: auto!important;
+    }
+    
+</style>
+
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post" action="{% url 'create_inspection' %}" class="form" id="kt_form">
+                    {% csrf_token %}
+                    <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h3 class="card-label">Inspection Form</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <button type="submit" class="btn btn-primary font-weight-bolder">
+                                    <i class="ki ki-check icon-xs"></i>Save</button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group card card-custom" id="card-body">
+                    
+                    <div>
+                        <label for="">Inspection For(Optional)</label>
+                        {{  form.inspection_for  }}
+                    </div>
+
+                    <div>
+                        <label for="">Inspection Type</label>
+                        {{  form.inspection_type  }}
+                    </div>
+
+                    <div>
+                        <label for="">Inspection Result</label>
+                        {{  form.inspection_output  }}
+                    </div>
+
+
+                    <div>
+                        <label for="">Inspection Details</label>
+                        {{  form.inspection_detail  }}
+                    </div>
+
+                    
+                </div>
+            </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

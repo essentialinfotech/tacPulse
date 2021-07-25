@@ -38,8 +38,14 @@
 
                         <div class="form-row ">
                             <div class="form-group col-md-6 mb-0 ">
-                                <label for="receiver">Reciver Email</label>
-                                <input type="email " maxlength="100 " class="textinput textInput form-control " id="receiver" name="receiver" placeholder="Enter receiver email address " required>
+                                <label for="receiver">Receiver Email</label>
+                                <select name="receiver" id="receiver" class="form-control">
+                                    {% for i in rcv %}
+                                    {% for k,v in i.items %}
+                                    <option value="{{v}}">{{v}}</option>
+                                    {% endfor %} {% endfor %}
+                                </select>
+                                <!-- <input type="email " maxlength="100 " class="textinput textInput form-control " id="receiver" name="receiver" placeholder="Enter receiver email address " required> -->
                             </div>
                             <div class="form-group col-md-6 mb-0 ">
                                 <label for="subject">Email Subject</label>

@@ -1,5 +1,6 @@
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from .forms import *
 from .serializer import *
@@ -24,7 +25,7 @@ month = datetime.today().date() - timedelta(days=30)
 
 
 def add_member(request):
-    return redirect('register')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def getmembership(request):
@@ -57,14 +58,21 @@ class TripSchedules(LoginRequiredMixin, View):
         weekly = ''
         monthly = ''
         if self.request.user.is_superuser:
-            daily = ScheduleModel.objects.filter(created_on__gte=today.date()).order_by('-id')
-            weekly = ScheduleModel.objects.filter(created_on__gte=week).order_by('-id')
-            monthly = ScheduleModel.objects.filter(created_on__gte=month).order_by('-id')
-        elif not self.request.user.is_superuser and not self.request.user.is_staff:
+            daily = ScheduleModel.objects.filter(
+                created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                created_on__gte=month).order_by('-id')
+        elif not self.request.user.is_staff and not self.request.user.is_superuser:
             user_id = request.user.id
-            daily = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
-            weekly = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
-            monthly = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=month).order_by('-id')
+            daily = ScheduleModel.objects.filter(
+                user=user_id, created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                user=user_id, created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                user=user_id, created_on__gte=month).order_by('-id')
+
         context = {
             'title': title,
             'daily': daily,
@@ -91,7 +99,7 @@ class UpdateSchedule(LoginRequiredMixin, View):
         data = get_object_or_404(ScheduleModel, pk=pk)
         if request.user.is_superuser or request.user.id == data.user.id:
             form = ScheduleModelForm(instance=data)
-            return render(request, 'Accounting/update_scedule.html', {'form': form, 'data':data})
+            return render(request, 'Accounting/update_scedule.html', {'form': form, 'data': data})
         else:
             return render(request, 'accounts/forbidden.html')
 
@@ -108,9 +116,38 @@ class UpdateSchedule(LoginRequiredMixin, View):
             return render(request, 'accounts/forbidden.html')
 
 
-class ScheduleDetails(LoginRequiredMixin, DetailView):
-    model = ScheduleModel
-    template_name = 'Accounting/sechdule_details.html'
+@login_required
+def ScheduleDetails(request, pk):
+    data = get_object_or_404(ScheduleModel, pk=pk)
+    task = False
+    task_data = ''
+    try:
+        if request.user.is_staff:
+            task_data = TaskModel.objects.filter(
+                task_type='sch', scheduled_task=pk)
+            for i in task_data:
+                task_data = i.task_desc
+            task = True
+    except:
+        pass
+    context = {
+        'object': data,
+        'task': task,
+        'task_data': task_data
+    }
+    return render(request, 'Accounting/sechdule_details.html', context)
+
+
+def schedule_status_change(request, pk):
+    if request.user.is_staff:
+        TaskModel.objects.filter(
+            task_type='sch', scheduled_task=pk).update(status='Completed')
+        schedule = get_object_or_404(ScheduleModel, pk=pk)
+        schedule.status = 'Completed'
+        schedule.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return redirect('forbidden')
 
 
 class TrackSchedule(LoginRequiredMixin, View):
@@ -127,14 +164,28 @@ class AcceptedSchedule(LoginRequiredMixin, View):
         monthly = ''
 
         if self.request.user.is_superuser:
-            daily = ScheduleModel.objects.filter(status='Approved', created_on__gte=today.date()).order_by('-id')
-            weekly = ScheduleModel.objects.filter(status='Approved', created_on__gte=week).order_by('-id')
-            monthly = ScheduleModel.objects.filter(status='Approved', created_on__gte=month).order_by('-id')
-        elif not self.request.user.is_superuser and not self.request.user.is_staff:
+            daily = ScheduleModel.objects.filter(
+                status='Approved', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                status='Approved', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                status='Approved', created_on__gte=month).order_by('-id')
+        elif self.request.user.is_staff:
             user_id = request.user.id
-            daily = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=today.date()).order_by('-id')
-            weekly = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=week).order_by('-id')
-            monthly = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=month).order_by('-id')
+            daily = ScheduleModel.objects.filter(
+                dispatch=user_id, status='Approved', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                dispatch=user_id, status='Approved', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                dispatch=user_id, status='Approved', created_on__gte=month).order_by('-id')
+        else:
+            user_id = request.user.id
+            daily = ScheduleModel.objects.filter(
+                user=user_id, status='Approved', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                user=user_id, status='Approved', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                user=user_id, status='Approved', created_on__gte=month).order_by('-id')
         context = {
             'title': title,
             'daily': daily,
@@ -148,18 +199,29 @@ class CompletedSchedule(LoginRequiredMixin, View):
     def get(self, request):
         title = "Completed Schedule"
         if self.request.user.is_superuser:
-            daily = ScheduleModel.objects.filter(status='Completed', created_on__gte=today.date()).order_by('-id')
-            weekly = ScheduleModel.objects.filter(status='Completed', created_on__gte=week).order_by('-id')
-            monthly = ScheduleModel.objects.filter(status='Completed', created_on__gte=month).order_by('-id')
-        elif not self.request.user.is_superuser and not self.request.user.is_staff:
+            daily = ScheduleModel.objects.filter(
+                status='Completed', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                status='Completed', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                status='Completed', created_on__gte=month).order_by('-id')
+        elif self.request.user.is_staff:
             user_id = request.user.id
-            daily = ScheduleModel.objects.filter(dispatch=user_id, status='Completed',
-                                                 created_on__gte=today.date()).order_by('-id')
-            weekly = ScheduleModel.objects.filter(dispatch=user_id, status='Completed', created_on__gte=week).order_by(
-                '-id')
-            monthly = ScheduleModel.objects.filter(dispatch=user_id, status='Completed', created_on__gte=month).order_by(
-                '-id')
+            daily = ScheduleModel.objects.filter(
+                dispatch=user_id, status='Completed', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                dispatch=user_id, status='Completed', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                dispatch=user_id, status='Completed', created_on__gte=month).order_by('-id')
 
+        elif self.request.user.is_staff:
+            user_id = request.user.id
+            daily = ScheduleModel.objects.filter(
+                user=user_id, status='Completed', created_on__gte=today.date()).order_by('-id')
+            weekly = ScheduleModel.objects.filter(
+                user=user_id, status='Completed', created_on__gte=week).order_by('-id')
+            monthly = ScheduleModel.objects.filter(
+                user=user_id, status='Completed', created_on__gte=month).order_by('-id')
 
         context = {
             'title': title,
@@ -168,6 +230,7 @@ class CompletedSchedule(LoginRequiredMixin, View):
             'monthly': monthly
         }
         return render(request, 'Accounting/trip_schedules.html', context)
+
 
 def task_create(request):
     if request.user.is_superuser:
@@ -183,7 +246,7 @@ def task_create(request):
             at = request.POST.get('ambulance_task')
             st = request.POST.get('scheduled_task')
             pt = request.POST.get('panic_task')
-            ht =request.POST.get('hos_tra')
+            ht = request.POST.get('hos_tra')
             if form.is_valid():
                 form.save(commit=False)
                 if x == 'sch':
@@ -222,14 +285,20 @@ def task_create(request):
 class TasksList(LoginRequiredMixin, View):
     def get(self, request):
         if self.request.user.is_superuser:
-            daily = TaskModel.objects.filter(created_on__gte=today.date()).order_by('-id')
-            weekly = TaskModel.objects.filter(created_on__gte=week).order_by('-id')
-            monthly = TaskModel.objects.filter(created_on__gte=month).order_by('-id')
-        elif self.request.user.is_staff and not request.user.is_superuser:
+            daily = TaskModel.objects.filter(
+                created_on__gte=today.date()).order_by('-id')
+            weekly = TaskModel.objects.filter(
+                created_on__gte=week).order_by('-id')
+            monthly = TaskModel.objects.filter(
+                created_on__gte=month).order_by('-id')
+        elif self.request.user.is_staff:
             user_id = request.user.id
-            daily = TaskModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
-            weekly = TaskModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
-            monthly = TaskModel.objects.filter(dispatch=user_id, created_on__gte=month).order_by('-id')
+            daily = TaskModel.objects.filter(
+                dispatch=user_id, created_on__gte=today.date()).order_by('-id')
+            weekly = TaskModel.objects.filter(
+                dispatch=user_id, created_on__gte=week).order_by('-id')
+            monthly = TaskModel.objects.filter(
+                dispatch=user_id, created_on__gte=month).order_by('-id')
 
         context = {
             'daily': daily,
@@ -275,9 +344,9 @@ class DeleteTask(LoginRequiredMixin, View):
             return render(request, 'accounts/forbidden.html')
 
 
-def task_detail(request,pk):
+def task_detail(request, pk):
     data = get_object_or_404(TaskModel, pk=pk)
-    return render(request, 'Accounting/task_detail.html', {'object':data})
+    return render(request, 'Accounting/task_detail.html', {'object': data})
 
 
 class TransferTask(LoginRequiredMixin, View):
@@ -286,7 +355,8 @@ class TransferTask(LoginRequiredMixin, View):
             form = TransferTaskForm()
             data = get_object_or_404(TaskModel, pk=pk)
             user_id = data.dispatch.id
-            dispatches = User.objects.filter(~Q(pk=user_id), is_staff=True, is_superuser=False)
+            dispatches = User.objects.filter(
+                ~Q(pk=user_id), is_staff=True, is_superuser=False)
             context = {
                 'form': form,
                 'pk': pk,
@@ -322,7 +392,30 @@ class TransferTask(LoginRequiredMixin, View):
 
 class TransferredTasks(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'Accounting/transfered_tasks.html')
+        daily = ''
+        weekly = ''
+        monthly = ''
+        if request.user.is_superuser:
+            daily = TaskTransferModel.objects.filter(
+                created_on__gte=today.date())
+            weekly = TaskTransferModel.objects.filter(created_on__gte=week)
+            monthly = TaskTransferModel.objects.filter(created_on__gte=month)
+        if request.user.is_staff and not request.user.is_superuser:
+            user_id = request.user.id
+            print('ok')
+            daily = TaskTransferModel.objects.filter(Q(transferred_by_id=user_id) | Q(
+                transfer_to_id=user_id), created_on__gte=today.date())
+            weekly = TaskTransferModel.objects.filter(
+                Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=week)
+            monthly = TaskTransferModel.objects.filter(
+                Q(transferred_by_id=user_id) | Q(transfer_to_id=user_id), created_on__gte=month)
+        context = {
+            'daily': daily,
+            'weekly': weekly,
+            'monthly': monthly
+        }
+        context
+        return render(request, 'Accounting/transfered_tasks.html', context)
 
 
 def add_paystub(request):
@@ -350,9 +443,12 @@ def paystub_report(request):
         monthly = PaystubModel.objects.filter(created_on__gte=month)
     else:
         user_id = request.user.id
-        daily = PaystubModel.objects.filter(dispatch=user_id, created_on__gte=today.date())
-        weekly = PaystubModel.objects.filter(dispatch=user_id, created_on__gte=week)
-        monthly = PaystubModel.objects.filter(dispatch=user_id, created_on__gte=month)
+        daily = PaystubModel.objects.filter(
+            dispatch=user_id, created_on__gte=today.date())
+        weekly = PaystubModel.objects.filter(
+            dispatch=user_id, created_on__gte=week)
+        monthly = PaystubModel.objects.filter(
+            dispatch=user_id, created_on__gte=month)
     context = {
         'daily': daily,
         'weekly': weekly,
@@ -365,7 +461,8 @@ def update_paystub_report(request, pk):
     if request.user.is_superuser:
         data = get_object_or_404(PaystubModel, pk=pk)
         data_user = data.dispatch.id
-        dispatch = User.objects.filter(~Q(id=data_user), is_staff=True, is_superuser=False)
+        dispatch = User.objects.filter(
+            ~Q(id=data_user), is_staff=True, is_superuser=False)
         form = PaystubForm(instance=data)
         if request.method == 'POST':
             form = PaystubForm(request.POST, request.FILES, instance=data)
@@ -414,6 +511,8 @@ def stock_request(request):
 
 def cancel_stock_request(request):
     form = StockRequestForm()
+    rcv = StockRequestModel.objects.filter(
+        requested=True).values('receiver').distinct()
     if request.method == 'POST':
         form = StockRequestForm(request.POST, request.FILES)
         if form.is_valid():
@@ -433,15 +532,18 @@ def cancel_stock_request(request):
 
             except:
                 return HttpResponse('Something Went Wrong')
-    return render(request, 'Accounting/cancel_stock_req.html', {'form': form})
+    return render(request, 'Accounting/cancel_stock_req.html', {'form': form, 'rcv': rcv})
 
 
 class StockRequest(LoginRequiredMixin, View):
     def get(self, request):
         if request.user.is_superuser:
-            daily = StockRequestModel.objects.filter(created_on__gte=today.date()).order_by('-id')
-            weekly = StockRequestModel.objects.filter(created_on__gte=week).order_by('-id')
-            monthly = StockRequestModel.objects.filter(created_on__gte=month).order_by('-id')
+            daily = StockRequestModel.objects.filter(
+                created_on__gte=today.date()).order_by('-id')
+            weekly = StockRequestModel.objects.filter(
+                created_on__gte=week).order_by('-id')
+            monthly = StockRequestModel.objects.filter(
+                created_on__gte=month).order_by('-id')
             context = {
                 'daily': daily,
                 'weekly': weekly,
@@ -515,3 +617,51 @@ def del_package(request, id):
     obj.delete()
     messages.success(request, 'Package deleted')
     return redirect('packages')
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def create_inspection(request):
+    form = InspectionForm()
+    if request.method == 'POST':
+        form = InspectionForm(request.POST)
+        if form.is_valid():
+            print(form.errors)
+            instance = form.save(commit=False)
+            instance.inspector = request.user
+            instance.save()
+            messages.success(request,'Inspection Report Created')
+            return redirect('inpection_reports')
+    return render(request,'Accounting/inspection_create.html',{'form': form})
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def inpection_reports(request):
+    reports = InspectionModel.objects.all()
+    context = {
+        'inspection_reports': reports,
+    }
+    return render(request,'Accounting/inspection_reports.html',context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def edit_inspection(request,id):
+    data = get_object_or_404(InspectionModel, id = id)
+    form = InspectionForm(instance = data)
+    if request.method == 'POST':
+        form = InspectionForm(request.POST,instance = data)
+        if form.is_valid():
+            print(form.errors)
+            instance = form.save(commit=False)
+            instance.inspector = request.user
+            instance.save()
+            messages.success(request,'Inspection Report Edited')
+            return redirect('inpection_reports')
+    return render(request,'Accounting/inspection_edit.html',{'form': form, 'id': id})
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def del_inspection(request,id):
+    obj = get_object_or_404(InspectionModel , id = id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

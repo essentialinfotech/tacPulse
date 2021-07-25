@@ -20,6 +20,7 @@ class Panic(models.Model):
     assigned = models.BooleanField(default=False)
     # is_accepted = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.panic_sender.first_name
@@ -31,6 +32,9 @@ class Rating(models.Model):
         blank=True, null=True, default=0)
     count = models.IntegerField(blank=True, null=True, default=0)
     avg_rating = models.FloatField(blank=True, null=True, default=0.0)
+
+    def __str__(self):
+        return str(self.avg_rating)
 
 
 class Feedback(models.Model):
@@ -88,6 +92,7 @@ class AmbulanceModel(models.Model):
     longitude = models.CharField(
         max_length=100, blank=False, null=False, default='')
     assigned = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -198,4 +203,4 @@ class HospitalTransferModel(models.Model):
     completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.target_hos
+        return f"Transferred to {self.target_hos}"

@@ -75,6 +75,7 @@
                             <tr class="text-center">
                                 <th> Create On </th>
                                 <th> Receiver Email </th>
+                                <th>Request Type</th>
                                 <th> Subject </th>
                                 <th> Message </th>
                                 <th> Attachment </th>
@@ -83,98 +84,11 @@
                         </thead>
                         <tbody>
                             <!-- daily -->
-                            {% for i in daily %}
-                            <tr class="text-center" id="monthly">
+                            {% for i in daily %} {% if i.cancel %}
+                            <tr class="text-center" id="monthly" style="background-color: #c9f7f5;">
                                 <td>{{ i.created_on }}</td>
                                 <td> {{i.receiver}}</td>
-                                <td>{{ i.subject }}</td>
-                                <td>{{ i.message_body }}</td>
-
-                                <td> {% if attachment %}
-                                    <a target="_blank" href="{{ i.attachment}}">Document</a> {% else %} N/A {% endif %}
-                                </td>
-
-                                <td>
-                                    <div style="display: flex;" class="text-center">
-                                        <a href="{% url 'stock_detail' i.id %}">
-                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
-                                        </a>
-
-                                        <a href="{% url 'DeleteStock' i.id %}"><i
-                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="Monthly" class="tabcontent">
-                <h3>Monthly</h3>
-                <div class="table-responsive">
-                    <table id="data-table" class="display table text-center">
-                        <thead>
-                            <tr class="text-center">
-                                <th> Create On </th>
-                                <th> Receiver Email </th>
-                                <th> Subject </th>
-                                <th> Message </th>
-                                <th> Attachment </th>
-                                <th> Action </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- daily -->
-                            {% for i in monthly %}
-                            <tr class="text-center" id="monthly">
-                                <td>{{ i.created_on }}</td>
-                                <td> {{i.receiver}}</td>
-                                <td>{{ i.subject }}</td>
-                                <td>{{ i.message_body }}</td>
-
-                                <td> {% if attachment %}
-                                    <a target="_blank" href="{{ i.attachment}}">Document</a> {% else %} N/A {% endif %}
-                                </td>
-
-                                <td>
-                                    <div style="display: flex;" class="text-center">
-                                        <a href="{% url 'stock_detail' i.id %}">
-                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
-                                        </a>
-
-                                        <a href="{% url 'DeleteStock' i.id %}"><i
-                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="Weekly" class="tabcontent">
-                <h3>Weekly</h3>
-                <div class="table-responsive">
-                    <table id="data-table" class="display table text-center">
-                        <thead>
-                            <tr class="text-center">
-                                <th> Create On </th>
-                                <th> Receiver Email </th>
-                                <th> Subject </th>
-                                <th> Message </th>
-                                <th> Attachment </th>
-                                <th> Action </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- daily -->
-                            {% for i in weekly %}
-                            <tr class="text-center" id="monthly">
-                                <td>{{ i.created_on }}</td>
-                                <td> {{i.receiver}}</td>
+                                <td>Cancel</td>
                                 <td>{{ i.subject }}</td>
                                 <td>{{ i.message_body }}</td>
 
@@ -193,7 +107,165 @@
                                     </div>
                                 </td>
                             </tr>
-                            {% endfor %}
+                            {% else %}
+                            <tr class="text-center" id="monthly">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.receiver}}</td>
+                                <td>Requested</td>
+                                <td>{{ i.subject }}</td>
+                                <td>{{ i.message_body }}</td>
+
+                                <td> {% if i.attachment %}
+                                    <a target="_blank" href="{{ i.attachment}}">Document</a> {% else %} N/A {% endif %}
+                                </td>
+
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+                                        <a href="{% url 'stock_detail' i.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'DeleteStock' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                    </div>
+                                </td>
+                            </tr> {% endif %} {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="Monthly" class="tabcontent">
+                <h3>Monthly</h3>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table text-center">
+                        <thead>
+                            <tr class="text-center">
+                                <th> Create On </th>
+                                <th> Receiver Email </th>
+                                <th>Request Type</th>
+                                <th> Subject </th>
+                                <th> Message </th>
+                                <th> Attachment </th>
+                                <th> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- daily -->
+                            {% for i in monthly %} {% if i.cancel %}
+                            <tr class="text-center" id="monthly" style="background-color: #c9f7f5;">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.receiver}}</td>
+                                <td>Cancel</td>
+                                <td>{{ i.subject }}</td>
+                                <td>{{ i.message_body }}</td>
+
+                                <td> {% if i.attachment %}
+                                    <a target="_blank" href="{{ i.attachment}}">Document</a> {% else %} N/A {% endif %}
+                                </td>
+
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+                                        <a href="{% url 'stock_detail' i.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'DeleteStock' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr class="text-center" id="monthly">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.receiver}}</td>
+                                <td>Requested</td>
+                                <td>{{ i.subject }}</td>
+                                <td>{{ i.message_body }}</td>
+
+                                <td> {% if i.attachment %}
+                                    <a target="_blank" href="{{ i.attachment}}">Document</a> {% else %} N/A {% endif %}
+                                </td>
+
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+                                        <a href="{% url 'stock_detail' i.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'DeleteStock' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                    </div>
+                                </td>
+                            </tr> {% endif %} {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="Weekly" class="tabcontent">
+                <h3>Weekly</h3>
+                <div class="table-responsive">
+                    <table id="data-table" class="display table text-center">
+                        <thead>
+                            <tr class="text-center">
+                                <th> Create On </th>
+                                <th> Receiver Email </th>
+                                <th>Request Type</th>
+                                <th> Subject </th>
+                                <th> Message </th>
+                                <th> Attachment </th>
+                                <th> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- daily -->
+                            {% for i in weekly %} {% if i.cancel %}
+                            <tr class="text-center" id="monthly" style="background-color: #c9f7f5;">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.receiver}}</td>
+                                <td>Cancel</td>
+                                <td>{{ i.subject }}</td>
+                                <td>{{ i.message_body }}</td>
+
+                                <td> {% if i.attachment %}
+                                    <a target="_blank" href="{{ i.attachment}}">Document</a> {% else %} N/A {% endif %}
+                                </td>
+
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+                                        <a href="{% url 'stock_detail' i.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'DeleteStock' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr class="text-center" id="monthly">
+                                <td>{{ i.created_on }}</td>
+                                <td> {{i.receiver}}</td>
+                                <td>Requested</td>
+                                <td>{{ i.subject }}</td>
+                                <td>{{ i.message_body }}</td>
+
+                                <td> {% if i.attachment %}
+                                    <a target="_blank" href="{{ i.attachment}}">Document</a> {% else %} N/A {% endif %}
+                                </td>
+
+                                <td>
+                                    <div style="display: flex;" class="text-center">
+                                        <a href="{% url 'stock_detail' i.id %}">
+                                            <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
+                                        </a>
+
+                                        <a href="{% url 'DeleteStock' i.id %}"><i
+                                                    class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                    </div>
+                                </td>
+                            </tr> {% endif %} {% endfor %}
                         </tbody>
                     </table>
                 </div>

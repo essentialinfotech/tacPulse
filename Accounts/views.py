@@ -1,5 +1,5 @@
 from Medic.views import rating
-from Medic.models import Panic, AmbulanceModel, Rating
+from Medic.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from Accounting.models import TaskModel
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -39,8 +39,24 @@ def regex_validation(number):
 @login_required
 def dashboard(request):
     if request.user.is_superuser:
+        ambulance_requests_monthly = AmbulanceModel.objects.filter(created_on__month = this_month)
+        ambulance_requests_monthly = len(ambulance_requests_monthly)
+
+        ambulance_requests_daily = AmbulanceModel.objects.filter(created_on__date = this_day)
+        ambulance_requests_daily = len(ambulance_requests_daily)
+
+        panic_requests_daily = Panic.objects.filter(timestamp__date = this_day)
+        panic_requests_daily = len(panic_requests_daily)
+
+        total_customers = User.objects.filter(is_superuser = False,is_staff = False,is_active = True).count()
+        total_dispatch = User.objects.filter(is_superuser = False,is_staff = True,is_active = True).count()
+
+        hos_trans = HospitalTransferModel.objects.filter(created_on__month = this_month, created_on__year = this_year)
+
         deactivated_users = User.objects.filter(is_active=False)
         rating = Rating.objects.all()
+        average_rating = Rating.objects.values_list('avg_rating',flat=True)
+        recent_panics = Panic.objects.filter(timestamp__year = this_year)[:10]
         star1 = False
         star2 = False
         star3 = False
@@ -84,6 +100,8 @@ def dashboard(request):
             if avg <= 5 and avg > 4.5:
                 star5 = True
 
+        hos_transfer = HospitalTransferModel.objects.filter(completed=True).order_by('-id')
+
         context = {
             'star1': star1,
             'star2': star2,
@@ -95,7 +113,16 @@ def dashboard(request):
             'star2_5': star2_5,
             'star3_5': star3_5,
             'star4_5': star4_5,
+            'average_rating': average_rating,
             'deactivated_users': deactivated_users,
+            'hos_transfer': hos_transfer,
+            'ambulance_requests_monthly': ambulance_requests_monthly,
+            'ambulance_requests_daily': ambulance_requests_daily,
+            'panic_requests_daily': panic_requests_daily,
+            'total_customers': total_customers,
+            'total_dispatch': total_dispatch,
+            'hos_trans': hos_trans,
+            'recent_panics': recent_panics,
         }
         return render(request, 'accounts/admin_dashboard.html', context)
 
@@ -408,6 +435,8 @@ class TrackDispatches(LoginRequiredMixin, View):
     def get(self, request):
         if request.user.is_superuser:
             return render(request, 'accounts/track_dispatches.html')
+        else:
+            return redirect('forbidden')
 
 
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
@@ -513,3 +542,12 @@ def assesment_list_users(request):
         'users': users,
     }
     return render(request, 'accounts/assesments_list_users.html', context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def customer_list(request):
+    customers = User.objects.filter(is_superuser = False, is_staff = False)
+    context = {
+        'customers': customers,
+    }
+    return render(request,'accounts/customer_list.html',context)

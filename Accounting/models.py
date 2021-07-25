@@ -114,10 +114,8 @@ class TaskModel(models.Model):
     dispatch = models.ForeignKey(User, on_delete=models.CASCADE)
     task_title = models.CharField(max_length=100, blank=False, null=False)
     task_desc = models.TextField(max_length=1000, blank=True, null=True)
-    scheduled_task = models.ForeignKey(
-        ScheduleModel, on_delete=models.CASCADE, null=True, blank=True)
-    ambulance_task = models.ForeignKey(
-        AmbulanceModel, on_delete=models.CASCADE, blank=True, null=True)
+    scheduled_task = models.ForeignKey(ScheduleModel, on_delete=models.CASCADE, null=True, blank=True)
+    ambulance_task = models.ForeignKey(AmbulanceModel, on_delete=models.CASCADE, blank=True, null=True)
     panic_task = models.ForeignKey(
         Panic, on_delete=models.CASCADE, blank=True, null=True)
     hos_tra = models.ForeignKey(HospitalTransferModel, on_delete=models.CASCADE, blank=True, null=True)
@@ -131,11 +129,35 @@ class TaskModel(models.Model):
 
 class TaskTransferModel(models.Model):
     dispatch = models.ForeignKey(User, on_delete=models.CASCADE)
-    transferred_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='by', blank=True, null=True)
-    task = models.ForeignKey(
-        TaskModel, on_delete=models.CASCADE, blank=True, null=True)
+    transferred_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='by', blank=True, null=True)
+    task = models.ForeignKey(TaskModel, on_delete=models.CASCADE, blank=True, null=True)
     transfer_reason = models.TextField(max_length=100, blank=False, null=False)
-    transfer_to = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='to')
+    transfer_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to')
     created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Transferred to { self.transfer_to }"
+
+
+class InspectionModel(models.Model):
+    Type = [
+        ('Property', 'Property'),
+        ('Dispatch', 'Dispatch')
+    ]
+
+    Result = [
+        ('Good', 'Good'),
+        ('Bad', 'Bad'),
+    ]
+
+    inspector = models.ForeignKey(User,on_delete=SET_NULL,blank=True,null=True)
+    inspection_for = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name='inpected_user')
+    inspection_type = models.CharField(max_length=20,blank=False,null=False,choices=Type)
+    inspection_output = models.CharField(max_length=20,blank=True,null=True,choices=Result)
+    inspection_detail = models.CharField(max_length=300, blank=False, null=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.inspection_type}"
+
+

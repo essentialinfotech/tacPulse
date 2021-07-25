@@ -12,8 +12,8 @@ class ScheduleModelForm(forms.ModelForm):
         widgets = {
             'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
-            'trip': forms.Select(attrs={'class': 'form-control'})
-
+            'trip': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'})
         }
 
 
@@ -62,4 +62,24 @@ class PaystubForm(forms.ModelForm):
     class Meta:
         model = PaystubModel
         fields = '__all__'
+
+
+
+class InspectionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(InspectionForm, self).__init__(*args, **kwargs)
+        instance = kwargs.pop('instance', User)
+        if self.instance:
+            self.fields["inspection_for"].queryset = User.objects.filter(is_staff=True,
+                                                                         is_superuser=False,
+                                                                         is_active = True)
+    class Meta:
+        model = InspectionModel
+        fields = '__all__'
+        widgets = {
+            'inspection_for': forms.Select(attrs={'class': 'form-control'}),
+            'inspection_type': forms.Select(attrs={'class': 'form-control'}),
+            'inspection_output': forms.Select(attrs={'class': 'form-control'}),
+            'inspection_detail': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 

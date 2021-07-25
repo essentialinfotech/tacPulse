@@ -93,6 +93,9 @@ class ScheduleModel(models.Model):
     assigned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.location
+
 
 class TaskModel(models.Model):
     status_type = [

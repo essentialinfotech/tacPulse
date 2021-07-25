@@ -53,11 +53,14 @@ class ScheduleTrip(LoginRequiredMixin, View):
 class TripSchedules(LoginRequiredMixin, View):
     def get(self, request):
         title = "Schedule Requests"
+        daily = ''
+        weekly = ''
+        monthly = ''
         if self.request.user.is_superuser:
             daily = ScheduleModel.objects.filter(created_on__gte=today.date()).order_by('-id')
             weekly = ScheduleModel.objects.filter(created_on__gte=week).order_by('-id')
             monthly = ScheduleModel.objects.filter(created_on__gte=month).order_by('-id')
-        elif self.request.user.is_user:
+        elif not self.request.user.is_superuser and not self.request.user.is_staff:
             user_id = request.user.id
             daily = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
             weekly = ScheduleModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
@@ -119,11 +122,15 @@ class TrackSchedule(LoginRequiredMixin, View):
 class AcceptedSchedule(LoginRequiredMixin, View):
     def get(self, request):
         title = "Accepted Schedule"
+        daily = ''
+        weekly = ''
+        monthly = ''
+
         if self.request.user.is_superuser:
             daily = ScheduleModel.objects.filter(status='Approved', created_on__gte=today.date()).order_by('-id')
             weekly = ScheduleModel.objects.filter(status='Approved', created_on__gte=week).order_by('-id')
             monthly = ScheduleModel.objects.filter(status='Approved', created_on__gte=month).order_by('-id')
-        elif self.request.user.is_user:
+        elif not self.request.user.is_superuser and not self.request.user.is_staff:
             user_id = request.user.id
             daily = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=today.date()).order_by('-id')
             weekly = ScheduleModel.objects.filter(dispatch=user_id, status='Approved', created_on__gte=week).order_by('-id')
@@ -144,7 +151,7 @@ class CompletedSchedule(LoginRequiredMixin, View):
             daily = ScheduleModel.objects.filter(status='Completed', created_on__gte=today.date()).order_by('-id')
             weekly = ScheduleModel.objects.filter(status='Completed', created_on__gte=week).order_by('-id')
             monthly = ScheduleModel.objects.filter(status='Completed', created_on__gte=month).order_by('-id')
-        elif self.request.user.is_user:
+        elif not self.request.user.is_superuser and not self.request.user.is_staff:
             user_id = request.user.id
             daily = ScheduleModel.objects.filter(dispatch=user_id, status='Completed',
                                                  created_on__gte=today.date()).order_by('-id')
@@ -182,6 +189,7 @@ def task_create(request):
                 if x == 'sch':
                     data = get_object_or_404(ScheduleModel, pk=st)
                     data.assigned = True
+                    data.status = 'Approved'
                     data.save()
                 elif x == 'ambr':
                     data = get_object_or_404(AmbulanceModel, pk=at)
@@ -217,7 +225,7 @@ class TasksList(LoginRequiredMixin, View):
             daily = TaskModel.objects.filter(created_on__gte=today.date()).order_by('-id')
             weekly = TaskModel.objects.filter(created_on__gte=week).order_by('-id')
             monthly = TaskModel.objects.filter(created_on__gte=month).order_by('-id')
-        elif self.request.user.is_staff:
+        elif self.request.user.is_staff and not request.user.is_superuser:
             user_id = request.user.id
             daily = TaskModel.objects.filter(dispatch=user_id, created_on__gte=today.date()).order_by('-id')
             weekly = TaskModel.objects.filter(dispatch=user_id, created_on__gte=week).order_by('-id')
@@ -398,7 +406,7 @@ def stock_request(request):
                 form_obj = form.save(commit=False)
                 form_obj.requested = True
                 form_obj.save()
-
+                return redirect('stock_requests')
             except:
                 return HttpResponse('Something Went Wrong')
     return render(request, 'Accounting/stock_req.html', {'form': form})

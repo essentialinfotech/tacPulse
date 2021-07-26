@@ -6,7 +6,7 @@ from .models import *
 class OccurrenceForm(forms.ModelForm):
     class Meta:
         model = Occurrence
-        fields = ['occurrence_giver','related_user','occurrence_id', 'occurrence_type','occurrence_detail','image']
+        fields = ['occurrence_giver','related_user','occurrence_id', 'occurrence_type','occurrence_detail']
         widgets = {
             'related_user': forms.Select(attrs={'class': 'form-control'}),
             'occurrence_type': forms.Select(attrs={'class': 'form-control'}),

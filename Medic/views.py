@@ -73,12 +73,10 @@ def inspaction_report(request):
     return render(request, 'medic/inspaction_report.html')
 
 
-
-
 def occurrence_form(request):
     form = OccurrenceForm()
     if request.method == 'POST':
-        form = OccurrenceForm(request.POST, request.FILES)
+        form = OccurrenceForm(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.occurrence_giver = request.user
@@ -95,6 +93,7 @@ def occurrence_form(request):
 def occurrence_report(request):
     from datetime import datetime, timedelta
     last_seven_days = datetime.today() - timedelta(days=7)
+    print(last_seven_days)
     monthly_occurences = Occurrence.objects.filter(created__month = this_month, \
                                                     created__year = this_year)
 
@@ -129,7 +128,7 @@ def edit_occurrence(request,id):
     data = Occurrence.objects.get(id=id)
     form = OccurrenceForm(instance=data)
     if request.method == 'POST':
-        form = OccurrenceForm(request.POST,request.FILES, instance=data)
+        form = OccurrenceForm(request.POST,instance=data)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.occurrence_giver = request.user

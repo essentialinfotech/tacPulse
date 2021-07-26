@@ -92,7 +92,7 @@
                 <!-- body that will take incoming dragged fields -->
                 <div class="col-lg-6">
                 <!-- to submit form from dropped area -->
-                <form method="post" action="{% url 'occurrence_form' %}" enctype="multipart/form-data" class="draggable-zone">
+                <form method="post" action="{% url 'occurrence_form' %}"  class="draggable-zone">
                             {% csrf_token %}
                             Drop into this box
                     <div class="card draggable-zone" style="width: 100%; height: 100%;">
@@ -126,10 +126,7 @@
                             {{ form.occurrence_detail }}
                         </div>
                     </div>
-
-                    <div class="draggable">
-                        <div class="draggable-handle">{{ form.image|as_crispy_field }}</div>
-                    </div><br>
+                    <br>
 
                     <button type="submit" id="to-be-clicked" class="btn btn-success">Save</button>
                     </form>

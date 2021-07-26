@@ -12,7 +12,7 @@ urlpatterns = [
     path('case/note/add/<hashid:id>/', case_note_create, name='case_note_create'),
     path('property/form/', property_add, name='property_add'),
     path('property/<hashid:id>/', property_edit, name='property_edit'),
-    path('occurrence/form/', occurrence_form, name='occurrence_form'),
+    path('create/occurrence/', occurrence_form, name='occurrence_form'),
     path('occurrence/report/', occurrence_report, name='occurrence_report'),
     path('panic/request/', panic_system, name='panic_system'),
     path('ambulance/request/', AmbulanceRequest.as_view(),

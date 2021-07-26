@@ -190,87 +190,72 @@
                                             <span class="fa fa-star fa-2x"></span>
                                             <span class="fa fa-star fa-2x"></span>
                                             <span class="fa fa-star fa-2x"></span>
-                                            <span class="fa fa-star fa-2x"></span> 
-                                            {% endif %}
-                                             {% if star1_5 is True %}
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star1_5 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <i class="fa fa-star-half-o fa-2x half"></i>
                                             <span class="fa fa-star fa-2x"></span>
                                             <span class="fa fa-star fa-2x"></span>
-                                            <span class="fa fa-star fa-2x"></span> 
-                                            {% endif %} 
-                                            {% if star2_5 is True %}
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star2_5 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <i class="fa fa-star-half-o fa-2x half"></i>
                                             <span class="fa fa-star fa-2x"></span>
-                                            <span class="fa fa-star fa-2x"></span>
-                                             {% endif %}
-                                             {% if star3_5 is True %}
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star3_5 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <i class="fa fa-star-half-o fa-2x half"></i>
-                                            <span class="fa fa-star fa-2x"></span>
-                                             {% endif %} 
-                                            {% if star4_5 is True %}
+                                            <span class="fa fa-star fa-2x"></span> {% endif %} {% if star4_5 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
-                                            <i class="fa fa-star-half-o fa-2x half"></i> 
-                                            {% endif %}
-                                             {% if star1 is True %}
+                                            <i class="fa fa-star-half-o fa-2x half"></i> {% endif %} {% if star1 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x"></span>
                                             <span class="fa fa-star fa-2x"></span>
                                             <span class="fa fa-star fa-2x"></span>
-                                            <span class="fa fa-star fa-2x"></span> 
-                                            {% endif %}
+                                            <span class="fa fa-star fa-2x"></span> {% endif %}
                                             <!-- 2star -->
                                             {% if star2 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x"></span>
                                             <span class="fa fa-star fa-2x"></span>
-                                            <span class="fa fa-star fa-2x"></span> 
-                                            {% endif %}
+                                            <span class="fa fa-star fa-2x"></span> {% endif %}
                                             <!-- 3star -->
                                             {% if star3 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x"></span>
-                                            <span class="fa fa-star fa-2x fa-2x"></span>
-                                             {% endif %}
+                                            <span class="fa fa-star fa-2x fa-2x"></span> {% endif %}
                                             <!-- 4star -->
                                             {% if star4 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
-                                            <span class="fa fa-star fa-2x"></span> 
-                                            {% endif %}
+                                            <span class="fa fa-star fa-2x"></span> {% endif %}
                                             <!-- 5star -->
                                             {% if star5 is True %}
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
                                             <span class="fa fa-star fa-2x checked"></span>
-                                            <span class="fa fa-star fa-2x checked"></span> 
-                                            {% endif %}
+                                            <span class="fa fa-star fa-2x checked"></span> {% endif %}
                                         </div>
                                         <span style="color: rgb(233, 170, 87);">
                                             {% for i in average_rating %}
                                             {{ i }} out of 5.0
                                             {% endfor %}
                                         </span>
-                                        
+
                                     </div>
 
                                 </div>
                                 <div class="position-absolute right-0 bottom-0 mr-5 overflow-hidden">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -340,7 +325,7 @@
                         <div class="card-body pt-2" style="height: 400px; overflow-y: scroll;">
                             <!--begin::Item-->
                             {% for i in deactivated_users %}
-                            <div class="d-flex align-items-center mb-10" >
+                            <div class="d-flex align-items-center mb-10">
                                 <!--begin::Symbol-->
                                 <div class="symbol symbol-40 symbol-light-white mr-5">
                                     <div class="symbol-label">
@@ -401,58 +386,50 @@
                                 <!--begin: Datatable-->
                                 <!--begin: Datatable-->
                                 <div class="table-responsive" style="height: 350px; overflow-y: scroll;">
-                                <table class="table table-bordered table-hover table-checkable" id="kt_datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Requested By</th>
-                                            <th>Transfer Type</th>
-                                            <th>Transfer Reason</th>
-                                            <th>Priority</th>
-                                            <th>Current Hospital</th>
-                                            <th>Current Address</th>
-                                            <th>Target Hospital</th>
-                                            <th>Target Address</th>
-                                            <th>Date</th>
-                                            <th>Task Assign</th>
-                                            <th>Tranferred</th>
-                                        </tr>
-                                           
-                                    </thead>
-                                    <tbody>
-                                        {% for i in hos_trans %}
-                                        <tr>
-                                            <td>{{ forloop.counter }}</td>
-                                            <td>
-                                                <a href="{% url 'profile' i.requested_by.id %}">
+                                    <table class="table table-bordered table-hover table-checkable" id="kt_datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Requested By</th>
+                                                <th>Transfer Type</th>
+                                                <th>Transfer Reason</th>
+                                                <th>Priority</th>
+                                                <th>Current Hospital</th>
+                                                <th>Current Address</th>
+                                                <th>Target Hospital</th>
+                                                <th>Target Address</th>
+                                                <th>Date</th>
+                                                <th>Task Assign</th>
+                                                <th>Tranferred</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            {% for i in hos_trans %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>
+                                                    <a href="{% url 'profile' i.requested_by.id %}">
                                                     {{ i.requested_by.first_name|title }} {{ i.requested_by.last_name|title }}
                                                 </a>
-                                            </td>
-                                            <td>{{ i.transfer_speed }}</td>
-                                            <td style="word-break: break-all;">{{ i.reason }}</td>
-                                            <td>{{ i.priority }}</td>
-                                            <td>{{ i.current_hos }}</td>
-                                            <td>{{ i.current_add }}</td>
-                                            <td>{{ i.target_hos }}</td>
-                                            <td>{{ i.target_add }}</td>
-                                            <td>{{ i.created_on }}</td>
-                                            <td>{% if i.assigned %}
-                                                Task assigned
-                                                {% else %}
-                                                Not assigned
-                                                {% endif %}
-                                            </td>
-                                            <td>{% if i.completed %}
-                                                transferred
-                                                {% else %}
-                                                not transferred
-                                                {% endif %}
-                                            </td>
+                                                </td>
+                                                <td>{{ i.transfer_speed }}</td>
+                                                <td style="word-break: break-all;">{{ i.reason }}</td>
+                                                <td>{{ i.priority }}</td>
+                                                <td>{{ i.current_hos }}</td>
+                                                <td>{{ i.current_add }}</td>
+                                                <td>{{ i.target_hos }}</td>
+                                                <td>{{ i.target_add }}</td>
+                                                <td>{{ i.created_on }}</td>
+                                                <td>{% if i.assigned %} Task assigned {% else %} Not assigned {% endif %}
+                                                </td>
+                                                <td>{% if i.completed %} transferred {% else %} not transferred {% endif %}
+                                                </td>
 
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <!--end: Datatable-->
                             </div>
@@ -1433,7 +1410,7 @@
                         </div>
                         <!--end::Header-->
                         <!--begin::Body-->
-                        <div class="card-body pt-0">
+                        <div class="card-body pt-0" style="height: 350px;overflow-y: scroll;">
                             <!--begin::Item-->
                             {% for i in recent_panics %}
                             <div class="d-flex align-items-center flex-wrap mb-8">

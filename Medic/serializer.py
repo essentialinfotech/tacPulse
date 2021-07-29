@@ -12,7 +12,7 @@ class PanicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Panic
         fields = '__all__'
-        depth = 1
+        depth = 2
 
 
 class AmbulanceRequestSerializer(serializers.ModelSerializer):

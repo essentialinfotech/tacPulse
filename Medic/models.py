@@ -103,6 +103,7 @@ class PanicNoti(models.Model):
     panic = models.ForeignKey(
         Panic, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=100, default='has sent a panic request')
+    is_seen = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

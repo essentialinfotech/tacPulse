@@ -45,7 +45,7 @@ urlpatterns = [
     path('hospital/transfer/delete/<hashid:pk>/',
          delete_hospital_request, name='delete_hospital_request'),
     path('panic/requests/', check_panic_requests, name='check_panic_requests'),
-    path('individual/panic/location/<hashid:id>/',
+    path('individual/panic/location/<int:id>/',
          check_panic_requests_location, name='check_panic_requests_location'),
     path('panic/task/comlete/<hashid:pk>/',
          complete_panic_task, name='complete_panic_task'),
@@ -70,4 +70,5 @@ urlpatterns = [
     path('feedback/', feedback, name='feedback'),
     path('search/results/', search, name='search'),
     path('autosuggest/', autocomplete, name='autocomplete'),
+    path('panic/notification/marking/as/read/<int:id>/', mark_seen_panic_noti, name ='mark_seen_panic_noti'),
 ]

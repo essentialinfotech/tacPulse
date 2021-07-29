@@ -491,8 +491,16 @@ def complete_panic_task(request, pk):
 
 class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
     serializer_class = PanicNotiSerializer
+    user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
     def get_queryset(self):
-        return PanicNoti.objects.all()
+        return PanicNoti.objects.filter(is_seen = False).order_by('-id')
+
+
+def mark_seen_panic_noti(request,id):
+    noti = PanicNoti.objects.get(id = id)
+    noti.is_seen = True
+    noti.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def property_report(request):
@@ -711,6 +719,10 @@ def autocomplete(request):
     else:
         mylist = ['No user found']
     return JsonResponse(mylist, safe=False)
+
+
+def noti_length(request):
+    pass
         
 
 

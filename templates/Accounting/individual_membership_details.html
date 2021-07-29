@@ -11,10 +11,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card border-success card-custom text-center m-auto w-50">
+                    <div class="card border-success card-custom text-center m-auto w-70">
                         <div class="card-header">
                             <div class="card-title">
-                                <h3 class="card-label">Payment</h3>
+                                <h3 class="card-label">Membership</h3>
                             </div>
                             <div class="card-toolbar">
 
@@ -29,21 +29,38 @@
                                 <table class="table-hover display table table-separate table-head-custom table-checkable">
                                     <thead>
                                         <tr>
+                                            <th>Profile Picture</th>
+                                            <th scope="col">Membership Holder</th>
                                             <th scope="col">Package Name</th>
+                                            <th scope="col">Membership Price</th>
                                             <th scope="col">Package Validation</th>
                                             <th scope="col">Membership Duration</th>
                                             <th scope="col">Package Status</th>
-                                            <th scope="col">Package Description</th>
-                                            <th scope="col">Package Price</th>
+                                            <th scope="col">Membership Token</th>
+                                            <th scope="col">Membership Taken Date</th>
+                                            <th scope="col">Membership End Date</th>
+                                            <th scope="col">Package Desciption</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for i in package %}
+                                        {% for i in mebership_details %}
                                         <tr>
-                                            <td>{{ i.p_name|title }}</td>
-                                            <td>{{ i.valid_till }}</td>
-                                            <td>{{ i.package_membership_duration }} days</td>
-                                            <td>{{ i.status}}</td>
+                                            <td>
+                                                <img src="{{ i.user.imageURL }}" class="rounded-circle" height="40px" alt="">
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'profile' i.user.id %}">
+                                                    {{ i.user.first_name|title }} {{ i.user.last_name|title }}
+                                                </a>
+                                            </td>
+                                            <td>{{ i.package.p_name }}</td>
+                                            <td>R{{ i.package.p_price }}</td>
+                                            <td>{{ i.package.is_valid }}</td>
+                                            <td>{{ i.package.package_membership_duration }} days</td>
+                                            <td>{{ i.package.status }}</td>
+                                            <td>{{ i.token }}</td>
+                                            <td>{{ i.membership_date|date }}</td>
+                                            <td>{{ i.membership_end|date }}</td>
                                             <td>
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                                     View
@@ -54,7 +71,7 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-body">
-                                                                {{ i.description|title }}
+                                                                {{ i.package.description|title }}
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -63,20 +80,11 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>R{{ i.p_price }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-
-                            {% for i in package %}
-                            <input class="form-control" readonly type="text" name="p_price" id="p_price" value="{{ i.p_price }}" style="display: none;">
-                            <input class="form-control" readonly type="text" name="" id="p_id" value="{{ i.id }}" style="display: none;">
-                            <input type="text" name="" id="user" value="{{ request.user.id }}" style="display: none;"> {% endfor %}
-                            <br>
-                            <!-- Create a pay button that will open the popup-->
-                            <button class="form-control btn btn-danger" id="checkout-button">Pay</button>
                         </div>
                     </div>
 
@@ -86,56 +94,5 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    var package_price = $('#p_price').val();
-    var package_price_in_cents = package_price * 100;
-    var package_id = $('#p_id').val();
-    var user = $('#user').val();
-
-    var yoco = new window.YocoSDK({
-        publicKey: 'pk_test_ed3c54a6gOol69qa7f45',
-    });
-    var checkoutButton = document.querySelector('#checkout-button');
-    checkoutButton.addEventListener('click', function() {
-        yoco.showPopup({
-            amountInCents: package_price_in_cents,
-            currency: 'ZAR',
-            name: 'Tac Pulse',
-            description: 'Awesome description',
-            callback: function(result) {
-                // This function returns a token that your server can use to capture a payment
-                if (result.error) {
-                    const errorMessage = result.error.message;
-                    alert("error occured: " + errorMessage);
-                } else {
-                    swal("card successfully tokenised: " + result.id);
-                    token = result.id;
-                    data_backend = {
-                        'token': token,
-                        'package_id': package_id,
-                        'package_price_in_cents': package_price_in_cents,
-                        'user': user,
-                    }
-
-                    $.ajax({
-                        url: '/payment/backend/',
-                        type: 'POST',
-                        data: data_backend,
-                        traditional: true,
-                        dataType: 'html',
-                        success: function(result) {
-                            window.location.pathname = 'purchased/';
-                        }
-                    });
-                }
-                // In a real integration - you would now pass this chargeToken back to your
-                // server along with the order/basket that the customer has purchased.
-            }
-        })
-    });
-</script>
-
 
 {% endblock %}

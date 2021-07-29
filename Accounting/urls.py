@@ -51,4 +51,7 @@ urlpatterns = [
     path('payment/<hashid:id>/', payment, name = 'payment'),
     path('payment/backend/', payment_backend, name = 'payment_backend'),
     path('purchased/', package_purchased, name = 'package_purchased'),
+    path('membership/notificattions/', membership_noti, name = 'membership_noti'),
+    path('membership/details/individual/<int:id>/', viewing_membership_details_individual, name = 'viewing_membership_details_individual'),
+    path('mark/as/read/membership/notification/<int:id>/', membership_noti_mark_as_seen, name = 'membership_noti_mark_as_seen'),
 ]

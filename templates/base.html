@@ -36,13 +36,13 @@
     <script src="{% static 'assets/js/googlemapsearch.js' %}"></script>
 
     <style>
-        #tags::placeholder{
+        #tags::placeholder {
             font-size: 10px;
             font-family: Georgia, 'Times New Roman', Times, serif;
             color: rgb(134, 131, 131);
         }
-
-        #tags{
+        
+        #tags {
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
             --blue: #007bff;
@@ -71,8 +71,8 @@
             --breakpoint-md: 768px;
             --breakpoint-lg: 992px;
             --breakpoint-xl: 1200px;
-            --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-            --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+            --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             box-sizing: border-box;
             margin: 0;
             font-family: inherit;
@@ -83,14 +83,15 @@
             background-color: #fff;
             background-clip: padding-box;
             border: 1px solid #ced4da;
-            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
             height: calc(2.875rem + 2px);
             padding: .5rem 1rem;
             font-size: 1.25rem;
             line-height: 1.5;
             border-radius: .3rem;
         }
-        #tags:focus{
+        
+        #tags:focus {
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
             --blue: #007bff;
@@ -119,8 +120,8 @@
             --breakpoint-md: 768px;
             --breakpoint-lg: 992px;
             --breakpoint-xl: 1200px;
-            --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-            --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+            --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             box-sizing: border-box;
             margin: 0;
             font-family: inherit;
@@ -134,13 +135,26 @@
             background-clip: padding-box;
             border: 1px solid #ced4da;
             border-radius: .25rem;
-            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
             color: #495057;
             background-color: #fff;
             border-color: #80bdff;
             outline: 0;
-            box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+            box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
             margin-top: .5rem;
+        }
+        
+        #date {
+            color: brown!important;
+        }
+        
+        .mark_seen,
+        #mark_seen {
+            border-radius: 0px!important;
+            padding: 1px!important;
+            padding-right: 2px!important;
+            padding-left: 2px!important;
+            margin-left: 10px!important;
         }
     </style>
 </head>
@@ -339,10 +353,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %} 
-
-                            
-                            {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Task</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -362,9 +373,7 @@
 
                                 </a>
                             </li>
-                            {% endif %} 
-                            
-                            {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -396,12 +405,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %}{% endif %} 
-
-
-
-                            
-                            {% if request.user.is_superuser %}
+                            {% endif %}{% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -1098,126 +1102,15 @@
             <!--begin::Nav-->
             <div class="navi navi-icon-circle navi-spacer-x-0">
                 <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon-bell text-success icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">5 new user generated report</div>
-                            <div class="text-muted">Reports based on sales</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon2-box text-danger icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">2 new items submited</div>
-                            <div class="text-muted">by Grog John</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon-psd text-primary icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">79 PSD files generated</div>
-                            <div class="text-muted">Reports based on sales</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon2-supermarket text-warning icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">$2900 worth producucts sold</div>
-                            <div class="text-muted">Total 234 items</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon-paper-plane-1 text-success icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">4.5h-avarage response time</div>
-                            <div class="text-muted">Fostest is Barry</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon-safe-shield-protection text-danger icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">3 Defence alerts</div>
-                            <div class="text-muted">40% less alerts thar last week</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon-notepad text-primary icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">Avarage 4 blog posts per author</div>
-                            <div class="text-muted">Most posted 12 time</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <a href="#" class="navi-item">
-                    <div class="navi-link rounded">
-                        <div class="symbol symbol-50 symbol-circle mr-3">
-                            <div class="symbol-label">
-                                <i class="flaticon-users-1 text-warning icon-lg"></i>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold font-size-lg">16 authors joined last week</div>
-                            <div class="text-muted">9 photodrapehrs, 7 designer</div>
-                        </div>
-                    </div>
-                </a>
-                <!--end::Item-->
+                <div id="noti_div" class="text-dark">
 
+                </div>
+
+                <div id="panic_noti" class="text-dark">
+
+                </div>
+
+                <!--end::Item-->
             </div>
             <!--end::Nav-->
         </div>
@@ -1327,13 +1220,7 @@
                 </div>
                 <div class="d-flex flex-column">
                     <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ request.user.first_name }}</a>
-                    <div class="text-muted mt-1">{% if request.user.is_superuser %}
-                    Admin 
-                    {% elif request.user.is_staff and not request.user.is_superuser %}
-                    Dispatch
-                    {% else %}
-                    User
-                    {% endif %}
+                    <div class="text-muted mt-1">{% if request.user.is_superuser %} Admin {% elif request.user.is_staff and not request.user.is_superuser %} Dispatch {% else %} User {% endif %}
                     </div>
                     <div class="navi mt-2">
                         <a href="#" class="navi-item">
@@ -1408,7 +1295,7 @@
                 </a>
                 <!--end:Item-->
                 <!--begin::Item-->
-                
+
                 <!--end:Item-->
                 <!--begin::Item-->
                 <a href="#" class="navi-item">
@@ -1442,10 +1329,10 @@
             <!--end::Separator-->
             <!--begin::Notifications-->
             <div>
-                
+
+            </div>
+            <!--end::Content-->
         </div>
-        <!--end::Content-->
-    </div>
         <!-- end::User Panel-->
         <!--begin::Quick Panel-->
         <div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10">
@@ -2344,13 +2231,67 @@
         <script>
             $("#tags").autocomplete({
                 source: "{% url 'autocomplete' %}",
-                select: function(event, ui) { 
-                $("input#tags").val(ui.item.value);
-                $("#searchform").submit();
-            }
+                select: function(event, ui) {
+                    $("input#tags").val(ui.item.value);
+                    $("#searchform").submit();
+                }
             });
         </script>
 
+        <script>
+            setInterval(function() {
+
+                $.ajax({
+                    method: "GET",
+                    url: "/membership/notificattions/",
+                    success: function(data) {
+                        $("#noti_div").empty();
+                        $.each(data, function(key, value) {
+                            var f_name = value.first_name.charAt(0).toUpperCase() + value.first_name.slice(1);
+                            var l_name = value.last_name.charAt(0).toUpperCase() + value.last_name.slice(1);
+                            var noti_text = value.noti_text
+                            var is_seen = value.is_seen;
+                            var created = value.created.substring(0, 10);
+                            var membership_id = value.membership_id;
+                            var membership_noti_model_id = value.membership_noti_model_id;
+                            var user_id = value.user_id;
+                            var details = "<a href='/membership/details/individual/" + membership_id + "/'  id='aTag'>Details</a>";
+                            var mark_seen = "<a class='mark_seen' href='/mark/as/read/membership/notification/" + membership_noti_model_id + "/' id='mark_seen'>Mark as seen</a>"
+                            if (is_seen == false) {
+                                $("#noti_div").append(
+                                    "<div >" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
+                                );
+                            }
+                        })
+                    }
+                })
+
+                $.ajax({
+                    method: "GET",
+                    url: "/notification/panic/",
+                    success: function(data) {
+                        console.log('panic', data)
+                        $("#panic_noti").empty();
+                        $.each(data, function(key, value) {
+                            var f_name = value.panic.panic_sender.first_name.charAt(0).toUpperCase() + value.panic.panic_sender.first_name.slice(1);
+                            var l_name = value.panic.panic_sender.last_name.charAt(0).toUpperCase() + value.panic.panic_sender.last_name.slice(1);
+                            var noti_text = value.text
+                            var is_seen = value.is_seen;
+                            var created = value.created.substring(0, 10);
+                            panic_id = value.panic.id;
+                            var details = "<a href='/individual/panic/location/" + panic_id + "/'  id='aTag'>Details</a>";
+                            var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.id + "/'  id='mark_seen'>Mark as seen</a>";
+                            if (is_seen == false) {
+                                $("#panic_noti").append(
+                                    "<div >" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
+                                );
+                            }
+                        })
+                    }
+                })
+
+            }, 3000)
+        </script>
 </body>
 <!--end::Body-->
 

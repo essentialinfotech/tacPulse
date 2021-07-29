@@ -18,6 +18,7 @@ from Accounts.decorators import user_passes_test, has_perm_admin, has_perm_admin
     has_perm_dispatch, REDIRECT_FIELD_NAME
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import generics
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -116,6 +117,14 @@ def package_purchased(request):
         'has_membership': User.objects.filter(id = request.user.id, has_membership = True).exists()
     }
     return render(request,'Accounting/membership_purchased.html', context)
+
+
+def viewing_membership_details_individual(request,id):
+    mebership_details = MembershipModel.objects.filter(id = id)
+    context = {
+        'mebership_details': mebership_details,
+    }
+    return render(request,'Accounting/individual_membership_details.html',context)
 
 def members(request):
     return render(request, 'Accounting/members.html')
@@ -749,4 +758,30 @@ def del_inspection(request,id):
     obj = get_object_or_404(InspectionModel , id = id)
     obj.delete()
     messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def membership_noti(request):
+    membership_noti = MembershipNoti.objects.filter(is_seen = False).order_by('-id')
+    data = []
+    for i in membership_noti:
+        prefetch = {
+            'first_name': i.membership.user.first_name,
+            'last_name': i.membership.user.last_name,
+            'noti_text': i.noti_text,
+            'created': i.created,
+            'is_seen': i.is_seen,
+            'membership_id': i.membership.id,
+            'membership_noti_model_id': i.id,
+            'user_id': i.membership.user.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+def membership_noti_mark_as_seen(request,id):
+    noti = MembershipNoti.objects.get(id = id)
+    noti.is_seen = True
+    noti.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

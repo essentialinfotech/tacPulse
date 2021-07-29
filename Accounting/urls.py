@@ -46,4 +46,9 @@ urlpatterns = [
     path('inspection/reports/', inpection_reports, name = 'inpection_reports'),
     path('delete/inspection/<hashid:id>/', del_inspection, name = 'del_inspection'),
     path('update/inspection/<hashid:id>/', edit_inspection, name = 'edit_inspection'),
+
+
+    path('payment/<hashid:id>/', payment, name = 'payment'),
+    path('payment/backend/', payment_backend, name = 'payment_backend'),
+    path('purchased/', package_purchased, name = 'package_purchased'),
 ]

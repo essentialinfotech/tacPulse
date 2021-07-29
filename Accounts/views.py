@@ -1,7 +1,7 @@
 from Medic.views import rating
 from Medic.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from Accounting.models import TaskModel
+from Accounting.models import MembershipModel, TaskModel
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import PasswordChangeForm
@@ -39,6 +39,11 @@ def regex_validation(number):
 @login_required
 def dashboard(request):
     if request.user.is_superuser:
+        has_membership = User.objects.filter(has_membership = True)
+        renew_membership = User.objects.filter(renew_membership = True)
+
+        membership = MembershipModel.objects.all()
+
         ambulance_requests_monthly = AmbulanceModel.objects.filter(created_on__month = this_month)
         ambulance_requests_monthly = len(ambulance_requests_monthly)
 
@@ -123,6 +128,9 @@ def dashboard(request):
             'total_dispatch': total_dispatch,
             'hos_trans': hos_trans,
             'recent_panics': recent_panics,
+            'membership': membership,
+            'has_membership': has_membership,
+            'renew_membership': renew_membership,
         }
         return render(request, 'accounts/admin_dashboard.html', context)
 
@@ -209,6 +217,7 @@ def admin_profile(request, id):
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def dispatch_profile(request, id):
     user = User.objects.filter(is_staff=True, id=id, is_superuser=False)
+    chat = User.objects.filter(~Q(id = request.user.id))
     patients = User.objects.filter(is_superuser=False, is_staff=False)
     panic_req_month = Panic.objects.filter(timestamp__month=this_month,
                                            timestamp__year=this_year).order_by('-id')
@@ -216,6 +225,7 @@ def dispatch_profile(request, id):
     assesments = Assesment.objects.filter(to_user_id=id)
     context = {
         'user': user,
+        'chat': chat,
         'patients': patients,
         'panic_req_month': panic_req_month,
         'task': task,
@@ -228,6 +238,7 @@ def dispatch_profile(request, id):
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def user_profile(request, id):
     user = User.objects.filter(is_superuser=False, is_staff=False, id=id)
+    chat = User.objects.filter(~Q(id = request.user.id))
     ambulance_req = AmbulanceModel.objects.filter(
         user_id=id, created_on__year=this_year)
     panic_req_yearly = Panic.objects.filter(
@@ -237,6 +248,7 @@ def user_profile(request, id):
     dispatch = User.objects.filter(is_staff=True, is_superuser=False)
     context = {
         'user': user,
+        'chat': chat,
         'dispatch': dispatch,
         'ambulance_req': ambulance_req,
         'ambulance_req_total': ambulance_req_total,
@@ -551,3 +563,31 @@ def customer_list(request):
         'customers': customers,
     }
     return render(request,'accounts/customer_list.html',context)
+
+
+def send_message(request,id):
+    messages = Message.objects.filter(Q(sender = request.user, receiver_id = id)| 
+                                        Q(sender_id = id, receiver = request.user)).order_by('sent')
+    users = User.objects.filter(~Q(id = request.user.id))
+    other_user = User.objects.get(id = id)
+
+    if request.method == 'POST':
+        sender = request.user
+        message = request.POST.get('message')
+        if message:
+            Message.objects.create(sender = sender, receiver_id = id, message = message)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'messages': messages,
+        'users': users,
+        'other_user': other_user,
+        'id': id,
+    }
+    return render(request,'accounts/chat.html',context)
+
+
+def delete_message(request,id):
+    msg = Message.objects.filter(Q(sender = request.user, receiver_id = id)|
+                                Q(sender_id = id , receiver = request.user))
+    msg.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

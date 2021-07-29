@@ -47,19 +47,24 @@
                             </div>
 
                             <div class="form-group col-md-6 mb-2">
-                                <label for="package_description">Validity</label> {{ form.is_valid }}
+                                <label for="">Validity</label> {{ form.is_valid }}
                             </div>
 
                             <div class="form-group col-md-6 mb-2">
-                                <label for="package_description">Validate till</label> {{ form.valid_till }}
+                                <label for="">Validate till</label> {{ form.valid_till }}
+                            </div>
+
+
+                            <div class="form-group col-md-6 mb-2">
+                                <label for="">Membership Duration</label> {{ form.package_membership_duration }}
                             </div>
 
                             <div class="form-group col-md-6 mb-2">
-                                <label for="package_description">Package Description</label>
+                                <label for="">Package Description</label>
                                 <textarea name="description" class="form-control" id="package_description" cols="82" rows="10" style="resize: none;" placeholder="Enter package description"></textarea>
                             </div>
                             <div class="form-group col-md-6 mb-2">
-                                <label for="package_description">Package Status</label> {{ form.status }}
+                                <label for="">Package Status</label> {{ form.status }}
                             </div>
                         </div>
                     </div>

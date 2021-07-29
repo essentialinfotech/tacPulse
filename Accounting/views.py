@@ -1,7 +1,8 @@
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
+from pytz import utc
 from .forms import *
 from .serializer import *
 from django.views.generic import DetailView
@@ -9,12 +10,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.conf import settings
-
+import json
+import requests
 from rest_framework.views import APIView
 from django.contrib import messages
 from Accounts.decorators import user_passes_test, has_perm_admin, has_perm_admin_dispatch, has_perm_user, \
     has_perm_dispatch, REDIRECT_FIELD_NAME
 from datetime import datetime, timedelta
+from django.views.decorators.csrf import csrf_exempt
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -22,15 +25,97 @@ month = datetime.today().date() - timedelta(days=30)
 
 
 # Create your views here.
-
-
 def add_member(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def getmembership(request):
-    return render(request, 'Accounting/get_membership.html')
+    packages = Package.objects.all()
+    context = {
+        'packages': packages,
+    }
+    return render(request, 'Accounting/get_membership.html',context)
 
+
+def payment(request,id):
+    package = Package.objects.filter(id = id)
+
+    context = {
+        'package': package,
+        'id': id,
+    }
+    return render(request,'Accounting/payment.html',context)
+
+@csrf_exempt
+def payment_backend(request):
+    token = ''
+    package_id = ''
+    package_price_in_cents = ''
+    user = ''
+
+    data = request.POST
+    for k,v in data.items():
+        if k == 'token':
+            token = v
+            print('token:',token)
+        if k == 'package_id':
+            package_id = v
+            print('package_id:',package_id)
+        if k == 'package_price_in_cents':
+            package_price_in_cents = v
+            print('package_price_in_cents:',package_price_in_cents)
+        if k == 'user':
+            user = v
+            print('user:',user)
+
+    # Anonymous test key. Replace with your key.
+    SECRET_KEY = 'sk_test_960bfde0VBrLlpK098e4ffeb53e1'
+    response = requests.post(
+        'https://online.yoco.com/v1/charges/',
+        headers={
+            'X-Auth-Secret-Key': SECRET_KEY,
+        },
+        json={
+            'token': token,
+            'amountInCents': package_price_in_cents,
+            'currency': 'ZAR',
+            'user_id': request.user.id
+        },
+        )
+
+    package = Package.objects.get(id = package_id)
+    package_membership_duration = package.package_membership_duration
+
+    membership = MembershipModel.objects.create(user_id = user, package_id = package_id, token = token)
+    membership.membership_end = membership.membership_date + timedelta(days = int(package_membership_duration))
+    membership.save()
+
+    user = User.objects.get(id = user)
+    membership_end = membership.membership_end
+    if membership_end.date()  == datetime.now().date():
+        print('membership expired')
+        user.has_membership = False
+        user.renew_membership = True
+        user.save()
+    elif membership_end.date() > datetime.now().date():
+        print('membership granted')
+        user.has_membership = True
+        user.renew_membership = False
+        user.save()
+    else:
+        user.has_membership = False
+        user.renew_membership = True
+        user.save()
+    return render(request,'Accounting/membership_purchased.html')
+
+
+def package_purchased(request):
+    membership = MembershipModel.objects.filter(user = request.user).order_by('-id')
+    context = {
+        'membership': membership,
+        'has_membership': User.objects.filter(id = request.user.id, has_membership = True).exists()
+    }
+    return render(request,'Accounting/membership_purchased.html', context)
 
 def members(request):
     return render(request, 'Accounting/members.html')

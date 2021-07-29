@@ -89,9 +89,37 @@
                                     </a>
                                 </div>
                                 <div class="my-lg-0 my-3">
-                                    <a href="{% url 'panic_system' %}" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Panic</a>
+                                    <button type="button" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Chat</button>
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Chat With anyone</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                                </div>
+                                                
+                                                <div class="modal-body" style="height: 350px;overflow-y:scroll">
+                                                {% for i in chat %}
+                                                    <img style="height: 30px; width: 30px;" src="{{ i.imageURL }}">
+                                                    <a href="{% url 'send_message' i.id %}">
+                                                        <span class="font-weight-bold text-dark-50">{{ i.first_name|title }}({{ i.contact }})</span>
+                                                    </a>
+                                                        <hr>
+                                                    {% endfor %}
+                                                    
+                                                </div>
+                                                
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    {% if request.user.is_superuser %}
                                     <a href="{%  url 'deactivate' id %}" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Deactivate</a><br>
-                                    <!-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Deactivate</a> -->
+                                    {% endif %}
+                                    
                                 </div>
                             </div>
                             <!--end::Title-->

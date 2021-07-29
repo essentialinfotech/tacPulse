@@ -38,6 +38,7 @@
                             <th>Description</th>
                             <th>Validity Confirmation</th>
                             <th>Valid Till</th>
+                            <th>Membership Duration</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -61,6 +62,7 @@
                             {% endif %}
 
                             <td>{{ i.valid_till }}</td>
+                            <td>{{ i.package_membership_duration }}</td>
 
                             {% if i.status == 'Active' %}
                             <td><span class="custom-badge status-green">{{ i.status }}</span></td>

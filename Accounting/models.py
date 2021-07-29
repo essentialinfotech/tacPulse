@@ -26,6 +26,7 @@ class Package(models.Model):
     description = models.TextField(blank=True, null=True)
     is_valid = models.CharField(max_length=100, choices=Declaration)
     valid_till = models.DateField(blank=True, null=True)
+    package_membership_duration = models.CharField(blank=True, null=True,max_length=50)
     status = models.CharField(max_length=50, choices=STATUS)
 
     def __str__(self):
@@ -43,7 +44,14 @@ class PaystubModel(models.Model):
 
 
 class MembershipModel(models.Model):
-    pass
+    user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True)
+    package = models.ForeignKey(Package,on_delete=SET_NULL,blank=True, null=True)
+    token = models.CharField(max_length=500,blank=True, null=True)
+    membership_date = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    membership_end = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.package)
 
 
 class StockRequestModel(models.Model):

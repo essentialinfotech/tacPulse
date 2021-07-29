@@ -55,6 +55,7 @@ class PackageForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'form-control', 'required': True}),
             'is_valid': forms.Select(attrs={'class': 'form-control', 'required': True}),
             'valid_till': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'package_membership_duration': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
         }
 
 

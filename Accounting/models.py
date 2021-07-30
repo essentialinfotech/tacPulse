@@ -5,7 +5,7 @@ from django.db.models.expressions import F
 from Accounts.models import User
 from Medic.models import *
 from Accounts.models import *
-from django.db.models.signals import post_save
+from django.db.models.signals import ModelSignal, post_save
 from django.dispatch import receiver
 
 # Create your models here.
@@ -64,6 +64,15 @@ class MembershipNoti(models.Model):
 
     def __str__(self):
         return self.membership.user.first_name
+
+class MembershipRenewalNoti(models.Model):
+    noti_for = models.ForeignKey(MembershipModel,on_delete=models.CASCADE)
+    noti_text = models.CharField(max_length=100,default='')
+    is_seen = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.noti_for.membership_end)
 
 @receiver(post_save, sender=MembershipModel)
 def create_membership_noti(sender, instance=None, created=False, **kwargs):

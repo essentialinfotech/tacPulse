@@ -156,6 +156,10 @@
             padding-left: 2px!important;
             margin-left: 10px!important;
         }
+        
+        #head-expired {
+            color: red;
+        }
     </style>
 </head>
 <!--end::Head-->
@@ -1049,7 +1053,8 @@
                             <!--end::User-->
                             <!--begin::Notifications-->
                             <div class="topbar-item">
-                                <div class="btn btn-icon btn-sm btn-primary font-weight-bolder p-0" id="kt_quick_notifications_toggle">3</div>
+                                <div class="btn btn-icon btn-sm btn-primary font-weight-bolder p-0" id="kt_quick_notifications_toggle">
+                                </div>
                             </div>
                             <!--end::Notifications-->
                         </div>
@@ -1091,7 +1096,7 @@
         <!--begin::Header-->
         <div class="offcanvas-header d-flex align-items-center justify-content-between mb-10">
             <h3 class="font-weight-bold m-0">Notifications
-                <small class="text-muted font-size-sm ml-2">24 New</small></h3>
+                <small class="text-muted font-size-sm ml-2"></small></h3>
             <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_notifications_close">
                 <i class="ki ki-close icon-xs text-muted"></i>
             </a>
@@ -1107,6 +1112,10 @@
                 </div>
 
                 <div id="panic_noti" class="text-dark">
+
+                </div>
+
+                <div id="renewal_noti" class="text-dark">
 
                 </div>
 
@@ -2241,6 +2250,7 @@
         <script>
             setInterval(function() {
 
+                //membership noti
                 $.ajax({
                     method: "GET",
                     url: "/membership/notificattions/",
@@ -2256,21 +2266,21 @@
                             var membership_noti_model_id = value.membership_noti_model_id;
                             var user_id = value.user_id;
                             var details = "<a href='/membership/details/individual/" + membership_id + "/'  id='aTag'>Details</a>";
-                            var mark_seen = "<a class='mark_seen' href='/mark/as/read/membership/notification/" + membership_noti_model_id + "/' id='mark_seen'>Mark as seen</a>"
+                            var mark_seen = "<a href='/mark/as/read/membership/notification/" + membership_noti_model_id + "/' id='mark_seen'>Mark as seen</a>"
                             if (is_seen == false) {
                                 $("#noti_div").append(
-                                    "<div >" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
+                                    "<div>" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
                                 );
                             }
                         })
                     }
                 })
 
+                //panic noti
                 $.ajax({
                     method: "GET",
                     url: "/notification/panic/",
                     success: function(data) {
-                        console.log('panic', data)
                         $("#panic_noti").empty();
                         $.each(data, function(key, value) {
                             var f_name = value.panic.panic_sender.first_name.charAt(0).toUpperCase() + value.panic.panic_sender.first_name.slice(1);
@@ -2283,14 +2293,51 @@
                             var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.id + "/'  id='mark_seen'>Mark as seen</a>";
                             if (is_seen == false) {
                                 $("#panic_noti").append(
-                                    "<div >" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
+                                    "<div>" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
                                 );
                             }
                         })
                     }
                 })
 
-            }, 3000)
+                // user sees renewal noti
+                $.ajax({
+                    method: "GET",
+                    url: "/renewal/membership/",
+                    success: function(data) {
+                        $("#renewal_noti").empty();
+                        $.each(data, function(key, value) {
+                            var membership_model_id = value.membership_model_id;
+                            var noti_text = value.noti_text;
+                            var is_seen = value.is_seen;
+                            var created = value.created.substring(0, 10);
+                            var details = "<a href='/membership/details/individual/" + membership_model_id + "/'  id='aTag'>Details</a>";
+                            var mark_seen = "<a href='/mark/as/seen/membership/renewal/notification/" + value.renewal_noti_id + "/'  id='mark_seen'>Mark as seen</a>";
+                            if (is_seen == false) {
+                                $("#renewal_noti").append(
+                                    "<div><h3 id='head-expired'>Expired</h3>" + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "</div><hr>"
+                                );
+                            }
+                        })
+                    }
+                })
+
+                // noti length
+                $.ajax({
+                    method: "GET",
+                    url: "/notification/length/",
+                    success: function(data) {
+                        $("#kt_quick_notifications_toggle").empty();
+                        $.each(data, function(key, value) {
+                            var noti_length = data.total_noti_length;
+                            $("#kt_quick_notifications_toggle").append(
+                                "<div >" + noti_length + " </div>"
+                            );
+                        })
+                    }
+                })
+
+            }, 5000)
         </script>
 </body>
 <!--end::Body-->

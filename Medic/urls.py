@@ -71,4 +71,5 @@ urlpatterns = [
     path('search/results/', search, name='search'),
     path('autosuggest/', autocomplete, name='autocomplete'),
     path('panic/notification/marking/as/read/<int:id>/', mark_seen_panic_noti, name ='mark_seen_panic_noti'),
+    path('notification/length/', noti_length, name = 'noti_length'),
 ]

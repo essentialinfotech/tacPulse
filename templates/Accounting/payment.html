@@ -75,6 +75,7 @@
                             <input class="form-control" readonly type="text" name="" id="p_id" value="{{ i.id }}" style="display: none;">
                             <input type="text" name="" id="user" value="{{ request.user.id }}" style="display: none;"> {% endfor %}
                             <br>
+                            <input type="text" name="" id="customer_contact" value="{{ request.user.contact }}" style="display: none;">
                             <!-- Create a pay button that will open the popup-->
                             <button class="form-control btn btn-danger" id="checkout-button">Pay</button>
                         </div>
@@ -93,6 +94,7 @@
     var package_price_in_cents = package_price * 100;
     var package_id = $('#p_id').val();
     var user = $('#user').val();
+    var customer_contact = $('#customer_contact').val();
 
     var yoco = new window.YocoSDK({
         publicKey: 'pk_test_ed3c54a6gOol69qa7f45',
@@ -103,7 +105,7 @@
             amountInCents: package_price_in_cents,
             currency: 'ZAR',
             name: 'Tac Pulse',
-            description: 'Awesome description',
+            description: 'Package',
             callback: function(result) {
                 // This function returns a token that your server can use to capture a payment
                 if (result.error) {
@@ -117,6 +119,7 @@
                         'package_id': package_id,
                         'package_price_in_cents': package_price_in_cents,
                         'user': user,
+                        'customer_contact': customer_contact,
                     }
 
                     $.ajax({

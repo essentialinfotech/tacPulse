@@ -491,9 +491,9 @@ def complete_panic_task(request, pk):
 
 class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
     serializer_class = PanicNotiSerializer
-    user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
     def get_queryset(self):
-        return PanicNoti.objects.filter(is_seen = False).order_by('-id')
+        if self.request.user.is_staff:
+            return PanicNoti.objects.filter(is_seen = False).order_by('-id')
 
 
 def mark_seen_panic_noti(request,id):
@@ -722,7 +722,22 @@ def autocomplete(request):
 
 
 def noti_length(request):
-    pass
+    total_noti_length = 0
+    if request.user.is_superuser:
+        panic_noti = PanicNoti.objects.filter(is_seen = False).count()
+        membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
+        total_noti_length = panic_noti + membership_noti
+    if request.user.is_staff and not request.user.is_superuser:
+        panic_noti = PanicNoti.objects.filter(is_seen = False).count()
+        total_noti_length = panic_noti
+    if not request.user.is_staff and not request.user.is_superuser:
+        renewal_noti = MembershipRenewalNoti.objects.filter(is_seen = False).count()
+        total_noti_length = renewal_noti
+    data = {
+        'total_noti_length': total_noti_length,
+    }
+    return JsonResponse(data,safe=False)
+
         
 
 

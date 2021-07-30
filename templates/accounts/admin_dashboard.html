@@ -531,7 +531,7 @@
                                             <td>
                                                 {% if i.user.has_membership %}
                                                 <span class="custom-badge status-green">Valid </span> {% elif i.user.renew_membership %}
-                                                <span class="custom-badge status-green">Expired</span> {% endif %}
+                                                <span class="custom-badge status-red">Expired</span> {% endif %}
                                             </td>
                                             <td>
                                                 <a href="{% url 'profile' i.user.id %}">

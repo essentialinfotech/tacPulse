@@ -53,6 +53,7 @@ def payment_backend(request):
     package_id = ''
     package_price_in_cents = ''
     user = ''
+    customer_contact = ''
 
     data = request.POST
     for k,v in data.items():
@@ -68,6 +69,9 @@ def payment_backend(request):
         if k == 'user':
             user = v
             print('user:',user)
+        if k == 'customer_contact':
+            customer_contact = v
+            print(customer_contact)
 
     # Anonymous test key. Replace with your key.
     SECRET_KEY = 'sk_test_960bfde0VBrLlpK098e4ffeb53e1'
@@ -80,7 +84,7 @@ def payment_backend(request):
             'token': token,
             'amountInCents': package_price_in_cents,
             'currency': 'ZAR',
-            'user_id': request.user.id
+            'metadata': {'user_id': request.user.id, 'package_id': package_id, 'customer_contact': customer_contact}
         },
         )
 
@@ -780,8 +784,40 @@ def membership_noti(request):
         data.append(prefetch)
     return JsonResponse(data,safe=False)
 
+
 def membership_noti_mark_as_seen(request,id):
     noti = MembershipNoti.objects.get(id = id)
+    noti.is_seen = True
+    noti.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
+def user_membership_renewal_noti(request):
+    data = []
+    membership = MembershipModel.objects.filter(user_id = request.user.id)
+    for i in membership:
+        menbership_end = i.membership_end
+        if menbership_end.date() >= datetime.now().date():
+            MembershipRenewalNoti.objects.get_or_create(noti_for_id = i.id, 
+                                                 noti_text = 'Membership Expired.Please renew your membership to get our premium service')
+    renewal_noti = MembershipRenewalNoti.objects.filter(is_seen = False, 
+                                                        noti_for__user_id = request.user.id).order_by('-id')
+    for i in renewal_noti:
+        prefetch = {
+            'renewal_noti_id': i.id,
+            'membership_model_id': i.noti_for.id,
+            'noti_text': i.noti_text,
+            'is_seen': i.is_seen,
+            'created': i.created,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+
+@user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
+def mark_as_seen_membership_renewal_noti(request,id):
+    noti = MembershipRenewalNoti.objects.get(id = id)
     noti.is_seen = True
     noti.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

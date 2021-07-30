@@ -797,8 +797,8 @@ def user_membership_renewal_noti(request):
     data = []
     membership = MembershipModel.objects.filter(user_id = request.user.id)
     for i in membership:
-        menbership_end = i.membership_end
-        if menbership_end.date() >= datetime.now().date():
+        membership_end = i.membership_end
+        if membership_end.date() <= datetime.now().date():
             MembershipRenewalNoti.objects.get_or_create(noti_for_id = i.id, 
                                                  noti_text = 'Membership Expired.Please renew your membership to get our premium service')
     renewal_noti = MembershipRenewalNoti.objects.filter(is_seen = False, 

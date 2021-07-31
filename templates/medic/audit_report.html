@@ -33,24 +33,37 @@
             </div>
             {% endif %}
             <div class="table-responsive">
-                <table id="data-table" class="display table text-center">
+                <table id="data-table" class="display table-hover table text-center">
                     <thead>
                         <tr class="text-center">
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Ampunt</th>
-                            <th>Report</th>
-                            <th class="text-left">Action</th>
+                            <th>#</th>
+                            <th>Transaction / Activity</th>
+                            <th>Name & Surname of Auditor</th>
+                            <th>Date of Audit/Transaction</th>
+                            <th>Practitioner being Audited/Stock Issued</th>
+                            <th>Practitioner being Audited/Stock Issued(optional)</th>
+                            <th>Email Practitionar</th>
+                            <th>Qualification of Practitionar</th>
+                            <th>Previous Audit</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for i in audits %}
                         <tr class="text-center">
-
-                            <td>Plabon Datta</td>
-                            <td>plabondatta26@gmail.com</td>
-                            <td>R 1000</td>
-                            <td><input type="button" value="View File" onClick="contentDisp();"></td>
-
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.transaction_activity }}</td>
+                            <td>{{ i.name_auditor }}</td>
+                            <td>{{ i.date_of_audit }}</td>
+                            <td>{{ i.practitioner_being_audited_charfield|title }}</td>
+                            <td>
+                                <a href="{% url 'profile' i.practitioner_being_audited.id %}">
+                                    {{ i.practitioner_being_audited.first_name|title }} {{ i.practitioner_being_audited.last_name|title }}
+                                </a>
+                            </td>
+                            <td>{{ i.email_practitioner }}</td>
+                            <td>{{ i.qualification_practitioner }}</td>
+                            <td>{{ i.previous_audit }}</td>
                             <td>
                                 <div class="row">
                                     <div class="col-md-2">
@@ -62,11 +75,12 @@
                                                 class="fas fa-edit text-hover-primary mr-2"></i></a>
                                     </div>
                                     <div class="col-md-2 mt-2">
-                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
+                                        <a href="{% url 'audit_delete' i.id %}" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
                 <div id="contentArea"></div>

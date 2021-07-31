@@ -9,9 +9,11 @@ from Accounting.models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 import json
-from django.db.models import Q, query
+from django.db.models import Sum, Q,query
 from django.views.decorators.csrf import csrf_exempt
 from .forms import *
+from Accounting.models import *
+from Accounting.forms import *
 import datetime
 from .serializer import *
 from django.views import View
@@ -57,12 +59,13 @@ def case_number():
 
 
 # Create your views here.
-def audit_form(request):
-    return render(request, 'medic/audit_form.html')
-
 
 def audit_report(request):
-    return render(request, 'medic/audit_report.html')
+    audits = Audit.objects.all()
+    context = {
+        'audits': audits,
+    }
+    return render(request, 'medic/audit_report.html',context)
 
 
 def inspection_form(request):
@@ -739,6 +742,194 @@ def noti_length(request):
     return JsonResponse(data,safe=False)
 
         
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def membership_earnings_monthly_chart_dashboard(request):
+    labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    data = []
+    user_join_data = []
+    Jan = 0
+    Feb = 0
+    Mar = 0
+    Apr = 0
+    May = 0
+    Jun = 0
+    Jul = 0
+    Aug = 0
+    Sep = 0
+    Oct = 0
+    Nov = 0
+    Dec = 0
+
+    for i in range(0, 13):
+        if i == 1:
+            Jan = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Jan.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            jan = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(jan)
+        if i == 2:
+            Feb = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Feb.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Feb = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Feb)
+        if i == 3:
+            Mar = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Mar.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Mar = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Mar)
+        if i == 4:
+            Apr = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Apr.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Apr = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Apr)
+        if i == 5:
+            May = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in May.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            May = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(May)
+        if i == 6:
+            Jun = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Jun.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Jun = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Jun)
+        if i == 7:
+            Jul = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Jul.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Jul = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Jul)
+        if i == 8:
+            Aug = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Aug.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Aug = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Aug)
+        if i == 9:
+            Sep = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Sep.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Sep = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Sep)
+        if i == 10:
+            Oct = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Oct.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Oct = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Oct)
+        if i == 11:
+            Nov = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Nov.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Nov = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Nov) 
+        if i == 12:
+            Dec = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Dec.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Dec = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Dec)
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+        'user_join_data': user_join_data,
+    })
 
 
+def audit_form(request):
+    form = AuditForm()
+    if request.method == 'POST':
+        form = AuditForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.auditor = request.user
+            instance.save()
+            messages.success(request,'Audit Created')
+            return redirect('audit_report')
+    context = {
+        'form': form,
+    }
+    return render(request, 'medic/audit_form.html',context)
 
+def audit_delete(request,id):
+    obj = get_object_or_404(Audit, id=id)
+    obj.delete()
+    messages.success(request,'Audit Deleted')
+    return redirect('audit_report')

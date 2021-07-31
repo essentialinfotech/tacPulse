@@ -274,8 +274,8 @@
                             <!--begin::Title-->
                             <div class="card-title py-5">
                                 <h3 class="card-label">
-                                    <span class="d-block text-dark font-weight-bolder">Memberships</span>
-                                    <span class="d-block text-dark-50 mt-2 font-size-sm">Has validity</span>
+                                    <span class="d-block text-dark font-weight-bolder">Monthly Membership Payments in ZAR</span>
+                                    <span class="d-block text-dark-50 mt-2 font-size-sm">Monthly Customer Registration</span>
                                 </h3>
                             </div>
                             <!--end::Title-->
@@ -287,48 +287,7 @@
                         <!--begin::Body-->
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div class="card card-custom card-stretch gutter-b card-shadowless bg-light">
-                                <!--begin::Header-->
-                                <!--end::Header-->
-                                <!--begin::Body-->
-                                <div class="card-body py-0" style="height: 400px;overflow-y: scroll;">
-                                    <div class="table-responsive">
-                                        <table class="table-hover display table table-separate table-head-custom table-checkable">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Membership Holder Name</th>
-                                                    <th scope="col">Package Name</th>
-                                                    <th scope="col">Package Price</th>
-                                                    <th scope="col">Package Validity</th>
-                                                    <th scope="col">Package End Date</th>
-                                                    <th scope="col">Package Membership Duration</th>
-                                                    <th scope="col">Package Status</th>
-                                                    <th scope="col">Membership Payment Token</th>
-                                                    <th scope="col">Membership Taken Date</th>
-                                                    <th scope="col">Membership End Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for i in membership %} {% if i.user.has_membership %}
-                                                <tr>
-                                                    <td>{{ i.user.first_name|title }} {{ i.user.last_name|title }}</td>
-                                                    <td>{{ i.package.p_name|title }}</td>
-                                                    <td>R{{ i.package.p_price }}</td>
-                                                    <td>{{ i.package.is_valid }}</td>
-                                                    <td>{{ i.package.valid_till }}</td>
-                                                    <td>{{ i.package.package_membership_duration }} days</td>
-                                                    <td>{{ i.package.status }}</td>
-                                                    <td>{{ i.token }}</td>
-                                                    <td>{{ i.membership_date|date }}</td>
-                                                    <td>{{ i.membership_end|date }}</td>
-                                                </tr>
-                                                {% endif %} {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!--end::Body-->
-                            </div>
+                            <div id="chart_2"></div>
                             <!--end::Chart-->
                         </div>
                         <!--end::Body-->

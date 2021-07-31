@@ -105,6 +105,9 @@
                                 </div>
                                 <div class="my-lg-0 my-3">
                                     <a href="{% url 'dashboard' %}" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Dashboard</a>
+                                    
+                                    <a href="{% url 'send_message' request.user.id %}" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Chat</a>
+
                                     <button type="button" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">DISPATCH</button>
 
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

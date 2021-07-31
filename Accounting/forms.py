@@ -84,3 +84,19 @@ class InspectionForm(forms.ModelForm):
             'inspection_detail': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+class AuditForm(forms.ModelForm):
+    class Meta:
+        model = Audit
+        fields = '__all__'
+        widgets = {
+            'name_auditor': forms.TextInput(attrs={'class': 'form-control'}),
+            'practitioner_being_audited_charfield': forms.TextInput(attrs={'class': 'form-control'}),
+            'practitioner_being_audited': forms.Select(attrs={'class': 'form-control'}),
+            'transaction_activity': forms.Select(attrs={'class': 'form-control'}),
+            'date_of_audit': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  
+            'email_practitioner': forms.EmailInput(attrs={'class': 'form-control'}),
+            'qualification_practitioner': forms.Select(attrs={'class': 'form-control'}),
+            'previous_audit': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'special_notes_on_prev_audit_transaction': forms.Textarea(attrs={'class': 'form-control', 'required': True}),
+        }
+

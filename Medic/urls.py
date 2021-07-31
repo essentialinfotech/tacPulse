@@ -72,4 +72,7 @@ urlpatterns = [
     path('autosuggest/', autocomplete, name='autocomplete'),
     path('panic/notification/marking/as/read/<int:id>/', mark_seen_panic_noti, name ='mark_seen_panic_noti'),
     path('notification/length/', noti_length, name = 'noti_length'),
+    path('paid/money/for/membership/chart/admin/dashboard/', membership_earnings_monthly_chart_dashboard, \
+         name = 'membership_earnings_monthly_chart_dashboard'),
+     path('delte/audit/<hashid:id>/', audit_delete, name = 'audit_delete'),
 ]

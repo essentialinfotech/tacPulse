@@ -1,3 +1,4 @@
+from Accounting.models import Audit
 from django import forms
 from django.forms import ModelForm, fields
 from .models import *
@@ -33,10 +34,10 @@ class PropertyForm(forms.ModelForm):
             'model': forms.TextInput(attrs={'class': 'form-control'}),
             'to_user': forms.TextInput(attrs={'class': 'form-control'}),
             'to_user_mobile': forms.TextInput(attrs={'class': 'form-control'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control','required': True}),
             'total': forms.NumberInput(attrs={'class': 'form-control'}),
-            'vat': forms.NumberInput(attrs={'class': 'form-control'}),
-            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'vat': forms.NumberInput(attrs={'class': 'form-control','required': True}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control','required': True}),
             'status': forms.Select(attrs={'class': 'form-control'}), 
             'due_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})     
         }
@@ -70,3 +71,4 @@ class HospitalTransferForm(forms.ModelForm):
         widgets = {
                     'transfer_speed': forms.Select(attrs={'class': 'form-control'}),
                 }
+                

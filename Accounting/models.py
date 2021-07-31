@@ -195,3 +195,35 @@ class InspectionModel(models.Model):
         return f"{self.inspection_type}"
 
 
+class Audit(models.Model):
+    TRANSACTION_ACTIVITY = [
+        ('Stock Issue','Stock Issue'),
+        ('Monthly Individual Audit','Monthly Individual Audit'),
+        ('Special Audit', 'Special Audit'),
+        ('Out-Processing Procedures', 'Out-Processing Procedures'),
+    ]
+
+    QUALIFICATION_PRACTITIONER = [
+        ('Intermediate Life SUpport','Intermediate Life SUpport'),
+        ('Advanced Life Support(CCA/N.Dip)', 'Advanced Life Support(CCA/N.Dip)'),
+        ('Emergebcy Care Assistant', 'Emergebcy Care Assistant'),
+        ('Emergency Care Technician', 'Emergency Care Technician'),
+        ('Emergency Care Practitioner', 'Emergency Care Practitioner'),
+        ('Medical Practitioner','Medical Practitioner'),
+    ]
+
+    name_auditor = models.CharField(max_length=100,blank=True, null=True)
+    auditor = models.ForeignKey(User,on_delete = models.CASCADE,blank=True, null=True,related_name='auditor_info')
+    practitioner_being_audited_charfield = models.CharField(max_length=100,blank=True, null=True)
+    practitioner_being_audited = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True,related_name='practitioner_info')
+    transaction_activity = models.CharField(max_length = 100,blank=True, null=True,choices=TRANSACTION_ACTIVITY)
+    date_of_audit = models.DateField(blank=True, null=True)
+    email_practitioner = models.EmailField(blank=True, null=True)
+    qualification_practitioner = models.CharField(max_length = 100,blank=True, null=True,choices=QUALIFICATION_PRACTITIONER)
+    previous_audit = models.DateField(blank=True, null=True)
+    special_notes_on_prev_audit_transaction = models.TextField(blank=True, null=True)
+    created = models.DateTimeField( auto_now_add = True )
+
+
+
+

@@ -98,5 +98,25 @@ class AuditForm(forms.ModelForm):
             'qualification_practitioner': forms.Select(attrs={'class': 'form-control'}),
             'previous_audit': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'special_notes_on_prev_audit_transaction': forms.Textarea(attrs={'class': 'form-control', 'required': True}),
+            'has_the_prac_been_issued_with_all_nedication_in_scope': forms.Select(attrs={'class': 'form-control'}),
+            'expired_drugs': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class LeaveForm(forms.ModelForm):
+    class Meta:
+        model = Leaves
+        fields = '__all__'
+        widgets = {
+            'date_of_request': forms.DateInput(attrs={'type': 'date','class': 'form-control'}),
+            'first_day_of_leave_request': forms.DateInput(attrs={'type': 'date','class': 'form-control'}),
+            'last_day_of_leave_request': forms.DateInput(attrs={'type': 'date','class': 'form-control'}),
+            'employee_comments': forms.Textarea(attrs={'class': 'form-control'}),  
+            'time_of_request': forms.TimeInput(attrs={'type': 'time','class': 'form-control'}),
+            'employee_name_char': forms.TextInput(attrs={'class': 'form-control'}),
+            'employee_name': forms.Select(attrs={'class': 'form-control'}),
+            'personal_email_address': forms.EmailInput(attrs={'type': 'email','class': 'form-control'}),
+            'manager_supervisor_shift_lead': forms.TextInput(attrs={'class': 'form-control'}),  
+            'employee_clock': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'request_type': forms.Select(attrs={'class': 'form-control'}),
         }
 

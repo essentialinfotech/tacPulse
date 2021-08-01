@@ -131,7 +131,11 @@ def viewing_membership_details_individual(request,id):
     return render(request,'Accounting/individual_membership_details.html',context)
 
 def members(request):
-    return render(request, 'Accounting/members.html')
+    memberships_holders = MembershipModel.objects.filter(membership_end__date__gt = datetime.today().date()).order_by('-id')
+    context = {
+        'memberships_holders': memberships_holders,
+    }
+    return render(request, 'Accounting/members.html',context)
 
 
 class ScheduleTrip(LoginRequiredMixin, View):
@@ -822,3 +826,51 @@ def mark_as_seen_membership_renewal_noti(request,id):
     noti.is_seen = True
     noti.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def employee_leave(request):
+    form = LeaveForm()
+    if request.method == 'POST':
+        form = LeaveForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit = False)
+            instance.employee_name = request.user
+            first_day_of_leave_request = instance.first_day_of_leave_request
+            last_day_of_leave_request = instance.last_day_of_leave_request
+            total_num_in_days = last_day_of_leave_request.date() - first_day_of_leave_request.date()
+            print(total_num_in_days)
+            instance.total_num_in_days = total_num_in_days
+            instance.employee_clock = 'D'+str(request.user.id)
+            instance.save()
+            return redirect('my_leaves', request.user.id)
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/leave_req.html',context)
+
+@login_required
+def my_leaves(request,id):
+    my_leaves = Leaves.objects.filter(employee_name_id = id).order_by('-id')
+    context = {
+        'my_leaves': my_leaves,
+    }
+    return render(request,'Accounting/my_leaves.html', context)
+
+@login_required
+@user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
+def employee_leaves(request):
+    leaves = Leaves.objects.all().order_by('-id')
+    context = {
+        'leaves': leaves,
+    }
+    return render(request,'Accounting/employee_leaves.html', context)
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_leaves(request,id):
+    obj = Leaves.objects.filter(id =id)
+    obj.delete()
+    messages.success(request,'Leave report Deleted')
+    return redirect('employee_leaves')

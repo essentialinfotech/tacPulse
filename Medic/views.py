@@ -79,7 +79,7 @@ def inspaction_report(request):
 def occurrence_form(request):
     form = OccurrenceForm()
     if request.method == 'POST':
-        form = OccurrenceForm(request.POST)
+        form = OccurrenceForm(request.POST,request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.occurrence_giver = request.user
@@ -131,7 +131,7 @@ def edit_occurrence(request,id):
     data = Occurrence.objects.get(id=id)
     form = OccurrenceForm(instance=data)
     if request.method == 'POST':
-        form = OccurrenceForm(request.POST,instance=data)
+        form = OccurrenceForm(request.POST,request.FILES,instance=data)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.occurrence_giver = request.user
@@ -145,6 +145,12 @@ def edit_occurrence(request,id):
     }
     return render(request,'medic/edit_occurence.html', context)
 
+def occurrence_details(request,id):
+    obj = Occurrence.objects.get(id = id)
+    context = {
+        'obj': obj,
+    }
+    return render(request,'medic/detail_occurrence.html',context)
 
 @csrf_exempt
 def rating(request):
@@ -913,6 +919,8 @@ def membership_earnings_monthly_chart_dashboard(request):
     })
 
 
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def audit_form(request):
     form = AuditForm()
     if request.method == 'POST':
@@ -928,6 +936,28 @@ def audit_form(request):
     }
     return render(request, 'medic/audit_form.html',context)
 
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def audit_edit(request,id):
+    data = Audit.objects.get(id = id)
+    form = AuditForm(instance=data)
+    if request.method == 'POST':
+        form = AuditForm(request.POST,instance=data)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.auditor = request.user
+            instance.save()
+            messages.success(request,'Audit Edited')
+            return redirect('audit_report')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request, 'medic/audit_edit.html',context)
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def audit_delete(request,id):
     obj = get_object_or_404(Audit, id=id)
     obj.delete()

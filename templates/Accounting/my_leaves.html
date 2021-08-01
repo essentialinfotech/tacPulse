@@ -1,0 +1,79 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/property_report.css' %}">
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">My Leaves</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="data-table" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date of Request</th>
+                                    <th>Time of Request</th>
+                                    <th>Employee Name</th>
+                                    <th>Employee Email</th>
+                                    <th>Manager / Supervisor / Shift Lead</th>
+                                    <th>Employee Clock</th>
+                                    <th>Request Type</th>
+                                    <th>First day of Leave Request</th>
+                                    <th>last day of Leave Request</th>
+                                    <th>Total number in days</th>
+                                    <th>Employee Comments</th>
+                                    <th>Leave Request created in machine</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in my_leaves %}
+                                <tr>
+
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.date_of_request }}</td>
+                                    <td>{{ i.time_of_request }}</td>
+                                    <td>{{ i.employee_name_char }}</td>
+                                    <td>{{ i.personal_email_address }}</td>
+                                    <td>{{ i.manager_supervisor_shift_lead }}</td>
+                                    <td>{{ i.employee_clock }}</td>
+                                    <td>{{ i.request_type }}</td>
+                                    <td>{{ i.first_day_of_leave_request }}</td>
+                                    <td>{{ i.last_day_of_leave_request }}</td>
+                                    <td>{{ i.total_num_in_days }}</td>
+                                    <td>{{ i.employee_comments }}</td>
+                                    <td>{{ i.created }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--end::Card-->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

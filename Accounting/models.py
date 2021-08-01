@@ -212,6 +212,10 @@ class Audit(models.Model):
         ('Medical Practitioner','Medical Practitioner'),
     ]
 
+    ISSUED_WITH_ALL_NEDICATION = [
+        ('Yes','Yes'),
+        ('No','No'),
+    ]
     name_auditor = models.CharField(max_length=100,blank=True, null=True)
     auditor = models.ForeignKey(User,on_delete = models.CASCADE,blank=True, null=True,related_name='auditor_info')
     practitioner_being_audited_charfield = models.CharField(max_length=100,blank=True, null=True)
@@ -222,7 +226,36 @@ class Audit(models.Model):
     qualification_practitioner = models.CharField(max_length = 100,blank=True, null=True,choices=QUALIFICATION_PRACTITIONER)
     previous_audit = models.DateField(blank=True, null=True)
     special_notes_on_prev_audit_transaction = models.TextField(blank=True, null=True)
+    has_the_prac_been_issued_with_all_nedication_in_scope = models.CharField(
+        max_length=100,blank=True, null=True,choices=ISSUED_WITH_ALL_NEDICATION
+    )
+    expired_drugs = models.CharField(max_length=100,blank=True, null=True)
+    signature_field = models.CharField(max_length=100,blank=True, null=True)
     created = models.DateTimeField( auto_now_add = True )
+
+
+class Leaves(models.Model):
+    TYPE = [
+        ('Sick Leave','Sick Leave'),
+        ('Family Responsibility Leave', 'FAmily Responsibility Leave'),
+        ('Study Leave','Study Leave'),
+        ('Maternity Leave','Maternity Leave'),
+        ('Unpaid Leave','Unpaid Leave'),
+    ]
+    date_of_request = models.DateField(blank=True, null=True)
+    time_of_request = models.TimeField(blank=True, null=True)
+    employee_name_char = models.CharField(max_length=50,blank=True, null=True)
+    employee_name = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True)
+    personal_email_address = models.EmailField(blank=True, null=True)
+    manager_supervisor_shift_lead = models.CharField(blank=True, null=True,max_length=50)
+    employee_clock = models.CharField(max_length=1000,blank=True, null=True)
+    request_type = models.CharField(max_length=100,blank=True, null=True,choices=TYPE)
+    first_day_of_leave_request = models.DateTimeField(blank=True, null=True)
+    last_day_of_leave_request = models.DateTimeField(blank=True, null=True)
+    total_num_in_days = models.CharField(blank=True, null=True,max_length=50)
+    employee_comments = models.TextField(blank=True, null=True)
+    signature = models.CharField(max_length=100,blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
 
 

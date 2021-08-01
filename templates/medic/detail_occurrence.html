@@ -1,0 +1,19 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="shadow p-3 mb-5 bg-white rounded text-center m-auto w-50">
+                        {{ obj.incident_report }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

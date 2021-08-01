@@ -7,11 +7,12 @@ from .models import *
 class OccurrenceForm(forms.ModelForm):
     class Meta:
         model = Occurrence
-        fields = ['occurrence_giver','related_user','occurrence_id', 'occurrence_type','occurrence_detail']
+        fields = '__all__'
         widgets = {
-            'related_user': forms.Select(attrs={'class': 'form-control'}),
-            'occurrence_type': forms.Select(attrs={'class': 'form-control'}),
-            'occurrence_detail': forms.TextInput(attrs={'class': 'form-control'}),        
+            'reason_for_report': forms.Select(attrs={'class': 'form-control'}),
+            'department': forms.Select(attrs={'class': 'form-control','required': True}),
+            'occurrence_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'incident_report': forms.Textarea(attrs={'placeholder': '(Provide ad much information as possible and be as comprehensive as possible)', 'class': 'form-control'}),   
         }
 
 

@@ -27,12 +27,6 @@
             </div>
             {% endif %}
             </a>
-            {% if request.user.is_user %}
-            <div class="row">
-                <div class="col-md-10"></div>
-                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
-            </div>
-            {% endif %}
 
             <div class="table-responsive">
                 <table id="data-table" class="display table">
@@ -42,36 +36,20 @@
                             <th>Email</th>
                             <th>Package Name</th>
                             <th>Price</th>
-                            <th class="text-left">Action</th>
-
+                            <th>Membership End Date</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for i in memberships_holders %}
                         <tr class="text-center">
 
-                            <td>Plabon Datta</td>
-                            <td>aiwebdeveloper1@essential-infotech.com</td>
-                            <td>Personal Package</td>
-                            <td>R 60</td>
-
-
-
-                            <td class="p-5">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Details"><i
-                                                class="fas fa-clipboard-list text-hover-primary mr-2"></i></a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a href="" data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fas fa-edit text-hover-primary mr-2"></i></a>
-                                    </div>
-                                    <div class="col-md-2 mt-2">
-                                        <a href="" data-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt text-hover-primary mr-2"></i></a>
-                                    </div>
-                                </div>
-                            </td>
+                            <td>{{ i.user.first_name|title }} {{ i.user.last_name|title }}</td>
+                            <td>{{ i.user.contact }}</td>
+                            <td>{{ i.package.p_name|title }}</td>
+                            <td>R{{ i.package.p_price }}</td>
+                            <td>{{ i.membership_end|date }}</td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

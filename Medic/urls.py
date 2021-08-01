@@ -75,4 +75,6 @@ urlpatterns = [
     path('paid/money/for/membership/chart/admin/dashboard/', membership_earnings_monthly_chart_dashboard, \
          name = 'membership_earnings_monthly_chart_dashboard'),
      path('delte/audit/<hashid:id>/', audit_delete, name = 'audit_delete'),
+     path('editing/audit/<hashid:id>/', audit_edit, name = 'audit_edit'),
+     path('individual/occurrence/details/<hashid:id>/', occurrence_details, name = 'occurrence_details'),
 ]

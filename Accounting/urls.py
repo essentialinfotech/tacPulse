@@ -56,4 +56,8 @@ urlpatterns = [
     path('mark/as/read/membership/notification/<int:id>/', membership_noti_mark_as_seen, name = 'membership_noti_mark_as_seen'),
     path('renewal/membership/', user_membership_renewal_noti, name = 'user_membership_renewal_noti'),
     path('mark/as/seen/membership/renewal/notification/<int:id>/', mark_as_seen_membership_renewal_noti, name = 'mark_as_seen_membership_renewal_noti'),
+    path('employee/leave/request/', employee_leave, name = 'employee_leave'),
+    path('my/leaves/<hashid:id>/', my_leaves, name = 'my_leaves'),
+    path('employee/leave/reports/', employee_leaves, name = 'employee_leaves'),
+    path('delete/leave/report/<hashid:id>/', delete_leaves, name = 'delete_leaves'),
 ]

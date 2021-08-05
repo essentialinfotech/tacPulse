@@ -54,7 +54,7 @@ urlpatterns = [
     path('delete/<hashid:id>/', common_delete, name='common_delete'),
     path('edit/occurrence/<hashid:id>/',
          edit_occurrence, name='edit_occurrence'),
-    path('notification/panic/', Panic_Noti.as_view()),
+    path('notification/panic/', panic_noti, name = 'panic_noti'),
     path('feedback/', feedback, name='feedback'),
     path('delete/property/<hashid:id>/', property_del, name='property_del'),
     path('invoice/<hashid:id>/', invoice_pdf_property,

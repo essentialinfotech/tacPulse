@@ -19,6 +19,7 @@ from .decorators import has_perm_admin_dispatch, user_passes_test, has_perm_admi
     REDIRECT_FIELD_NAME, INACTIVE_REDIRECT_FIELD_NAME
 import datetime
 import re
+from django.views.decorators.csrf import csrf_exempt
 
 this_month = datetime.datetime.now().month
 this_day = datetime.datetime.today()
@@ -591,3 +592,5 @@ def delete_message(request,id):
                                 Q(sender_id = id , receiver = request.user))
     msg.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+

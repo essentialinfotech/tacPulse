@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.api import success
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
+from rest_framework.views import APIView
 from .models import *
 from Accounting.models import *
 from django.http import HttpResponseRedirect, HttpResponse
@@ -498,11 +499,22 @@ def complete_panic_task(request, pk):
         return redirect('forbidden')
 
 
-class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
-    serializer_class = PanicNotiSerializer
-    def get_queryset(self):
-        if self.request.user.is_staff:
-            return PanicNoti.objects.filter(is_seen = False).order_by('-id')
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def panic_noti(request):
+    data = []
+    noti = PanicNoti.objects.filter(is_seen = False).order_by('-id')
+    for i in noti:
+        prefetch = {
+            'first_name': i.panic.panic_sender.first_name,
+            'last_name': i.panic.panic_sender.last_name,
+            'noti_text': i.text,
+            'is_seen': i.is_seen,
+            'created': i.created,
+            'panic_id': i.panic.id,
+            'noti_id': i.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
 
 
 def mark_seen_panic_noti(request,id):
@@ -737,7 +749,7 @@ def noti_length(request):
         membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
         total_noti_length = panic_noti + membership_noti
     if request.user.is_staff and not request.user.is_superuser:
-        panic_noti = PanicNoti.objects.filter(panic__panic_sender_id = request.user.id,is_seen = False).count()
+        panic_noti = PanicNoti.objects.filter(is_seen = False).count()
         total_noti_length = panic_noti
     if not request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()

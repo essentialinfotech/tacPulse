@@ -120,3 +120,16 @@ class LeaveForm(forms.ModelForm):
             'request_type': forms.Select(attrs={'class': 'form-control'}),
         }
 
+
+class PayrolDeductionForm(forms.ModelForm):
+    class Meta:
+        model = PayrolDeduction
+        fields = '__all__'
+        widgets = {
+            'monthly_deduction_category': forms.Select(attrs={'class': 'form-control'}),
+            'special_deduction_category': forms.Select(attrs={'class': 'form-control'}),
+            'penalties_financial_loss_category': forms.Select(attrs={'class': 'form-control'}),
+            'frequency': forms.Select(attrs={'class': 'form-control'}),
+            'authorized_by': forms.Select(attrs={'class': 'form-control'}),
+            'approver_comments': forms.TextInput(attrs={'class': 'form-control'}),
+        }

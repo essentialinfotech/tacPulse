@@ -26,3 +26,10 @@ class PanicNotiSerializer(serializers.ModelSerializer):
         model = PanicNoti
         fields = '__all__'
         depth = 2
+
+
+class OccurrenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Occurrence
+        fields = '__all__'
+        depth = 1

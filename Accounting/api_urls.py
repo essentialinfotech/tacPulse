@@ -20,4 +20,8 @@ urlpatterns = [
     path('stock/requested/', StockRequested.as_view(), name='StockRequested'),
     path('stock/request/canceled/', StockRequestCanceled.as_view(), name='StockRequestCanceled'),
     path('schedule/status/change/<int:pk>/', api_schedule_status_update , name='api_schedule_status_update'),
+
+    #mobile api's starts here. . .
+    path('inspection/checklist/', InspectionCheckLists.as_view(), name = 'inspection_reports_api'),
+    path('paystub/reports/', PayStubReports.as_view(), name = 'paystub_reports_api')
 ]

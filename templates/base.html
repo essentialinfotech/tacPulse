@@ -1151,7 +1151,13 @@
             <!--begin::Nav-->
             <div class="navi navi-icon-circle navi-spacer-x-0">
                 <!--begin::Item-->
-                <div id="noti_div" class="text-dark">
+                <div class="col-md-12">
+                    {% if request.user.is_superuser %}
+                    <button class="form-control btn btn-danger mb-2" id="pn">Panic</button>
+                    <button class="form-control btn btn-success mb-5" id="membership">Membership</button> {% endif %}
+                </div>
+
+                <div id="noti_div" class="text-dark" style="display: none;">
 
                 </div>
 
@@ -2063,16 +2069,17 @@
                     method: "GET",
                     url: "/notification/panic/",
                     success: function(data) {
+                        console.log(data)
                         $("#panic_noti").empty();
                         $.each(data, function(key, value) {
-                            var f_name = value.panic.panic_sender.first_name.charAt(0).toUpperCase() + value.panic.panic_sender.first_name.slice(1);
-                            var l_name = value.panic.panic_sender.last_name.charAt(0).toUpperCase() + value.panic.panic_sender.last_name.slice(1);
-                            var noti_text = value.text
+                            var f_name = value.first_name.charAt(0).toUpperCase() + value.first_name.slice(1);
+                            var l_name = value.last_name.charAt(0).toUpperCase() + value.last_name.slice(1);
+                            var noti_text = value.noti_text;
                             var is_seen = value.is_seen;
                             var created = value.created.substring(0, 10);
-                            panic_id = value.panic.id;
+                            var panic_id = value.panic_id;
                             var details = "<a href='/individual/panic/location/" + panic_id + "/'  id='aTag'>Details</a>";
-                            var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.id + "/'  id='mark_seen'>Mark as seen</a>";
+                            var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.noti_id + "/'  id='mark_seen'>Mark as seen</a>";
                             if (is_seen == false) {
                                 $("#panic_noti").append(
                                     "<div>" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
@@ -2120,6 +2127,29 @@
                 })
 
             }, 5000)
+        </script>
+
+
+        <script>
+            var pn_btn = document.getElementById('pn');
+            var mem_btn = document.getElementById('membership');
+            //notidiv is for new member noti
+            var notidiv = document.getElementById('noti_div');
+            var panic_noti = document.getElementById('panic_noti');
+
+            mem_btn.addEventListener('click', (event) => {
+                if (notidiv.style.display === 'none') {
+                    notidiv.style.display = 'block';
+                    panic_noti.style.display = 'none';
+                }
+            })
+
+            pn_btn.addEventListener('click', (event) => {
+                if (panic_noti.style.display === 'none') {
+                    panic_noti.style.display = 'block';
+                    notidiv.style.display = 'none';
+                }
+            })
         </script>
 </body>
 <!--end::Body-->

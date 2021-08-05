@@ -186,9 +186,9 @@ class InspectionModel(models.Model):
 
     inspector = models.ForeignKey(User,on_delete=SET_NULL,blank=True,null=True)
     inspection_for = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name='inpected_user')
-    inspection_type = models.CharField(max_length=20,blank=False,null=False,choices=Type)
+    inspection_type = models.CharField(max_length=20,blank=True,null=True,choices=Type)
     inspection_output = models.CharField(max_length=20,blank=True,null=True,choices=Result)
-    inspection_detail = models.CharField(max_length=300, blank=False, null=False)
+    inspection_detail = models.CharField(max_length=300, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -256,6 +256,102 @@ class Leaves(models.Model):
     employee_comments = models.TextField(blank=True, null=True)
     signature = models.CharField(max_length=100,blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
+
+
+class PayrolDeduction(models.Model):
+    MONTHLY_CATEGORY = [
+        ('Company Provided Housing', 'Company Provided Housing'),
+        ('Cellular Data Allowance', 'Cellular Data Allowance'),
+        ('Garnishing Order', 'Garnishing Order'),
+        ('Monthly Deduction Agreement-Employee Request', 'Monthly Deduction Agreement-Employee Request'),
+        ('other(See Notes)', 'other(See Notes)'),
+    ]
+
+    SPECIAL_CATEGORY_DEDUCTIONS = [
+        ('Salary Advance','Salary Advance'),
+        ('Cellular Data Allowance - Once off','Cellular Data Allowance - Once off'),
+        ('Annual HPCSA Renewal','Annual HPCSA Renewal'),
+        ('Salary Corrections (Payroll Error)','Salary Corrections (Payroll Error)'),
+        ('External Training','External Training'),
+        ('Small Loan','Small Loan'),
+        ('Employee Request / Agreement(Once off)','Employee Request / Agreement(Once off)'),
+        ('Other','Other'),
+    ]
+
+    Penalties_Financial_loss_deduction_categories = [
+        ('Fines / Penalties','Fines / Penalties'),
+        ('Equipment Loss and/or Vehicle Damage','Equipment Loss and/or Vehicle Damage'),
+        ('Unauthorized Shift Changes-Overhead Payback','Unauthorized Shift Changes-Overhead Payback'),
+        ('Unauthorized Comany Vehivle Use','Unauthorized Comany Vehivle Use'),
+        ('Procedure Violence','Procedure Violence'),
+        ('Traffic Fines','Traffic Fines'),
+    ]
+
+    FREQUENCY = [
+        ('Once off','Once off'),
+        ('2 Months','2 Months'),
+        ('3 Months','3 Months'),
+    ]
+
+    AUTHORIZED_BY = [
+        ('Leaghnard Coestzee-Pestana(MD)','Leaghnard Coestzee-Pestana(MD)'),
+        ('Frankey Pestana-Coetzee','Frankey Pestana-Coetzee'),
+    ]
+
+    report_by = models.ForeignKey(User,on_delete=SET_NULL,blank=True, null=True,related_name='report_giver')
+    reportedfor = models.ForeignKey(User,on_delete=SET_NULL,blank=True, null=True,related_name='report_taker')
+    employe_name = models.CharField(max_length=50,blank=True, null=True)
+    employee_number = models.CharField(max_length=50,blank=True, null=True)
+    dept = models.CharField(max_length=50,blank=True, null=True),
+    email = models.EmailField(blank=True, null=True)
+    date_of_issuance = models.DateField(blank=True, null=True)
+    photo_evi1 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
+    photo_evi2 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
+    photo_evi3 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
+    photo_evi4 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
+    monthly_deductions = models.BooleanField(default=False,blank=True, null=True)
+    special_deductions = models.BooleanField(default=False,blank=True, null=True)
+    penalties_financial_loss = models.BooleanField(default=False,blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    monthly_deduction_category = models.CharField(max_length=50,blank=True, null=True,choices=MONTHLY_CATEGORY)
+    special_deduction_category = models.CharField(max_length=50,blank=True, null=True,choices=SPECIAL_CATEGORY_DEDUCTIONS)
+    penalties_financial_loss_category = models.CharField(max_length=50,blank=True, null=True,choices=Penalties_Financial_loss_deduction_categories)
+
+    # monthly
+    description_deduction_monthly = models.TextField(blank=True, null=True)
+    amount = models.IntegerField(blank=True, null=True, default=0)
+    start_date_monthly = models.DateField(blank=True, null=True)
+    expiry_date_monthly = models.DateField(blank=True, null=True)
+
+    # special
+    description_deduction_special = models.TextField(blank=True, null=True)
+    frequency = models.CharField(max_length=20,blank=True, null=True,choices=FREQUENCY)
+    total_amount_r = models.IntegerField(blank=True, null=True, default=0)
+    monthly_r = models.IntegerField(blank=True, null=True, default=0)
+    start_date_special = models.DateField(blank=True, null=True)
+    expiry_date_special = models.DateField(blank=True, null=True)
+
+    # penalty
+    description_deduction_penalty = models.TextField(blank=True, null=True)
+    employee_percentage_sign = models.IntegerField(blank=True, null=True, default=0)
+    total = models.IntegerField(blank=True, null=True)
+    employee_rand = models.IntegerField(blank=True, null=True, default=0)
+    installments_rand = models.IntegerField(blank=True, null=True, default=0)
+    start_date_penaly = models.DateField(blank=True, null=True)
+    expiry_date_penalty = models.DateField(blank=True, null=True)
+
+    total_monthly_deduction = models.IntegerField(blank=True, null=True, default=0)
+    total_special_deduction = models.IntegerField(blank=True, null=True, default=0)
+    total_loss_deduction = models.IntegerField(blank=True, null=True, default=0)
+    authorized_by = models.CharField(max_length = 50, blank=True, null=True,choices=AUTHORIZED_BY)
+    approver_comments = models.TextField(blank=True, null=True)
+    approver_signature = models.CharField(max_length = 200,blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+
+
+
+
 
 
 

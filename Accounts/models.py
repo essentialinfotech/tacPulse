@@ -1,7 +1,14 @@
+from TAC_Pulse.settings import EMAIL_HOST_USER
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail  
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 
 # Create your models here.
 class User(AbstractUser):
@@ -65,5 +72,32 @@ class Message(models.Model):
 
     def __str__(self):
         return self.sender.first_name
+
+
+
+#for password reset api
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    context = {
+        'user': reset_password_token.user.first_name,
+        'username': reset_password_token.user.username,
+        'reset_password_url': "{}?token={}".format(
+            instance.request.build_absolute_uri(reverse('password_reset:reset-password-confirm')),
+            reset_password_token.key)
+    }
+
+    email_html_message = render_to_string('accounts/user_reset_password.html', context)
+    send_mail(
+        # title:
+        "Password Reset for {title}".format(title="Tac-Pulse"),
+        # message:
+        email_html_message,
+        # from:
+        EMAIL_HOST_USER,
+        # to:
+        [reset_password_token.user.email]
+    )
+
+
 
 

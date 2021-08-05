@@ -857,6 +857,7 @@ def my_leaves(request,id):
     }
     return render(request,'Accounting/my_leaves.html', context)
 
+
 @login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def employee_leaves(request):
@@ -874,3 +875,17 @@ def delete_leaves(request,id):
     obj.delete()
     messages.success(request,'Leave report Deleted')
     return redirect('employee_leaves')
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def payroll_deduction_form(request):
+    form = PayrolDeductionForm()
+    if request.method == 'POST':
+        form = PayrolDeductionForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(form)
+    context ={
+        'form': form,
+    }
+    return render(request,'Accounting/payroll_deduction_form.html',context)

@@ -1,14 +1,18 @@
 from .models import *
 from .serializer import *
 from rest_framework.generics import ListAPIView
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from django.db.models import Q
-from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from django.http import HttpResponse, request
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -229,3 +233,20 @@ def api_schedule_status_update(request, pk):
             data.status = 'Completed'
         data.save()
         return HttpResponse('Ok')
+
+
+
+#mobile api's starts here. . .
+class InspectionCheckLists(generics.ListAPIView):
+    serializer_class = InspectionSerializer
+    def get_queryset(self):
+        reports = InspectionModel.objects.all()
+        return reports
+
+
+class PayStubReports(generics.ListAPIView):
+    serializer_class = PaystubSerializer
+    def get_queryset(self):
+        reports = PaystubModel.objects.filter(created_on__month = datetime.now().month,
+                                            created_on__year = datetime.now().year)
+        return reports

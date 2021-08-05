@@ -28,3 +28,18 @@ class StockRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockRequestModel
         fields = '__all__'
+
+
+#mobile serializers starts here . . 
+class InspectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InspectionModel
+        fields = '__all__'
+        depth = 1
+
+class PaystubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaystubModel
+        fields = '__all__'
+        depth = 1
+

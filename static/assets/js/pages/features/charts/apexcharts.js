@@ -85,7 +85,6 @@ var KTApexChartsDemo = function() {
             success: function(data) {
                 var user_join_data = data.user_join_data;
                 var labels = data.labels;
-                console.log(user_join_data)
                 var options = {
                     series: [{
                         name: 'Monthly Paid amounts',

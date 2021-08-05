@@ -74,14 +74,15 @@ class Panic_Noti(generics.ListAPIView):
             return PanicNoti.objects.filter(is_seen = False).order_by('-id')
 
         
-
 class AmbulanceRequest(generics.CreateAPIView):
     serializer_class = AmbulanceRequestSerializer
     permission_classes = [IsAuthenticated,]
     def post(self, request,  *args, **kwargs):
         user = self.request.user
-        serializer = self.get_serializer(data=request.data)
+        serializer = AmbulanceRequestSerializer(user,data=request.data)
+        print(request.data)
         if serializer.is_valid():
+            print(serializer.data)
             data = serializer.save(commit = False)
             data.user = user
             data.save()

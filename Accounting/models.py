@@ -305,13 +305,16 @@ class PayrolDeduction(models.Model):
     dept = models.CharField(max_length=50,blank=True, null=True),
     email = models.EmailField(blank=True, null=True)
     date_of_issuance = models.DateField(blank=True, null=True)
+
     photo_evi1 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
     photo_evi2 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
     photo_evi3 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
     photo_evi4 = models.ImageField(upload_to = 'PayrollDeduction',blank=True, null=True)
-    monthly_deductions = models.BooleanField(default=False,blank=True, null=True)
-    special_deductions = models.BooleanField(default=False,blank=True, null=True)
-    penalties_financial_loss = models.BooleanField(default=False,blank=True, null=True)
+
+    monthly_deductions = models.BooleanField(default=False)
+    special_deductions = models.BooleanField(default=False)
+    penalties_financial_loss = models.BooleanField(default=False)
+
     created = models.DateTimeField(auto_now_add=True)
 
     monthly_deduction_category = models.CharField(max_length=50,blank=True, null=True,choices=MONTHLY_CATEGORY)

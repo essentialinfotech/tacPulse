@@ -878,13 +878,46 @@ def delete_leaves(request,id):
 
 
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def payrol_deduction_reports(request):
+    reports = PayrolDeduction.objects.all().order_by('-id')
+    context = {
+        'reports': reports,
+    }
+    return render(request,'Accounting/payrol_deduction_reports.html',context)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def payroll_deduction_form(request):
     form = PayrolDeductionForm()
     if request.method == 'POST':
+        monthly_deductions = request.POST.get('monthly_deductions')
+        special_deductions = request.POST.get('special_deductions')
+        penalties_financial_loss = request.POST.get('penalties_financial_loss')
+        if monthly_deductions is not None:
+            monthly_deductions = True
+        else:
+            monthly_deductions = False
+
+        if special_deductions is not None:
+            special_deductions = True
+        else:
+            special_deductions = False
+
+        if penalties_financial_loss is not None:
+            penalties_financial_loss = True
+        else:
+             penalties_financial_loss = False
+
         form = PayrolDeductionForm(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
-            return HttpResponse(form)
+            instance = form.save(commit = False)
+            instance.report_by = request.user
+            instance.monthly_deductions = monthly_deductions
+            instance.special_deductions = special_deductions
+            instance.penalties_financial_loss = penalties_financial_loss
+            instance.save()
+            messages.success(request,'Payroll Deduction Created')
+            return redirect('payrol_deduction_reports')
     context ={
         'form': form,
     }

@@ -53,7 +53,7 @@ class Assesment(models.Model):
     ]
 
     by_user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True)
-    to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user_that_will_be_assisted')
+    to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user_that_will_be_assisted',blank=True, null=True)
     msg = models.CharField(max_length=100,blank=True, null=True)
     rate = models.CharField(max_length=30,choices=RATE)
     warning = models.BooleanField(default=False,help_text="want to warn?")

@@ -43,3 +43,8 @@ class PaystubSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
+class AuditCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Audit
+        fields = '__all__'
+        depth = 1

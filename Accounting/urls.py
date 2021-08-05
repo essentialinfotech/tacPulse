@@ -60,5 +60,6 @@ urlpatterns = [
     path('my/leaves/<hashid:id>/', my_leaves, name = 'my_leaves'),
     path('employee/leave/reports/', employee_leaves, name = 'employee_leaves'),
     path('delete/leave/report/<hashid:id>/', delete_leaves, name = 'delete_leaves'),
+    path('reports/payroll/deductions/', payrol_deduction_reports, name = 'payrol_deduction_reports'),
     path('payroll/deductions/', payroll_deduction_form, name = 'payroll_deduction_form'),
 ]

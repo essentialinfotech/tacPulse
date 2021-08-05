@@ -77,14 +77,22 @@ class Panic_Noti(generics.ListAPIView):
 class AmbulanceRequest(generics.CreateAPIView):
     serializer_class = AmbulanceRequestSerializer
     permission_classes = [IsAuthenticated,]
-    def post(self, request,  *args, **kwargs):
-        user = self.request.user
-        serializer = AmbulanceRequestSerializer(user,data=request.data)
-        print(request.data)
-        if serializer.is_valid():
-            print(serializer.data)
-            data = serializer.save(commit = False)
-            data.user = user
-            data.save()
-            return Response(data,status=status.HTTP_201_CREATED)
+    def post(self, request, format=None):
+        user = request.user
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user_id = user.id)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class AmbulanceRequestList(generics.ListAPIView):
+    serializer_class = AmbulanceRequestSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        if self.request.user.is_superuser:
+            requests = AmbulanceModel.objects.all()
+            serializer = self.get_serializer(requests, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response('You do not have permission to view this content', status=status.HTTP_400_BAD_REQUEST)

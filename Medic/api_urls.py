@@ -9,4 +9,5 @@ urlpatterns = [
     path('occurrence/reports/', OccurrenceReports.as_view(), name = 'occurrence_reports_api'),
     path('panic/notification/', Panic_Noti.as_view(), name = 'panic_noti_api'),
     path('ambulance/request/', AmbulanceRequest.as_view(), name = 'ambulance_req_api'),
+    path('ambulance/requests/list/', AmbulanceRequestList.as_view(), name = 'AmbulanceRequestList_api'),
 ]

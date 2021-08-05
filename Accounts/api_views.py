@@ -1,4 +1,5 @@
 from django.views import generic
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .serializer import *
@@ -104,6 +105,23 @@ class ChangePasswordView(generics.UpdateAPIView):
             }
             return Response(response)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class AssessmentCreationApi(generics.CreateAPIView):
+    serializer_class = AssessmentCreateSerializer
+    permission_classes = [IsAuthenticated,]
+    def post(self,request,format=None):
+        if self.request.user.is_superuser:
+            by_user = request.user
+            to_user = request.data["to_user"]
+            to_user = User.objects.get(id = to_user)
+            serializer = self.get_serializer(data = request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(by_user = by_user,to_user = to_user)
+                return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response('Not allowed',status=status.HTTP_400_BAD_REQUEST)
         
 
 

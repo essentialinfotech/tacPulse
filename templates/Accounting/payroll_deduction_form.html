@@ -6,27 +6,22 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            {% if messages %}
+            {% if form.errors %}
             <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
                 <div class="alert-text">
                     <p class="messages">
-                        {% for message in messages %}
-                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                            {{message}}
-                        </p>
-                        {% endfor %}
+                        {{ form.errors }}
                     </p>
                 </div>
             </div>
             {% endif %}
             <div class="row">
                 <div class="col-md-3">
-                    <form action="{% url 'payroll_deduction_form' %}" method="post">
+                    <form action="{% url 'payroll_deduction_form' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label for="employe_name">Employee Name</label><br>
                         <input type="text" name="employe_name" id="employe_name" class="form-control">
-                    </form>
                 </div>
                 <div class="col-md-2">
                     <label for="employee_number">Employee Number</label><br>
@@ -114,10 +109,10 @@
                     <label for="total">Total(R)</label>
                     <input type="number" name="total" id="total" class="form-control">
 
-                    <label for="total">Total(R)</label>
-                    <input type="number" name="total" id="total" class="form-control">
+                    <label for="employee_rand">Employee(R)</label>
+                    <input type="number" name="employee_rand" id="employee_rand" class="form-control">
 
-                    <label for="installments_rand">Employee(R)</label>
+                    <label for="installments_rand">Installments(R)</label>
                     <input type="number" name="installments_rand" id="installments_rand" class="form-control">
 
                     <label for="start_date_penaly">Start Date</label><br>
@@ -159,15 +154,15 @@
 
                 <div class="col-md-4">
                     <label for="total_monthly_deduction">Total Monthly Deductions</label>
-                    <input type="number" placeholder="read-only" name="total_monthly_deduction" id="total_monthly_deduction" class="form-control" value="{{ 0 }}" readonly>
+                    <input type="number"  name="total_monthly_deduction" id="total_monthly_deduction" class="form-control" value="{{ 0 }}" >
                 </div>
                 <div class="col-md-4">
                     <label for="total_special_deduction">Total Special Deductions</label>
-                    <input type="number" placeholder="read-only" name="total_special_deduction" id="total_special_deduction" class="form-control" value="{{ 0 }}" readonly>
+                    <input type="number"  name="total_special_deduction" id="total_special_deduction" class="form-control" value="{{ 0 }}" >
                 </div>
                 <div class="col-md-4">
                     <label for="total_loss_deduction">Total Loss Deductions</label>
-                    <input type="number" placeholder="read-only" name="total_loss_deduction" id="total_loss_deduction" class="form-control" value="{{ 0 }}" readonly>
+                    <input type="number"  name="total_loss_deduction" id="total_loss_deduction" class="form-control" value="{{ 0 }}" >
                 </div>
 
                 <div class="col-md-6">
@@ -177,15 +172,17 @@
                     <label for="">Date</label>
                     <input type="date" name="date" id="date" class="form-control">
                 </div>
-                <div class="col-md-6">
-                    <label for="">Aprrover Comments(if any)</label> {{ form.approver_comments }}
+                <div class="col-md-12">
+                    <label for="">Aprrover Comments(if any)</label> {{ form.approver_comments }} <br>
+                    <button type="submit" class="btn btn-success">Save</button>
                 </div>
+            </form>
             </div>
         </div>
     </div>
 </div>
 
-<script>
+<!-- <script>
     var amount_monthly = document.getElementById('amount');
     $('#amount').change(function(event) {
         $('#total_monthly_deduction').val($(this).val());
@@ -210,6 +207,6 @@
     $('#monthly_deductions').click(function() {
         $("#monthly_deduction_category").prop("readonly", true);
     });
-</script>
+</script> -->
 
 {% endblock %}

@@ -250,3 +250,16 @@ class PayStubReports(generics.ListAPIView):
         reports = PaystubModel.objects.filter(created_on__month = datetime.now().month,
                                             created_on__year = datetime.now().year)
         return reports
+
+class AuditCreateApi(generics.CreateAPIView):
+    serializer_class = AuditCreateSerializer
+    permission_classes = [IsAuthenticated]
+    def post(self,request,format=None):
+        if self.request.user.is_superuser:
+            auditor = request.user
+            serializer = self.get_serializer(data = request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(auditor = auditor )
+                return Response(serializer.data,status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response('Not an admin', status=status.HTTP_400_BAD_REQUEST)

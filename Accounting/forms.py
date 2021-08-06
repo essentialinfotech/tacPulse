@@ -133,3 +133,43 @@ class PayrolDeductionForm(forms.ModelForm):
             'authorized_by': forms.Select(attrs={'class': 'form-control'}),
             'approver_comments': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class PayrolDeductionFormView(forms.ModelForm):
+    class Meta:
+        model = PayrolDeduction
+        fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'total_loss_deduction': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'total_special_deduction': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'total_monthly_deduction': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'expiry_date_penalty': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'start_date_penaly': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'installments_rand': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'employee_rand': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'employee_percentage_sign': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'description_deduction_penalty': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'total': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'monthly_r': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'total_amount_r': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'employe_name': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'employee_number': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'dept': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'email': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'description_deduction_monthly': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'description_deduction_special': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'amount': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'start_date_monthly': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'start_date_special': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'expiry_date_special': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'expiry_date_monthly': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'email': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+            'date_of_issuance': forms.DateInput(attrs={'class': 'form-control','type': 'date','readonly': True}),
+            'monthly_deduction_category': forms.Select(attrs={'class': 'form-control','readonly': True}),
+            'special_deduction_category': forms.Select(attrs={'class': 'form-control','readonly': True}),
+            'penalties_financial_loss_category': forms.Select(attrs={'class': 'form-control','readonly': True}),
+            'frequency': forms.Select(attrs={'class': 'form-control','readonly': True}),
+            'authorized_by': forms.Select(attrs={'class': 'form-control','readonly': True}),
+            'approver_comments': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
+        }

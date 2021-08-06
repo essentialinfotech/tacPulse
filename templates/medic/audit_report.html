@@ -59,9 +59,9 @@
                             <td>{{ i.date_of_audit }}</td>
                             <td>{{ i.practitioner_being_audited_charfield|title }}</td>
                             <td>
-                                <a href="{% url 'profile' i.practitioner_being_audited.id %}">
-                                    {{ i.practitioner_being_audited.first_name|title }} {{ i.practitioner_being_audited.last_name|title }}
-                                </a>
+                                
+                                {{ i.practitioner_being_audited.first_name|title }} {{ i.practitioner_being_audited.last_name|title }}
+                                
                             </td>
                             <td>{{ i.email_practitioner }}</td>
                             <td>{{ i.qualification_practitioner }}</td>

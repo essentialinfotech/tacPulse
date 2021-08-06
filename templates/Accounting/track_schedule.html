@@ -252,7 +252,53 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} 
+                            
+                            {% if request.user.is_superuser %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Payroll Deduction</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <i class="fas fa-book-open"></i>
+										</span>
+                                    <span class="menu-text">Make Deduction</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'payroll_deduction_form' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Create</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'payrol_deduction_reports' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Reports</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            {% endif %}
+                            
+                            
+                            
+                            
+                            
+                            {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Task</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

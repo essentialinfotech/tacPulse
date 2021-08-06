@@ -62,4 +62,5 @@ urlpatterns = [
     path('delete/leave/report/<hashid:id>/', delete_leaves, name = 'delete_leaves'),
     path('reports/payroll/deductions/', payrol_deduction_reports, name = 'payrol_deduction_reports'),
     path('payroll/deductions/', payroll_deduction_form, name = 'payroll_deduction_form'),
+    path('payroll/deduction/individual/report/view/<hashid:id>/', payroll_deduction_individual_report, name = 'payroll_deduction_individual_report'),
 ]

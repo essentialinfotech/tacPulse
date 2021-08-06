@@ -30,6 +30,7 @@ def add_member(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 def getmembership(request):
     packages = Package.objects.all()
     context = {
@@ -38,6 +39,7 @@ def getmembership(request):
     return render(request, 'Accounting/get_membership.html',context)
 
 
+@login_required
 def payment(request,id):
     package = Package.objects.filter(id = id)
 
@@ -47,6 +49,8 @@ def payment(request,id):
     }
     return render(request,'Accounting/payment.html',context)
 
+
+@login_required
 @csrf_exempt
 def payment_backend(request):
     token = ''
@@ -114,6 +118,7 @@ def payment_backend(request):
     return render(request,'Accounting/membership_purchased.html')
 
 
+@login_required
 def package_purchased(request):
     membership = MembershipModel.objects.filter(user = request.user).order_by('-id')
     context = {
@@ -123,6 +128,7 @@ def package_purchased(request):
     return render(request,'Accounting/membership_purchased.html', context)
 
 
+@login_required
 def viewing_membership_details_individual(request,id):
     mebership_details = MembershipModel.objects.filter(id = id)
     context = {
@@ -130,6 +136,8 @@ def viewing_membership_details_individual(request,id):
     }
     return render(request,'Accounting/individual_membership_details.html',context)
 
+
+@login_required
 def members(request):
     memberships_holders = MembershipModel.objects.filter(membership_end__date__gt = datetime.today().date()).order_by('-id')
     context = {
@@ -334,6 +342,7 @@ class CompletedSchedule(LoginRequiredMixin, View):
         return render(request, 'Accounting/trip_schedules.html', context)
 
 
+@login_required
 def task_create(request):
     if request.user.is_superuser:
         form = TaskModelForm()
@@ -382,6 +391,7 @@ def task_create(request):
         return render(request, 'Accounting/taskcreate.html', context)
     else:
         return render(request, 'accounts/forbidden.html')
+
 
 
 class TasksList(LoginRequiredMixin, View):
@@ -446,6 +456,7 @@ class DeleteTask(LoginRequiredMixin, View):
             return render(request, 'accounts/forbidden.html')
 
 
+@login_required
 def task_detail(request, pk):
     data = get_object_or_404(TaskModel, pk=pk)
     return render(request, 'Accounting/task_detail.html', {'object': data})
@@ -520,6 +531,7 @@ class TransferredTasks(LoginRequiredMixin, View):
         return render(request, 'Accounting/transfered_tasks.html', context)
 
 
+@login_required
 def add_paystub(request):
     if request.user.is_superuser:
         form = PaystubForm()
@@ -537,7 +549,7 @@ def add_paystub(request):
     else:
         return redirect('forbidden')
 
-
+@login_required
 def paystub_report(request):
     if request.user.is_superuser:
         daily = PaystubModel.objects.filter(created_on__gte=today.date())
@@ -559,6 +571,7 @@ def paystub_report(request):
     return render(request, 'Accounting/paystub_report.html', context)
 
 
+@login_required
 def update_paystub_report(request, pk):
     if request.user.is_superuser:
         data = get_object_or_404(PaystubModel, pk=pk)
@@ -581,6 +594,7 @@ def update_paystub_report(request, pk):
         return redirect('forbidden')
 
 
+@login_required
 def delete_paystub(request, pk):
     if request.user.is_superuser:
         data = get_object_or_404(PaystubModel, pk=pk)
@@ -588,6 +602,7 @@ def delete_paystub(request, pk):
         return redirect('paystub_report')
 
 
+@login_required
 def stock_request(request):
     form = StockRequestForm()
     if request.method == 'POST':
@@ -611,6 +626,7 @@ def stock_request(request):
     return render(request, 'Accounting/stock_req.html', {'form': form})
 
 
+@login_required
 def cancel_stock_request(request):
     form = StockRequestForm()
     rcv = StockRequestModel.objects.filter(
@@ -673,6 +689,7 @@ class DeleteStock(LoginRequiredMixin, View):
             return redirect('stock_requests')
 
 
+@login_required
 def packages(request):
     packages = Package.objects.all()
     context = {
@@ -680,7 +697,7 @@ def packages(request):
     }
     return render(request, 'Accounting/packages.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def add_package(request):
     form = PackageForm()
@@ -695,7 +712,7 @@ def add_package(request):
     }
     return render(request, 'Accounting/add_package.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def edit_package(request, id):
     data = Package.objects.get(id=id)
@@ -712,7 +729,7 @@ def edit_package(request, id):
     }
     return render(request, 'Accounting/edit_package.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def del_package(request, id):
     obj = get_object_or_404(Package, id=id)
@@ -720,7 +737,7 @@ def del_package(request, id):
     messages.success(request, 'Package deleted')
     return redirect('packages')
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def create_inspection(request):
     form = InspectionForm()
@@ -735,7 +752,7 @@ def create_inspection(request):
             return redirect('inpection_reports')
     return render(request,'Accounting/inspection_create.html',{'form': form})
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def inpection_reports(request):
     reports = InspectionModel.objects.all()
@@ -744,7 +761,7 @@ def inpection_reports(request):
     }
     return render(request,'Accounting/inspection_reports.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def edit_inspection(request,id):
     data = get_object_or_404(InspectionModel, id = id)
@@ -760,7 +777,7 @@ def edit_inspection(request,id):
             return redirect('inpection_reports')
     return render(request,'Accounting/inspection_edit.html',{'form': form, 'id': id})
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def del_inspection(request,id):
     obj = get_object_or_404(InspectionModel , id = id)
@@ -769,7 +786,7 @@ def del_inspection(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def membership_noti(request):
     membership_noti = MembershipNoti.objects.filter(is_seen = False).order_by('-id')
@@ -789,6 +806,7 @@ def membership_noti(request):
     return JsonResponse(data,safe=False)
 
 
+@login_required
 def membership_noti_mark_as_seen(request,id):
     noti = MembershipNoti.objects.get(id = id)
     noti.is_seen = True
@@ -796,6 +814,7 @@ def membership_noti_mark_as_seen(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 @user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
 def user_membership_renewal_noti(request):
     data = []
@@ -820,6 +839,7 @@ def user_membership_renewal_noti(request):
     return JsonResponse(data,safe=False)
 
 
+@login_required
 @user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
 def mark_as_seen_membership_renewal_noti(request,id):
     noti = MembershipRenewalNoti.objects.get(id = id)
@@ -877,6 +897,7 @@ def delete_leaves(request,id):
     return redirect('employee_leaves')
 
 
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def payrol_deduction_reports(request):
     reports = PayrolDeduction.objects.all().order_by('-id')
@@ -885,7 +906,7 @@ def payrol_deduction_reports(request):
     }
     return render(request,'Accounting/payrol_deduction_reports.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def payroll_deduction_form(request):
     form = PayrolDeductionForm()
@@ -922,3 +943,14 @@ def payroll_deduction_form(request):
         'form': form,
     }
     return render(request,'Accounting/payroll_deduction_form.html',context)
+
+@login_required
+def payroll_deduction_individual_report(request,id):
+    data = PayrolDeduction.objects.get(id = id)
+    form = PayrolDeductionFormView(instance=data)
+    context = {
+        'form': form,
+        'data': data,
+        'id': id,
+    }
+    return render(request,'Accounting/individual_payroll_deductions.html',context)

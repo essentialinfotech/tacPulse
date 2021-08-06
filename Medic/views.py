@@ -60,7 +60,7 @@ def case_number():
 
 
 # Create your views here.
-
+@login_required
 def audit_report(request):
     audits = Audit.objects.all()
     context = {
@@ -68,15 +68,15 @@ def audit_report(request):
     }
     return render(request, 'medic/audit_report.html',context)
 
-
+@login_required
 def inspection_form(request):
     return render(request, 'medic/inspection_form.html')
 
-
+@login_required
 def inspaction_report(request):
     return render(request, 'medic/inspaction_report.html')
 
-
+@login_required
 def occurrence_form(request):
     form = OccurrenceForm()
     if request.method == 'POST':
@@ -93,7 +93,7 @@ def occurrence_form(request):
     }
     return render(request,'medic/occurrence_form.html', context)
 
-
+@login_required
 def occurrence_report(request):
     from datetime import datetime, timedelta
     last_seven_days = datetime.today() - timedelta(days=7)
@@ -114,7 +114,7 @@ def occurrence_report(request):
     }
     return render(request,'medic/occurrence_report.html', context)
 
-
+@login_required
 def common_delete(request,id):
     url = request.META.get('HTTP_REFERER')
     try:
@@ -127,7 +127,7 @@ def common_delete(request,id):
     except:
         return HttpResponseRedirect(url)
 
-
+@login_required
 def edit_occurrence(request,id):
     data = Occurrence.objects.get(id=id)
     form = OccurrenceForm(instance=data)
@@ -146,6 +146,7 @@ def edit_occurrence(request,id):
     }
     return render(request,'medic/edit_occurence.html', context)
 
+@login_required
 def occurrence_details(request,id):
     obj = Occurrence.objects.get(id = id)
     context = {
@@ -153,6 +154,7 @@ def occurrence_details(request,id):
     }
     return render(request,'medic/detail_occurrence.html',context)
 
+@login_required
 @csrf_exempt
 def rating(request):
     if request.method == 'POST':
@@ -182,7 +184,7 @@ def rating(request):
                 print(star_value)
     return render(request, 'medic/rate.html')
 
-
+@login_required
 @csrf_exempt
 def feedback(request):
     url = request.META.get('HTTP_REFERER')
@@ -197,7 +199,7 @@ def feedback(request):
             return HttpResponseRedirect(url)
     return HttpResponseRedirect(url)
 
-
+@login_required
 def feedbacks(request):
     feedbacks = Feedback.objects.all().order_by('-id')
     context = {
@@ -205,7 +207,7 @@ def feedbacks(request):
     }
     return render(request,'medic/feedbacks_view.html',context)
 
-
+@login_required
 def del_feedback(request,id):
     obj = get_object_or_404(Feedback, id=id)
     obj.delete()
@@ -319,7 +321,7 @@ class AmbulanceRequestDelete(LoginRequiredMixin,View):
         except:
             return redirect('ambulance_request_report')
 
-
+@login_required
 def ambulance_task_complete(request, pk):
     TaskModel.objects.filter(task_type='ambr', ambulance_task=pk).update(status='Completed')
     ambulance = get_object_or_404(AmbulanceModel, pk=pk)
@@ -327,12 +329,12 @@ def ambulance_task_complete(request, pk):
     ambulance.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required
 def dispatch_list(request):
     dispatches = User.objects.filter(is_staff = True,is_superuser = False)
     return render(request, 'medic/dispatch_list.html',{'dispatches': dispatches})
 
-
+@login_required
 def hospital_transfer(request):
     form = HospitalTransferForm()
     if request.method == 'POST':
@@ -342,7 +344,7 @@ def hospital_transfer(request):
             return redirect('hospital_transfer_report')
     return render(request, 'medic/hospital_transfer.html', {'form': form})
 
-
+@login_required
 def hospital_transfer_report(request):
     from datetime import datetime, timedelta
     today = datetime.today()
@@ -364,7 +366,7 @@ def hospital_transfer_report(request):
     }
     return render(request, 'medic/hospita_transfer_report.html', context)
 
-
+@login_required
 def update_hospital_request(request, pk):
     data = get_object_or_404(HospitalTransferModel, pk=pk)
     form = HospitalTransferForm(instance=data)
@@ -375,19 +377,19 @@ def update_hospital_request(request, pk):
             return redirect('hospital_transfer_report')
     return render(request, 'medic/hospital_transfer_up.html', {'form': form, 'data': data})
 
-
+@login_required
 def delete_hospital_request(request, pk):
     if not request.user.is_staff or request.user.is_superuser:
         data = get_object_or_404(HospitalTransferModel, pk=pk)
         data.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required
 def details_hospital_request(request, pk):
     data = get_object_or_404(HospitalTransferModel, pk=pk)
     return render(request, 'medic/hos_request_detail.html', {'object':data})
 
-
+@login_required
 def hospital_transfered(request, pk):
     if request.user.is_staff:
         data = get_object_or_404(HospitalTransferModel, pk=pk)
@@ -415,14 +417,14 @@ def panic_system(request):
             return HttpResponse('Panic request sent successfully')
     return render(request, 'medic/panic.html', {'panic': panic})
 
-
+@login_required
 def del_panic(request, id):
     url = request.META.get('HTTP_REFERER')
     obj = get_object_or_404(Panic, id=id)
     obj.delete()
     return HttpResponseRedirect(url)
 
-
+@login_required
 def check_panic_requests(request):
     panic_requests = Panic.objects.all().order_by('-id')
     context = {
@@ -430,7 +432,7 @@ def check_panic_requests(request):
     }
     return render(request, 'medic/panic_requests.html', context)
 
-
+@login_required
 def check_panic_requests_location(request, id):
     context = {}
     if request.user.is_staff:
@@ -488,6 +490,7 @@ def check_panic_requests_location(request, id):
     return render(request, 'medic/panic_location_check_admin.html', context)
 
 
+@login_required
 def complete_panic_task(request, pk):
     if request.user.is_staff:
         TaskModel.objects.filter(task_type='pan', panic_task=pk).update(status='Completed')
@@ -498,7 +501,7 @@ def complete_panic_task(request, pk):
     else:
         return redirect('forbidden')
 
-
+@login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def panic_noti(request):
     data = []
@@ -516,14 +519,14 @@ def panic_noti(request):
         data.append(prefetch)
     return JsonResponse(data,safe=False)
 
-
+@login_required
 def mark_seen_panic_noti(request,id):
     noti = PanicNoti.objects.get(id = id)
     noti.is_seen = True
     noti.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required
 def property_report(request):
     from datetime import datetime, timedelta
     last_seven_days = datetime.today() - timedelta(days=7)
@@ -540,13 +543,14 @@ def property_report(request):
     }
     return render(request,'medic/property_report.html',context)
 
-
+@login_required
 def property_add(request):
     form = PropertyForm()
     if request.method == 'POST':
         form = PropertyForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
+            print(quantity)
             vat = form.cleaned_data['vat']
             price = form.cleaned_data['price']
             vat_amount = price*(vat/100)
@@ -566,7 +570,7 @@ def property_add(request):
     }
     return render(request,'medic/property_form.html',context)
 
-
+@login_required
 def property_edit(request,id):
     data = PropertyTools.objects.get(id = id)
     form = PropertyForm(instance=data)
@@ -595,6 +599,7 @@ def property_edit(request,id):
     return render(request,'medic/property_edit.html',context)
     
 
+@login_required
 def property_del(request,id):
     url = request.META.get('HTTP_REFERER')
     obj = get_object_or_404(PropertyTools, id=id)
@@ -603,6 +608,7 @@ def property_del(request,id):
     return HttpResponseRedirect(url)
     
 
+@login_required
 def render_to_pdf(template,context):
     html = template.render(context)
     result = BytesIO()
@@ -610,7 +616,7 @@ def render_to_pdf(template,context):
     if not pdf.err:
         return HttpResponse(result.getvalue(),content_type="application/pdf")
 
-
+@login_required
 def invoice_pdf_property(request,id):
     property = PropertyTools.objects.get(id=id)
     context = {
@@ -627,6 +633,7 @@ def invoice_pdf_property(request,id):
     return HttpResponse("not found")
 
 
+@login_required
 def faq(request):
     faqs = FAQ.objects.all()
     context = {
@@ -634,7 +641,7 @@ def faq(request):
     }
     return render(request,'medic/faq.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def create_faq(request):
     if request.method == 'POST':
@@ -645,7 +652,7 @@ def create_faq(request):
         return redirect('faq')
     return render(request,'medic/create_faq.html')
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def edit_faq(request,id):
     data = FAQ.objects.get(id =id)
@@ -664,14 +671,14 @@ def edit_faq(request,id):
     }
     return render(request,'medic/edit_faq.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def del_faq(request,id):
     obj = get_object_or_404(FAQ, id = id)
     obj.delete()
     return redirect('faq')
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def case_notes(request):
     cases = CaseNote.objects.all().order_by('-id')
@@ -680,7 +687,7 @@ def case_notes(request):
     }
     return render(request,'medic/case_reports.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def case_note_create(request,id):
     panic = get_object_or_404(Panic,id = id)
@@ -705,7 +712,7 @@ def case_note_create(request,id):
     }
     return render(request, 'medic/case_note_form.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def case_del(request,id):
     obj = CaseNote.objects.get(id=id)
@@ -713,7 +720,7 @@ def case_del(request,id):
     messages.success(request,'Note Deleted')
     return redirect('case_notes')
 
-
+@login_required
 def search(request):
     if request.method == 'GET':
         query = request.GET.get('q')
@@ -729,7 +736,8 @@ def search(request):
                 return HttpResponse('Not Found')
         else:
             return HttpResponse('Empty Query Field can not be found')
-        
+
+@login_required    
 def autocomplete(request):
     mylist = []
     term = request.GET.get('term')

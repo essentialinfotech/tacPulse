@@ -227,7 +227,50 @@
                                 </div>
                             </li>
                             {% endif %} 
+                            
+                            {% if request.user.is_superuser %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Payroll Deduction</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
 
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <i class="fas fa-book-open"></i>
+										</span>
+                                    <span class="menu-text">Make Deduction</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'payroll_deduction_form' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Create</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'payrol_deduction_reports' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Reports</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            {% endif %}
+                            
+                            
+                            
+                            
                             
                             {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-section">
@@ -249,9 +292,7 @@
 
                                 </a>
                             </li>
-                            {% endif %} 
-                            
-                            {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -283,12 +324,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %}{% endif %} 
-
-
-
-                            
-                            {% if request.user.is_superuser %}
+                            {% endif %}{% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -445,14 +481,6 @@
                                     <ul class="menu-subnav">
                                         {% if request.user.is_superuser %}
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'add_member'%}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                    </i>
-                                                <span class="menu-text">Add Member</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'members'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
@@ -507,8 +535,60 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %} {% if request.user.is_superuser or not request.user.is_staff %}
+                            {% endif %}
 
+
+
+                            <br> {% if request.user.is_staff %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Leaves</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+											<i>L</i>
+										</span>
+                                    <span class="menu-text">Leaves</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'employee_leave' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Leave Request</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'my_leaves' request.user.id %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">My Leaves</span>
+                                            </a>
+                                        </li>
+
+                                        {% if request.user.is_superuser %}
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'employee_leaves' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Employee Leaves</span>
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </li>
+                            {% endif %} {% if request.user.is_superuser or not request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Request</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

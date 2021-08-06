@@ -302,7 +302,7 @@ class PayrolDeduction(models.Model):
     reportedfor = models.ForeignKey(User,on_delete=SET_NULL,blank=True, null=True,related_name='report_taker')
     employe_name = models.CharField(max_length=50,blank=True, null=True)
     employee_number = models.CharField(max_length=50,blank=True, null=True)
-    dept = models.CharField(max_length=50,blank=True, null=True),
+    dept = models.CharField(max_length=50,blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     date_of_issuance = models.DateField(blank=True, null=True)
 
@@ -351,6 +351,38 @@ class PayrolDeduction(models.Model):
     approver_comments = models.TextField(blank=True, null=True)
     approver_signature = models.CharField(max_length = 200,blank=True, null=True)
     date = models.DateField(blank=True, null=True)
+
+    @property
+    def image1URL(self):
+        try:
+            url = self.photo_evi1.url
+        except:
+            url = ''
+        return url
+
+    @property
+    def image2URL(self):
+        try:
+            url = self.photo_evi2.url
+        except:
+            url = ''
+        return url
+
+    @property
+    def image3URL(self):
+        try:
+            url = self.photo_evi3.url
+        except:
+            url = ''
+        return url
+
+    @property
+    def image4URL(self):
+        try:
+            url = self.photo_evi4.url
+        except:
+            url = ''
+        return url
 
 
 

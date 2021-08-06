@@ -84,7 +84,7 @@ class StockRequestModel(models.Model):
     receiver = models.CharField(max_length=100, blank=False, null=False)
     subject = models.CharField(max_length=100, blank=False, null=False)
     message_body = models.CharField(max_length=1000, blank=False, null=False)
-    attachment = models.FileField('attachment/', blank=True)
+    attachment = models.FileField(upload_to='attachment', blank=True)
     requested = models.BooleanField(default=False)
     cancel = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)

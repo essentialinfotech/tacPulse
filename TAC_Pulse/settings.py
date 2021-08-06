@@ -164,9 +164,6 @@ EMAIL_HOST_USER = 'zh.fahad123@gmail.com'
 EMAIL_HOST_PASSWORD = 'zahidhassanfahad2851995django'
 
 
-# Mysql us/ps
-# tac_puse_server
-# TACpulse@321
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

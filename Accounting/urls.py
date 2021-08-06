@@ -1,5 +1,7 @@
 from django.urls import path, register_converter
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 from Accounts.utils import HashIdConverter
 register_converter(HashIdConverter, "hashid")
 
@@ -64,3 +66,5 @@ urlpatterns = [
     path('payroll/deductions/', payroll_deduction_form, name = 'payroll_deduction_form'),
     path('payroll/deduction/individual/report/view/<hashid:id>/', payroll_deduction_individual_report, name = 'payroll_deduction_individual_report'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

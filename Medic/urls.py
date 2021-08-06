@@ -1,5 +1,7 @@
 from django.urls import path, register_converter
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 from Accounts.utils import HashIdConverter
 
 register_converter(HashIdConverter, "hashid")
@@ -78,3 +80,5 @@ urlpatterns = [
      path('editing/audit/<hashid:id>/', audit_edit, name = 'audit_edit'),
      path('individual/occurrence/details/<hashid:id>/', occurrence_details, name = 'occurrence_details'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

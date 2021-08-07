@@ -28,7 +28,7 @@
                 <ul>
                     {% for i in users %}
                     <a href="{% url 'send_message' i.id %}">
-                        <li class="contact">
+                        <li class="contact" data-id="{{ i.id }}">
                             <div class="wrap">
                                 <img src="{{ i.imageURL }}" height="40px" width="70px" alt="" />
                                 <div class="meta">

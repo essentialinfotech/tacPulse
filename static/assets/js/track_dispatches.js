@@ -4,7 +4,7 @@ function initMap() {
     my_title = []
 
 
-    const myLatLng = { lat: 23.7808875, lng: 90.2792371 };
+    var myLatLng = { lat: 23.7808875, lng: 90.2792371 };
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 8,
         center: myLatLng,
@@ -13,11 +13,18 @@ function initMap() {
         method: "GET",
         url: '/api/dispatch/location/',
         success: function(data) {
+            $("#names").empty();
             $.each(data, function(key, value) {
                 var name = ''
+                var showing = 'Showing last location of-- ' + value.first_name + ' ' + value.last_name;
                 name = value.first_name + ' ' + value.last_name
-                lat_lng = { lat: parseFloat(value.latitude), lng: parseFloat(value.longitude) }
-                addMarker(lat_lng, name, map)
+                if (value.latitude != '' && value.longitude != '') {
+                    lat_lng = { lat: parseFloat(value.latitude), lng: parseFloat(value.longitude) }
+                    addMarker(lat_lng, name, map)
+                    $("#names").append(
+                        "<div >" + showing + " </div>"
+                    );
+                }
             });
         }
     });
@@ -37,7 +44,7 @@ function addMarker(location, tt, map) {
     };
     var marker = new google.maps.Marker({
         position: location,
-        icon: iconBase,
+        // icon: iconBase,
         title: tt,
         map: map
     });

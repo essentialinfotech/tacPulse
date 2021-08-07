@@ -1,3 +1,4 @@
+from django.views.decorators import csrf
 from Medic.views import rating
 from Medic.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -569,6 +570,7 @@ def customer_list(request):
 
 @login_required
 def send_message(request,id):
+    online_user = request.user
     messages = Message.objects.filter(Q(sender = request.user, receiver_id = id)| 
                                         Q(sender_id = id, receiver = request.user)).order_by('sent')
     users = User.objects.filter(~Q(id = request.user.id))
@@ -584,6 +586,7 @@ def send_message(request,id):
         'messages': messages,
         'users': users,
         'other_user': other_user,
+        'online_user': online_user,
         'id': id,
     }
     return render(request,'accounts/chat.html',context)
@@ -596,3 +599,18 @@ def delete_message(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@csrf_exempt
+def post_pos_dispatch(request):
+    if request.method == 'POST':
+        data = request.POST
+        for k,v in data.items():
+            if  k=='lat':
+                latitude = v
+            if k=='lng':
+                longitude = v
+        user = User.objects.get(id = request.user.id)
+        user.latitude = latitude
+        user.longitude = longitude
+        user.save()
+        print(user.latitude,user.longitude)
+        return HttpResponse('Lat , Lng: Posted')

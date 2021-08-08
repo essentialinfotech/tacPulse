@@ -1,3 +1,4 @@
+from Accounting import serializer
 from django.http import response
 from rest_framework.response import Response
 from .models import *
@@ -12,6 +13,7 @@ from rest_framework.serializers import Serializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from django.db.models import Sum, Q,query
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -96,3 +98,36 @@ class AmbulanceRequestList(generics.ListAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response('You do not have permission to view this content', status=status.HTTP_400_BAD_REQUEST)
+
+
+class PanicList(generics.ListAPIView):
+    serializer_class = PanicSerializer
+    permission_classes = [IsAuthenticated,]
+    def get(self,request):
+        if request.user.is_staff:
+            panics = Panic.objects.all().order_by('-id')
+            serializer = PanicSerializer(panics, many = True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class PanicCreate(generics.ListAPIView):
+    serializer_class = PanicSerializer
+    permission_classes = [IsAuthenticated,]
+    def post(self,request,formate=None):
+        panic_sender = request.data["panic_sender"]
+        panic_sender = User.objects.get(id = panic_sender)
+        serializer = PanicSerializer(data = request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(panic_sender_id = panic_sender.id)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class FAQLIST(generics.ListAPIView):
+    serializer_class = FAQSerializer
+    permission_classes = [IsAuthenticated,]
+    def get(self,request):
+        faqs = FAQ.objects.all().order_by('-id')
+        serializer = FAQSerializer(faqs, many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+

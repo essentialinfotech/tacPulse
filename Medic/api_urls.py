@@ -10,4 +10,7 @@ urlpatterns = [
     path('panic/notification/', Panic_Noti.as_view(), name = 'panic_noti_api'),
     path('ambulance/request/', AmbulanceRequest.as_view(), name = 'ambulance_req_api'),
     path('ambulance/requests/list/', AmbulanceRequestList.as_view(), name = 'AmbulanceRequestList_api'),
+    path('panic/list/', PanicList.as_view() , name = 'panic_api_list'), 
+    path('panic/crerate/', PanicCreate.as_view(), name = 'PanicCreate_api'),
+    path('faq/', FAQLIST.as_view(), name = 'FAQLIST_api'),
 ]

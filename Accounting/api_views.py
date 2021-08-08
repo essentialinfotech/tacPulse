@@ -263,3 +263,22 @@ class AuditCreateApi(generics.CreateAPIView):
                 return Response(serializer.data,status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response('Not an admin', status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class TaskList(generics.ListAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated,]
+    
+    def get(self,request):
+        if request.user.is_superuser:
+            data = TaskModel.objects.all()
+            serializer = TaskSerializer(data, many = True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        if request.user.is_staff and not request.user.is_superuser:
+            data = TaskModel.objects.filter(dispatch = request.user)
+            serializer = TaskSerializer(data, many = True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+

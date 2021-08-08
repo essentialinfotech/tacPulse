@@ -10,13 +10,6 @@ class ScheduleSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class TaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TaskModel
-        fields = '__all__'
-        depth = 4
-
-
 class TransferredSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskTransferModel
@@ -48,3 +41,10 @@ class AuditCreateSerializer(serializers.ModelSerializer):
         model = Audit
         fields = '__all__'
         depth = 1
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskModel
+        fields = '__all__'
+        depth = 4

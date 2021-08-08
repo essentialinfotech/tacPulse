@@ -122,6 +122,20 @@ class AssessmentCreationApi(generics.CreateAPIView):
                 return Response(serializer.data,status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response('Not allowed',status=status.HTTP_400_BAD_REQUEST)
+
+
+class AssessmentList(generics.ListAPIView):
+    serializer_class = AssessmentCreateSerializer
+    permission_classes = [IsAuthenticated,]
+    def get(self,request):
+        if request.user.is_staff and not request.user.is_superuser:
+            data = Assesment.objects.filter(to_user = request.user)
+            serializer = AssessmentCreateSerializer(data,many = True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        if request.user.is_superuser:
+            data = Assesment.objects.all()
+            serializer = AssessmentCreateSerializer(data,many = True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
         
 
 

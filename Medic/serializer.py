@@ -34,3 +34,10 @@ class OccurrenceSerializer(serializers.ModelSerializer):
         model = Occurrence
         fields = '__all__'
         depth = 1
+
+
+class FAQSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = '__all__'
+        depth = 1

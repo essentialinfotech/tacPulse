@@ -608,7 +608,7 @@ def property_del(request,id):
     return HttpResponseRedirect(url)
     
 
-@login_required
+
 def render_to_pdf(template,context):
     html = template.render(context)
     result = BytesIO()
@@ -616,7 +616,7 @@ def render_to_pdf(template,context):
     if not pdf.err:
         return HttpResponse(result.getvalue(),content_type="application/pdf")
 
-@login_required
+
 def invoice_pdf_property(request,id):
     property = PropertyTools.objects.get(id=id)
     context = {

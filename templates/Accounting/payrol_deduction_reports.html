@@ -13,14 +13,20 @@
                                 <th>Reported By</th>
                                 <th>Reported For</th>
                                 <th>View</th>
+                                <th>Action</th>
                             </thead>
                             <tbody>
-                            {% for i in reports %}
+                                {% for i in reports %}
                                 <tr>
                                     <td>{{ i.report_by.first_name | title }} {{ i.report_by.last_name | title }}</td>
                                     <td>{{ i.employe_name }}</td>
                                     <td>
                                         <a href="{% url 'payroll_deduction_individual_report' i.id %}">View</a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'payroll_deduction_delete' i.id %}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 {% endfor %}

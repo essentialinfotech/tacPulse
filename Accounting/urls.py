@@ -65,6 +65,7 @@ urlpatterns = [
     path('reports/payroll/deductions/', payrol_deduction_reports, name = 'payrol_deduction_reports'),
     path('payroll/deductions/', payroll_deduction_form, name = 'payroll_deduction_form'),
     path('payroll/deduction/individual/report/view/<hashid:id>/', payroll_deduction_individual_report, name = 'payroll_deduction_individual_report'),
+    path('delete/payrolldeductionreport/<hashid:id>/', payroll_deduction_delete, name = 'payroll_deduction_delete'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

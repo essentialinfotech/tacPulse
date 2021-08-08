@@ -103,7 +103,9 @@
                                     <a href="{% url 'deactivate' i.id%}" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Deactivate</a><br> 
                                     {% endif %}
 
+                                    {% if not request.user.is_staff %}
                                     <button type="button" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Chat</button>
+                                    {% endif %}
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">

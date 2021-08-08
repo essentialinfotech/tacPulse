@@ -954,3 +954,10 @@ def payroll_deduction_individual_report(request,id):
         'id': id,
     }
     return render(request,'Accounting/individual_payroll_deductions.html',context)
+
+
+@login_required
+def payroll_deduction_delete(request,id):
+    obj = get_object_or_404(PayrolDeduction, id=id)
+    obj.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

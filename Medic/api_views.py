@@ -114,11 +114,9 @@ class PanicCreate(generics.ListAPIView):
     serializer_class = PanicSerializer
     permission_classes = [IsAuthenticated,]
     def post(self,request,formate=None):
-        panic_sender = request.data["panic_sender"]
-        panic_sender = User.objects.get(id = panic_sender)
         serializer = PanicSerializer(data = request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(panic_sender_id = panic_sender.id)
+            serializer.save(panic_sender = request.user)
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 

@@ -1,3 +1,4 @@
+from os import stat
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -20,6 +21,7 @@ from knox.views import LoginView as KnoxLoginView
 from knox.models import AuthToken
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
+from django.db.models import Sum, Q,query
 
 
 class DispatchesLocationAPI(ListAPIView):
@@ -136,6 +138,33 @@ class AssessmentList(generics.ListAPIView):
             data = Assesment.objects.all()
             serializer = AssessmentCreateSerializer(data,many = True)
             return Response(serializer.data,status=status.HTTP_200_OK)
+
+class SendMessage(generics.CreateAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def post(self,request,formate=None):
+        print(request.user)
+        receiver = request.data["receiver"]
+        receiver = User.objects.get(id = receiver)
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(sender = request.user, receiver_id = receiver.id)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+class MessageList(generics.ListAPIView):
+    serializer_class = MessageListSerializer
+    permission_classes = [IsAuthenticated,]
+    
+    def get(self,request):
+        my_messages = Message.objects.filter(
+            Q(sender = request.user) | Q(receiver = request.user)
+        )
+        serializer = self.get_serializer(my_messages, many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
         
 
 

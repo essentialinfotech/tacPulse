@@ -83,3 +83,17 @@ class AssessmentCreateSerializer(serializers.ModelSerializer):
         model = Assesment
         fields = '__all__'
         depth = 1
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['sender','receiver','message']
+        depth = 1
+
+
+class MessageListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['sender','receiver','message','sent']
+        depth = 1

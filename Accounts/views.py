@@ -355,42 +355,48 @@ def edit_profile_admin(request, id):
 @login_required
 @user_passes_test(has_perm_dispatch, REDIRECT_FIELD_NAME)
 def edit_profile_dispatch(request, id):
-    data = User.objects.get(id=id)
-    form = EditProfile(instance=data)
-    if request.method == 'POST':
-        form = EditProfile(request.POST, request.FILES, instance=data)
-        if form.is_valid():
-            email = form.cleaned_data['username']
-            data.email = email
-            data.save()
-            form.save()
-            return redirect('profile', id)
-    context = {
-        'form': form,
-        'data': data,
-        'id': id,
-    }
-    return render(request, 'accounts/edit_profile_dispatch.html', context)
+    if id == request.user.id: 
+        data = User.objects.get(id=id)
+        form = EditProfile(instance=data)
+        if request.method == 'POST':
+            form = EditProfile(request.POST, request.FILES, instance=data)
+            if form.is_valid():
+                email = form.cleaned_data['username']
+                data.email = email
+                data.save()
+                form.save()
+                return redirect('profile', id)
+        context = {
+            'form': form,
+            'data': data,
+            'id': id,
+        }
+        return render(request, 'accounts/edit_profile_dispatch.html', context)
+    else:
+        return redirect('forbidden')
 
 @login_required
 @user_passes_test(has_perm_user, REDIRECT_FIELD_NAME)
 def edit_profile_user(request, id):
-    data = User.objects.get(id=id)
-    form = EditProfile(instance=data)
-    if request.method == 'POST':
-        form = EditProfile(request.POST, request.FILES, instance=data)
-        if form.is_valid():
-            email = form.cleaned_data['username']
-            data.email = email
-            data.save()
-            form.save()
-            return redirect('profile', id)
-    context = {
-        'form': form,
-        'data': data,
-        'id': id,
-    }
-    return render(request, 'accounts/edit_profile_user.html', context)
+    if id == request.user.id: 
+        data = User.objects.get(id=id)
+        form = EditProfile(instance=data)
+        if request.method == 'POST':
+            form = EditProfile(request.POST, request.FILES, instance=data)
+            if form.is_valid():
+                email = form.cleaned_data['username']
+                data.email = email
+                data.save()
+                form.save()
+                return redirect('profile', id)
+        context = {
+            'form': form,
+            'data': data,
+            'id': id,
+        }
+        return render(request, 'accounts/edit_profile_user.html', context)
+    else:
+        return redirect('forbidden')
 
 
 def change_pass(request):

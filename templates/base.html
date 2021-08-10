@@ -2128,12 +2128,22 @@
                                     console.log('ok: 200')
                                 }
                             })
-                        }
-                    )
+
+                            // membership check auto
+                            $.ajax({
+                                url: '/has_membership_or_not/',
+                                type: 'POST',
+                                data: 'dummy',
+                                traditional: true,
+                                dataType: 'json',
+                                success: function(result) {
+                                    console('ok: 200')
+                                }
+                            })
+                        })
                 }
 
-
-            }, 5000)
+            }, 15000)
         </script>
 
 

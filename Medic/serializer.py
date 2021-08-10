@@ -41,3 +41,10 @@ class FAQSerializer(serializers.ModelSerializer):
         model = FAQ
         fields = '__all__'
         depth = 1
+
+
+class HospitalTransferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HospitalTransferModel
+        fields = '__all__'
+        depth = 1

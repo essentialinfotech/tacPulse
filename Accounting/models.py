@@ -108,8 +108,8 @@ class ScheduleModel(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     contact = models.CharField(max_length=100, blank=False, null=False)
     email = models.CharField(max_length=100, blank=False, null=False)
-    start_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField()
+    start_datetime = models.DateTimeField(blank=True, null=True)
+    end_datetime = models.DateTimeField(blank=True, null=True)
     reason = models.TextField(max_length=250, blank=False, null=False)
     from_loc = models.CharField(max_length=100, blank=False, null=False)
     from_lat = models.CharField(max_length=100, blank=False, null=False)
@@ -122,7 +122,6 @@ class ScheduleModel(models.Model):
     trip = models.CharField(choices=trip_type, max_length=100,
                             blank=True, null=True, default='Single')
     distance = models.CharField(max_length=100, blank=True, null=True)
-    amount = models.CharField(max_length=100, blank=True, null=True, default=0)
     duration = models.CharField(max_length=100, blank=True, null=True)
     assigned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)

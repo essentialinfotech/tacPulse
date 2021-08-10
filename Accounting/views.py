@@ -961,3 +961,28 @@ def payroll_deduction_delete(request,id):
     obj = get_object_or_404(PayrolDeduction, id=id)
     obj.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@csrf_exempt
+def has_membership_or_not(request):
+    if request.method == 'POST':
+        members = MembershipModel.objects.all()
+        for i in members:
+            if i.membership_end.date() == datetime.now().date():
+                membership_user = User.objects.get(id = i.user.id)
+                membership_user.has_membership = False
+                membership_user.renew_membership = True
+                membership_user.save()
+
+            elif i.membership_end.date() < datetime.now().date():
+                membership_user = User.objects.get(id = i.user.id)
+                membership_user.has_membership = False
+                membership_user.renew_membership = True
+                membership_user.save()
+
+            else:
+                membership_user = User.objects.get(id = i.user.id)
+                membership_user.has_membership = True
+                membership_user.renew_membership = False
+                membership_user.save()
+    return HttpResponse('ok')

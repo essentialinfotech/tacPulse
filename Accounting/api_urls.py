@@ -26,4 +26,5 @@ urlpatterns = [
     path('paystub/reports/', PayStubReports.as_view(), name = 'paystub_reports_api'),
     path('create/audit/', AuditCreateApi.as_view(), name = 'AuditCreateApi'),
     path('tasks/list/', TaskList.as_view(), name = 'TaskList_api'),
+    path('schedule/request/', Schedule.as_view(), name = 'Schedule_api'),
 ]

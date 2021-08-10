@@ -110,7 +110,7 @@ class PanicList(generics.ListAPIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
 
 
-class PanicCreate(generics.ListAPIView):
+class PanicCreate(generics.CreateAPIView):
     serializer_class = PanicSerializer
     permission_classes = [IsAuthenticated,]
     def post(self,request,formate=None):
@@ -128,4 +128,15 @@ class FAQLIST(generics.ListAPIView):
         faqs = FAQ.objects.all().order_by('-id')
         serializer = FAQSerializer(faqs, many = True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class HospitalTransferAPI(generics.CreateAPIView):
+    serializer_class = HospitalTransferSerializer
+    permission_classes = [IsAuthenticated,]
+    def post(self,request,formate=None):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(requested_by = request.user)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 

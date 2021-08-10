@@ -3,13 +3,6 @@ from rest_framework import serializers
 from .models import *
 
 
-class ScheduleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ScheduleModel
-        fields = '__all__'
-        depth = 1
-
-
 class TransferredSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskTransferModel
@@ -48,3 +41,12 @@ class TaskSerializer(serializers.ModelSerializer):
         model = TaskModel
         fields = '__all__'
         depth = 4
+
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    # start_datetime = serializers.DateTimeField(format=None,input_formats=['%Y-%m-%dT%H:%M:%SZ',])
+    # end_datetime = serializers.DateTimeField(format=None,input_formats=['%Y-%m-%dT%H:%M:%SZ',])
+    class Meta:
+        model = ScheduleModel
+        fields = '__all__'
+        depth = 1

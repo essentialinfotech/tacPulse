@@ -281,4 +281,16 @@ class TaskList(generics.ListAPIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
 
 
+class Schedule(generics.CreateAPIView):
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def post(self,request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user = request.user)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
 

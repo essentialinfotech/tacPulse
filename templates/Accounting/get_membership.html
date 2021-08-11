@@ -1,4 +1,5 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/property_report.css' %}">
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
@@ -19,66 +20,66 @@
                 </div>
             </div>
             {% endif %}
-            <form class="form" id="kt_form" method="POST">
-                {% csrf_token %} {{form.errors}}
-                <!--end::Form-->
-                <div class="card card-custom card-sticky" id="kt_page_sticky_card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h3 class="card-label">Get Membership</h3>
-                        </div>
-                        <div class="card-toolbar">
-                            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-light-primary font-weight-bolder mr-2">
-                                <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
-                            <button type="submit" class="btn btn-primary font-weight-bolder">
-                                <i class="ki ki-check icon-xs"></i>Get Membership</button>
-                        </div>
+
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Get Membership</h3>
                     </div>
-                    <div class="card-body">
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="data-table" class="display table">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Description</th>
+                                    <th>Validity Confirmation</th>
+                                    <th>Valid Till</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in packages %}
+                                <tr class="text-center">
 
-                        <div class="form-row">
-                            <div class="form-group col-md-6 mb-0" id="package">
-                                <label for="package_name">Package*</label>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.p_name }}</td>
+                                    <td class="fa-zar">{{ i.p_price }}</td>
+                                    <td>{{ i.description }}</td>
 
-                                <select name="package_name" id="package_name" class="textinput textInput form-control" onchange="cal_package()">
-                                    <option value="" selected="">---------</option>
-                                    <option value="Family Package">Family Package</option>
-                                    <option value="Personal Package">Personal Package</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6 mb-0" id="package">
-                                <label for="payment">Payment Type*</label>
+                                    {% if i.is_valid == 'Date will be declared' %}
+                                    <td><span class="custom-badge status-blue">{{ i.is_valid }}</span></td>
+                                    {% elif i.is_valid == 'Date Declared' %}
+                                    <td><span class="custom-badge status-orange">{{ i.is_valid }}</span></td>
+                                    {% elif i.is_valid == 'Constant' %}
+                                    <td><span class="custom-badge status-green">{{ i.is_valid }}</span></td>
+                                    {% else %}
+                                    <td><span class="custom-badge status-red">No Declaration</span></td>
+                                    {% endif %}
 
-                                <select name="payment" id="payment" class="textinput textInput form-control">
-                                    <option value="" selected="">---------</option>
-                                    <option value="">FastPay</option>
-                                    <option value="">Netcash</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6 mb-0" id="package">
-                                <label for="package_price">Amount</label>
-                                <input type="text" class="textinput textInput form-control" required="" id="package_price" name="package_price" readonly>
+                                    <td>{{ i.valid_till }}</td>
 
-                            </div>
-                            <div class="form-group col-md-6 mb-0" id="package">
-
-                            </div>
-                        </div>
+                                    {% if i.status == 'Active' %}
+                                    <td><span class="custom-badge status-green">{{ i.status }}</span></td>
+                                    {% else %}
+                                    <td><span class="custom-badge status-grey">{{ i.status }}</span></td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="{% url 'payment' i.id %}">Get Membereship</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                    <!--end::Card-->
-            </form>
-
+                </div>
+                <!--end::Card-->
             </div>
-            <script>
-                function cal_package() {
-                    pack = document.getElementById('package_name').value
-                    if (pack === 'Family Package') {
-                        document.getElementById('package_price').value = 120
-                    } else if (pack === 'Personal Package') {
-                        document.getElementById('package_price').value = 80
-                    }
-                }
-            </script>
-            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

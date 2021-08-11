@@ -1,5 +1,7 @@
 from django.urls import path, register_converter
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 from Accounts.utils import HashIdConverter
 
 register_converter(HashIdConverter, "hashid")
@@ -12,7 +14,7 @@ urlpatterns = [
     path('case/note/add/<hashid:id>/', case_note_create, name='case_note_create'),
     path('property/form/', property_add, name='property_add'),
     path('property/<hashid:id>/', property_edit, name='property_edit'),
-    path('occurrence/form/', occurrence_form, name='occurrence_form'),
+    path('create/occurrence/', occurrence_form, name='occurrence_form'),
     path('occurrence/report/', occurrence_report, name='occurrence_report'),
     path('panic/request/', panic_system, name='panic_system'),
     path('ambulance/request/', AmbulanceRequest.as_view(),
@@ -45,7 +47,7 @@ urlpatterns = [
     path('hospital/transfer/delete/<hashid:pk>/',
          delete_hospital_request, name='delete_hospital_request'),
     path('panic/requests/', check_panic_requests, name='check_panic_requests'),
-    path('individual/panic/location/<hashid:id>/',
+    path('individual/panic/location/<int:id>/',
          check_panic_requests_location, name='check_panic_requests_location'),
     path('panic/task/comlete/<hashid:pk>/',
          complete_panic_task, name='complete_panic_task'),
@@ -54,7 +56,7 @@ urlpatterns = [
     path('delete/<hashid:id>/', common_delete, name='common_delete'),
     path('edit/occurrence/<hashid:id>/',
          edit_occurrence, name='edit_occurrence'),
-    path('notification/panic/', Panic_Noti.as_view()),
+    path('notification/panic/', panic_noti, name = 'panic_noti'),
     path('feedback/', feedback, name='feedback'),
     path('delete/property/<hashid:id>/', property_del, name='property_del'),
     path('invoice/<hashid:id>/', invoice_pdf_property,
@@ -70,4 +72,13 @@ urlpatterns = [
     path('feedback/', feedback, name='feedback'),
     path('search/results/', search, name='search'),
     path('autosuggest/', autocomplete, name='autocomplete'),
+    path('panic/notification/marking/as/read/<int:id>/', mark_seen_panic_noti, name ='mark_seen_panic_noti'),
+    path('notification/length/', noti_length, name = 'noti_length'),
+    path('paid/money/for/membership/chart/admin/dashboard/', membership_earnings_monthly_chart_dashboard, \
+         name = 'membership_earnings_monthly_chart_dashboard'),
+     path('delte/audit/<hashid:id>/', audit_delete, name = 'audit_delete'),
+     path('editing/audit/<hashid:id>/', audit_edit, name = 'audit_edit'),
+     path('individual/occurrence/details/<hashid:id>/', occurrence_details, name = 'occurrence_details'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

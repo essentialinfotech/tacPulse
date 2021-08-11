@@ -52,5 +52,5 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer, map) {
             document.getElementById('duration').value = response.routes[0].legs[0].duration.text
 
         })
-        .catch((e) => window.alert("Directions request failed due to " + status));
+        .catch((e) => swal("Directions request failed due to no route" + status));
 }

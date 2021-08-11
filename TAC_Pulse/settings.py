@@ -44,7 +44,11 @@ INSTALLED_APPS = [
     'Accounts',
     'Medic',
     'django_toggle_switch_widget',
+    'knox',
+    'django_filters',
+    'django_rest_passwordreset',
 ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,6 +110,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'knox.auth.TokenAuthentication',
+    # 'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -122,7 +134,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
@@ -131,22 +143,27 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # email
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_SSL = True
+# EMAIL_HOST = 'mail.essential-infotech.com'
+# EMAIL_HOST_USER = 'djangodeveloper@essential-infotech.com'
+# EMAIL_HOST_PASSWORD = 'Eit2020@@'
+# EMAIL_PORT = 465
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_SSL = True
-EMAIL_HOST = 'mail.essential-infotech.com'
-EMAIL_HOST_USER = 'djangodeveloper@essential-infotech.com'
-EMAIL_HOST_PASSWORD = 'Eit2020@@'
-EMAIL_PORT = 465
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'nor736277@gmail.com'
+EMAIL_HOST_PASSWORD = 'iloveseafood'
 
 
-# Mysql us/ps
-# tac_puse_server
-# TACpulse@321
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

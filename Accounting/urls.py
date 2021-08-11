@@ -1,5 +1,7 @@
 from django.urls import path, register_converter
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 from Accounts.utils import HashIdConverter
 register_converter(HashIdConverter, "hashid")
 
@@ -46,4 +48,25 @@ urlpatterns = [
     path('inspection/reports/', inpection_reports, name = 'inpection_reports'),
     path('delete/inspection/<hashid:id>/', del_inspection, name = 'del_inspection'),
     path('update/inspection/<hashid:id>/', edit_inspection, name = 'edit_inspection'),
+
+
+    path('payment/<hashid:id>/', payment, name = 'payment'),
+    path('payment/backend/', payment_backend, name = 'payment_backend'),
+    path('purchased/', package_purchased, name = 'package_purchased'),
+    path('membership/notificattions/', membership_noti, name = 'membership_noti'),
+    path('membership/details/individual/<int:id>/', viewing_membership_details_individual, name = 'viewing_membership_details_individual'),
+    path('mark/as/read/membership/notification/<int:id>/', membership_noti_mark_as_seen, name = 'membership_noti_mark_as_seen'),
+    path('renewal/membership/', user_membership_renewal_noti, name = 'user_membership_renewal_noti'),
+    path('mark/as/seen/membership/renewal/notification/<int:id>/', mark_as_seen_membership_renewal_noti, name = 'mark_as_seen_membership_renewal_noti'),
+    path('employee/leave/request/', employee_leave, name = 'employee_leave'),
+    path('my/leaves/<hashid:id>/', my_leaves, name = 'my_leaves'),
+    path('employee/leave/reports/', employee_leaves, name = 'employee_leaves'),
+    path('delete/leave/report/<hashid:id>/', delete_leaves, name = 'delete_leaves'),
+    path('reports/payroll/deductions/', payrol_deduction_reports, name = 'payrol_deduction_reports'),
+    path('payroll/deductions/', payroll_deduction_form, name = 'payroll_deduction_form'),
+    path('payroll/deduction/individual/report/view/<hashid:id>/', payroll_deduction_individual_report, name = 'payroll_deduction_individual_report'),
+    path('delete/payrolldeductionreport/<hashid:id>/', payroll_deduction_delete, name = 'payroll_deduction_delete'),
+    path('has_membership_or_not/', has_membership_or_not, name = 'has_membership_or_not'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

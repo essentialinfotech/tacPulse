@@ -91,15 +91,14 @@
             <div class="row">
                 <!-- body that will take incoming dragged fields -->
                 <div class="col-lg-6">
-                <!-- to submit form from dropped area -->
-                <form method="post" action="{% url 'occurrence_form' %}" enctype="multipart/form-data" class="draggable-zone">
-                            {% csrf_token %}
-                            Drop into this box
-                    <div class="card draggable-zone" style="width: 100%; height: 100%;">
+                    <!-- to submit form from dropped area -->
+                    <form method="post" action="{% url 'occurrence_form' %}" enctype="multipart/form-data" class="draggable-zone">
+                        {% csrf_token %} Drop into this box
+                        <div class="card draggable-zone" style="width: 100%; height: 100%;">
                             <div class="card-body draggable-zone" id="tobedropped">
 
                             </div>
-                    </div>
+                        </div>
                 </div>
                 <!-- end  -->
 
@@ -107,35 +106,42 @@
                 <!-- form fields -->
                 <div class="col-lg-6 draggable-zone">
                     <div class="draggable">
-                        <label class="draggable-handle required">Occurrence Type</label>
-                        <div class="draggable-handle">{{ form.occurrence_type }}</div>
+                        <label class="draggable-handle required">Reason for Report</label>
+                        <div class="draggable-handle">{{ form.reason_for_report }}</div>
                     </div>
 
                     <div class="draggable">
-                        <label class="draggable-handle" >Related User(Optional)</label>
+                        <label class="draggable-handle required">Department</label>
                         <div class="draggable-handle">
-                            {{ form.related_user }}
+                            {{ form.department }}
                         </div>
                     </div>
 
 
-                    <div style="display: none;">
-                        <input type="text" name="occurrence_giver" style="display: none;">
-                    </div>
-
-
                     <div class="draggable">
-                        <label class="draggable-handle required" >Occurrence
+                        <label class="draggable-handle required">Occurrence
                                 Detail</label>
                         <div class="draggable-handle">
-                            {{ form.occurrence_detail }}
+                            {{ form.occurrence_date }}
                         </div>
                     </div>
 
                     <div class="draggable">
-                        <div class="draggable-handle">{{ form.image|as_crispy_field }}</div>
-                    </div><br>
+                        <label class="draggable-handle required">Incident
+                                Report</label>
+                        <div class="draggable-handle">
+                            {{ form.incident_report }}
+                        </div>
+                    </div>
 
+                    <div class="draggable">
+                        <label class="draggable-handle">Picture to attach?</label>
+                        <div class="draggable-handle">
+                            {{ form.image }}
+                        </div>
+                    </div>
+
+                    <br>
                     <button type="submit" id="to-be-clicked" class="btn btn-success">Save</button>
                     </form>
                     <!-- form ends -->

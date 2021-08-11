@@ -47,3 +47,5 @@ class AssesmentForm(forms.ModelForm):
             'warning':DjangoToggleSwitchWidget(round=True, klass="django-toggle-switch-success"),
         }
 
+
+

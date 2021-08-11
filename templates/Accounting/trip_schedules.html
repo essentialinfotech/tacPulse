@@ -82,6 +82,7 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Status</th>
+                                <th>Has Membership?</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -121,10 +122,11 @@
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
                                         {% endif %}
-                                    </select>
-                                    {% else %}
-                                    {{ i.status }}
-                                    {% endif %}
+                                    </select> {% else %} {{ i.status }} {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if i.user.has_membership %} Yes {% else %} No {% endif %}
                                 </td>
 
                                 <td>
@@ -160,6 +162,7 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Status</th>
+                                <th>Has Membership?</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -199,12 +202,11 @@
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
                                         {% endif %}
-                                    </select>
-                                    {% else %}
-                                    {{ i.status }}
-                                    {% endif %}
+                                    </select> {% else %} {{ i.status }} {% endif %}
                                 </td>
-
+                                <td>
+                                    {% if i.user.has_membership %} Yes {% else %} No {% endif %}
+                                </td>
                                 <td>
                                     <div style="display: flex;" class="text-center">
                                         <a href="{% url 'schedule_details' i.id %}">
@@ -238,6 +240,7 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Status</th>
+                                <th>Has Membership?</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -277,12 +280,11 @@
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
                                         {% endif %}
-                                    </select>
-                                    {% else %}
-                                    {{ i.status }}
-                                    {% endif %}
+                                    </select> {% else %} {{ i.status }} {% endif %}
                                 </td>
-
+                                <td>
+                                    {% if i.user.has_membership %} Yes {% else %} No {% endif %}
+                                </td>
                                 <td>
                                     <div style="display: flex;" class="text-center">
                                         <a href="{% url 'schedule_details' i.id %}">

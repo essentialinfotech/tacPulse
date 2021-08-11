@@ -4,14 +4,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.api import success
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
+from rest_framework.views import APIView
 from .models import *
 from Accounting.models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 import json
-from django.db.models import Q, query
+from django.db.models import Sum, Q,query
 from django.views.decorators.csrf import csrf_exempt
 from .forms import *
+from Accounting.models import *
+from Accounting.forms import *
 import datetime
 from .serializer import *
 from django.views import View
@@ -57,28 +60,27 @@ def case_number():
 
 
 # Create your views here.
-def audit_form(request):
-    return render(request, 'medic/audit_form.html')
-
-
+@login_required
 def audit_report(request):
-    return render(request, 'medic/audit_report.html')
+    audits = Audit.objects.all()
+    context = {
+        'audits': audits,
+    }
+    return render(request, 'medic/audit_report.html',context)
 
-
+@login_required
 def inspection_form(request):
     return render(request, 'medic/inspection_form.html')
 
-
+@login_required
 def inspaction_report(request):
     return render(request, 'medic/inspaction_report.html')
 
-
-
-
+@login_required
 def occurrence_form(request):
     form = OccurrenceForm()
     if request.method == 'POST':
-        form = OccurrenceForm(request.POST, request.FILES)
+        form = OccurrenceForm(request.POST,request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.occurrence_giver = request.user
@@ -91,10 +93,11 @@ def occurrence_form(request):
     }
     return render(request,'medic/occurrence_form.html', context)
 
-
+@login_required
 def occurrence_report(request):
     from datetime import datetime, timedelta
     last_seven_days = datetime.today() - timedelta(days=7)
+    print(last_seven_days)
     monthly_occurences = Occurrence.objects.filter(created__month = this_month, \
                                                     created__year = this_year)
 
@@ -111,7 +114,7 @@ def occurrence_report(request):
     }
     return render(request,'medic/occurrence_report.html', context)
 
-
+@login_required
 def common_delete(request,id):
     url = request.META.get('HTTP_REFERER')
     try:
@@ -124,12 +127,12 @@ def common_delete(request,id):
     except:
         return HttpResponseRedirect(url)
 
-
+@login_required
 def edit_occurrence(request,id):
     data = Occurrence.objects.get(id=id)
     form = OccurrenceForm(instance=data)
     if request.method == 'POST':
-        form = OccurrenceForm(request.POST,request.FILES, instance=data)
+        form = OccurrenceForm(request.POST,request.FILES,instance=data)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.occurrence_giver = request.user
@@ -143,7 +146,15 @@ def edit_occurrence(request,id):
     }
     return render(request,'medic/edit_occurence.html', context)
 
+@login_required
+def occurrence_details(request,id):
+    obj = Occurrence.objects.get(id = id)
+    context = {
+        'obj': obj,
+    }
+    return render(request,'medic/detail_occurrence.html',context)
 
+@login_required
 @csrf_exempt
 def rating(request):
     if request.method == 'POST':
@@ -173,7 +184,7 @@ def rating(request):
                 print(star_value)
     return render(request, 'medic/rate.html')
 
-
+@login_required
 @csrf_exempt
 def feedback(request):
     url = request.META.get('HTTP_REFERER')
@@ -188,7 +199,7 @@ def feedback(request):
             return HttpResponseRedirect(url)
     return HttpResponseRedirect(url)
 
-
+@login_required
 def feedbacks(request):
     feedbacks = Feedback.objects.all().order_by('-id')
     context = {
@@ -196,7 +207,7 @@ def feedbacks(request):
     }
     return render(request,'medic/feedbacks_view.html',context)
 
-
+@login_required
 def del_feedback(request,id):
     obj = get_object_or_404(Feedback, id=id)
     obj.delete()
@@ -310,7 +321,7 @@ class AmbulanceRequestDelete(LoginRequiredMixin,View):
         except:
             return redirect('ambulance_request_report')
 
-
+@login_required
 def ambulance_task_complete(request, pk):
     TaskModel.objects.filter(task_type='ambr', ambulance_task=pk).update(status='Completed')
     ambulance = get_object_or_404(AmbulanceModel, pk=pk)
@@ -318,12 +329,12 @@ def ambulance_task_complete(request, pk):
     ambulance.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required
 def dispatch_list(request):
     dispatches = User.objects.filter(is_staff = True,is_superuser = False)
     return render(request, 'medic/dispatch_list.html',{'dispatches': dispatches})
 
-
+@login_required
 def hospital_transfer(request):
     form = HospitalTransferForm()
     if request.method == 'POST':
@@ -333,7 +344,7 @@ def hospital_transfer(request):
             return redirect('hospital_transfer_report')
     return render(request, 'medic/hospital_transfer.html', {'form': form})
 
-
+@login_required
 def hospital_transfer_report(request):
     from datetime import datetime, timedelta
     today = datetime.today()
@@ -355,7 +366,7 @@ def hospital_transfer_report(request):
     }
     return render(request, 'medic/hospita_transfer_report.html', context)
 
-
+@login_required
 def update_hospital_request(request, pk):
     data = get_object_or_404(HospitalTransferModel, pk=pk)
     form = HospitalTransferForm(instance=data)
@@ -366,19 +377,19 @@ def update_hospital_request(request, pk):
             return redirect('hospital_transfer_report')
     return render(request, 'medic/hospital_transfer_up.html', {'form': form, 'data': data})
 
-
+@login_required
 def delete_hospital_request(request, pk):
     if not request.user.is_staff or request.user.is_superuser:
         data = get_object_or_404(HospitalTransferModel, pk=pk)
         data.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required
 def details_hospital_request(request, pk):
     data = get_object_or_404(HospitalTransferModel, pk=pk)
     return render(request, 'medic/hos_request_detail.html', {'object':data})
 
-
+@login_required
 def hospital_transfered(request, pk):
     if request.user.is_staff:
         data = get_object_or_404(HospitalTransferModel, pk=pk)
@@ -406,14 +417,14 @@ def panic_system(request):
             return HttpResponse('Panic request sent successfully')
     return render(request, 'medic/panic.html', {'panic': panic})
 
-
+@login_required
 def del_panic(request, id):
     url = request.META.get('HTTP_REFERER')
     obj = get_object_or_404(Panic, id=id)
     obj.delete()
     return HttpResponseRedirect(url)
 
-
+@login_required
 def check_panic_requests(request):
     panic_requests = Panic.objects.all().order_by('-id')
     context = {
@@ -421,7 +432,7 @@ def check_panic_requests(request):
     }
     return render(request, 'medic/panic_requests.html', context)
 
-
+@login_required
 def check_panic_requests_location(request, id):
     context = {}
     if request.user.is_staff:
@@ -479,6 +490,7 @@ def check_panic_requests_location(request, id):
     return render(request, 'medic/panic_location_check_admin.html', context)
 
 
+@login_required
 def complete_panic_task(request, pk):
     if request.user.is_staff:
         TaskModel.objects.filter(task_type='pan', panic_task=pk).update(status='Completed')
@@ -489,13 +501,32 @@ def complete_panic_task(request, pk):
     else:
         return redirect('forbidden')
 
+@login_required
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def panic_noti(request):
+    data = []
+    noti = PanicNoti.objects.filter(is_seen = False).order_by('-id')
+    for i in noti:
+        prefetch = {
+            'first_name': i.panic.panic_sender.first_name,
+            'last_name': i.panic.panic_sender.last_name,
+            'noti_text': i.text,
+            'is_seen': i.is_seen,
+            'created': i.created,
+            'panic_id': i.panic.id,
+            'noti_id': i.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
 
-class Panic_Noti(LoginRequiredMixin, generics.ListAPIView):
-    serializer_class = PanicNotiSerializer
-    def get_queryset(self):
-        return PanicNoti.objects.all()
+@login_required
+def mark_seen_panic_noti(request,id):
+    noti = PanicNoti.objects.get(id = id)
+    noti.is_seen = True
+    noti.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required
 def property_report(request):
     from datetime import datetime, timedelta
     last_seven_days = datetime.today() - timedelta(days=7)
@@ -512,13 +543,14 @@ def property_report(request):
     }
     return render(request,'medic/property_report.html',context)
 
-
+@login_required
 def property_add(request):
     form = PropertyForm()
     if request.method == 'POST':
         form = PropertyForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
+            print(quantity)
             vat = form.cleaned_data['vat']
             price = form.cleaned_data['price']
             vat_amount = price*(vat/100)
@@ -538,7 +570,7 @@ def property_add(request):
     }
     return render(request,'medic/property_form.html',context)
 
-
+@login_required
 def property_edit(request,id):
     data = PropertyTools.objects.get(id = id)
     form = PropertyForm(instance=data)
@@ -567,6 +599,7 @@ def property_edit(request,id):
     return render(request,'medic/property_edit.html',context)
     
 
+@login_required
 def property_del(request,id):
     url = request.META.get('HTTP_REFERER')
     obj = get_object_or_404(PropertyTools, id=id)
@@ -574,6 +607,7 @@ def property_del(request,id):
     messages.success(request,'Report Deleted')
     return HttpResponseRedirect(url)
     
+
 
 def render_to_pdf(template,context):
     html = template.render(context)
@@ -599,6 +633,7 @@ def invoice_pdf_property(request,id):
     return HttpResponse("not found")
 
 
+@login_required
 def faq(request):
     faqs = FAQ.objects.all()
     context = {
@@ -606,7 +641,7 @@ def faq(request):
     }
     return render(request,'medic/faq.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def create_faq(request):
     if request.method == 'POST':
@@ -617,7 +652,7 @@ def create_faq(request):
         return redirect('faq')
     return render(request,'medic/create_faq.html')
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def edit_faq(request,id):
     data = FAQ.objects.get(id =id)
@@ -636,14 +671,14 @@ def edit_faq(request,id):
     }
     return render(request,'medic/edit_faq.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def del_faq(request,id):
     obj = get_object_or_404(FAQ, id = id)
     obj.delete()
     return redirect('faq')
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def case_notes(request):
     cases = CaseNote.objects.all().order_by('-id')
@@ -652,7 +687,7 @@ def case_notes(request):
     }
     return render(request,'medic/case_reports.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def case_note_create(request,id):
     panic = get_object_or_404(Panic,id = id)
@@ -677,7 +712,7 @@ def case_note_create(request,id):
     }
     return render(request, 'medic/case_note_form.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def case_del(request,id):
     obj = CaseNote.objects.get(id=id)
@@ -685,7 +720,7 @@ def case_del(request,id):
     messages.success(request,'Note Deleted')
     return redirect('case_notes')
 
-
+@login_required
 def search(request):
     if request.method == 'GET':
         query = request.GET.get('q')
@@ -701,7 +736,8 @@ def search(request):
                 return HttpResponse('Not Found')
         else:
             return HttpResponse('Empty Query Field can not be found')
-        
+
+@login_required    
 def autocomplete(request):
     mylist = []
     term = request.GET.get('term')
@@ -712,7 +748,238 @@ def autocomplete(request):
     else:
         mylist = ['No user found']
     return JsonResponse(mylist, safe=False)
+
+
+def noti_length(request):
+    total_noti_length = 0
+    if request.user.is_superuser:
+        panic_noti = PanicNoti.objects.filter(is_seen = False).count()
+        membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
+        total_noti_length = panic_noti + membership_noti
+    if request.user.is_staff and not request.user.is_superuser:
+        panic_noti = PanicNoti.objects.filter(is_seen = False).count()
+        total_noti_length = panic_noti
+    if not request.user.is_staff and not request.user.is_superuser:
+        renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
+        total_noti_length = renewal_noti
+    data = {
+        'total_noti_length': total_noti_length,
+    }
+    return JsonResponse(data,safe=False)
+
         
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def membership_earnings_monthly_chart_dashboard(request):
+    labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    data = []
+    user_join_data = []
+    Jan = 0
+    Feb = 0
+    Mar = 0
+    Apr = 0
+    May = 0
+    Jun = 0
+    Jul = 0
+    Aug = 0
+    Sep = 0
+    Oct = 0
+    Nov = 0
+    Dec = 0
+
+    for i in range(0, 13):
+        if i == 1:
+            Jan = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Jan.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            jan = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(jan)
+        if i == 2:
+            Feb = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Feb.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Feb = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Feb)
+        if i == 3:
+            Mar = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Mar.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Mar = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Mar)
+        if i == 4:
+            Apr = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Apr.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Apr = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Apr)
+        if i == 5:
+            May = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in May.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            May = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(May)
+        if i == 6:
+            Jun = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Jun.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Jun = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Jun)
+        if i == 7:
+            Jul = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Jul.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Jul = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Jul)
+        if i == 8:
+            Aug = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Aug.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Aug = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Aug)
+        if i == 9:
+            Sep = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Sep.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Sep = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Sep)
+        if i == 10:
+            Oct = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Oct.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Oct = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Oct)
+        if i == 11:
+            Nov = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Nov.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Nov = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Nov) 
+        if i == 12:
+            Dec = MembershipModel.objects.filter(
+                membership_date__month=i, membership_date__year=this_year).values(
+                'package__p_price').aggregate(Sum('package__p_price'))
+            for k,v in Dec.items():
+                if v is not None:
+                    data.append(v)
+                else:
+                    v = 0
+                    data.append(v)
+            Dec = User.objects.filter(is_staff = False, date_joined__month = i, date_joined__year = this_year).count()
+            user_join_data.append(Dec)
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+        'user_join_data': user_join_data,
+    })
 
 
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def audit_form(request):
+    form = AuditForm()
+    if request.method == 'POST':
+        form = AuditForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.auditor = request.user
+            instance.save()
+            messages.success(request,'Audit Created')
+            return redirect('audit_report')
+    context = {
+        'form': form,
+    }
+    return render(request, 'medic/audit_form.html',context)
 
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def audit_edit(request,id):
+    data = Audit.objects.get(id = id)
+    form = AuditForm(instance=data)
+    if request.method == 'POST':
+        form = AuditForm(request.POST,instance=data)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.auditor = request.user
+            instance.save()
+            messages.success(request,'Audit Edited')
+            return redirect('audit_report')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request, 'medic/audit_edit.html',context)
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def audit_delete(request,id):
+    obj = get_object_or_404(Audit, id=id)
+    obj.delete()
+    messages.success(request,'Audit Deleted')
+    return redirect('audit_report')

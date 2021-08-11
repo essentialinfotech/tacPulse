@@ -1,0 +1,144 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<!-- Include the Yoco SDK in your web page -->
+<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card border-success card-custom text-center m-auto w-50">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h3 class="card-label">Payment</h3>
+                            </div>
+                            <div class="card-toolbar">
+
+                                <a href="#" data-card-tool="reload" data-toggle="tooltip" data-placement="top" title="Premium Membership">
+                                    <i class="fas fa-user"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table-hover display table table-separate table-head-custom table-checkable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Package Name</th>
+                                            <th scope="col">Package Validation</th>
+                                            <th scope="col">Membership Duration</th>
+                                            <th scope="col">Package Status</th>
+                                            <th scope="col">Package Description</th>
+                                            <th scope="col">Package Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in package %}
+                                        <tr>
+                                            <td>{{ i.p_name|title }}</td>
+                                            <td>{{ i.valid_till }}</td>
+                                            <td>{{ i.package_membership_duration }} days</td>
+                                            <td>{{ i.status}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                    View
+                                                  </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                {{ i.description|title }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>R{{ i.p_price }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {% for i in package %}
+                            <input class="form-control" readonly type="text" name="p_price" id="p_price" value="{{ i.p_price }}" style="display: none;">
+                            <input class="form-control" readonly type="text" name="" id="p_id" value="{{ i.id }}" style="display: none;">
+                            <input type="text" name="" id="user" value="{{ request.user.id }}" style="display: none;"> {% endfor %}
+                            <br>
+                            <input type="text" name="" id="customer_contact" value="{{ request.user.contact }}" style="display: none;">
+                            <!-- Create a pay button that will open the popup-->
+                            <button class="form-control btn btn-danger" id="checkout-button">Pay</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var package_price = $('#p_price').val();
+    var package_price_in_cents = package_price * 100;
+    var package_id = $('#p_id').val();
+    var user = $('#user').val();
+    var customer_contact = $('#customer_contact').val();
+
+    var yoco = new window.YocoSDK({
+        publicKey: 'pk_test_ed3c54a6gOol69qa7f45',
+    });
+    var checkoutButton = document.querySelector('#checkout-button');
+    checkoutButton.addEventListener('click', function() {
+        yoco.showPopup({
+            amountInCents: package_price_in_cents,
+            currency: 'ZAR',
+            name: 'Tac Pulse',
+            description: 'Package',
+            callback: function(result) {
+                // This function returns a token that your server can use to capture a payment
+                if (result.error) {
+                    const errorMessage = result.error.message;
+                    alert("error occured: " + errorMessage);
+                } else {
+                    swal("card successfully tokenised: " + result.id);
+                    token = result.id;
+                    data_backend = {
+                        'token': token,
+                        'package_id': package_id,
+                        'package_price_in_cents': package_price_in_cents,
+                        'user': user,
+                        'customer_contact': customer_contact,
+                    }
+
+                    $.ajax({
+                        url: '/payment/backend/',
+                        type: 'POST',
+                        data: data_backend,
+                        traditional: true,
+                        dataType: 'html',
+                        success: function(result) {
+                            window.location.pathname = 'purchased/';
+                        }
+                    });
+                }
+                // In a real integration - you would now pass this chargeToken back to your
+                // server along with the order/basket that the customer has purchased.
+            }
+        })
+    });
+</script>
+
+
+{% endblock %}

@@ -1,7 +1,8 @@
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
+from pytz import utc
 from .forms import *
 from .serializer import *
 from django.views.generic import DetailView
@@ -9,12 +10,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.conf import settings
-
+import json
+import requests
 from rest_framework.views import APIView
 from django.contrib import messages
 from Accounts.decorators import user_passes_test, has_perm_admin, has_perm_admin_dispatch, has_perm_user, \
     has_perm_dispatch, REDIRECT_FIELD_NAME
 from datetime import datetime, timedelta
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import generics
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -22,18 +26,124 @@ month = datetime.today().date() - timedelta(days=30)
 
 
 # Create your views here.
-
-
 def add_member(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 def getmembership(request):
-    return render(request, 'Accounting/get_membership.html')
+    packages = Package.objects.all()
+    context = {
+        'packages': packages,
+    }
+    return render(request, 'Accounting/get_membership.html',context)
 
 
+@login_required
+def payment(request,id):
+    package = Package.objects.filter(id = id)
+
+    context = {
+        'package': package,
+        'id': id,
+    }
+    return render(request,'Accounting/payment.html',context)
+
+
+@login_required
+@csrf_exempt
+def payment_backend(request):
+    token = ''
+    package_id = ''
+    package_price_in_cents = ''
+    user = ''
+    customer_contact = ''
+
+    data = request.POST
+    for k,v in data.items():
+        if k == 'token':
+            token = v
+            print('token:',token)
+        if k == 'package_id':
+            package_id = v
+            print('package_id:',package_id)
+        if k == 'package_price_in_cents':
+            package_price_in_cents = v
+            print('package_price_in_cents:',package_price_in_cents)
+        if k == 'user':
+            user = v
+            print('user:',user)
+        if k == 'customer_contact':
+            customer_contact = v
+            print(customer_contact)
+
+    # Anonymous test key. Replace with your key.
+    SECRET_KEY = 'sk_test_960bfde0VBrLlpK098e4ffeb53e1'
+    response = requests.post(
+        'https://online.yoco.com/v1/charges/',
+        headers={
+            'X-Auth-Secret-Key': SECRET_KEY,
+        },
+        json={
+            'token': token,
+            'amountInCents': package_price_in_cents,
+            'currency': 'ZAR',
+            'metadata': {'user_id': request.user.id, 'package_id': package_id, 'customer_contact': customer_contact}
+        },
+        )
+
+    package = Package.objects.get(id = package_id)
+    package_membership_duration = package.package_membership_duration
+
+    membership = MembershipModel.objects.create(user_id = user, package_id = package_id, token = token)
+    membership.membership_end = membership.membership_date + timedelta(days = int(package_membership_duration))
+    membership.save()
+
+    user = User.objects.get(id = user)
+    membership_end = membership.membership_end
+    if membership_end.date()  == datetime.now().date():
+        print('membership expired')
+        user.has_membership = False
+        user.renew_membership = True
+        user.save()
+    elif membership_end.date() > datetime.now().date():
+        print('membership granted')
+        user.has_membership = True
+        user.renew_membership = False
+        user.save()
+    else:
+        user.has_membership = False
+        user.renew_membership = True
+        user.save()
+    return render(request,'Accounting/membership_purchased.html')
+
+
+@login_required
+def package_purchased(request):
+    membership = MembershipModel.objects.filter(user = request.user).order_by('-id')
+    context = {
+        'membership': membership,
+        'has_membership': User.objects.filter(id = request.user.id, has_membership = True).exists()
+    }
+    return render(request,'Accounting/membership_purchased.html', context)
+
+
+@login_required
+def viewing_membership_details_individual(request,id):
+    mebership_details = MembershipModel.objects.filter(id = id)
+    context = {
+        'mebership_details': mebership_details,
+    }
+    return render(request,'Accounting/individual_membership_details.html',context)
+
+
+@login_required
 def members(request):
-    return render(request, 'Accounting/members.html')
+    memberships_holders = MembershipModel.objects.filter(membership_end__date__gt = datetime.today().date()).order_by('-id')
+    context = {
+        'memberships_holders': memberships_holders,
+    }
+    return render(request, 'Accounting/members.html',context)
 
 
 class ScheduleTrip(LoginRequiredMixin, View):
@@ -159,6 +269,10 @@ class TrackSchedule(LoginRequiredMixin, View):
 class AcceptedSchedule(LoginRequiredMixin, View):
     def get(self, request):
         title = "Accepted Schedule"
+        daily = ''
+        weekly = ''
+        monthly = ''
+
         if self.request.user.is_superuser:
             daily = ScheduleModel.objects.filter(
                 status='Approved', created_on__gte=today.date()).order_by('-id')
@@ -228,6 +342,7 @@ class CompletedSchedule(LoginRequiredMixin, View):
         return render(request, 'Accounting/trip_schedules.html', context)
 
 
+@login_required
 def task_create(request):
     if request.user.is_superuser:
         form = TaskModelForm()
@@ -276,6 +391,7 @@ def task_create(request):
         return render(request, 'Accounting/taskcreate.html', context)
     else:
         return render(request, 'accounts/forbidden.html')
+
 
 
 class TasksList(LoginRequiredMixin, View):
@@ -340,6 +456,7 @@ class DeleteTask(LoginRequiredMixin, View):
             return render(request, 'accounts/forbidden.html')
 
 
+@login_required
 def task_detail(request, pk):
     data = get_object_or_404(TaskModel, pk=pk)
     return render(request, 'Accounting/task_detail.html', {'object': data})
@@ -414,6 +531,7 @@ class TransferredTasks(LoginRequiredMixin, View):
         return render(request, 'Accounting/transfered_tasks.html', context)
 
 
+@login_required
 def add_paystub(request):
     if request.user.is_superuser:
         form = PaystubForm()
@@ -431,7 +549,7 @@ def add_paystub(request):
     else:
         return redirect('forbidden')
 
-
+@login_required
 def paystub_report(request):
     if request.user.is_superuser:
         daily = PaystubModel.objects.filter(created_on__gte=today.date())
@@ -453,6 +571,7 @@ def paystub_report(request):
     return render(request, 'Accounting/paystub_report.html', context)
 
 
+@login_required
 def update_paystub_report(request, pk):
     if request.user.is_superuser:
         data = get_object_or_404(PaystubModel, pk=pk)
@@ -475,6 +594,7 @@ def update_paystub_report(request, pk):
         return redirect('forbidden')
 
 
+@login_required
 def delete_paystub(request, pk):
     if request.user.is_superuser:
         data = get_object_or_404(PaystubModel, pk=pk)
@@ -482,6 +602,7 @@ def delete_paystub(request, pk):
         return redirect('paystub_report')
 
 
+@login_required
 def stock_request(request):
     form = StockRequestForm()
     if request.method == 'POST':
@@ -505,6 +626,7 @@ def stock_request(request):
     return render(request, 'Accounting/stock_req.html', {'form': form})
 
 
+@login_required
 def cancel_stock_request(request):
     form = StockRequestForm()
     rcv = StockRequestModel.objects.filter(
@@ -567,6 +689,7 @@ class DeleteStock(LoginRequiredMixin, View):
             return redirect('stock_requests')
 
 
+@login_required
 def packages(request):
     packages = Package.objects.all()
     context = {
@@ -574,7 +697,7 @@ def packages(request):
     }
     return render(request, 'Accounting/packages.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def add_package(request):
     form = PackageForm()
@@ -589,7 +712,7 @@ def add_package(request):
     }
     return render(request, 'Accounting/add_package.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def edit_package(request, id):
     data = Package.objects.get(id=id)
@@ -606,7 +729,7 @@ def edit_package(request, id):
     }
     return render(request, 'Accounting/edit_package.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def del_package(request, id):
     obj = get_object_or_404(Package, id=id)
@@ -614,7 +737,7 @@ def del_package(request, id):
     messages.success(request, 'Package deleted')
     return redirect('packages')
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def create_inspection(request):
     form = InspectionForm()
@@ -629,7 +752,7 @@ def create_inspection(request):
             return redirect('inpection_reports')
     return render(request,'Accounting/inspection_create.html',{'form': form})
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def inpection_reports(request):
     reports = InspectionModel.objects.all()
@@ -638,7 +761,7 @@ def inpection_reports(request):
     }
     return render(request,'Accounting/inspection_reports.html',context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def edit_inspection(request,id):
     data = get_object_or_404(InspectionModel, id = id)
@@ -654,10 +777,212 @@ def edit_inspection(request,id):
             return redirect('inpection_reports')
     return render(request,'Accounting/inspection_edit.html',{'form': form, 'id': id})
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def del_inspection(request,id):
     obj = get_object_or_404(InspectionModel , id = id)
     obj.delete()
     messages.success(request,'Report Deleted')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def membership_noti(request):
+    membership_noti = MembershipNoti.objects.filter(is_seen = False).order_by('-id')
+    data = []
+    for i in membership_noti:
+        prefetch = {
+            'first_name': i.membership.user.first_name,
+            'last_name': i.membership.user.last_name,
+            'noti_text': i.noti_text,
+            'created': i.created,
+            'is_seen': i.is_seen,
+            'membership_id': i.membership.id,
+            'membership_noti_model_id': i.id,
+            'user_id': i.membership.user.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+
+@login_required
+def membership_noti_mark_as_seen(request,id):
+    noti = MembershipNoti.objects.get(id = id)
+    noti.is_seen = True
+    noti.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
+def user_membership_renewal_noti(request):
+    data = []
+    membership = MembershipModel.objects.filter(user_id = request.user.id)
+    for i in membership:
+        membership_end = i.membership_end
+        if membership_end.date() <= datetime.now().date():
+            MembershipRenewalNoti.objects.get_or_create(noti_for_id = i.id, 
+                                                 noti_text = 'Membership Expired.Please renew your membership to get our premium service')
+    
+    renewal_noti = MembershipRenewalNoti.objects.filter(is_seen = False, 
+                                                        noti_for__user_id = request.user.id).order_by('-id')
+    for i in renewal_noti:
+        prefetch = {
+            'renewal_noti_id': i.id,
+            'membership_model_id': i.noti_for.id,
+            'noti_text': i.noti_text,
+            'is_seen': i.is_seen,
+            'created': i.created,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+
+@login_required
+@user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
+def mark_as_seen_membership_renewal_noti(request,id):
+    noti = MembershipRenewalNoti.objects.get(id = id)
+    noti.is_seen = True
+    noti.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def employee_leave(request):
+    form = LeaveForm()
+    if request.method == 'POST':
+        form = LeaveForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit = False)
+            instance.employee_name = request.user
+            first_day_of_leave_request = instance.first_day_of_leave_request
+            last_day_of_leave_request = instance.last_day_of_leave_request
+            total_num_in_days = last_day_of_leave_request.date() - first_day_of_leave_request.date()
+            print(total_num_in_days)
+            instance.total_num_in_days = total_num_in_days
+            instance.employee_clock = 'D'+str(request.user.id)
+            instance.save()
+            return redirect('my_leaves', request.user.id)
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/leave_req.html',context)
+
+@login_required
+def my_leaves(request,id):
+    my_leaves = Leaves.objects.filter(employee_name_id = id).order_by('-id')
+    context = {
+        'my_leaves': my_leaves,
+    }
+    return render(request,'Accounting/my_leaves.html', context)
+
+
+@login_required
+@user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
+def employee_leaves(request):
+    leaves = Leaves.objects.all().order_by('-id')
+    context = {
+        'leaves': leaves,
+    }
+    return render(request,'Accounting/employee_leaves.html', context)
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_leaves(request,id):
+    obj = Leaves.objects.filter(id =id)
+    obj.delete()
+    messages.success(request,'Leave report Deleted')
+    return redirect('employee_leaves')
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def payrol_deduction_reports(request):
+    reports = PayrolDeduction.objects.all().order_by('-id')
+    context = {
+        'reports': reports,
+    }
+    return render(request,'Accounting/payrol_deduction_reports.html',context)
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def payroll_deduction_form(request):
+    form = PayrolDeductionForm()
+    if request.method == 'POST':
+        monthly_deductions = request.POST.get('monthly_deductions')
+        special_deductions = request.POST.get('special_deductions')
+        penalties_financial_loss = request.POST.get('penalties_financial_loss')
+        if monthly_deductions is not None:
+            monthly_deductions = True
+        else:
+            monthly_deductions = False
+
+        if special_deductions is not None:
+            special_deductions = True
+        else:
+            special_deductions = False
+
+        if penalties_financial_loss is not None:
+            penalties_financial_loss = True
+        else:
+             penalties_financial_loss = False
+
+        form = PayrolDeductionForm(request.POST,request.FILES)
+        if form.is_valid():
+            instance = form.save(commit = False)
+            instance.report_by = request.user
+            instance.monthly_deductions = monthly_deductions
+            instance.special_deductions = special_deductions
+            instance.penalties_financial_loss = penalties_financial_loss
+            instance.save()
+            messages.success(request,'Payroll Deduction Created')
+            return redirect('payrol_deduction_reports')
+    context ={
+        'form': form,
+    }
+    return render(request,'Accounting/payroll_deduction_form.html',context)
+
+@login_required
+def payroll_deduction_individual_report(request,id):
+    data = PayrolDeduction.objects.get(id = id)
+    form = PayrolDeductionFormView(instance=data)
+    context = {
+        'form': form,
+        'data': data,
+        'id': id,
+    }
+    return render(request,'Accounting/individual_payroll_deductions.html',context)
+
+
+@login_required
+def payroll_deduction_delete(request,id):
+    obj = get_object_or_404(PayrolDeduction, id=id)
+    obj.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@csrf_exempt
+def has_membership_or_not(request):
+    if request.method == 'POST':
+        members = MembershipModel.objects.all()
+        for i in members:
+            if i.membership_end.date() == datetime.now().date():
+                membership_user = User.objects.get(id = i.user.id)
+                membership_user.has_membership = False
+                membership_user.renew_membership = True
+                membership_user.save()
+
+            elif i.membership_end.date() < datetime.now().date():
+                membership_user = User.objects.get(id = i.user.id)
+                membership_user.has_membership = False
+                membership_user.renew_membership = True
+                membership_user.save()
+
+            else:
+                membership_user = User.objects.get(id = i.user.id)
+                membership_user.has_membership = True
+                membership_user.renew_membership = False
+                membership_user.save()
+    return HttpResponse('ok')

@@ -1,0 +1,57 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="{% url 'employee_leave' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="">Date of Request</label> {{ form.date_of_request }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Time of request</label> {{ form.time_of_request }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Employee Name & Surname</label> {{ form.employee_name_char }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Employee Email</label> {{ form.personal_email_address }}
+                        </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="">Manager / Supervisor / Shift Lead </label> {{ form.manager_supervisor_shift_lead }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Request Type</label> {{ form.request_type }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">First Day of Request Leave</label> {{ form.first_day_of_leave_request }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">First Day of Request Leave</label> {{ form.last_day_of_leave_request }}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">Employee Comments</label> {{ form.employee_comments }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

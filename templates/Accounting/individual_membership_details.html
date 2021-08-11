@@ -1,0 +1,98 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<!-- Include the Yoco SDK in your web page -->
+<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card border-success card-custom text-center m-auto w-70">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h3 class="card-label">Membership</h3>
+                            </div>
+                            <div class="card-toolbar">
+
+                                <a href="#" data-card-tool="reload" data-toggle="tooltip" data-placement="top" title="Premium Membership">
+                                    <i class="fas fa-user"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table-hover display table table-separate table-head-custom table-checkable">
+                                    <thead>
+                                        <tr>
+                                            <th>Profile Picture</th>
+                                            <th scope="col">Membership Holder</th>
+                                            <th scope="col">Package Name</th>
+                                            <th scope="col">Membership Price</th>
+                                            <th scope="col">Package Validation</th>
+                                            <th scope="col">Membership Duration</th>
+                                            <th scope="col">Package Status</th>
+                                            <th scope="col">Membership Token</th>
+                                            <th scope="col">Membership Taken Date</th>
+                                            <th scope="col">Membership End Date</th>
+                                            <th scope="col">Package Desciption</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in mebership_details %}
+                                        <tr>
+                                            <td>
+                                                <img src="{{ i.user.imageURL }}" class="rounded-circle" height="40px" alt="">
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'profile' i.user.id %}">
+                                                    {{ i.user.first_name|title }} {{ i.user.last_name|title }}
+                                                </a>
+                                            </td>
+                                            <td>{{ i.package.p_name }}</td>
+                                            <td>R{{ i.package.p_price }}</td>
+                                            <td>{{ i.package.is_valid }}</td>
+                                            <td>{{ i.package.package_membership_duration }} days</td>
+                                            <td>{{ i.package.status }}</td>
+                                            <td>{{ i.token }}</td>
+                                            <td>{{ i.membership_date|date }}</td>
+                                            <td>{{ i.membership_end|date }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                    View
+                                                  </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                {{ i.package.description|title }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

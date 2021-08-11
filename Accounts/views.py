@@ -1,7 +1,8 @@
+from django.views.decorators import csrf
 from Medic.views import rating
 from Medic.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from Accounting.models import TaskModel
+from Accounting.models import MembershipModel, TaskModel
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import PasswordChangeForm
@@ -19,6 +20,7 @@ from .decorators import has_perm_admin_dispatch, user_passes_test, has_perm_admi
     REDIRECT_FIELD_NAME, INACTIVE_REDIRECT_FIELD_NAME
 import datetime
 import re
+from django.views.decorators.csrf import csrf_exempt
 
 this_month = datetime.datetime.now().month
 this_day = datetime.datetime.today()
@@ -39,6 +41,11 @@ def regex_validation(number):
 @login_required
 def dashboard(request):
     if request.user.is_superuser:
+        has_membership = User.objects.filter(has_membership = True)
+        renew_membership = User.objects.filter(renew_membership = True)
+
+        membership = MembershipModel.objects.all()
+
         ambulance_requests_monthly = AmbulanceModel.objects.filter(created_on__month = this_month)
         ambulance_requests_monthly = len(ambulance_requests_monthly)
 
@@ -123,6 +130,9 @@ def dashboard(request):
             'total_dispatch': total_dispatch,
             'hos_trans': hos_trans,
             'recent_panics': recent_panics,
+            'membership': membership,
+            'has_membership': has_membership,
+            'renew_membership': renew_membership,
         }
         return render(request, 'accounts/admin_dashboard.html', context)
 
@@ -159,7 +169,7 @@ def register(request):
                 return HttpResponse('Invalid phone number')
     return render(request, 'registration/register.html', {'form': form})
 
-
+@login_required
 def profile(request, id):
     user = User.objects.get(id=id)
     if user.is_staff and not user.is_superuser:
@@ -170,7 +180,7 @@ def profile(request, id):
         return redirect('user_profile', id)
 
 
-@user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def admin_profile(request, id):
     from datetime import datetime, timedelta
@@ -205,10 +215,11 @@ def admin_profile(request, id):
     }
     return render(request, 'accounts/admin_profile.html', context)
 
-
+@login_required
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def dispatch_profile(request, id):
     user = User.objects.filter(is_staff=True, id=id, is_superuser=False)
+    chat = User.objects.filter(~Q(id = request.user.id))
     patients = User.objects.filter(is_superuser=False, is_staff=False)
     panic_req_month = Panic.objects.filter(timestamp__month=this_month,
                                            timestamp__year=this_year).order_by('-id')
@@ -216,6 +227,7 @@ def dispatch_profile(request, id):
     assesments = Assesment.objects.filter(to_user_id=id)
     context = {
         'user': user,
+        'chat': chat,
         'patients': patients,
         'panic_req_month': panic_req_month,
         'task': task,
@@ -224,10 +236,11 @@ def dispatch_profile(request, id):
     }
     return render(request, 'accounts/dispacth_profile.html', context)
 
-
+@login_required
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def user_profile(request, id):
     user = User.objects.filter(is_superuser=False, is_staff=False, id=id)
+    chat = User.objects.filter(~Q(id = request.user.id))
     ambulance_req = AmbulanceModel.objects.filter(
         user_id=id, created_on__year=this_year)
     panic_req_yearly = Panic.objects.filter(
@@ -237,6 +250,7 @@ def user_profile(request, id):
     dispatch = User.objects.filter(is_staff=True, is_superuser=False)
     context = {
         'user': user,
+        'chat': chat,
         'dispatch': dispatch,
         'ambulance_req': ambulance_req,
         'ambulance_req_total': ambulance_req_total,
@@ -318,7 +332,7 @@ def monthly_request_chart_ambulance(request):
         'data': data,
     })
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def edit_profile_admin(request, id):
     data = User.objects.get(id=id)
@@ -338,45 +352,51 @@ def edit_profile_admin(request, id):
     }
     return render(request, 'accounts/edit_profile_admin.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_dispatch, REDIRECT_FIELD_NAME)
 def edit_profile_dispatch(request, id):
-    data = User.objects.get(id=id)
-    form = EditProfile(instance=data)
-    if request.method == 'POST':
-        form = EditProfile(request.POST, request.FILES, instance=data)
-        if form.is_valid():
-            email = form.cleaned_data['username']
-            data.email = email
-            data.save()
-            form.save()
-            return redirect('profile', id)
-    context = {
-        'form': form,
-        'data': data,
-        'id': id,
-    }
-    return render(request, 'accounts/edit_profile_dispatch.html', context)
+    if id == request.user.id: 
+        data = User.objects.get(id=id)
+        form = EditProfile(instance=data)
+        if request.method == 'POST':
+            form = EditProfile(request.POST, request.FILES, instance=data)
+            if form.is_valid():
+                email = form.cleaned_data['username']
+                data.email = email
+                data.save()
+                form.save()
+                return redirect('profile', id)
+        context = {
+            'form': form,
+            'data': data,
+            'id': id,
+        }
+        return render(request, 'accounts/edit_profile_dispatch.html', context)
+    else:
+        return redirect('forbidden')
 
-
+@login_required
 @user_passes_test(has_perm_user, REDIRECT_FIELD_NAME)
 def edit_profile_user(request, id):
-    data = User.objects.get(id=id)
-    form = EditProfile(instance=data)
-    if request.method == 'POST':
-        form = EditProfile(request.POST, request.FILES, instance=data)
-        if form.is_valid():
-            email = form.cleaned_data['username']
-            data.email = email
-            data.save()
-            form.save()
-            return redirect('profile', id)
-    context = {
-        'form': form,
-        'data': data,
-        'id': id,
-    }
-    return render(request, 'accounts/edit_profile_user.html', context)
+    if id == request.user.id: 
+        data = User.objects.get(id=id)
+        form = EditProfile(instance=data)
+        if request.method == 'POST':
+            form = EditProfile(request.POST, request.FILES, instance=data)
+            if form.is_valid():
+                email = form.cleaned_data['username']
+                data.email = email
+                data.save()
+                form.save()
+                return redirect('profile', id)
+        context = {
+            'form': form,
+            'data': data,
+            'id': id,
+        }
+        return render(request, 'accounts/edit_profile_user.html', context)
+    else:
+        return redirect('forbidden')
 
 
 def change_pass(request):
@@ -395,7 +415,7 @@ def change_pass(request):
     }
     return render(request, 'accounts/reset_password.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def delete_any_user(request, id):
     url = request.META.get('HTTP_REFERER')
@@ -403,7 +423,7 @@ def delete_any_user(request, id):
     user.delete()
     return HttpResponseRedirect(url)
 
-
+@login_required
 def deactivate(request, id):
     user = User.objects.get(id=id)
     if request.user.is_superuser:
@@ -411,10 +431,12 @@ def deactivate(request, id):
             user.is_active = False
             user.save()
             return HttpResponse('Account Deactivated')
+        else:
+            return HttpResponse('Already Deactivated')
     else:
         return HttpResponse('This action can only be handled by admins')
 
-
+@login_required
 def activate(request, id):
     try:
         user = User.objects.get(id=id)
@@ -438,7 +460,7 @@ class TrackDispatches(LoginRequiredMixin, View):
         else:
             return redirect('forbidden')
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def assetment_form(request):
     form = AssesmentForm()
@@ -455,7 +477,7 @@ def assetment_form(request):
     }
     return render(request, 'accounts/assesment_form.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def assetment_form_edit(request, id):
     data = Assesment.objects.get(id=id)
@@ -474,7 +496,7 @@ def assetment_form_edit(request, id):
     }
     return render(request, 'accounts/assesment_form_edit.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def del_assesment(request, id):
     url = request.META.get('HTTP_REFERER')
@@ -482,7 +504,7 @@ def del_assesment(request, id):
     obj.delete()
     return HttpResponseRedirect(url)
 
-
+@login_required
 @user_passes_test(has_perm_admin_dispatch, REDIRECT_FIELD_NAME)
 def assessment_report_individually(request, id):
     diff = ''
@@ -527,7 +549,7 @@ def assessment_report_individually(request, id):
     }
     return render(request, 'accounts/assessment_report.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin, REDIRECT_FIELD_NAME)
 def assesment_list_users(request):
     users = []
@@ -543,7 +565,7 @@ def assesment_list_users(request):
     }
     return render(request, 'accounts/assesments_list_users.html', context)
 
-
+@login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def customer_list(request):
     customers = User.objects.filter(is_superuser = False, is_staff = False)
@@ -551,3 +573,50 @@ def customer_list(request):
         'customers': customers,
     }
     return render(request,'accounts/customer_list.html',context)
+
+@login_required
+def send_message(request,id):
+    online_user = request.user
+    messages = Message.objects.filter(Q(sender = request.user, receiver_id = id)| 
+                                        Q(sender_id = id, receiver = request.user)).order_by('sent')
+    users = User.objects.filter(~Q(id = request.user.id))
+    other_user = User.objects.get(id = id)
+
+    if request.method == 'POST':
+        sender = request.user
+        message = request.POST.get('message')
+        if message:
+            Message.objects.create(sender = sender, receiver_id = id, message = message)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'messages': messages,
+        'users': users,
+        'other_user': other_user,
+        'online_user': online_user,
+        'id': id,
+    }
+    return render(request,'accounts/chat.html',context)
+
+@login_required
+def delete_message(request,id):
+    msg = Message.objects.filter(Q(sender = request.user, receiver_id = id)|
+                                Q(sender_id = id , receiver = request.user))
+    msg.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@csrf_exempt
+def post_pos_dispatch(request):
+    if request.method == 'POST':
+        data = request.POST
+        for k,v in data.items():
+            if  k=='lat':
+                latitude = v
+            if k=='lng':
+                longitude = v
+        user = User.objects.get(id = request.user.id)
+        user.latitude = latitude
+        user.longitude = longitude
+        user.save()
+        print(user.latitude,user.longitude)
+        return HttpResponse('Lat , Lng: Posted')

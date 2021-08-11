@@ -1,0 +1,269 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/property_report.css' %}">
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            {% if form.errors %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {{ form.errors }}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-3">
+                    <form action="{% url 'payroll_deduction_form' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="employe_name">Employee Name</label><br>
+                        <input type="text" name="employe_name" id="employe_name" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label for="employee_number">Employee Number</label><br>
+                    <input type="text" name="employee_number" placeholder="D0001" id="employee_number" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label for="dept">Department</label><br>
+                    <input type="text" name="dept" id="dept" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="email">Email</label><br>
+                    <input type="email" name="email" id="email" placeholder="you@host.com" class="form-control">
+                </div>
+                <div class="col-md-2 mb-5">
+                    <label for="date_of_issuance">Date of Issuance</label><br>
+                    <input type="date" name="date_of_issuance" id="date_of_issuance" class="form-control">
+                </div>
+
+                <div class="col-md-4">
+                    <input type="checkbox" name="monthly_deductions" id="monthly_deductions">
+                    <label for="monthly_deductions">Monthly Deductions</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="checkbox" name="special_deductions" id="special_deductions">
+                    <label for="special_deductions">Special Deductions</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="checkbox" name="penalties_financial_loss" id="penalties_financial_loss">
+                    <label for="penalties_financial_loss">Penalties & Financial Loss</label>
+                </div>
+
+                <div class="col-md-4 mb-5" id="m-cat" style="pointer-events: none;">
+                    {{ form.monthly_deduction_category }}
+                </div>
+
+                <div class="col-md-4 mb-5" id="s-cat" style="pointer-events: none;">
+                    {{ form.special_deduction_category }}
+                </div>
+
+                <div class="col-md-4 mb-5" id="p-cat" style="pointer-events: none;">
+                    {{ form.penalties_financial_loss_category }}
+                </div>
+
+
+                <div class="col-md-4" id="monthly_deduction_div" style="pointer-events: none;">
+                    <label for="description_deduction_monthly">Description Deduction</label><br>
+                    <input type="text" name="description_deduction_monthly" id="description_deduction_monthly" placeholder="description" class="form-control">
+
+                    <label for="">Amount(R)</label><br>
+                    <input type="number" name="amount" id="amount" class="form-control">
+
+                    <label for="start_date_monthly">Start Date</label><br>
+                    <input type="date" name="start_date_monthly" id="start_date_monthly" class="form-control">
+
+                    <label for="expiry_date_monthly">Expiry Date</label><br>
+                    <input type="date" name="expiry_date_monthly" id="expiry_date_monthly" class="form-control">
+                </div>
+
+                <div class="col-md-4" id="special_deduction_div" style="pointer-events: none;">
+                    <label for="description_deduction_special">Description Deduction</label><br>
+                    <input type="text" name="description_deduction_special" id="description_deduction_special" placeholder="description" class="form-control">
+
+                    <label for="frequency">Frequency</label><br> {{ form.frequency }}
+
+                    <label for="total_amount_r">Total Amount(R)</label>
+                    <input type="number" name="total_amount_r" id="total_amount_r" class="form-control">
+
+                    <label for="monthly_r">Monthly(R)</label>
+                    <input type="number" name="monthly_r" id="monthly_r" class="form-control">
+
+                    <label for="start_date_special">Action Date</label><br>
+                    <input type="date" name="start_date_special" id="start_date_special" class="form-control">
+
+                    <label for="expiry_date_special">Expiry Date</label><br>
+                    <input type="date" name="expiry_date_special" id="expiry_date_special" class="form-control">
+                </div>
+
+                <div class="col-md-4 mb-7" id="penalty_deduction_div" style="pointer-events: none;">
+                    <label for="description_deduction_penalty">Description Deduction</label><br>
+                    <input type="text" name="description_deduction_penalty" id="description_deduction_penalty" placeholder="description" class="form-control">
+
+                    <label for="employee_percentage_sign">Employee %</label>
+                    <input type="number" name="employee_percentage_sign" id="employee_percentage_sign" class="form-control">
+
+                    <label for="total">Total(R)</label>
+                    <input type="number" name="total" id="total" class="form-control">
+
+                    <label for="employee_rand">Employee(R)</label>
+                    <input type="number" name="employee_rand" id="employee_rand" class="form-control">
+
+                    <label for="installments_rand">Installments(R)</label>
+                    <input type="number" name="installments_rand" id="installments_rand" class="form-control">
+
+                    <label for="start_date_penaly">Start Date</label><br>
+                    <input type="date" name="start_date_penaly" id="start_date_penaly" class="form-control">
+
+                    <label for="expiry_date_penalty">Expiry Date</label><br>
+                    <input type="date" name="expiry_date_penalty" id="expiry_date_penalty" class="form-control">
+                </div>
+
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <h2>Photo Evidence</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-3 form-control">
+                    {{ form.photo_evi1 }}
+                </div>
+
+                <div class="col-md-3 form-control">
+                    {{ form.photo_evi2 }}
+                </div>
+
+
+                <div class="col-md-3 form-control">
+                    {{ form.photo_evi3 }}
+                </div>
+
+
+                <div class="col-md-3 form-control">
+                    {{ form.photo_evi4 }}
+                </div>
+
+                <div class="col-md-12 mt-5">
+                    <div class="text-center">
+                        <h2>Approval Summary</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="total_monthly_deduction">Total Monthly Deductions</label>
+                    <input readonly type="number" name="total_monthly_deduction" id="total_monthly_deduction" class="form-control" value="{{ 0 }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="total_special_deduction">Total Special Deductions</label>
+                    <input type="number" name="total_special_deduction" id="total_special_deduction" class="form-control" value="{{ 0 }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="total_loss_deduction">Total Loss Deductions</label>
+                    <input type="number" name="total_loss_deduction" id="total_loss_deduction" class="form-control" value="{{ 0 }}">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="">Authorized By</label> {{ form.authorized_by }}
+                </div>
+                <div class="col-md-6">
+                    <label for="">Date</label>
+                    <input type="date" name="date" id="date" class="form-control">
+                </div>
+                <div class="col-md-12">
+                    <label for="">Aprrover Comments(if any)</label> {{ form.approver_comments }} <br>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var amount_monthly = document.getElementById('amount');
+    $('#amount').change(function(event) {
+        $('#total_monthly_deduction').val($(this).val());
+    });
+
+    // $('#total_amount_r').keyup(function(event) {
+    //     var option = $('#id_frequency :selected').text();
+    //     if (option === 'Once off') {
+    //         $('#total_special_deduction').val($('#total_amount_r').val());
+
+    //     } else if (option === '2 Months') {
+    //         $('#total_special_deduction').val(2);
+    //     } else if (option === '3 Months') {
+    //         $('#total_special_deduction').val(3);
+    //     } else {
+    //         $('#total_special_deduction').val(0);
+    //     }
+    // })
+
+
+
+    // $('#monthly_deductions').click(function() {
+    //     $("#monthly_deduction_category").prop("readonly", true);
+    // });
+</script>
+<script>
+    var monthly_deductions = document.getElementById('monthly_deductions');
+    var special_deductions = document.getElementById('special_deductions');
+    var penalties_financial_loss = document.getElementById('penalties_financial_loss');
+
+    var m_cat = document.getElementById('m-cat');
+    var s_cat = document.getElementById('s-cat');
+    var p_cat = document.getElementById('p-cat');
+
+    var monthly_deduction_div = document.getElementById('monthly_deduction_div');
+    var special_deduction_div = document.getElementById('special_deduction_div');
+    var penalty_deduction_div = document.getElementById('penalty_deduction_div');
+
+    monthly_deductions.addEventListener('click', (event) => {
+        if ($('input[name="monthly_deductions"]:checked')) {
+            document.getElementById('monthly_deduction_div').style.pointerEvents = '';
+            m_cat.style.pointerEvents = '';
+        }
+    })
+    monthly_deductions.addEventListener('click', (event) => {
+        if (document.getElementById('monthly_deductions').checked === false) {
+            document.getElementById('monthly_deduction_div').style.pointerEvents = 'none';
+            m_cat.style.pointerEvents = 'none';
+            swal('You need to click on monthly deduction checkbox in order to active this section')
+        }
+    })
+
+
+    special_deductions.addEventListener('click', (event) => {
+        if ($('input[name="special_deductions"]:checked')) {
+            document.getElementById('special_deduction_div').style.pointerEvents = '';
+            s_cat.style.pointerEvents = '';
+        }
+    })
+    special_deductions.addEventListener('click', (event) => {
+        if (document.getElementById('special_deductions').checked === false) {
+            document.getElementById('special_deduction_div').style.pointerEvents = 'none';
+            s_cat.style.pointerEvents = 'none';
+            swal('You need to click on special deduction checkbox in order to active this section')
+        }
+    })
+
+
+    penalties_financial_loss.addEventListener('click', (event) => {
+        if ($('input[name="penalties_financial_loss"]:checked')) {
+            document.getElementById('penalty_deduction_div').style.pointerEvents = '';
+            p_cat.style.pointerEvents = '';
+        }
+    })
+    penalties_financial_loss.addEventListener('click', (event) => {
+        if (document.getElementById('penalties_financial_loss').checked === false) {
+            document.getElementById('penalty_deduction_div').style.pointerEvents = 'none';
+            p_cat.style.pointerEvents = 'none';
+            swal('You need to click on Penalties & Financial Loss deduction checkbox in order to active this section')
+        }
+    })
+</script>
+
+{% endblock %}

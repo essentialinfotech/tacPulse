@@ -31,47 +31,55 @@
                 <!-- form fields -->
                 {{ form.errors }}
                 <div class="col-lg-6 draggable-zone">
-                    <div class="draggable">
-                        <label class="draggable-handle required">Occurrence Type</label>
-                        <div class="draggable-handle">{{ form.occurrence_type }}</div>
-                    </div>
-
-                    <div class="draggable">
-                        <label class="draggable-handle">Related User(Optional)</label>
-                        <div class="draggable-handle">
-                            {{ form.related_user }}
+                    <div class="col-lg-6 draggable-zone">
+                        <div class="draggable">
+                            <label class="draggable-handle required">Reason for Report</label>
+                            <div class="draggable-handle">{{ form.reason_for_report }}</div>
                         </div>
-                    </div>
 
-
-                    <div style="display: none;">
-                        <input type="text" name="occurrence_giver" style="display: none;">
-                    </div>
-
-
-                    <div class="draggable">
-                        <label class="draggable-handle required">Occurrence
-                            Detail</label>
-                        <div class="draggable-handle">
-                            {{ form.occurrence_detail }}
+                        <div class="draggable">
+                            <label class="draggable-handle">Department</label>
+                            <div class="draggable-handle">
+                                {{ form.department }}
+                            </div>
                         </div>
-                    </div>
-                    <br>
-                    <div class="draggable">
-                        <div class="draggable-handle">{{ form.image }}</div>
-                    </div><br>
 
-                    <button type="submit" id="to-be-clicked" class="btn btn-success">Save</button>
-                    </form>
-                    <!-- form ends -->
+
+                        <div class="draggable">
+                            <label class="draggable-handle required">Occurrence
+                                Detail</label>
+                            <div class="draggable-handle">
+                                {{ form.occurrence_date }}
+                            </div>
+                        </div>
+
+                        <div class="draggable">
+                            <label class="draggable-handle required">Incident
+                                Report</label>
+                            <div class="draggable-handle">
+                                {{ form.incident_report }}
+                            </div>
+                        </div>
+
+                        <div class="draggable">
+                            <label class="draggable-handle">Picture to attach?</label>
+                            <div class="draggable-handle">
+                                {{ form.image }}
+                            </div>
+                        </div>
+
+                        <br>
+                        <button type="submit" id="to-be-clicked" class="btn btn-success">Save</button>
+                        </form>
+                        <!-- form ends -->
+                    </div>
+                    <!-- fields end draggable -->
                 </div>
-                <!-- fields end draggable -->
+                <!--end:: Row-->
             </div>
-            <!--end:: Row-->
+            <!--end::Container-->
         </div>
-        <!--end::Container-->
+        <!--end::Entry-->
     </div>
-    <!--end::Entry-->
-</div>
-<!--end::Content-->
-{% endblock %}
+    <!--end::Content-->
+    {% endblock %}

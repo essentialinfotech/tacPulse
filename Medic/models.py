@@ -54,18 +54,33 @@ class Feedback(models.Model):
 
 
 class Occurrence(models.Model):
-    OCCURRENCE_TYPE = [
-        ('CORPORATE', 'CORPORATE'),
-        ('CUSTOMER', 'CUSTOMER'),
+    REASON_FOR_REPORT = [
+        ('Property Issue', 'Property Issue'),
+        ('Operational Issue', 'Operational Issue'),
+        ('Employee Issue', 'Employee Issue'),
+        ('Conditions in Work Place', 'Conditions in Work Place'),
+        ('Health & Safety Concern / Issue', 'Health & Safety Concern / Issue'),
+        ('Vehicle Issue', 'Vehicle Issue'),
+        ('Customer Compliment', 'Customer Compliment'),
+        ('Customer Complaint', 'Customer Complaint'),
     ]
+
+    DEPARTMENT = [
+        ('Emergency Medical Dispatching Centre', 'Emergency Medical Dispatching Centre'),
+        ('Stock Issue (Consumable Stock)', 'Stock Issue (Consumable Stock)'),
+        ('Operations', 'Operations'),
+    ]
+
     occurrence_giver = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    related_user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True, related_name='for_user')
     occurrence_id = models.CharField(max_length=30000,blank=True, null=True)
-    occurrence_type = models.CharField(max_length = 20, choices = OCCURRENCE_TYPE)
-    occurrence_detail = models.CharField(max_length=600)
-    image = models.ImageField(
-        upload_to='media/Occurrence', blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)
+    reason_for_report = models.CharField(max_length=100,blank=True, null=True,choices=REASON_FOR_REPORT)
+    department = models.CharField(max_length = 100, choices = DEPARTMENT,blank=True, null=True)
+    occurrence_date = models.DateField(blank=True, null=True)
+    incident_report = models.TextField(blank=True, null=True)
+    signature = models.CharField(blank=True, null=True,max_length=100)
+    image = models.ImageField(upload_to = 'occurrence', blank=True, null=True)
+    captured_phote = models.ImageField(upload_to = 'occurrence', blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True,blank=True, null=True)
 
     @property
     def imagesURL(self):
@@ -103,6 +118,7 @@ class PanicNoti(models.Model):
     panic = models.ForeignKey(
         Panic, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=100, default='has sent a panic request')
+    is_seen = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -204,3 +220,9 @@ class HospitalTransferModel(models.Model):
 
     def __str__(self):
         return f"Transferred to {self.target_hos}"
+
+
+
+
+
+

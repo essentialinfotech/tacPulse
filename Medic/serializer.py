@@ -12,13 +12,14 @@ class PanicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Panic
         fields = '__all__'
-        depth = 1
+        depth = 2
 
 
 class AmbulanceRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = AmbulanceModel
         fields = '__all__'
+        depth = 1
 
 
 class PanicNotiSerializer(serializers.ModelSerializer):
@@ -26,3 +27,24 @@ class PanicNotiSerializer(serializers.ModelSerializer):
         model = PanicNoti
         fields = '__all__'
         depth = 2
+
+
+class OccurrenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Occurrence
+        fields = '__all__'
+        depth = 1
+
+
+class FAQSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = '__all__'
+        depth = 1
+
+
+class HospitalTransferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HospitalTransferModel
+        fields = '__all__'
+        depth = 1

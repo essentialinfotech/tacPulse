@@ -1,0 +1,76 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-custom text-center m-auto w-50">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h3 class="card-label">Congratulations</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                {% if has_membership %} You have a membership now {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-body" style="height: 350px;overflow-y: scroll;">
+                            <div class="table-responsive">
+                                <table class="table-hover display table table-separate table-head-custom table-checkable">
+                                    <thead>
+                                        <tr>
+                                            <th>Membership Holder</th>
+                                            <th scope="col">Package Name</th>
+                                            <th scope="col">Package Validation</th>
+                                            <th scope="col">Membership Duration</th>
+                                            <th scope="col">Package Status</th>
+                                            <th scope="col">Package Price</th>
+                                            <th scope="col">Membership Taken on</th>
+                                            <th scope="col">Membership Expires on</th>
+                                            <th scope="col">Package Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in membership %}
+                                        <tr>
+                                            <td>{{ i.user.first_name|title }} {{ i.user.last_name|title }}</td>
+                                            <td>{{ i.package.p_name|title }}</td>
+                                            <td>{{ i.package.valid_till }}</td>
+                                            <td>{{ i.package.package_membership_duration }}</td>
+                                            <td>{{ i.package.status}}</td>
+                                            <td>R{{ i.package.p_price }}</td>
+                                            <td>{{ i.membership_date|date }}</td>
+                                            <td>{{ i.membership_end|date }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                    View
+                                                  </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                {{ i.package.description|title }}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

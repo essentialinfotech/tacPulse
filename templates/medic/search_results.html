@@ -36,6 +36,7 @@
                                 
                                 {{ i.contact }}
                                 </span><br>
+                            <a href="{% url 'send_message' i.id %}" class="form-control btn btn-success" style="margin-top: 4px;">Chat with {{ i.first_name|title }}</a>
                             <!--end::Label-->
                             <!--begin::Buttons-->
                             <div class="mt-9 mb-6">

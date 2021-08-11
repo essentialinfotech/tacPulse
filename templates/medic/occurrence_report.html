@@ -73,13 +73,15 @@
                     <table id="data-table" class="display table text-center">
                         <thead>
                             <tr class=" text-center table-secondary">
-                                <th>Occurrence Reporter</th>
-                                <th>Occurrence Type</th>
-                                <th>Related User(optional)</th>
+                                <th>Report submitted by:</th>
+                                <th>Reasom for Report</th>
                                 <th>Occurrence ID</th>
-                                <th>Occurrence Detail</th>
+                                <th>Department</th>
+                                <th>Occurrence Date</th>
+                                <th>Report Date</th>
+                                <th>Report Time</th>
+                                <th>Incident Report</th>
                                 <th>Image</th>
-                                <th>Date</th>
                                 <th class="text-left">Action</th>
                             </tr>
                         </thead>
@@ -87,17 +89,24 @@
                             <!-- daily -->
                             {% for i in daily_occurences %}
                             <tr class="text-center" id="monthly">
-                                <td><a href="{% url 'profile' i.occurrence_giver.id %}">{{ i.occurrence_giver.first_name|title }}</a></td>
-                                <td>{{ i.occurrence_type }}</td>
-                                <td>{% if i.related_user %}
-                                    <a href="{% url 'profile' i.related_user.id %}">{{ i.related_user.first_name|title }}</a> {% else %} No User {% endif %}
+                                <td><a href="{% url 'profile' i.occurrence_giver.id %}">{{ i.occurrence_giver.first_name|title }} {{ i.occurrence_giver.last_name|title }}</a></td>
+                                <td>
+                                    {{ i.reason_for_report }}
                                 </td>
                                 <td style="text-decoration: underline; color: brown;">{{ i.occurrence_id }}</td>
+                                <td>{{ i.department }}</td>
 
-                                <td>{{ i.occurrence_detail }}</td>
-
-                                <td><img style="height: 30px;width: 30px;" src="{{i.imagesURL}}" alt=""></td>
-                                <td>{{ i.created }}</td>
+                                <td>{{ i.occurrence_date }}</td>
+                                <td>{{ i.created|date }}</td>
+                                <td>{{ i.created|time }}</td>
+                                <td>
+                                    <a href="{% url 'occurrence_details' i.id %}">View</a>
+                                </td>
+                                <td>
+                                    {% if i.image %}
+                                    <a href="{{ i.image.url }}"><img src="{{ i.image.url }}" height="50px" width="50px" alt=""> </a>
+                                    {% else %} No Image added {% endif %}
+                                </td>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2">
@@ -122,31 +131,41 @@
                 <div class="table-responsive">
                     <table id="data-table" class="display table text-center">
                         <thead>
-
                             <tr class=" text-center table-secondary">
-                                <th>Occurrence Reporter</th>
-                                <th>Occurrence Type</th>
-                                <th>Related User(optional)</th>
+                                <th>Report submitted by:</th>
+                                <th>Reasom for Report</th>
                                 <th>Occurrence ID</th>
-                                <th>Occurrence Detail</th>
+                                <th>Department</th>
+                                <th>Occurrence Date</th>
+                                <th>Report Date</th>
+                                <th>Report Time</th>
+                                <th>Incident Report</th>
                                 <th>Image</th>
-                                <th>Date</th>
                                 <th class="text-left">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- monthly -->
-                            {% for i in monthly_occurences %}
+                            <!-- daily -->
+                            {% for i in daily_occurences %}
                             <tr class="text-center" id="monthly">
-                                <td><a href="{% url 'profile' i.occurrence_giver.id %}">{{ i.occurrence_giver.first_name|title }}</a></td>
-                                <td>{{ i.occurrence_type }}</td>
-                                <td>{% if i.related_user %}
-                                    <a href="{% url 'profile' i.related_user.id %}">{{ i.related_user.first_name|title }}</a> {% else %} No User {% endif %}
+                                <td><a href="{% url 'profile' i.occurrence_giver.id %}">{{ i.occurrence_giver.first_name|title }} {{ i.occurrence_giver.last_name|title }}</a></td>
+                                <td>
+                                    {{ i.reason_for_report }}
                                 </td>
                                 <td style="text-decoration: underline; color: brown;">{{ i.occurrence_id }}</td>
-                                <td>{{ i.occurrence_detail }}</td>
-                                <td><img style="height: 30px;width: 30px;" src="{{i.imagesURL}}" alt=""></td>
-                                <td>{{ i.created }}</td>
+                                <td>{{ i.department }}</td>
+
+                                <td>{{ i.occurrence_date }}</td>
+                                <td>{{ i.created|date }}</td>
+                                <td>{{ i.created|time }}</td>
+                                <td>
+                                    <a href="{% url 'occurrence_details' i.id %}">View</a>
+                                </td>
+                                <td>
+                                    {% if i.image %}
+                                    <a href="{{ i.image.url }}"><img src="{{ i.image.url }}" height="50px" width="50px" alt=""> </a>
+                                    {% else %} No Image added {% endif %}
+                                </td>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2">
@@ -172,29 +191,41 @@
                     <table id="data-table" class="display table text-center">
                         <thead>
                             <tr class=" text-center table-secondary">
-                                <th>Occurrence Reporter</th>
-                                <th>Occurrence Type</th>
-                                <th>Related User(optional)</th>
+                                <th>Report submitted by:</th>
+                                <th>Reasom for Report</th>
                                 <th>Occurrence ID</th>
-                                <th>Occurrence Detail</th>
+                                <th>Department</th>
+                                <th>Occurrence Date</th>
+                                <th>Report Date</th>
+                                <th>Report Time</th>
+                                <th>Incident Report</th>
                                 <th>Image</th>
-                                <th>Date</th>
                                 <th class="text-left">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- weekly -->
-                            {% for i in weekly_occurences %}
+                            <!-- daily -->
+                            {% for i in daily_occurences %}
                             <tr class="text-center" id="monthly">
-                                <td><a href="{% url 'profile' i.occurrence_giver.id %}">{{ i.occurrence_giver.first_name|title }}</a></td>
-                                <td>{{ i.occurrence_type }}</td>
-                                <td>{% if i.related_user %}
-                                    <a href="{% url 'profile' i.related_user.id %}">{{ i.related_user.first_name|title }}</a> {% else %} No User {% endif %}
+                                <td><a href="{% url 'profile' i.occurrence_giver.id %}">{{ i.occurrence_giver.first_name|title }} {{ i.occurrence_giver.last_name|title }}</a></td>
+                                <td>
+                                    {{ i.reason_for_report }}
                                 </td>
                                 <td style="text-decoration: underline; color: brown;">{{ i.occurrence_id }}</td>
-                                <td>{{ i.occurrence_detail }}</td>
-                                <td><img style="height: 30px;width: 30px;" src="{{i.imagesURL}}" alt=""></td>
-                                <td>{{ i.created }}</td>
+                                <td>{{ i.department }}</td>
+
+                                <td>{{ i.occurrence_date }}</td>
+                                <td>{{ i.created|date }}</td>
+                                <td>{{ i.created|time }}</td>
+                                <td>
+                                    <a href="{% url 'occurrence_details' i.id %}">View</a>
+                                </td>
+
+                                <td>
+                                    {% if i.image %}
+                                    <a href="{{ i.image.url }}"><img src="{{ i.image.url }}" height="50px" width="50px" alt=""> </a>
+                                    {% else %} No Image added {% endif %}
+                                </td>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2">

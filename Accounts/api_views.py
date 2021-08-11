@@ -65,9 +65,11 @@ class Profile(generics.ListAPIView):
 
 
 class UpdateProfile(APIView):
+    serilizer_class = UpdateProfileSerializer
+    permission_classes = (IsAuthenticated,)
     def put(self, request, format=None):
         user = self.request.user
-        serializer = UpdateProfileSerializer(user, data=request.data)
+        serializer = UpdateProfileSerializer(user,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

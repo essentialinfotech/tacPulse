@@ -38,9 +38,17 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UpdateProfileSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(required = False)
+    last_name = serializers.CharField(required = False)
+    username = serializers.CharField(required = False)
+    profile_pic = serializers.ImageField(required = False)
+    contact = serializers.CharField(required = False)
+    address = serializers.CharField(required = False)
     class Meta:
         model = User
-        fields = ['first_name']
+        fields = ['first_name','last_name', 'quote', 'email',
+                    'username','contact','address','profile_pic']
+
 
 # Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):

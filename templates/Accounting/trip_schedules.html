@@ -82,6 +82,8 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Status</th>
+                                <th>Change Status</th>
+                                <th>Set Amount</th>
                                 <th>Has Membership?</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -100,7 +102,7 @@
                                 <td> {{i.location}}</td>
                                 <td>
                                     {% if request.user.is_superuser %}
-                                    <select name="{{i.id}}" id="id_schedule_status">
+                                    <select name="{{ i.id }}" id="id_schedule_status">
                                         {% if i.status == 'Pending' %}
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
@@ -124,7 +126,12 @@
                                         {% endif %}
                                     </select> {% else %} {{ i.status }} {% endif %}
                                 </td>
-
+                                <td>
+                                    <a href="{% url 'changeScheduleStatus' i.id %}">Change Status</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'setAmountforScheduleTrip' i.id %}">Set amount</a>
+                                </td>
                                 <td>
                                     {% if i.user.has_membership %} Yes {% else %} No {% endif %}
                                 </td>
@@ -162,12 +169,14 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Status</th>
+                                <th>Change Status</th>
+                                <th>Set Amount</th>
                                 <th>Has Membership?</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- daily -->
+                            <!-- monthly -->
                             {% for i in monthly %}
                             <tr class="text-center" id="monthly">
                                 <td>{{ i.created_on }}</td>
@@ -180,7 +189,7 @@
                                 <td> {{i.location}}</td>
                                 <td>
                                     {% if request.user.is_superuser %}
-                                    <select name="{{i.id}}" id="id_schedule_status">
+                                    <select name="{{ i.id }}" id="id_schedule_status">
                                         {% if i.status == 'Pending' %}
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
@@ -203,6 +212,12 @@
                                         <option value="Approved">Approved</option>
                                         {% endif %}
                                     </select> {% else %} {{ i.status }} {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'changeScheduleStatus' i.id %}">Change Status</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'setAmountforScheduleTrip' i.id %}">Set amount</a>
                                 </td>
                                 <td>
                                     {% if i.user.has_membership %} Yes {% else %} No {% endif %}
@@ -240,6 +255,8 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Status</th>
+                                <th>Change Status</th>
+                                <th>Set Amount</th>
                                 <th>Has Membership?</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -258,7 +275,7 @@
                                 <td> {{i.location}}</td>
                                 <td>
                                     {% if request.user.is_superuser %}
-                                    <select name="{{i.id}}" id="id_schedule_status">
+                                    <select name="{{ i.id }}" id="id_schedule_status">
                                         {% if i.status == 'Pending' %}
                                         <option value="Pending">Pending</option>
                                         <option value="Approved">Approved</option>
@@ -281,6 +298,12 @@
                                         <option value="Approved">Approved</option>
                                         {% endif %}
                                     </select> {% else %} {{ i.status }} {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'changeScheduleStatus' i.id %}">Change Status</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'setAmountforScheduleTrip' i.id %}">Set amount</a>
                                 </td>
                                 <td>
                                     {% if i.user.has_membership %} Yes {% else %} No {% endif %}
@@ -306,6 +329,7 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
     function filtering(evt, filter) {
         var i, tabcontent, tablinks;
@@ -320,29 +344,5 @@
         document.getElementById(filter).style.display = "block";
         evt.currentTarget.className += " active";
     }
-</script>
-
-
-<script>
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
-
-<script>
-    $('#id_schedule_status').on('change', function(e) {
-        name = $('#id_schedule_status').attr('name')
-        $.ajax({
-            method: "POST",
-            url: '/api/schedule/status/change/' + name + '/',
-            data: {
-                val: this.value,
-            },
-            success: function(data) {
-                location.reload(true);
-            }
-        });
-
-    });
 </script>
 {% endblock %}

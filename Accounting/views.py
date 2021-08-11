@@ -307,6 +307,9 @@ class AcceptedSchedule(LoginRequiredMixin, View):
 
 class CompletedSchedule(LoginRequiredMixin, View):
     def get(self, request):
+        daily = ''
+        weekly = ''
+        monthly = ''
         title = "Completed Schedule"
         if self.request.user.is_superuser:
             daily = ScheduleModel.objects.filter(
@@ -986,3 +989,25 @@ def has_membership_or_not(request):
                 membership_user.renew_membership = False
                 membership_user.save()
     return HttpResponse('ok')
+
+
+def changeScheduleStatus(request,id):
+    data = get_object_or_404(ScheduleModel, id=id)
+    form = ScheduleStatus(instance=data)
+    if request.method == 'POST':
+        form = ScheduleStatus(request.POST,instance=data)
+        if form.is_valid():
+            form.save()
+            return redirect('trip_schedules')
+    return render(request,'Accounting/change_sch_status.html',{'form': form,'id': id})
+
+
+def setAmountforScheduleTrip(request,id):
+    data = get_object_or_404(ScheduleModel, id=id)
+    form = ScheduleAmount(instance=data)
+    if request.method == 'POST':
+        form = ScheduleAmount(request.POST,instance=data)
+        if form.is_valid():
+            form.save()
+            return redirect('trip_schedules')
+    return render(request,'Accounting/set_amount_schedule.html',{'form': form,'id': id})

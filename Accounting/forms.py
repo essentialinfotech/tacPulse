@@ -173,3 +173,20 @@ class PayrolDeductionFormView(forms.ModelForm):
             'authorized_by': forms.Select(attrs={'class': 'form-control','readonly': True}),
             'approver_comments': forms.TextInput(attrs={'class': 'form-control','readonly': True}),
         }
+
+
+class ScheduleStatus(forms.ModelForm):
+    class Meta:
+        model = ScheduleModel
+        fields = ['status']
+        widgets = {
+            'status': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+class ScheduleAmount(forms.ModelForm):
+    class Meta:
+        model = ScheduleModel
+        fields = ['amount']
+        widgets = {
+            'amount': forms.TextInput(attrs={'class': 'form-control'}),
+        }

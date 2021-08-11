@@ -223,15 +223,18 @@ def api_schedule_status_update(request, pk):
         val = request.POST.get('val')
         if val == 'Pending':
             data.status = 'Pending'
+            data.save()
         elif val == 'Approved':
             data.status = 'Approved'
+            data.save()
         elif val == 'Declined':
             data.status = 'Declined'
+            data.save()
             task = get_object_or_404(TaskModel, scheduled_task=pk)
             task.delete()
         else:
             data.status = 'Completed'
-        data.save()
+            data.save()
         return HttpResponse('Ok')
 
 

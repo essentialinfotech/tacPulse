@@ -123,6 +123,7 @@ class ScheduleModel(models.Model):
                             blank=True, null=True, default='Single')
     distance = models.CharField(max_length=100, blank=True, null=True)
     duration = models.CharField(max_length=100, blank=True, null=True)
+    amount = models.CharField(max_length=50,blank=True,null=True)
     assigned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 

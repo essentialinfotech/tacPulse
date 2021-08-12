@@ -1155,7 +1155,7 @@
                                                     <div id="map" class="mt-2"></div>
                                                 </div>
                                                 <label for="package_price">Reason</label>
-                                                <textarea name="reason" id="reason" cols="30" rows="10" class="textinput textInput form-control" style="resize: none;"></textarea>
+                                                <textarea name="reason" id="reason" cols="30" rows="10" class="textinput textInput form-control" style="resize: none;" required></textarea>
 
                                             </div>
                                             <div class="form-group col-md-6 mb-0">
@@ -2431,6 +2431,7 @@
                         function getLocation() {
                             if (navigator.geolocation) {
                                 navigator.geolocation.getCurrentPosition(showPosition);
+                                swal('Your current Location has been added.')
                             } else {
                                 x.innerHTML = "Geolocation is not supported by this browser.";
                             }

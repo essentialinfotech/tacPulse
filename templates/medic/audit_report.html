@@ -26,12 +26,6 @@
             </div>
             {% endif %}
             </a>
-            {% if request.user.is_user %}
-            <div class="row">
-                <div class="col-md-10"></div>
-                <div class="col-md-2"><a href="{% url 'create_order'%}" class="btn btn-facebook">New Order</a></div>
-            </div>
-            {% endif %}
             <div class="table-responsive">
                 <table id="data-table" class="display table-hover table text-center">
                     <thead>
@@ -88,14 +82,4 @@
         </div>
     </div>
 </div>
-<!-- <script type="text/javascript">
-    function contentDisp() {
-        $.ajax({
-            url: '/' + 'static/file/style.pdf',
-            success: function(data) {
-                $("#contentArea").html(data);
-            }
-        });
-    }
-</script> -->
 {% endblock %}

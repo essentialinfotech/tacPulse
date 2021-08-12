@@ -156,6 +156,7 @@ class ScheduleTrip(LoginRequiredMixin, View):
         form = ScheduleModelForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Schedule request sent')
             return redirect('trip_schedules')
 
         return render(request, 'Accounting/shcedule_trip.html', {'form': form})

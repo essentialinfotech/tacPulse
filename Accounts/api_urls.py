@@ -23,4 +23,5 @@ urlpatterns = [
     path('assessments/list/', AssessmentList.as_view(), name = 'assessments_list_api'),
     path('chat/', SendMessage.as_view(), name = 'SendMessage_api'),
     path('chat/list/', MessageList.as_view(), name = 'MessageList_api'),
+    path('user/list/', UserList.as_view(), name = 'UserList_api'),
 ]

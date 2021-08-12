@@ -167,6 +167,16 @@ class MessageList(generics.ListAPIView):
         )
         serializer = self.get_serializer(my_messages, many = True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class UserList(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def get(self,request):
+        users = User.objects.all()
+        serializer = self.get_serializer(users, many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
         
 
 

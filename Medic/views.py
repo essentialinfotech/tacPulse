@@ -341,6 +341,7 @@ def hospital_transfer(request):
         form = HospitalTransferForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Tranfer request sent')
             return redirect('hospital_transfer_report')
     return render(request, 'medic/hospital_transfer.html', {'form': form})
 

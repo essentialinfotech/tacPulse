@@ -680,7 +680,7 @@ def del_faq(request,id):
     return redirect('faq')
 
 @login_required
-@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def case_notes(request):
     cases = CaseNote.objects.all().order_by('-id')
     context = {

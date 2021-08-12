@@ -164,7 +164,7 @@ class MessageList(generics.ListAPIView):
     def get(self,request):
         my_messages = Message.objects.filter(
             Q(sender = request.user) | Q(receiver = request.user)
-        )
+        ).order_by('sent')
         serializer = self.get_serializer(my_messages, many = True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 

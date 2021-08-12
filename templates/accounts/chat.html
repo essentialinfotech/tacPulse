@@ -12,6 +12,7 @@
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
     <link rel="stylesheet" href="{% static 'chat.css' %}">
+    <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
 </head>
 
 <body>
@@ -42,8 +43,12 @@
                 </ul>
             </div>
             <div id="bottom-bar">
-                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span><a href="{% url 'profile' request.user.id %}" style="color: white;">My Profile</a></span></button>
-                <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span><a href="{% url 'logout'  %}" style="color: white;">Logout</a></span></button>
+                <a href="{% url 'profile' request.user.id %}" style="color: white;">
+                    <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>My Profile</span></button>
+                </a>
+                <a href="{% url 'logout' %}" style="color: white;">
+                    <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i>Logout</button>
+                </a>
             </div>
         </div>
         <div class="content">
@@ -60,12 +65,12 @@
                 <ul>
                     {% for i in messages %} {% if i.sender.username == request.user.username %}
                     <li class="sent">
-                        <img src="{{ i.sender.imageURL }}" alt="" />
+                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
                         <p style="margin-bottom: 20px;word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{ i.sent }}</small><br>{{ i.message }}</p>
                     </li>
                     {% else %}
                     <li class="replies">
-                        <img src="{{ i.sender.imageURL }}" alt="" />
+                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
                         <p style="margin-bottom: 20px;word-break: break-all;"><small id="show-name">{{ i.sender.first_name|title }}</small id="time-show">{{ i.sent }}</small><br> {{ i.message }}
                         </p>
                     </li>

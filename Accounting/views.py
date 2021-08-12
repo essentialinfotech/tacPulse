@@ -819,7 +819,6 @@ def membership_noti_mark_as_seen(request,id):
 
 
 @login_required
-@user_passes_test(has_perm_user,REDIRECT_FIELD_NAME)
 def user_membership_renewal_noti(request):
     data = []
     membership = MembershipModel.objects.filter(user_id = request.user.id)

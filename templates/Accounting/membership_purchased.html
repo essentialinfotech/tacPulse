@@ -44,22 +44,9 @@
                                             <td>{{ i.membership_date|date }}</td>
                                             <td>{{ i.membership_end|date }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                                    View
-                                                  </button>
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body">
+                                              
                                                                 {{ i.package.description|title }}
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                       
                                             </td>
                                         </tr>
                                         {% endfor %}

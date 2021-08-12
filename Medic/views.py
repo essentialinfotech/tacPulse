@@ -758,8 +758,9 @@ def noti_length(request):
         membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
         total_noti_length = panic_noti + membership_noti
     if request.user.is_staff and not request.user.is_superuser:
+        renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
-        total_noti_length = panic_noti
+        total_noti_length = panic_noti + renewal_noti
     if not request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
         total_noti_length = renewal_noti

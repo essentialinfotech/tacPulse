@@ -47,3 +47,4 @@ __pycache__/
 .env
 db.sqlite3
 migrations
+media

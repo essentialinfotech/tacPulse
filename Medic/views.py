@@ -628,7 +628,7 @@ def invoice_pdf_property(request,id):
     pdf = render_to_pdf(template, context)
     if pdf:
         response = HttpResponse(pdf, content_type="application/pdf")
-        content = "inline; filename=invoice.pdf"
+        content = "inline; filename=vaccine.pdf"
         response['Content-Disposition']=content
         return response
     return HttpResponse("not found")

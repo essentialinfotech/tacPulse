@@ -218,6 +218,45 @@
 
                             {% if request.user.is_superuser %}
                             <li class="menu-section">
+                                <h4 class="menu-text">Our Blogs</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+									<i class="fas fa-blog"></i>
+										</span>
+                                    <span class="menu-text">Blog</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'create_blog' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Create a blog post</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'blog_list' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Blogs</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+
+
+
+                            <li class="menu-section">
                                 <h4 class="menu-text">Inspection</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
@@ -473,6 +512,29 @@
 
                                 </a>
                             </li>
+
+                            <li class="menu-item" aria-haspopup="true"  data-menu-toggle="hover">
+                                <a href="{% url 'ambulance_request'%}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                    <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Medical Dispatch</span>
+                                </a>
+                            </li>
+
+
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                    <i class="fas fa-book"></i>
+                                    </span>
+                                    <span class="menu-text">Incident Report</span>
+                                </a>
+                            </li>
+
+
 
 
                             <li class="menu-section">
@@ -772,7 +834,7 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'ambulance_request'%}" class="menu-link">
+                                            <a href="" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -1192,7 +1254,9 @@
                 <div class="col-md-12">
                     {% if request.user.is_superuser %}
                     <button class="form-control btn btn-danger mb-2" id="pn">Panic</button>
-                    <button class="form-control btn btn-success mb-5" id="membership">Membership</button> {% endif %}
+                    <button class="form-control btn btn-success mb-2" id="membership">Membership</button> 
+                    <button class="form-control btn btn-success mb-5" id="transfer_h">Hospital Transfer</button>
+                    {% endif %}
                 </div>
 
                 <div id="noti_div" class="text-dark" style="display: none;">
@@ -1206,6 +1270,16 @@
                 <div id="renewal_noti" class="text-dark">
 
                 </div>
+
+                {% if request.user.is_staff %}
+                <div id="h_transfer_noti" class="text-dark" style="display: none;">
+
+                </div>
+                {% else %}
+                <div id="h_transfer_noti" class="text-dark">
+
+                </div>
+                {% endif %}
 
                 <!--end::Item-->
             </div>
@@ -2095,6 +2169,33 @@
                     }
                 })
 
+
+                // hospital transfer noti
+                $.ajax({
+                    method: "GET",
+                    url: "/hospital/transfer/notifications/",
+                    success: function(data) {
+                        $("#h_transfer_noti").empty();
+                        $.each(data, function(key, value) {
+                            var first_name = value.first_name;
+                            var last_name = value.last_name;
+                            var text = value.text;
+                            var created = value.created.substring(0, 10);
+                            var noti_id = value.noti_id;
+                            var ambulance_req_id = value.ambulance_req_id;
+                            var details = "<a href='/hospital/transfer/details/" + ambulance_req_id + "/'  id='aTag'>Details</a>";
+                            var mark_seen = "<a href='/hospital_transfer_noti_mark_seen/" + noti_id + "/'  id='mark_seen'>Mark as seen</a>";
+                             
+                            $("#h_transfer_noti").append(
+                                "<div>" + first_name + " <br> " + text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
+                            );
+                            
+                        })
+                    }
+                })
+
+
+
                 // noti length
                 $.ajax({
                     method: "GET",
@@ -2142,7 +2243,7 @@
                                 }
                             })
 
-            }, 15000)
+            }, 10000)
         </script>
 
 
@@ -2153,10 +2254,14 @@
             var notidiv = document.getElementById('noti_div');
             var panic_noti = document.getElementById('panic_noti');
 
+            var transfer_h = document.getElementById('transfer_h')
+            var h_transfer_noti = document.getElementById('h_transfer_noti')
+
             mem_btn.addEventListener('click', (event) => {
                 if (notidiv.style.display === 'none') {
                     notidiv.style.display = 'block';
                     panic_noti.style.display = 'none';
+                    h_transfer_noti.style.display = 'none';
                 }
             })
 
@@ -2164,6 +2269,15 @@
                 if (panic_noti.style.display === 'none') {
                     panic_noti.style.display = 'block';
                     notidiv.style.display = 'none';
+                    h_transfer_noti.style.display = 'none';
+                }
+            })
+
+            transfer_h.addEventListener('click', (event) => {
+                if (h_transfer_noti.style.display === 'none') {
+                    h_transfer_noti.style.display = 'block';
+                    notidiv.style.display = 'none';
+                    panic_noti.style.display = 'none';
                 }
             })
         </script>

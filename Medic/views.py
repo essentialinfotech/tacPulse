@@ -25,6 +25,8 @@ from django.views.generic import UpdateView, DetailView
 from rest_framework.generics import ListAPIView
 from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
+import base64
+from django.core.files.base import ContentFile
 
 from Accounts.decorators import \
                                  user_passes_test,REDIRECT_FIELD_NAME,\
@@ -215,17 +217,77 @@ def del_feedback(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-class AmbulanceRequest(View):
+# this is for incident report by dispatch not a a form submitted by user
+def ambulance_request(request):
+    form = EmergencyMedDisIncidentReportForm()
+    senior_form = SeniorForm()
+    scribe_form = ScribeForm()
+    assist_1_form = Assist01Form()
+    assist_2_form = Assist02Form()
 
-    def get(self, request):
-        return render(request, 'medic/ambulance_request.html')
+    if request.method == 'POST':
+        form = EmergencyMedDisIncidentReportForm(request.POST,request.FILES)
+        senior_form = SeniorForm(request.POST)
+        scribe_form = ScribeForm(request.POST)
+        assist_1_form = Assist01Form(request.POST)
+        assist_2_form = Assist02Form(request.POST)
 
-    def post(self, request):
-        form = AmbulanceModelForm(request.POST)
+        main_form = request.POST.get('main_form')
+
+        if senior_form.is_valid():
+            senior_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if scribe_form.is_valid():
+            scribe_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_1_form.is_valid():
+            assist_1_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_2_form.is_valid():
+            assist_2_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
         if form.is_valid():
-            form.save()
-            return redirect('ambulance_request_report')
-        return render(request, 'medic/ambulance_request.html')
+            if main_form is not None:
+                # converting webcam image
+                photo = request.POST.get('photo')
+                format, imgstr = photo.split(';base64,') 
+                ext = format.split('/')[-1] 
+                photo = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                # converting signature canvas from text string to image
+                signature = request.POST.get('signature')
+                format, imgstr = signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                instance = form.save(commit=False)
+                instance.photo = photo
+                instance.signature = signature
+                instance.user = request.user
+                instance.save()
+                return redirect('fill_vehicle_details', id=instance.id)
+
+    context = {
+        'senior_form': senior_form,
+        'scribe_form': scribe_form,
+        'assist_1_form': assist_1_form,
+        'assist_2_form': assist_2_form,
+        'form': form,
+        }
+    return render(request, 'medic/ambulance_request.html',context)
+
+
+def fill_vehicle_details(request,id):
+    incident = AmbulanceModel.objects.filter(id = id)
+    context = {
+        'incident': incident,
+    }
+    return render(request,'medic/vehicle_detail_for_incident.html',context)
 
 
 class AmbulanceRequestReport(LoginRequiredMixin, View):
@@ -756,14 +818,19 @@ def noti_length(request):
     if request.user.is_superuser:
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
         membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
-        total_noti_length = panic_noti + membership_noti
+        h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).count()
+        total_noti_length = panic_noti + membership_noti + h_transfer_noti
+
     if request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
+        h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False)
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
-        total_noti_length = panic_noti + renewal_noti
+        total_noti_length = panic_noti + renewal_noti + h_transfer_noti
+
     if not request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
-        total_noti_length = renewal_noti
+        h_transfer_noti = HospitalTransferNoti.objects.filter(noti_for__requested_by = request.user,mark_read_user = False).count()
+        total_noti_length = renewal_noti + h_transfer_noti
     data = {
         'total_noti_length': total_noti_length,
     }
@@ -985,3 +1052,86 @@ def audit_delete(request,id):
     obj.delete()
     messages.success(request,'Audit Deleted')
     return redirect('audit_report')
+
+
+def create_blog(request):
+    form = BlogForm()
+    if request.method == 'POST':
+        form = BlogForm(request.POST,request.FILES)
+        instance = form.save(commit=False)
+        instance.author = request.user
+        instance.save()
+        messages.success(request,'Post Created')
+        return redirect('blog_list')
+    context = {
+        'form': form,
+    }
+    return render(request,'medic/create_blog.html',context)
+
+
+def blog_list(request):
+    blogs = Blog.objects.all().order_by('-id')
+    context = {
+        'blogs': blogs,
+    }
+    return render(request,'medic/all_blogs.html',context)
+
+
+def single_blog(request,id):
+    blog = Blog.objects.filter(id = id)
+    context = {
+        'blog': blog,
+    }
+    return render(request,'medic/single_blog.html',context)
+
+
+@login_required
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def Ambulance_request_noti_for_admin_dispatch(request):
+    data = []
+    noti = AmbulanceNoti.objects.filter(mark_read_admin = False).order_by('-id')
+    for i in noti:
+        prefetch = {
+            'first_name': i.noti_for.user.first_name,
+            'last_name': i.noti_for.user.last_name,
+            'text': i.text,
+            'mark_read_admin': i.mark_read_admin,
+            'created': i.created,
+            'noti_id': i.id,
+            'ambulance_req_id': i.noti_for.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+
+@login_required
+def hospital_transfer_noti_for_admin_dispatch(request):
+    data = []
+    if request.user.is_staff:
+        noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).order_by('-id')
+    else:
+        noti = HospitalTransferNoti.objects.filter(noti_for__requested_by = request.user,mark_read_user = False).order_by('-id')
+    for i in noti:
+        prefetch = {
+            'first_name': i.noti_for.requested_by.first_name,
+            'last_name': i.noti_for.requested_by.last_name,
+            'text': i.text,
+            'mark_read_admin': i.mark_read_admin,
+            'created': i.created,
+            'noti_id': i.id,
+            'ambulance_req_id': i.noti_for.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+
+@login_required
+def h_transfer_noti_mark_seen(request,id):
+    obj = HospitalTransferNoti.objects.get(id=id)
+    if request.user.is_staff:
+        obj.mark_read_admin = True
+        obj.save()
+    else:
+        obj.mark_read_user = True
+        obj.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

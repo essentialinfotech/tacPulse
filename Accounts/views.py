@@ -37,6 +37,13 @@ def regex_validation(number):
         return False
 
 
+def landing(request):
+    blogs = Blog.objects.all()[:2]
+    context = {
+        'blogs': blogs,
+    }
+    return render(request,'landing/landing.html', context)
+
 # Create your views here.
 @login_required
 def dashboard(request):

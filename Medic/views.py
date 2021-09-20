@@ -985,3 +985,34 @@ def audit_delete(request,id):
     obj.delete()
     messages.success(request,'Audit Deleted')
     return redirect('audit_report')
+
+
+def create_blog(request):
+    form = BlogForm()
+    if request.method == 'POST':
+        form = BlogForm(request.POST,request.FILES)
+        instance = form.save(commit=False)
+        instance.author = request.user
+        instance.save()
+        messages.success(request,'Post Created')
+        return redirect('blog_list')
+    context = {
+        'form': form,
+    }
+    return render(request,'medic/create_blog.html',context)
+
+
+def blog_list(request):
+    blogs = Blog.objects.all().order_by('-id')
+    context = {
+        'blogs': blogs,
+    }
+    return render(request,'medic/all_blogs.html',context)
+
+
+def single_blog(request,id):
+    blog = Blog.objects.filter(id = id)
+    context = {
+        'blog': blog,
+    }
+    return render(request,'medic/single_blog.html',context)

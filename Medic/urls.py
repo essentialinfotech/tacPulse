@@ -79,6 +79,9 @@ urlpatterns = [
      path('delte/audit/<hashid:id>/', audit_delete, name = 'audit_delete'),
      path('editing/audit/<hashid:id>/', audit_edit, name = 'audit_edit'),
      path('individual/occurrence/details/<hashid:id>/', occurrence_details, name = 'occurrence_details'),
+     path('create/blog/post/', create_blog, name = 'create_blog'),
+     path('our/blogs/', blog_list, name = 'blog_list'),
+     path('blog/detail/<int:id>/', single_blog, name = 'single_blog'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

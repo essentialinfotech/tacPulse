@@ -1,0 +1,94 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Create Blog</h3>
+                    </div>
+                </div>
+            </div>
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-custom mt-5 p-10">
+                        <form action="{% url 'create_blog' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group" style="width: 30%;">
+                                <label for="title"><h6>Title</h6></label>
+                                {{ form.title }}
+                            </div>
+
+                            <div class="form-group" style="width: 70%;">
+                                <label for="title"><h6>Post</h6></label>
+                                {{ form.post }}
+                            </div>
+
+                            <div class="form-group" style="width: 70%;">
+                                <label for="title"><h6>Image</h6></label> <br>
+                                <input type="file" name="image" id="image">
+                            </div>
+
+                            <div id="preview"></div>
+
+                            <button type="submit" class="btn btn-success">Publish Post</button>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImages() {
+        var preview = document.querySelector('#preview');
+        if (this.files) {
+            [].forEach.call(this.files, readAndPreview);
+        }
+
+        function readAndPreview(file) {
+            // Make sure `file.name` matches our extensions criteria
+            if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                return alert(file.name + " is not an image");
+            } // else...
+
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                var image = new Image();
+                image.classList.add("img-thumbnail");
+                image.classList.add("ml-2");
+                image.classList.add("mb-2");
+                image.height = 100;
+                image.width = 200;
+                image.title = file.name;
+                image.src = this.result;
+                preview.appendChild(image);
+            });
+            reader.readAsDataURL(file);
+        }
+    }
+    document.querySelector('#image').addEventListener("change", previewImages);
+</script>
+
+{% endblock %}

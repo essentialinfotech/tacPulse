@@ -222,6 +222,25 @@ class HospitalTransferModel(models.Model):
         return f"Transferred to {self.target_hos}"
 
 
+class Blog(models.Model):
+    author = models.ForeignKey(User,blank=True,null=True,on_delete=models.CASCADE)
+    title = models.CharField(max_length=100,blank=True,null=True)
+    post = models.TextField()
+    image = models.FileField(upload_to='Blogs',blank=True,null=True)
+    publish = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
+
 
 
 

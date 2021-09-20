@@ -218,6 +218,47 @@
 
                             {% if request.user.is_superuser %}
                             <li class="menu-section">
+                                <h4 class="menu-text">Our Blogs</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+									<i class="fas fa-blog"></i>
+										</span>
+                                    <span class="menu-text">Blog</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'create_blog' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Create a blog post</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Blogs</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+
+
+
+
+
+                            <li class="menu-section">
                                 <h4 class="menu-text">Inspection</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>

@@ -756,14 +756,19 @@ def noti_length(request):
     if request.user.is_superuser:
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
         membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
-        total_noti_length = panic_noti + membership_noti
+        h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).count()
+        total_noti_length = panic_noti + membership_noti + h_transfer_noti
+
     if request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
+        h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False)
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
-        total_noti_length = panic_noti + renewal_noti
+        total_noti_length = panic_noti + renewal_noti + h_transfer_noti
+
     if not request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
-        total_noti_length = renewal_noti
+        h_transfer_noti = HospitalTransferNoti.objects.filter(noti_for__requested_by = request.user,mark_read_user = False).count()
+        total_noti_length = renewal_noti + h_transfer_noti
     data = {
         'total_noti_length': total_noti_length,
     }
@@ -1016,3 +1021,55 @@ def single_blog(request,id):
         'blog': blog,
     }
     return render(request,'medic/single_blog.html',context)
+
+
+@login_required
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def Ambulance_request_noti_for_admin_dispatch(request):
+    data = []
+    noti = AmbulanceNoti.objects.filter(mark_read_admin = False).order_by('-id')
+    for i in noti:
+        prefetch = {
+            'first_name': i.noti_for.user.first_name,
+            'last_name': i.noti_for.user.last_name,
+            'text': i.text,
+            'mark_read_admin': i.mark_read_admin,
+            'created': i.created,
+            'noti_id': i.id,
+            'ambulance_req_id': i.noti_for.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+
+@login_required
+def hospital_transfer_noti_for_admin_dispatch(request):
+    data = []
+    if request.user.is_staff:
+        noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).order_by('-id')
+    else:
+        noti = HospitalTransferNoti.objects.filter(noti_for__requested_by = request.user,mark_read_user = False).order_by('-id')
+    for i in noti:
+        prefetch = {
+            'first_name': i.noti_for.requested_by.first_name,
+            'last_name': i.noti_for.requested_by.last_name,
+            'text': i.text,
+            'mark_read_admin': i.mark_read_admin,
+            'created': i.created,
+            'noti_id': i.id,
+            'ambulance_req_id': i.noti_for.id,
+        }
+        data.append(prefetch)
+    return JsonResponse(data,safe=False)
+
+
+@login_required
+def h_transfer_noti_mark_seen(request,id):
+    obj = HospitalTransferNoti.objects.get(id=id)
+    if request.user.is_staff:
+        obj.mark_read_admin = True
+        obj.save()
+    else:
+        obj.mark_read_user = True
+        obj.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

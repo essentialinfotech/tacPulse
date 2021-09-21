@@ -11,6 +11,7 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
 body {
   margin: 0;
@@ -70,7 +71,8 @@ body {
 </style>
 </head>
 <body>
-    
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v12.0" nonce="LQLIAC6Z"></script>
 
     <div class="topnav" id="myTopnav">
         <a href="{% url 'landing' %}" class="active">Home</a>
@@ -104,6 +106,7 @@ body {
                     <p style="margin-top: 7px!important;">{{ i.created }}</p>
                 </div>
             </div>
+            <div class="fb-like" data-href="http://127.0.0.1:8000/blog/detail/{{ i.id }}" data-width=""  data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
         {% endfor %}
         </div>
     </div>

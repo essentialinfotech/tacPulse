@@ -15,3 +15,5 @@ admin.site.register(FAQ),
 admin.site.register(CaseNote)
 admin.site.register(HospitalTransferModel)
 admin.site.register(Blog)
+admin.site.register(AmbulanceNoti)
+admin.site.register(HospitalTransferNoti)

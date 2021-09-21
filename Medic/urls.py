@@ -40,7 +40,7 @@ urlpatterns = [
          hospital_transfer, name='hospital_transfer'),
     path('hospital/transfer/up/<hashid:pk>/',
          update_hospital_request, name='update_hospital_request'),
-    path('hospital/transfer/details/<hashid:pk>/',
+    path('hospital/transfer/details/<int:pk>/',
          details_hospital_request, name='details_hospital_request'),
     path('hospital/transfer/status/<hashid:pk>/',
          hospital_transfered, name='hospital_transfered'),
@@ -82,6 +82,9 @@ urlpatterns = [
      path('create/blog/post/', create_blog, name = 'create_blog'),
      path('our/blogs/', blog_list, name = 'blog_list'),
      path('blog/detail/<int:id>/', single_blog, name = 'single_blog'),
+     path('ambulance/requests/notifications/', Ambulance_request_noti_for_admin_dispatch, name = 'Ambulance_request_noti_for_admin_dispatch'),
+     path('hospital/transfer/notifications/', hospital_transfer_noti_for_admin_dispatch, name = 'hospital_transfer_noti_for_admin_dispatch'),
+     path('hospital_transfer_noti_mark_seen/<int:id>/', h_transfer_noti_mark_seen, name = 'h_transfer_noti_mark_seen'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -54,6 +54,13 @@ body {
   }
 }
 
+@media screen and (max-width: 886px) {
+ #img{
+   height: 150px;
+   width: 200px;
+ }
+}
+
 @media screen and (max-width: 600px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
@@ -97,7 +104,7 @@ body {
                 <div class="text-left">
                     <h4>{{ i.title|title }}</h4>
                     {% if i.image %}
-                        <a href="{{ i.imageURL }}"><img src="{{ i.imageURL }}" class="img-thumbnail"></a>
+                        <a href="{{ i.imageURL }}"><img src="{{ i.imageURL }}" id="img" height="250px" width="450px"></a>
                     {% endif %}
                     <p style="margin-top: 15px!important;">{{ i.post|title}}</p>
                     <p style="margin-top: 7px!important;">{{ i.created }}</p>

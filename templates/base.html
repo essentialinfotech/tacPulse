@@ -242,7 +242,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="" class="menu-link">
+                                            <a href="{% url 'blog_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
@@ -253,8 +253,6 @@
                                     </ul>
                                 </div>
                             </li>
-
-
 
 
 
@@ -514,6 +512,29 @@
 
                                 </a>
                             </li>
+
+                            <li class="menu-item" aria-haspopup="true"  data-menu-toggle="hover">
+                                <a href="{% url 'ambulance_request'%}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                    <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Medical Dispatch</span>
+                                </a>
+                            </li>
+
+
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                    <i class="fas fa-book"></i>
+                                    </span>
+                                    <span class="menu-text">Incident Report</span>
+                                </a>
+                            </li>
+
+
 
 
                             <li class="menu-section">
@@ -813,7 +834,7 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'ambulance_request'%}" class="menu-link">
+                                            <a href="" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>

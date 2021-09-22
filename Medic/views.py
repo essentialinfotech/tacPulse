@@ -25,6 +25,8 @@ from django.views.generic import UpdateView, DetailView
 from rest_framework.generics import ListAPIView
 from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
+import base64
+from django.core.files.base import ContentFile
 
 from Accounts.decorators import \
                                  user_passes_test,REDIRECT_FIELD_NAME,\
@@ -215,17 +217,77 @@ def del_feedback(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-class AmbulanceRequest(View):
+# this is for incident report by dispatch not a a form submitted by user
+def ambulance_request(request):
+    form = EmergencyMedDisIncidentReportForm()
+    senior_form = SeniorForm()
+    scribe_form = ScribeForm()
+    assist_1_form = Assist01Form()
+    assist_2_form = Assist02Form()
 
-    def get(self, request):
-        return render(request, 'medic/ambulance_request.html')
+    if request.method == 'POST':
+        form = EmergencyMedDisIncidentReportForm(request.POST,request.FILES)
+        senior_form = SeniorForm(request.POST)
+        scribe_form = ScribeForm(request.POST)
+        assist_1_form = Assist01Form(request.POST)
+        assist_2_form = Assist02Form(request.POST)
 
-    def post(self, request):
-        form = AmbulanceModelForm(request.POST)
+        main_form = request.POST.get('main_form')
+
+        if senior_form.is_valid():
+            senior_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if scribe_form.is_valid():
+            scribe_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_1_form.is_valid():
+            assist_1_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_2_form.is_valid():
+            assist_2_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
         if form.is_valid():
-            form.save()
-            return redirect('ambulance_request_report')
-        return render(request, 'medic/ambulance_request.html')
+            if main_form is not None:
+                # converting webcam image
+                photo = request.POST.get('photo')
+                format, imgstr = photo.split(';base64,') 
+                ext = format.split('/')[-1] 
+                photo = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                # converting signature canvas from text string to image
+                signature = request.POST.get('signature')
+                format, imgstr = signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                instance = form.save(commit=False)
+                instance.photo = photo
+                instance.signature = signature
+                instance.user = request.user
+                instance.save()
+                return redirect('fill_vehicle_details', id=instance.id)
+
+    context = {
+        'senior_form': senior_form,
+        'scribe_form': scribe_form,
+        'assist_1_form': assist_1_form,
+        'assist_2_form': assist_2_form,
+        'form': form,
+        }
+    return render(request, 'medic/ambulance_request.html',context)
+
+
+def fill_vehicle_details(request,id):
+    incident = AmbulanceModel.objects.filter(id = id)
+    context = {
+        'incident': incident,
+    }
+    return render(request,'medic/vehicle_detail_for_incident.html',context)
 
 
 class AmbulanceRequestReport(LoginRequiredMixin, View):

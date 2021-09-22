@@ -82,4 +82,92 @@ class BlogForm(forms.ModelForm):
                 'title': forms.TextInput(attrs={'class': 'form-control'}),
                 'post': forms.Textarea(attrs={'class': 'form-control'}),
             }
+
+
+class EmergencyMedDisIncidentReportForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EmergencyMedDisIncidentReportForm, self).__init__(*args, **kwargs)
+        instance = kwargs.pop('instance', User)
+        self.fields["name_of_dispatcher"].queryset = User.objects.filter(is_superuser=False,is_staff = True)
+        
+    class Meta:
+        model = AmbulanceModel
+        fields = '__all__'
+        widgets = {
+                'run_id': forms.TextInput(attrs={'class': 'form-control'}),
+                'chief_complain': forms.Textarea(attrs={'class': 'form-control','required': True}),
+                'incident_category': forms.Select(attrs={'class': 'form-control'}),
+                'ppe_lvl': forms.Select(attrs={'class': 'form-control'}),
+                'pick_up_address': forms.TextInput(attrs={'class': 'form-control'}),
+                'billing_type': forms.Select(attrs={'class': 'form-control'}),
+                'billing_source': forms.Select(attrs={'class': 'form-control'}),
+                'authorization_number': forms.TextInput(attrs={'class': 'form-control'}),
+                'caller_name': forms.TextInput(attrs={'class': 'form-control'}),
+                'caller_number': forms.TextInput(attrs={'class': 'form-control'}),
+                'caller_company': forms.TextInput(attrs={'class': 'form-control'}),
+                'call_received_time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'time_call_posted_to_crew_on_whatsapp': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'crew_operational_status': forms.Select(attrs={'class': 'form-control'}),
+                'how_many_units_dispatched': forms.Select(attrs={'class': 'form-control'}),
+                'assigned_unit': forms.Select(attrs={'class': 'form-control'}),
+                'vehicle_total': forms.Select(attrs={'class': 'form-control'}),
+                'unit_reg': forms.TextInput(attrs={'class': 'form-control'}),
+                'senior': forms.Select(attrs={'class': 'form-control'}),
+                'assist01': forms.Select(attrs={'class': 'form-control'}),
+                'assist02': forms.Select(attrs={'class': 'form-control'}),
+                'loc': forms.Select(attrs={'class': 'form-control'}),
+                'service_notes': forms.Select(attrs={'class': 'form-control'}),
+                'scribe': forms.Select(attrs={'class': 'form-control'}),
+                'service_note_time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'service_note_description': forms.Textarea(attrs={'class': 'form-control'}),
+                'unit': forms.Select(attrs={'class': 'form-control'}),
+                'responding_address': forms.TextInput(attrs={'class': 'form-control'}),
+                'scene_address': forms.TextInput(attrs={'class': 'form-control'}),
+                'facility_address': forms.TextInput(attrs={'class': 'form-control'}),
+                'end_address': forms.TextInput(attrs={'class': 'form-control'}),
+                'patient': forms.Select(attrs={'class': 'form-control'}),
+                'p_priority': forms.Select(attrs={'class': 'form-control'}),
+                'p_lvl_of_care': forms.Select(attrs={'class': 'form-control'}),
+                'p_name': forms.TextInput(attrs={'class': 'form-control'}),
+                'p_medical_aid_plan_option': forms.TextInput(attrs={'class': 'form-control'}),
+                'p_medical_aid': forms.TextInput(attrs={'class': 'form-control'}),
+                'photos_and_other_choices': forms.Select(attrs={'class': 'form-control'}),
+                'senior_practitioner_csn': forms.TextInput(attrs={'class': 'form-control'}),
+                'name_of_dispatcher': forms.Select(attrs={'class': 'form-control'}),
+                'was_the_call_handed_over_to_another_dispatcher': forms.Select(attrs={'class': 'form-control'}),
+                'dispatch_special_notes': forms.Textarea(attrs={'class': 'form-control'}),
+            }
+
+
+class SeniorForm(forms.ModelForm):
+    class Meta:
+        model = Senior
+        fields = '__all__'
+        widgets = {
+                'senior_name': forms.TextInput(attrs={'class': 'form-control'}),
+            }
+
+class ScribeForm(forms.ModelForm):
+    class Meta:
+        model = Scribe
+        fields = '__all__'
+        widgets = {
+                'scribe_name': forms.TextInput(attrs={'class': 'form-control'}),
+            }
+
+class Assist01Form(forms.ModelForm):
+    class Meta:
+        model = Assist01
+        fields = '__all__'
+        widgets = {
+                'a1_name': forms.TextInput(attrs={'class': 'form-control'}),
+            }
+
+class Assist02Form(forms.ModelForm):
+    class Meta:
+        model = Assist02
+        fields = '__all__'
+        widgets = {
+                'a2_name': forms.TextInput(attrs={'class': 'form-control'}),
+            }
                 

@@ -17,7 +17,7 @@ urlpatterns = [
     path('create/occurrence/', occurrence_form, name='occurrence_form'),
     path('occurrence/report/', occurrence_report, name='occurrence_report'),
     path('panic/request/', panic_system, name='panic_system'),
-    path('ambulance/request/', AmbulanceRequest.as_view(),
+    path('emergency/medical/dispatch/incident/report/', ambulance_request,
          name='ambulance_request'),
     path('ambulance/request/report/', AmbulanceRequestReport.as_view(),
          name='ambulance_request_report'),
@@ -85,6 +85,7 @@ urlpatterns = [
      path('ambulance/requests/notifications/', Ambulance_request_noti_for_admin_dispatch, name = 'Ambulance_request_noti_for_admin_dispatch'),
      path('hospital/transfer/notifications/', hospital_transfer_noti_for_admin_dispatch, name = 'hospital_transfer_noti_for_admin_dispatch'),
      path('hospital_transfer_noti_mark_seen/<int:id>/', h_transfer_noti_mark_seen, name = 'h_transfer_noti_mark_seen'),
+     path('vehicle/details/<int:id>/', fill_vehicle_details, name = 'fill_vehicle_details'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -96,32 +96,32 @@ class Occurrence(models.Model):
         return str(self.occurrence_id)
 
 class Senior(models.Model):
-    name = models.CharField(max_length=500)
+    senior_name = models.CharField(max_length=500,blank=False,null=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.senior_name
 
 class Scribe(models.Model):
-    name = models.CharField(max_length=500)
+    scribe_name = models.CharField(max_length=500,blank=False,null=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.scribe_name
 
 class Assist01(models.Model):
-    name = models.CharField(max_length=500)
+    a1_name = models.CharField(max_length=500,blank=False,null=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.a1_name
 
 class Assist02(models.Model):
-    name = models.CharField(max_length=500)
+    a2_name = models.CharField(max_length=500,blank=False,null=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.a2_name
 
 class AmbulanceModel(models.Model):
     INCIDENT = [
@@ -383,8 +383,14 @@ class AmbulanceModel(models.Model):
         ('OTHER','OTHER')
     ]
 
+    WAS_THE_CALL_HANDED_OVER = [
+        ('YES','YES'),
+        ('NO','NO'),
+    ]
+
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     run_id = models.CharField(max_length=100, blank=False, null=False)
+    chief_complain = models.TextField(blank=True,null=True)
     incident_category = models.CharField(max_length=100, blank=False, null=False,choices=INCIDENT)
     ppe_lvl = models.CharField(max_length = 100, blank=True,null=True,choices=PPE_LEVEL)
     pick_up_address = models.CharField(max_length=500,blank=False,null=False)
@@ -395,7 +401,7 @@ class AmbulanceModel(models.Model):
     caller_name = models.CharField(max_length=200)
     caller_number = models.CharField(max_length=50)
     caller_company = models.CharField(max_length=200)
-    caller_company = models.TimeField()
+    call_received_time = models.TimeField()
     time_call_posted_to_crew_on_whatsapp = models.TimeField()
     crew_operational_status = models.CharField(max_length=200,choices=CREW_OPERATIONAL_STATUS)
     how_many_units_dispatched = models.CharField(max_length=50,choices=HOW_MANY_UNITS_DISPATCHED)
@@ -414,6 +420,7 @@ class AmbulanceModel(models.Model):
     service_note_description = models.TextField(blank=True,null=True)
 
     # location_details
+    unit = models.CharField(blank=True,null=True,max_length=200,choices=ASSIGNED_UNIT)
     responding_address = models.CharField(max_length=100,blank=True,null=True)
     scene_address = models.CharField(max_length=100,blank=True,null=True)
     facility_address = models.CharField(max_length=100,blank=True,null=True)
@@ -430,25 +437,31 @@ class AmbulanceModel(models.Model):
     # photos and other
     photos_and_other_choices = models.CharField(max_length=50,blank=True,null=True,choices=PHOTOS_OTHERS)
     photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
+    scene_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
+    unknown_person_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
+    other_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
+
+    # dispatcher certification
+    senior_practitioner_csn = models.CharField(max_length=50,blank=True,null=True)
+    name_of_dispatcher = models.ForeignKey(User,blank=True,null=True,on_delete=SET_NULL,related_name='dispatcher')
+    was_the_call_handed_over_to_another_dispatcher = models.CharField(max_length=20,blank=True,null=True,choices=WAS_THE_CALL_HANDED_OVER)
+    dispatch_special_notes = models.TextField(blank=True,null=True)
+    signature = models.FileField(upload_to='Signature',blank=True,null=True)
 
 
-    location = models.CharField(max_length=250, blank=False, null=False)
-    latitude = models.CharField(
-        max_length=100, blank=False, null=False, default='')
-    longitude = models.CharField(
-        max_length=100, blank=False, null=False, default='')
     assigned = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
+
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.location
+        return str(self.id)
 
 
 class Vehicles_count_with_info_for_ambulance_request(models.Model):
     vehicle_for = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
     vehicle_no = models.CharField(max_length=40,blank=True,null=True)
-    responding_1 = models.TimeField(blank=True,null=True)
+    responding = models.TimeField(blank=True,null=True)
     odo01 = models.PositiveIntegerField(null=True)
     on_scene = models.TimeField(null=True)
     odo2 = models.PositiveIntegerField(null=True)

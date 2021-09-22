@@ -1,6 +1,26 @@
-{% extends '../base.html' %}
-{% load static %}
-{% block content %}
+{% extends '../base.html' %} {% load static %} {% block content %}
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    textarea {
+        padding: 16px 20px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+</style>
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -17,60 +37,56 @@
                         <div class="col-md-12">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Senior? Scribe? Assist01? Assist02</button>
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Senior/Assist01/Assist02/Scribe</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Senior/Assist01/Assist02/Scribe</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                       <span aria-hidden="true">&times;</span>
                                     </button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <form method="POST" action="{% url 'ambulance_request' %}">
-                                        {% csrf_token %}
-                                      <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Senior Name:</label>
-                                        {{ senior_form.senior_name }}
-                                      </div>
-                                      <button type="submit" class="btn btn-primary">Add Value</button>
-                                    </form>
-        
-                                    <hr>
-        
-                                    <form method="POST" action="{% url 'ambulance_request' %}">
-                                        {% csrf_token %}
-                                      <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Assist01 Name:</label>
-                                        {{ assist_1_form.a1_name }}
-                                      </div>
-                                      <button type="submit" class="btn btn-primary">Add Value</button>
-                                    </form>
-                                    <hr>
-        
-        
-                                    <form method="POST" action="{% url 'ambulance_request' %}">
-                                        {% csrf_token %}
-                                      <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Assist02 Name:</label>
-                                        {{ assist_2_form.a2_name }}
-                                      </div>
-                                      <button type="submit" class="btn btn-primary">Add Value</button>
-                                    </form>
-                                    <hr>
-        
-                                    <form method="POST" action="{% url 'ambulance_request' %}">
-                                        {% csrf_token %}
-                                      <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Scribe Name:</label>
-                                        {{ scribe_form.scribe_name }}
-                                      </div>
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                      <button type="submit" class="btn btn-primary">Add Value</button>
-                                    </form>
-        
-                                  </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="{% url 'ambulance_request' %}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Senior Name:</label> {{ senior_form.senior_name }}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Add Value</button>
+                                            </form>
+
+                                            <hr>
+
+                                            <form method="POST" action="{% url 'ambulance_request' %}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Assist01 Name:</label> {{ assist_1_form.a1_name }}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Add Value</button>
+                                            </form>
+                                            <hr>
+
+
+                                            <form method="POST" action="{% url 'ambulance_request' %}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Assist02 Name:</label> {{ assist_2_form.a2_name }}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Add Value</button>
+                                            </form>
+                                            <hr>
+
+                                            <form method="POST" action="{% url 'ambulance_request' %}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Scribe Name:</label> {{ scribe_form.scribe_name }}
+                                                </div>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Add Value</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
                             </div>
                         </div>
                         <div>
@@ -95,391 +111,376 @@
             {% endif %}
             <form method="POST" action="{% url 'ambulance_request' %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="row">
+                <div class="row shadow p-3 mb-10 bg-white rounded">
+
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Call Intake Primary Phase</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Call Intake Primary Phase</h3>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group mt-2">
-                            <label for="run_id">Run ID</label>
-                            {{ form.run_id }}
+                            <label for="run_id">Run ID</label> {{ form.run_id }}
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
+
+                    <div class="col-md-6">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Incident Category</label>
-                            {{ form.incident_category }}
+                            <label for="c_complain">Incident Category</label> {{ form.incident_category }}
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
-                        <div class="form-group mt-2">
-                            <label for="c_complain">PPE Level</label>
-                            {{ form.ppe_lvl }}
-                        </div>
-                    </div>
-    
+
                     <div class="col-md-12">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Chief Complaint</label>
-                            {{ form.chief_complain }}
+                            <label for="c_complain">Chief Complaint</label> {{ form.chief_complain }}
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
+
+                    <div class="col-md-6">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Scene / Pick-Up Address</label>
-                            {{ form.pick_up_address }}
+                            <label for="c_complain">PPE Level</label> {{ form.ppe_lvl }}
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
+
+
+
+                    <div class="col-md-6">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Billing Type</label>
-                            {{ form.billing_type }}
+                            <label for="c_complain">Scene / Pick-Up Address</label> {{ form.pick_up_address }}
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
+
+                    <div class="col-md-6">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Billing Source</label>
-                            {{ form.billing_source }}
+                            <label for="c_complain">Billing Type</label> {{ form.billing_type }}
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
+
+                    <div class="col-md-6" id="blng_source" style="display: none;">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Billing Source</label> {{ form.billing_source }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" id="am_quoted" style="display: none;">
                         <div class="form-group mt-2">
                             <label for="c_complain">Amount Quoted</label>
                             <input type="number" name="amount_quoted" id="amount_quoted" class="form-control">
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
+
+                    <div class="col-md-6">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Authorization Number</label>
-                            {{ form.authorization_number }}
+                            <label for="c_complain">Authorization Number</label> {{ form.authorization_number }}
                         </div>
                     </div>
-    
+                </div>
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Call Intake Secondary Phase</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Call Intake Secondary Phase</h3>
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Caller Name & Surname</label>
-                            {{ form.caller_name }}
+                            <label for="c_complain">Caller Name & Surname</label> {{ form.caller_name }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Caller Number</label>
-                            {{ form.caller_number }}
+                            <label for="c_complain">Caller Number</label> {{ form.caller_number }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Caller Company</label>
-                            {{ form.caller_company }}
+                            <label for="c_complain">Caller Company</label> {{ form.caller_company }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Caller Received Time</label>
-                            {{ form.call_received_time }}
+                            <label for="c_complain">Caller Received Time</label> {{ form.call_received_time }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Time Call Posted to crew on whatsapp?</label>
-                            {{ form.time_call_posted_to_crew_on_whatsapp }}
+                            <label for="c_complain">Time Call Posted to crew on whatsapp?</label> {{ form.time_call_posted_to_crew_on_whatsapp }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Crew Operational Status</label>
-                            {{ form.crew_operational_status }}
+                            <label for="c_complain">Crew Operational Status</label> {{ form.crew_operational_status }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="how_many_units_dispatched">How Many Units Dispatched?</label>
-                            {{ form.how_many_units_dispatched }}
+                            <label for="how_many_units_dispatched">How Many Units Dispatched?</label> {{ form.how_many_units_dispatched }}
                         </div>
                     </div>
-    
+
+                </div>
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Crew & Vehicle</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Crew & Vehicle</h3>
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="assigned_unit">Assign Unit</label>
-                            {{ form.assigned_unit }}
+                            <label for="assigned_unit">Assign Unit</label> {{ form.assigned_unit }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="vehicle_total">Vehicle</label>
-                            {{ form.vehicle_total }}
+                            <label for="vehicle_total">Vehicle</label> {{ form.vehicle_total }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="vehicle_total">Unit REG#</label>
-                            {{ form.unit_reg }}
+                            <label for="vehicle_total">Unit REG#</label> {{ form.unit_reg }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="vehicle_total">Senior</label>
-                            {{ form.senior }}
+                            <label for="vehicle_total">Senior</label> {{ form.senior }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="vehicle_total">ASSIST01</label>
-                            {{ form.assist01 }}
+                            <label for="vehicle_total">ASSIST01</label> {{ form.assist01 }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="assist02">ASSIST02</label>
-                            {{ form.assist02 }}
+                            <label for="assist02">ASSIST02</label> {{ form.assist02 }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="loc">LoC</label>
-                            {{ form.loc }}
+                            <label for="loc">LoC</label> {{ form.loc }}
                         </div>
                     </div>
-    
-    
+
+                </div>
+
+                <div class="row shadow p-3 mb-7 bg-white rounded">
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Service notes</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Service notes</h3>
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="service_notes">Action</label>
-                            {{ form.service_notes }}
+                            <label for="service_notes">Action</label> {{ form.service_notes }}
                         </div>
                     </div>
-    
-    
+
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="scribe">Scribe</label>
-                            {{ form.scribe }}
+                            <label for="scribe">Scribe</label> {{ form.scribe }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="service_note_time">Time</label>
-                            {{ form.service_note_time }}
+                            <label for="service_note_time">Time</label> {{ form.service_note_time }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-12">
                         <div class="form-group mt-2">
-                            <label for="service_note_description">NOTE</label>
-                            {{ form.service_note_description }}
+                            <label for="service_note_description">NOTE</label> {{ form.service_note_description }}
                         </div>
                     </div>
-    
+
+                </div>
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Location Details</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Location Details</h3>
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="unit">Unit</label>
-                            {{ form.unit }}
+                            <label for="unit">Unit</label> {{ form.unit }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="responding_address">Responding Address</label>
-                            {{ form.responding_address }}
+                            <label for="responding_address">Responding Address</label> {{ form.responding_address }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="scene_address">Scene Address</label>
-                            {{ form.scene_address }}
+                            <label for="scene_address">Scene Address</label> {{ form.scene_address }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="facility_address">Facility Address</label>
-                            {{ form.facility_address }}
+                            <label for="facility_address">Facility Address</label> {{ form.facility_address }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="end_address">End Address</label>
-                            {{ form.end_address }}
+                            <label for="end_address">End Address</label> {{ form.end_address }}
                         </div>
                     </div>
-    
+
+                </div>
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Patient Information</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Patient Information</h3>
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="end_address">Patient</label>
-                            {{ form.patient }}
+                            <label for="end_address">Patient</label> {{ form.patient }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="end_address">Priority</label>
-                            {{ form.p_priority }}
+                            <label for="end_address">Priority</label> {{ form.p_priority }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="p_lvl_of_care">Level Of Care</label>
-                            {{ form.p_lvl_of_care }}
+                            <label for="p_lvl_of_care">Level Of Care</label> {{ form.p_lvl_of_care }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="p_name">Name & Surname</label>
-                            {{ form.p_name }}
+                            <label for="p_name">Name & Surname</label> {{ form.p_name }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="p_medical_aid_plan_option">Medical Aid Plan Option</label>
-                            {{ form.p_medical_aid_plan_option }}
+                            <label for="p_medical_aid_plan_option">Medical Aid Plan Option</label> {{ form.p_medical_aid_plan_option }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="p_medical_aid">Medical Aid</label>
-                            {{ form.p_medical_aid }}
+                            <label for="p_medical_aid">Medical Aid</label> {{ form.p_medical_aid }}
                         </div>
                     </div>
-    
+
+                </div>
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Photos & Other</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Photos & Other</h3>
                         </div>
                     </div>
-    
-                    <div class="col-md-12">
+
+                    <div class="col-md-10 mb-2">
                         <div class="form-group mt-2">
-                            <label for="photos_and_other_choices">Item</label>
-                            {{ form.photos_and_other_choices }}
+                            <label for="photos_and_other_choices">Item</label> <br>
+                            <select required class="form-control w-50 photos_and_other_choices" name="photos_and_other_choices" multiple="multiple" id="photos_and_other_choices">
+                                <option value="OTHER DOCUMENT">OTHER DOCUMENT</option>
+                                <option value="SCENE PHOTO">SCENE PHOTO</option>
+                                <option value="UNKNOWN PERSON">UNKNOWN PERSON</option>
+                                <option value="OTHER">OTHER</option>
+                            </select>
                         </div>
                     </div>
-    
-    
+
+
                     <div class="col-md-3">
                         <div class="form-group mt-2">
                             <label for="photo">Photo</label>
                             <div id="camera" style="height:auto;width:auto; text-align:left;"></div>
                             <!-- this is only a button the main image is creating within script down below the page -->
-                            <input class=" mb-2" type="button" value="Take a Snap" id="btPic" onclick="takeSnapShot()" /> 
-                            <input type="text" name="photo" id="photo_hidden" style="display: none;"> 
+                            <input class=" mb-2" type="button" value="Take a Snap" id="btPic" onclick="takeSnapShot()" />
+                            <input type="text" name="photo" id="photo_hidden" style="display: none;">
                             <p id="snapShot"></p>
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="form-group mt-2">
-                            <label for="senior_practitioner_csn">Extra Document/photo 1</label>
-                            <input class="form-control-file" type="file" name="scene_photo" id="scene_photo">
+                            <label for="senior_practitioner_csn">Scene photo</label>
+                            <input class="form-control-file" accept="image/*;capture=camera" type="file" name="scene_photo" id="scene_photo">
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="form-group mt-2">
-                            <label for="unknown_person_photo">Extra Document/photo 2</label>
-                            <input class="form-control-file" type="file" name="unknown_person_photo" id="unknown_person_photo">
+                            <label for="unknown_person_photo">Unknown Person Photo</label>
+                            <input class="form-control-file" accept="image/*;capture=camera" type="file" name="unknown_person_photo" id="unknown_person_photo">
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="form-group mt-2">
-                            <label for="other_photo">Extra Document/photo 1</label>
+                            <label for="other_photo">Other Document/photo</label>
                             <input class="form-control-file" type="file" name="other_photo" id="other_photo">
                         </div>
                     </div>
-    
-    
+
+                </div>
+
+                <div class="row shadow p-3 mb-10 bg-white rounded ">
                     <div class="col-md-12">
-                        <div class="text-center">
-                            <h3>Dispatcher Certification</h3>
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Dispatcher Certification</h3>
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="senior_practitioner_csn">Senior Practioner CSN#</label>
-                            {{ form.senior_practitioner_csn }}
+                            <label for="senior_practitioner_csn">Senior Practioner CSN#</label> {{ form.senior_practitioner_csn }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="name_of_dispatcher">Name Of Dispatcher</label>
-                            {{ form.name_of_dispatcher }}
+                            <label for="name_of_dispatcher">Name Of Dispatcher</label> {{ form.name_of_dispatcher }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="was_the_call_handed_over_to_another_dispatcher">Was the call handed over to another dispatcher?</label>
-                            {{ form.was_the_call_handed_over_to_another_dispatcher }}
+                            <label for="was_the_call_handed_over_to_another_dispatcher">Was the call handed over to another dispatcher?</label> {{ form.was_the_call_handed_over_to_another_dispatcher }}
                         </div>
                     </div>
-    
+
                     <div class="col-md-12">
                         <div class="form-group mt-2">
-                            <label for="dispatch_special_notes">Dispacth Special Notes</label>
-                            {{ form.dispatch_special_notes }}
+                            <label for="dispatch_special_notes">Dispacth Special Notes</label> {{ form.dispatch_special_notes }}
                         </div>
                     </div>
-     
+
                     <div class="col-md-12">
                         <div class="text-center">
                             <p>I, Undersigned, hereby declare the information provided to be comprehensive <br> and accurate, as to the best of my knowledge at the time of reporting.</p>
@@ -487,7 +488,7 @@
                             <canvas id="signature" width="auto" height="auto" style="border: 1px solid #ddd;"></canvas>
                             <br>
                             <!-- getting signature as image -->
-                            <input type="text" name="signature" id="signature_id" value="" style="display: none;"> 
+                            <input type="text" name="signature" id="signature_id" value="" style="display: none;">
 
                             <button class="btn btn-danger" type="button" id="clear-signature">Clear</button>
                             <button class="btn btn-info" type="button" id="save-signature">Save</button>
@@ -496,14 +497,21 @@
                     </div>
                 </div>
 
-                <input type="checkbox" required name="main_form" id="main_form">
-                <button type="submit" class="btn btn-success">Move Next</button>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <div style="border-radius: 0px!important;" class="input-group-text btn btn-success">
+                            <input type="checkbox" required name="main_form" id="main_form">
+                        </div>
+                    </div>
+                    <button type="submit" style="border-radius: 0px!important;" class="btn btn-success">Move Next</button>
+                </div>
+
+
             </form>
         </div>
     </div>
 </div>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 
@@ -518,8 +526,8 @@
     Webcam.attach('#camera');
 
     // SHOW THE SNAPSHOT & pass encoded value.
-    takeSnapShot = function () {
-        Webcam.snap(function (data_uri) {
+    takeSnapShot = function() {
+        Webcam.snap(function(data_uri) {
             var img = document.createElement('img');
             img.name = "photo";
             img.type = "file";
@@ -532,29 +540,82 @@
 
 
 <script>
-    jQuery(document).ready(function($){
-    
+    jQuery(document).ready(function($) {
         var canvas = document.getElementById("signature");
         var signaturePad = new SignaturePad(canvas);
         var saveButton = document.getElementById('save-signature');
-
-        $('#clear-signature').on('click', function(){
+        $('#clear-signature').on('click', function() {
             signaturePad.clear();
         });
-
-
-        saveButton.addEventListener('click', function (event) {
+        saveButton.addEventListener('click', function(event) {
             var data = signaturePad.toDataURL();
-            document.getElementById('signature_image').innerHTML =  '<img type="file" src="' + data + '" name="signature" />';
+            document.getElementById('signature_image').innerHTML = '<img type="file" src="' + data + '" name="signature" />';
             document.getElementById("signature_id").value = signaturePad.toDataURL();
-
         });
-    
-    
-});
+    });
 </script>
 
+<script>
+    var amount_quoted = document.getElementById('amount_quoted')
+    var id_billing_type = document.getElementById('id_billing_type')
+    var id_billing_source = document.getElementById('id_billing_source')
 
+    var billing_source_hide = document.getElementById('blng_source')
+    var am_quoted = document.getElementById('am_quoted')
 
+    id_billing_type.addEventListener('change', (e) => {
+        var selected_option = $('#id_billing_type option:selected').text();
+
+        if (selected_option == "MEDICAL AID / INSURANCE") {
+            if (billing_source_hide.style.display === 'none') {
+                billing_source_hide.style.display = 'block';
+                am_quoted.style.display = 'none';
+            }
+        }
+
+        if (selected_option == "PRIVATE (CASH)") {
+            if (am_quoted.style.display === 'none') {
+                am_quoted.style.display = 'block';
+                billing_source_hide.style.display = 'none';
+            }
+        }
+
+        if (selected_option == "RAF") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "WCA") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "FIXED RATE TRANSFER") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "STATE (DoH)") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "MEMBERSHIP") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "COMMUNITY INITIATIVE") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "HELIVAC / CIMS") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+    })
+</script>
 
 {% endblock %}

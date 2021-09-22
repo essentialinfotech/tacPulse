@@ -2195,7 +2195,6 @@
                 })
 
 
-
                 // noti length
                 $.ajax({
                     method: "GET",
@@ -2231,17 +2230,18 @@
                             })
                         })
                 }
-                            // membership check auto
-                            $.ajax({
-                                url: '/has_membership_or_not/',
-                                type: 'POST',
-                                data: 'dummy',
-                                traditional: true,
-                                dataType: 'json',
-                                success: function(result) {
-                                    console('ok: 200')
-                                }
-                            })
+
+                // membership check auto
+                $.ajax({
+                    url: '/has_membership_or_not/',
+                    type: 'POST',
+                    data: 'dummy',
+                    traditional: true,
+                    dataType: 'json',
+                    success: function(result) {
+                        console('ok: 200')
+                    }
+                })
 
             }, 10000)
         </script>
@@ -2280,6 +2280,12 @@
                     panic_noti.style.display = 'none';
                 }
             })
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.photos_and_other_choices').select2();
+            });
         </script>
 </body>
 <!--end::Body-->

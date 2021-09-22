@@ -251,26 +251,31 @@ def ambulance_request(request):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-        if form.is_valid():
-            if main_form is not None:
-                # converting webcam image
+        if main_form is not None:
+            if form.is_valid():
+                # decoding webcam image
                 photo = request.POST.get('photo')
                 format, imgstr = photo.split(';base64,') 
                 ext = format.split('/')[-1] 
                 photo = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
 
-                # converting signature canvas from text string to image
+                # decoding signature canvas from text string to image
                 signature = request.POST.get('signature')
                 format, imgstr = signature.split(';base64,') 
                 ext = format.split('/')[-1] 
                 signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
 
+                photos_and_other_choices = request.POST.get('photos_and_other_choices')
+                if photos_and_other_choices is not None:
+                    add_space = " "
+                    photos_and_other_choices = add_space.join(photos_and_other_choices)
                 instance = form.save(commit=False)
                 instance.photo = photo
                 instance.signature = signature
+                instance.photos_and_other_choices = photos_and_other_choices
                 instance.user = request.user
                 instance.save()
-                return redirect('fill_vehicle_details', id=instance.id)
+                return redirect('fill_vehicle_details', id=instance.id,total_unit = instance.how_many_units_dispatched)
 
     context = {
         'senior_form': senior_form,
@@ -282,8 +287,9 @@ def ambulance_request(request):
     return render(request, 'medic/ambulance_request.html',context)
 
 
-def fill_vehicle_details(request,id):
+def fill_vehicle_details(request,id,total_unit):
     incident = AmbulanceModel.objects.filter(id = id)
+
     context = {
         'incident': incident,
     }
@@ -818,8 +824,9 @@ def noti_length(request):
     if request.user.is_superuser:
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
         membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
+        renewal_noti = MembershipRenewalNoti.objects.filter(is_seen = False).count()
         h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).count()
-        total_noti_length = panic_noti + membership_noti + h_transfer_noti
+        total_noti_length = panic_noti + membership_noti + h_transfer_noti + renewal_noti
 
     if request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()

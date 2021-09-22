@@ -376,13 +376,6 @@ class AmbulanceModel(models.Model):
         ('DOA','DOA'),
     ]
 
-    PHOTOS_OTHERS = [
-        ('OTHER DOCUMENT','OTHER DOCUMENT'),
-        ('SCENE PHOTO','SCENE PHOTO'),
-        ('UNKNOWN PERSON','UNKNOWN PERSON'),
-        ('OTHER','OTHER')
-    ]
-
     WAS_THE_CALL_HANDED_OVER = [
         ('YES','YES'),
         ('NO','NO'),
@@ -435,7 +428,7 @@ class AmbulanceModel(models.Model):
     p_medical_aid = models.CharField(max_length=50,blank=True,null=True)
 
     # photos and other
-    photos_and_other_choices = models.CharField(max_length=50,blank=True,null=True,choices=PHOTOS_OTHERS)
+    photos_and_other_choices = models.CharField(max_length=50,blank=True,null=True)
     photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
     scene_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
     unknown_person_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)

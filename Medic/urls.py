@@ -85,7 +85,7 @@ urlpatterns = [
      path('ambulance/requests/notifications/', Ambulance_request_noti_for_admin_dispatch, name = 'Ambulance_request_noti_for_admin_dispatch'),
      path('hospital/transfer/notifications/', hospital_transfer_noti_for_admin_dispatch, name = 'hospital_transfer_noti_for_admin_dispatch'),
      path('hospital_transfer_noti_mark_seen/<int:id>/', h_transfer_noti_mark_seen, name = 'h_transfer_noti_mark_seen'),
-     path('vehicle/details/<int:id>/', fill_vehicle_details, name = 'fill_vehicle_details'),
+     path('vehicle/details/<int:id>/<str:total_unit>/', fill_vehicle_details, name = 'fill_vehicle_details'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

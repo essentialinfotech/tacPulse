@@ -131,7 +131,6 @@ class EmergencyMedDisIncidentReportForm(forms.ModelForm):
                 'p_name': forms.TextInput(attrs={'class': 'form-control'}),
                 'p_medical_aid_plan_option': forms.TextInput(attrs={'class': 'form-control'}),
                 'p_medical_aid': forms.TextInput(attrs={'class': 'form-control'}),
-                'photos_and_other_choices': forms.Select(attrs={'class': 'form-control'}),
                 'senior_practitioner_csn': forms.TextInput(attrs={'class': 'form-control'}),
                 'name_of_dispatcher': forms.Select(attrs={'class': 'form-control'}),
                 'was_the_call_handed_over_to_another_dispatcher': forms.Select(attrs={'class': 'form-control'}),

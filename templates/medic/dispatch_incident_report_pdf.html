@@ -1,0 +1,693 @@
+<style>
+    .font-weight-bold {
+        font-size: 20px;
+        color: black;
+    }
+
+    .text-center {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .back-ground-common {
+        background-color: #327391;
+        color: white;
+    }
+</style>
+
+<table>
+    <thead>
+        <th></th>
+        <th>
+            <h1 style="color: red; font-size: 16px;">Emergency Medical Dispatch Incident Record</h1>
+        </th>
+        <th>No. <br>{{ incident.created_on }} <br>DIR02053-2020</th>
+    </thead>
+</table>
+
+<hr>
+<strong style="font-size: larger;">Address: 18 Maluti Avenue, Paulshof, 2191,GP | Tel: 010 590 6265 | Email:
+    info@tac-pulse.co.za </strong>
+<hr>
+
+<h5 style="color: red; font-size: 13px;">IMPORTANT INFORMATION:</h5>
+<span style="color: red; font-size: 13px;">(1) This document contains PROTECTED HEALTH INFORMATION and is strictly
+    PRIVATE and CONFIDENTIAL!!</span> <br>
+<span style="color: red; font-size: 13px;">(2) Unauthorized disclosure of this document, and/or any section thereof, is
+    STRICTLY PROHIBITED!! Authorization will only be granted</span> <br>
+<span style="color: red; font-size: 13px;">by the Company's Managing Director and/or Legal officer.</span> <br>
+<span style="color: red; font-size: 13px;">(3) All clinical information contained herein, has been scribed by the
+    Dispatcher attending to the case, although the content and its</span> <br>
+<span style="color: red; font-size: 13px;">validity remains accountable to the attending emergency practitioner.</span>
+
+<table border="1px">
+    <tbody>
+        <tr>
+            <td>
+                <div style="text-align: center;">
+                    Run ID <br>
+                    {{ incident.run_id }} <br>
+                    Incident Logged Date: <br>
+                    {{ incident.created_on }}
+                </div>
+            </td>
+
+            <td>
+                <div style="text-align: center;">
+                    Crew Operational Status: <br>
+                    {{ incident.crew_operational_status }} <br>
+                    How Many Units Dispatched? <br>
+                    {{ incident.how_many_units_dispatched }}
+                </div>
+            </td>
+
+            <td>
+                <div style="text-align: center; padding: 5px;">
+                    Incident Logged Time: <br>
+                    {{ incident.created_on|time }} <br>
+                    Call Received Time: <br>
+                    {{ incident.call_received_time }} <br>
+                    Time Call Posted to Crew on WhatsApp?
+                    {{ incident.time_call_posted_to_crew_on_whatsapp }}
+                </div>
+            </td>
+
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px" style="margin-top: 5px;">
+    <tbody>
+        <tr>
+            <td>
+                <div
+                    style="padding: 20px; background-color: #327391; color: white; font-size: xx-large; text-align: center;">
+                    INCIDENT INTAKE DATA
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px" style="margin-top: 5px;">
+    <tbody>
+        <tr>
+            <td>
+                <div style="padding: 20px; text-align: center;">
+                    Caller Name & Surname <br>
+                    {{ incident.caller_name|title }}
+                </div>
+            </td>
+
+            <td>
+                <div style="padding: 20px; text-align: center;">
+                    Caller Number <br>
+                    {{ incident.caller_number }}
+                </div>
+            </td>
+
+            <td>
+                <div style="padding: 20px; text-align: center;">
+                    Caller Company <br>
+                    {{ incident.caller_company|title }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px" style="padding: 10px; margin-top: 5px;">
+    <tbody>
+        <tr>
+            <td>
+                <div style="text-align: center; color: black;background-color: yellow;">
+                    Incident Category <br>
+                    {{ incident.incident_category }}
+                </div>
+
+                <div style="text-align: center; color: black;background-color: red;">
+                    Chief Complaint <br>
+                    {{ incident.chief_complain|title }}
+                </div>
+
+                <div style="text-align: center; color: black;background-color: greenyellow;">
+                    PPE Level <br>
+                    {{ incident.ppe_lvl }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px" style="padding: 10px; margin-top: 5px;">
+    <tbody>
+        <tr>
+            <td>
+                <div style="border:1px solid black;">
+                    Scene / Pick-Up Address <br>
+                    {{ incident.pick_up_address|title }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px" style="margin-top: 5px;">
+    <tbody>
+        <tr>
+            <td>
+                <div
+                    style="padding: 10px; background-color: #327391; color: white; font-size: xx-large; text-align: center;">
+                    BILLING DATA
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px" style="margin-top: 5px;">
+    <tbody>
+        <tr>
+            <td>
+                <div style="text-align: center;">
+                    Billing Type <br>
+                    {{ incident.billing_type }}
+                </div>
+            </td>
+
+            <td>
+                <div style="text-align: center;padding: 20px;">
+                    Authorization Number <br>
+                    {{ incident.authorization_number }}
+                </div>
+            </td>
+
+            {% if incident.billing_source %}
+            <td>
+                <div style="text-align: center;padding: 20px;">
+                    Billing Source <br>
+                    {{ incident.billing_source }}
+                </div>
+            </td>
+            {% endif %}
+
+            {% if incident.amount_quoted %}
+            <td>
+                <div style="text-align: center;padding: 20px;">
+                    Amount Quoted <br>
+                    {{ incident.amount_quoted }}
+                </div>
+            </td>
+            {% endif %}
+
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<strong class="font-weight-bold">CREW & VEHICLE</strong>
+<table border="1px">
+    <thead>
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                ASSIGNED UNIT
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                VEHICLE
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                UNIT REG#
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center  back-ground-common" style="color: white;">
+                SENIOR
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                ASSIST01
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center  back-ground-common" style="color: white;">
+                ASSIST02
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                LoC
+            </div>
+        </th>
+
+    <tbody>
+        <tr>
+            <td>
+                <div class="text-center">
+                    {{ incident.assigned_unit }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.vehicle_total }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.unit_reg }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.senior|title }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.assist01|title }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.assist02|title }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.loc }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    </thead>
+
+</table>
+<br>
+
+<strong class="font-weight-bold">LOCATION DETAILS</strong>
+<table border="1px">
+    <thead>
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                UNIT
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                RESPONDING
+                ADDRESS
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                SCENE ADDRESS
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center  back-ground-common" style="color: white;">
+                FACILITY ADDRESS
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common" style="color: white;">
+                END ADDRESS
+            </div>
+        </th>
+
+
+    <tbody>
+        <tr>
+            <td>
+                <div class="text-center">
+                    {{ incident.unit }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.responding_address }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.scene_address }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.facility_address }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.end_address }}
+                </div>
+            </td>
+
+        </tr>
+    </tbody>
+    </thead>
+
+</table>
+
+<table style="margin-top: 10px;">
+    <tbody>
+        <tr>
+            <td>
+                <div class="back-ground-common text-center">
+                    TRAVEL TIMES
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px">
+    <thead>
+        <th class="text-center">
+            <u>Unit</u>
+        </th>
+
+        <th class="text-center">
+            <u>RESPONDING</u>
+        </th>
+
+        <th class="text-center">
+            <u>ONSCENE</u>
+        </th>
+
+        <th class="text-center">
+            <u>DEPART</u>
+        </th>
+
+        <th class="text-center">
+            <u>FACILITY</u>
+        </th>
+
+        <th class="text-center">
+            <u>HANDOVER</u>
+        </th>
+
+        <th class="text-center">
+            <u>RTB</u>
+        </th>
+
+        <th class="text-center">
+            <u>FREE</u>
+        </th>
+    </thead>
+    <tbody>
+        {% for i in vehicles %}
+        <tr>
+            <td>
+                <div class="text-center">
+                    {{ i.vehicle_for.unit }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.responding }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.on_scene }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.depart_scene }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.arrive_fac }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.hand_over }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.depart }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.end_standing_free }}
+                </div>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<table>
+    <tbody>
+        <tr>
+            <td>
+                <div class="back-ground-common text-center">
+                    TRAVEL ODO READINGS
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            <div class="text-center">
+                <u>ODO-01</u>
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center">
+                <u>ODO-02</u>
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center">
+                <u>ODO-03</u>
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center">
+                <u>ODO-04</u>
+            </div>
+        </th>
+    </thead>
+    <tbody>
+        {% for i in vehicles %}
+        <tr>
+            <td>
+                <div class="text-center">
+                    {{ i.odo01 }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.odo2 }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.odo3 }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ i.odo04 }}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<strong class="font-weight-bold">SERVICE NOTES</strong>
+
+<table border="1px">
+    <thead>
+        <th>
+            <div class="back-ground-common text-center">
+                ACTION
+            </div>
+        </th>
+
+        <th>
+            <div class="back-ground-common text-center">
+                SCRIBE
+            </div>
+        </th>
+
+        <th>
+            <div class="back-ground-common text-center">
+                TIME
+            </div>
+        </th>
+
+        <th>
+            <div class="back-ground-common text-center">
+                NOTE
+            </div>
+        </th>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>
+                <div class="text-center">
+                    {{ incident.service_notes }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.scribe|title }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.service_note_time }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.service_note_description|title }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<strong class="font-weight-bold">PATIENT INFORMATION</strong>
+<br>
+<table border="1px">
+    <thead>
+        <th>
+            <div class="text-center back-ground-common">
+                PATIENT
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common">
+                PRIORITY
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common">
+                LEVEL OF  CARE
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common">
+                NAME & SURNAME
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common">
+                Medical Aid Plan
+            </div>
+        </th>
+
+        <th>
+            <div class="text-center back-ground-common">
+                Medical Aid #
+            </div>
+        </th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div class="text-center">
+                    {{ incident.patient }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.p_priority }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.p_lvl_of_care }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.p_name|title }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.p_medical_aid_plan_option|title }}
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    {{ incident.p_medical_aid|title }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
+</table>

@@ -2,4 +2,130 @@
 {% load static %}
 {% block content %}
 
+<style>
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                        {{message}}
+                    </p>
+                    {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            <form action="{% url 'fill_vehicle_details' id total_unit %}" method="POST">
+                {% csrf_token %}
+                <div class="row shadow p-3 mb-10 bg-white rounded">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="vehicle_no">VEHICLE</label>
+                            <input type="text" name="vehicle_no" id="vehicle_no" placeholder="enter vehicle number" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="responding">RESPONDING</label>
+                            <input type="time" name="responding" id="responding" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="odo01">ODO1</label>
+                            <input type="number" name="odo01" id="odo01" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="on_scene">ON SCENE</label>
+                            <input type="time" name="on_scene" id="on_scene" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="odo2">ODO2</label>
+                            <input type="number" name="odo2" id="odo2" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="depart_scene">DEPART SCENE</label>
+                            <input type="time" name="depart_scene" id="depart_scene" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="arrive_fac">ARRIVE -FAC</label>
+                            <input type="time" name="arrive_fac" id="arrive_fac" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="odo3">ODO3</label>
+                            <input type="number" name="odo3" id="odo3" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="hand_over">HAND OVER</label>
+                            <input type="time" name="hand_over" id="hand_over" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="depart">DEPART/RTB</label>
+                            <input type="time" name="depart" id="depart" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="end_standing_free">END/STANDING FREE</label>
+                            <input type="time" name="end_standing_free" id="end_standing_free" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="odo04">ODO4</label>
+                            <input type="number" name="odo04" id="odo04" class="form-control">
+                        </div>
+                    </div>
+
+                    <button  type="submit" class="btn btn-success form-control w-50 m-auto btns">Save Vehicle</button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
 {% endblock %}

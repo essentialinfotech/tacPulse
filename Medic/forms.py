@@ -169,4 +169,24 @@ class Assist02Form(forms.ModelForm):
         widgets = {
                 'a2_name': forms.TextInput(attrs={'class': 'form-control'}),
             }
+
+
+class VehicleCountForm(forms.ModelForm):
+    class Meta:
+        model = Vehicles_count_with_info_for_ambulance_request
+        fields = '__all__'
+        widgets = {
+                'vehicle_no': forms.TextInput(attrs={'class': 'form-control'}),
+                'responding': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'odo01': forms.NumberInput(attrs={'class': 'form-control'}),
+                'on_scene': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'odo2': forms.NumberInput(attrs={'class': 'form-control'}),
+                'depart_scene': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'arrive_fac': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'odo3': forms.NumberInput(attrs={'class': 'form-control'}),
+                'hand_over': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'depart': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'end_standing_free': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+                'odo04': forms.NumberInput(attrs={'class': 'form-control'}),
+            }
                 

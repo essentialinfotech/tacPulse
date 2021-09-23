@@ -138,5 +138,5 @@ class HospitalTransferAPI(generics.CreateAPIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save(requested_by = request.user)
             return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 

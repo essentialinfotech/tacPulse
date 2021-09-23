@@ -288,10 +288,46 @@ def ambulance_request(request):
 
 
 def fill_vehicle_details(request,id,total_unit):
-    incident = AmbulanceModel.objects.filter(id = id)
+    incident = AmbulanceModel.objects.get(id = id)
+    vehicle_with_unit = Vehicles_count_with_info_for_ambulance_request.objects.filter(vehicle_for_id = id).count()
+
+    if vehicle_with_unit == int(incident.how_many_units_dispatched):
+        return redirect('dispatch_incident_report_pdf', id)
+
+    if request.method == 'POST':
+        vehicle_no = request.POST.get('vehicle_no')
+        responding = request.POST.get('responding')
+        odo01 = request.POST.get('odo01')
+        on_scene = request.POST.get('on_scene')
+        odo2 = request.POST.get('odo2')
+        depart_scene = request.POST.get('depart_scene')
+        arrive_fac = request.POST.get('arrive_fac')
+        odo3 = request.POST.get('odo3')
+        hand_over = request.POST.get('hand_over')
+        depart = request.POST.get('depart')
+        end_standing_free = request.POST.get('end_standing_free')
+        odo04 = request.POST.get('odo04')
+
+        Vehicles_count_with_info_for_ambulance_request.objects.create(
+            vehicle_for_id = id,
+            vehicle_no = vehicle_no,
+            responding = responding,
+            odo01 = odo01,
+            on_scene = on_scene,
+            odo2 = odo2,
+            depart_scene = depart_scene,
+            arrive_fac = arrive_fac,
+            odo3 = odo3,
+            hand_over = hand_over,
+            depart = depart,
+            end_standing_free = end_standing_free,
+            odo04 = odo04,
+        )
 
     context = {
         'incident': incident,
+        'id': id,
+        'total_unit': total_unit,
     }
     return render(request,'medic/vehicle_detail_for_incident.html',context)
 
@@ -696,7 +732,33 @@ def invoice_pdf_property(request,id):
     pdf = render_to_pdf(template, context)
     if pdf:
         response = HttpResponse(pdf, content_type="application/pdf")
-        content = "inline; filename=vaccine.pdf"
+        content = "inline; filename=invoice_property.pdf"
+        response['Content-Disposition']=content
+        return response
+    return HttpResponse("not found")
+
+
+def render_to_pdf_dispatch_incident_report(template,context):
+    html = template.render(context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(),content_type="application/pdf")
+
+
+def dispatch_incident_report_pdf(request,id):
+    incident = AmbulanceModel.objects.get(id = id)
+    vehicles = Vehicles_count_with_info_for_ambulance_request.objects.filter(vehicle_for_id = id)
+    context = {
+        'incident': incident,
+        'vehicles': vehicles,
+        'id':id
+    }
+    template = get_template('medic/dispatch_incident_report_pdf.html')
+    pdf = render_to_pdf(template, context)
+    if pdf:
+        response = HttpResponse(pdf, content_type="application/pdf")
+        content = "inline; filename=incident_report.pdf"
         response['Content-Disposition']=content
         return response
     return HttpResponse("not found")

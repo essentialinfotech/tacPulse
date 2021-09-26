@@ -711,7 +711,7 @@ def property_del(request,id):
     obj.delete()
     messages.success(request,'Report Deleted')
     return HttpResponseRedirect(url)
-    
+   
 
 
 def render_to_pdf(template,context):
@@ -738,21 +738,15 @@ def invoice_pdf_property(request,id):
     return HttpResponse("not found")
 
 
-def render_to_pdf_dispatch_incident_report(template,context):
-    html = template.render(context)
-    result = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)
-    if not pdf.err:
-        return HttpResponse(result.getvalue(),content_type="application/pdf")
-
-
 def dispatch_incident_report_pdf(request,id):
     incident = AmbulanceModel.objects.get(id = id)
     vehicles = Vehicles_count_with_info_for_ambulance_request.objects.filter(vehicle_for_id = id)
+    current_site = get_current_site(request)
     context = {
         'incident': incident,
         'vehicles': vehicles,
-        'id':id
+        'id':id,
+        'domain': current_site.domain,
     }
     template = get_template('medic/dispatch_incident_report_pdf.html')
     pdf = render_to_pdf(template, context)

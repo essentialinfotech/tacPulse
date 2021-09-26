@@ -17,16 +17,18 @@
 
 <table>
     <thead>
-        <th></th>
         <th>
-            <h1 style="color: red; font-size: 16px;">Emergency Medical Dispatch Incident Record</h1>
+            <img src="http://{{ domain }}/static/assets2/media/logos/taclogo.png" width="300px"  alt="">
+        </th>
+        <th>
+            <h1 style="color: red; font-size: 16px; margin-left: 10px;">Emergency Medical Dispatch Incident Record</h1>
         </th>
         <th>No. <br>{{ incident.created_on }} <br>DIR02053-2020</th>
     </thead>
 </table>
 
 <hr>
-<strong style="font-size: larger;">Address: 18 Maluti Avenue, Paulshof, 2191,GP | Tel: 010 590 6265 | Email:
+<strong style="font-size: larger;text-align: center;">Address: 18 Maluti Avenue, Paulshof, 2191,GP | Tel: 010 590 6265 | Email:
     info@tac-pulse.co.za </strong>
 <hr>
 
@@ -211,6 +213,25 @@
 <br>
 <br>
 <br>
+
+
+<table>
+    <thead>
+        <th>
+            <img src="http://{{ domain }}/static/assets2/media/logos/taclogo.png" width="300px"  alt="">
+        </th>
+        <th>
+            <h1 style="color: red; font-size: 16px; margin-left: 10px;">Emergency Medical Dispatch Incident Record</h1>
+        </th>
+        <th>No. <br>{{ incident.created_on }} <br>DIR02053-2020</th>
+    </thead>
+</table>
+
+<hr>
+<strong style="font-size: larger;text-align: center;">Address: 18 Maluti Avenue, Paulshof, 2191,GP | Tel: 010 590 6265 | Email:
+    info@tac-pulse.co.za </strong>
+<hr>
+
 
 <strong class="font-weight-bold">CREW & VEHICLE</strong>
 <table border="1px">
@@ -690,4 +711,232 @@
         </tr>
     </tbody>
 
+</table>
+
+
+<table>
+    <thead>
+        <th>
+            <img src="http://{{ domain }}/static/assets2/media/logos/taclogo.png" width="300px"  alt="">
+        </th>
+        <th>
+            <h1 style="color: red; font-size: 16px; margin-left: 10px;">Emergency Medical Dispatch Incident Record</h1>
+        </th>
+        <th>No. <br>{{ incident.created_on }} <br>DIR02053-2020</th>
+    </thead>
+</table>
+
+<hr>
+<strong style="font-size: larger;text-align: center;">Address: 18 Maluti Avenue, Paulshof, 2191,GP | Tel: 010 590 6265 | Email:
+    info@tac-pulse.co.za </strong>
+<hr>
+
+<table border="1px" style="margin-top: 10px;">
+    <thead>
+        <th>
+            <div class="back-ground-common text-center">
+                DISPATCHER CERTIFICATION          
+            </div>
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <tbody>
+        <tr>
+            <td>
+                <div class="text-center">
+                    Name of Dispatcher <br>
+                    {{ incident.name_of_dispatcher.fist_name|title }} {{ incident.name_of_dispatcher.last_name|title }} <br>
+                    Was the call handed over to
+                    another Dispatcher?
+                    {{ incident.was_the_call_handed_over_to_another_dispatcher }}
+                </div>
+            </td>
+
+            <td>
+                <div style="border: 1px solid black; text-align: center; background-color: yellow; padding: 10px;">
+                    Dispatch Special Notes <br>
+                    {{ incident.dispatch_special_notes }}
+                </div>
+
+                <div class="text-center">
+                    Record Completion Date<br>
+                    {{ i.created_on|date }}<br>
+                    Record Closure Time <br>
+                    {{ i.created_on|time }}
+                </div>
+            </td>
+
+            <td>
+                <div style="padding: 10px;">
+                    I, undersigned, hereby declare
+                    the information provided to be
+                    comprehensive and accurate,
+                    as to the best of my knowledge
+                    at the time of reporting.
+                    Signature of Dispatcher
+                </div>
+                <div>
+                    <img src="http://{{ domain }}/media/{{ incident.signature  }}" height="70" width="70" alt="">
+                </div>
+
+                <div class="text-center" style="background-color: red; color: white; font-size: large;">
+                    Senior Practitioner CSN# <br>
+                    {{ incident.senior_practitioner_csn }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            <div class="back-ground-common text-center">
+                SERVICE KEY PERFORMANCE INDICATORS
+            </div>
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+<tbody>
+    <tr>
+        <td>
+            <div class="text-center">
+                KPI <br>
+                DISPATCH ACTIVATE: < 3 MINUTES
+            </div>
+        </td>
+
+        <td>
+            <div class="text-center">
+                00:00
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="text-center">
+                KPI <br>
+                CREW RESPONSE - ACTIVATE <br>
+                ON DUTY: <5 MINUTES <br>
+                ACTIVE STANDBY: < 10 MIN <br>
+                DISPATCH ACTIVATE: < 3 MINUTES
+            </div>  
+        </td>
+
+        <td>
+            <div class="text-center">
+                628:00 <br>
+                628:00 <br>
+                628:00 <br>
+                628:00 <br>
+                628:00
+                </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="text-center">
+                KPI<br>
+                ON SCENE TIME<br>
+                BLS = <15 MINUTES<br>
+                ILS = <20 MINUTES<br>
+                ALS/ICU = <30 MINUTES 
+            </div>
+        </td>
+
+        <td>
+            <div class="text-center">
+                00:00<br>
+                00:00<br>
+                00:00<br>
+                00:00<br>
+                00:00
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="text-center">
+                KPI <br>
+                HANDOVER TIME<br>
+                BLS = <15 MINUTES<br>
+                ILS = <15 MINUTES<br>
+                ALS/ICU = <30 MINUTES
+                </div>
+        </td>
+
+        <td>
+            <div class="text-center">
+                00:00<br>
+                00:00<br>
+                00:00<br>
+                00:00<br>
+                00:00
+            </div>
+        </td>
+    </tr>
+</tbody>
+</table>
+<br>
+<strong class="font-weight-bold">PHOTOS & OTHER</strong>
+
+<table border="1px">
+    <thead>
+        <tr>
+            <th>
+                <div class="back-ground-common text-center">
+                    Photo
+                </div>
+            </th>
+            <th>
+                <div class="back-ground-common text-center">
+                    Scene Photo
+                </div>
+            </th>
+            <th>
+                <div class="back-ground-common text-center">
+                    Unknown Person Photo
+                </div>
+            </th>
+            <th>
+                <div class="back-ground-common text-center">
+                    Other Photo
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div class="text-center">
+                    <img src="http://{{ domain }}/media/{{ incident.photo  }}" height="100" width="100" alt="">
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    <img src="http://{{ domain }}/media/{{ incident.scene_photo  }}" height="100" width="100" alt="">
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    <img src="http://{{ domain }}/media/{{ incident.unlnown_person_photo  }}" height="100" width="100" alt="">
+                </div>
+            </td>
+
+            <td>
+                <div class="text-center">
+                    <img src="http://{{ domain }}/media/{{ incident.other_photo  }}" height="100" width="100" alt="">
+                </div>
+            </td>
+        </tr>
+    </tbody>
 </table>

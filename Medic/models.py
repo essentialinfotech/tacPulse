@@ -84,6 +84,9 @@ class Occurrence(models.Model):
     captured_phote = models.ImageField(upload_to = 'occurrence', blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True,blank=True, null=True)
 
+    def __str__(self):
+        return str(self.occurrence_id)
+
     @property
     def imagesURL(self):
         try:

@@ -2,6 +2,7 @@ from django import dispatch
 from django.db import models
 from django.db.models.aggregates import Count
 from django.db.models.expressions import F
+from django.db.models.fields import DateTimeField
 from Accounts.models import User
 from Medic.models import *
 from Accounts.models import *
@@ -383,6 +384,122 @@ class PayrolDeduction(models.Model):
         except:
             url = ''
         return url
+
+
+# Finane
+class Electric_Cash_Receipt(models.Model):
+    company_or_patient_name = models.CharField(blank=True,null=True,max_length=100)
+    customer_email = models.EmailField(blank=False,null=True)
+    cus_number = models.CharField(max_length=100,blank=True,null=True)
+    date = models.DateField()
+    time = models.TimeField()
+    # reason for payment
+    run_id_or_reference = models.CharField(max_length=200,blank=True,null=True,unique=True)
+
+    def __str__(self):
+        return str(self.id)
+
+class Invoice_cash_received_by(models.Model):
+    receiver_name = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.receiver_name
+
+class Electric_Cash_Receipt_Invoice(models.Model):
+
+    TRANSACTION = [
+        ('ALS CALL Out','ALS CALL Out'),
+        ('EMS CALL','EMS CALL'),
+        ('Equipment Purchase','Equipment Purchase'),
+        ('ILS CALL OUT','ILS CALL OUT'),
+        ('SPORT STANDBY','SPORT STANDBY'),
+        ('TRAINING SERVICES','TRAINING SERVICES'),
+        ('OTHER','OTHER'),
+    ]
+
+    invo_for = models.ForeignKey(Electric_Cash_Receipt,on_delete=models.CASCADE,blank=True,null=True)
+    transaction = models.CharField(max_length=500,blank=True,null=True,choices=TRANSACTION)
+    invoice = models.CharField(max_length=200,blank=True,null=True)
+    quote_invoice_amount = models.PositiveIntegerField(blank=True,null=True)
+    amount_received = models.PositiveIntegerField(blank=True,null=True)
+    amount_outstanding = models.PositiveIntegerField(blank=True,null=True)
+
+    cash_received_by = models.ForeignKey(Invoice_cash_received_by,on_delete=SET_NULL,blank=True,null=True)
+    receiver_signature = models.FileField(upload_to='InvoiceReceiverSignature',blank=True,null=True)
+    customer_signature = models.FileField(upload_to='InvoiceCustomerSignature', blank=True,null=True)
+    special_notes = models.TextField()
+
+    def __str__(self):
+        return str(self.invo_for.id)
+
+
+class Expense_Reimbursement_Record(models.Model):
+    processing_date = models.DateField()
+    name_and_surname = models.CharField(max_length=80,blank=True,null=True)
+    dept = models.CharField(max_length=300,blank=True,null=True)
+    employment_or_start_date = models.CharField(max_length=80,default='T21')
+    personal_email = models.EmailField(default='tloumojela2371@gmail.com')
+
+
+class ExpenseTransactions(models.Model):
+    REASON = [
+        ('Pre-Employment Requirements','Pre-Employment Requirements'),
+        ('Operational Expense','Operational Expense'),
+        ('Staff Food','Staff Food'),
+        ('Other','Other'),
+    ]
+
+    PAYMENT_METHOD = [
+        ('Cash','Cash'),
+        ('Cash Voucher','Cash Voucher'),
+        ('Company Card','Company Card'),
+        ('Director Personal Card','Director Personal Card'),
+        ('EFT','EFT'),
+    ] 
+
+    table_for = models.ForeignKey(Expense_Reimbursement_Record,on_delete=SET_NULL,blank=True,null=True)
+    description_of_expense = models.TextField()
+    date_of_expense = models.DateField()
+    reason = models.CharField(max_length=80,choices=REASON)
+    amount = models.PositiveIntegerField()
+    payment_method = models.CharField(max_length=80,choices=PAYMENT_METHOD)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.table_for.id)
+
+
+class PhotoGraphicalEvidence(models.Model):
+    photo_for = models.ForeignKey(Expense_Reimbursement_Record, on_delete=models.CASCADE,blank=True,null=True)
+    photo = models.FileField(upload_to='Expense_Reimbursement_Record')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.photo_for.id)
+
+
+class ExpenseRequestSummary(models.Model):
+
+    REIMBURSEMENT_METHOD = [
+        ('Petty Cash','Petty Cash'),
+        ('Immediate EFT','Immediate EFT'),
+        ('Cash Voucher / E-Wallet','Cash Voucher / E-Wallet'),
+        ('Include in Next Salary','Include in Next Salary'),
+    ]
+
+    summary_for = models.ForeignKey(ExpenseTransactions, on_delete=SET_NULL,blank=True,null=True)
+    total_reimbursement = models.PositiveIntegerField(blank=True,null=True)
+    reimbursement_method = models.CharField(max_length=100,choices=REIMBURSEMENT_METHOD)
+    comments = models.TextField(blank=True,null=True)
+    requester_signature = models.FileField(upload_to='EXPENSEREIMBURSEMENT')
+
+    def __str__(self):
+        return str(self.summary_for.id)
+
+
+
+
 
 
 

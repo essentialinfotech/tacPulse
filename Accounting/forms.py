@@ -190,3 +190,58 @@ class ScheduleAmount(forms.ModelForm):
         widgets = {
             'amount': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class ElectricCashForm(forms.ModelForm):
+    class Meta:
+        model = Electric_Cash_Receipt
+        fields = '__all__'
+        widgets = {
+            'company_or_patient_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'customer_email': forms.EmailInput(attrs={'class': 'form-control','type': 'email'}),
+            'cus_number': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'date': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+            'run_id_or_reference': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Run ID / Reference'}),
+        }
+
+class ElectricCashInvoiceDetailsForm(forms.ModelForm):
+    class Meta:
+        model = Electric_Cash_Receipt_Invoice
+        fields = '__all__'
+        widgets = {
+            'transaction': forms.Select(attrs={'class': 'form-control'}),
+            'invoice': forms.TextInput(attrs={'class': 'form-control'}),
+            'quote_invoice_amount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'amount_received': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'amount_outstanding': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'cash_received_by': forms.Select(attrs={'class': 'form-control'}),
+            'run_id_or_reference': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Run ID / Reference'}),
+            'special_notes': forms.Textarea(attrs={'class': 'form-control','placeholder': 'No Note to record'}),
+        }
+
+
+class Expense_Reimbursement_Record_Form(forms.ModelForm):
+    class Meta:
+        model = Expense_Reimbursement_Record
+        fields = '__all__'
+        widgets = {
+            'processing_date': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'name_and_surname': forms.TextInput(attrs={'class': 'form-control'}),
+            'dept': forms.TextInput(attrs={'class': 'form-control'}),
+            'employment_or_start_date': forms.TextInput(attrs={'class': 'form-control'}),
+            'personal_email': forms.EmailInput(attrs={'class': 'form-control','type': 'email'}),
+        }
+
+
+class ExpenseTransactionsForm(forms.ModelForm):
+    class Meta:
+        model = ExpenseTransactions
+        fields = '__all__'
+        widgets = {
+            'date_of_expense': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'description_of_expense': forms.Textarea(attrs={'class': 'form-control'}),
+            'reason': forms.Select(attrs={'class': 'form-control'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'payment_method': forms.Select(attrs={'class': 'form-control'}),
+        }

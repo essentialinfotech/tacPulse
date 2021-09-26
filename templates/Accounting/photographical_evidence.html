@@ -1,0 +1,152 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <form method="POST" action="{% url 'photographical_evidence' id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+
+                    <div class="text-center w-50 m-auto" style="margin-bottom: 10px!important;">
+                        <u class="mb-15">Provide a Comprehensive Description</u>
+                        {{ form.errors }}
+                    </div>
+
+                    <div class="col-md-12">
+                       <div class="text-center">
+                            <input type="checkbox" name="i_p_1" id="i_p_1">
+                            <label for="i_p_1"><u>Invoice Page 01</u></label>
+                       </div>
+                       
+                        <div class="text-center">
+                            <input type="checkbox" name="i_p_2" id="i_p_2">
+                            <label for="i_p_2"><u>Invoice Page 02</u></label>
+                        </div>
+
+                        <div class="text-center">
+                            <input type="checkbox" name="i_p_3" id="i_p_3">
+                            <label for="i_p_3"><u>Invoice Page 03</u></label>
+                        </div>
+
+                        <div class="text-center">
+                            <input type="checkbox" name="i_p_4" id="i_p_4">
+                            <label for="i_p_4"><u>Invoice Page 04</u></label>
+                        </div>
+
+                        <div class="text-center">
+                            <input type="checkbox" name="i_p_5" id="i_p_5">
+                            <label for="i_p_5"><u>Invoice Page 05</u></label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group text-center m-auto mb-5">
+                            <label for="photo">Photo Evidence</label> <br>
+                            <input type="file" name="photo" id="photo" class="fom-control-file" required>
+                        </div>
+
+                        <div class="form-group text-center m-auto mb-5" id="appendchild">
+                            
+                        </div>
+
+                        <div class="form-group text-center m-auto mb-5">
+                            <button type="submit" class="btn btn-success mt-5">Next</button>
+                        </div>
+
+
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var i_p_1 = document.getElementById('i_p_1')
+    var i_p_2 = document.getElementById('i_p_2')
+    var i_p_3 = document.getElementById('i_p_3')
+    var i_p_4 = document.getElementById('i_p_4')
+    var i_p_5 = document.getElementById('i_p_5')
+    
+
+    i_p_1.addEventListener('click', (e)=>{
+        if(i_p_1.checked == true){
+            var inp = document.createElement('input');
+            inp.type = 'file';
+            inp.name = 'photo';
+            inp.id = 'photo';
+            document.getElementById('appendchild').appendChild(inp)
+        }
+    })
+
+    i_p_2.addEventListener('click', (e)=>{
+        if(i_p_2.checked == true){
+            var inp = document.createElement('input');
+            inp.type = 'file';
+            inp.name = 'photo';
+            inp.id = 'photo';
+            document.getElementById('appendchild').appendChild(inp)
+        }
+    })
+
+    i_p_3.addEventListener('click', (e)=>{
+        if(i_p_3.checked == true){
+            var inp = document.createElement('input');
+            inp.type = 'file';
+            inp.name = 'photo';
+            inp.id = 'photo';
+            document.getElementById('appendchild').appendChild(inp)
+        }
+    })
+
+    i_p_4.addEventListener('click', (e)=>{
+        if(i_p_4.checked == true){
+            var inp = document.createElement('input');
+            inp.type = 'file';
+            inp.name = 'photo';
+            inp.id = 'photo';
+            document.getElementById('appendchild').appendChild(inp)
+        }
+    })
+
+    i_p_5.addEventListener('click', (e)=>{
+        if(i_p_5.checked == true){
+            var inp = document.createElement('input');
+            inp.type = 'file';
+            inp.name = 'photo';
+            inp.id = 'photo';
+            document.getElementById('appendchild').appendChild(inp)
+        }
+    })
+</script>
+
+
+{% endblock %}

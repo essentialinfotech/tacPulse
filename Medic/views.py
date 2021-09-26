@@ -253,7 +253,7 @@ def ambulance_request(request):
 
         if main_form is not None:
             if form.is_valid():
-                # decoding webcam image
+                # decoding webcam image from text string to image
                 photo = request.POST.get('photo')
                 format, imgstr = photo.split(';base64,') 
                 ext = format.split('/')[-1] 
@@ -358,6 +358,12 @@ class AmbulanceRequestReport(LoginRequiredMixin, View):
             'monthly': monthly
         }
         return render(request, 'medic/ambulance_request_report.html', context)
+
+
+@login_required
+def ambulance_request_real(request):
+    pass
+
 
 
 class AmbulanceRequestDetail(LoginRequiredMixin, View):

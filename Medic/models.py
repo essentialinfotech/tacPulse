@@ -470,8 +470,12 @@ class Vehicles_count_with_info_for_ambulance_request(models.Model):
     odo04 = models.PositiveIntegerField(null=True)
 
 
+class AmbulanceRequestModel(models.Model):
+    pass
+
+
 class AmbulanceNoti(models.Model):
-    noti_for = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE)
+    noti_for = models.ForeignKey(AmbulanceRequestModel,on_delete=models.CASCADE)
     text = models.CharField(max_length=50,default='Ambulance request')
 
     accepted_text = models.CharField(max_length=50,default='Your request was accepted')
@@ -486,7 +490,7 @@ class AmbulanceNoti(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-@receiver(post_save, sender=AmbulanceModel)
+@receiver(post_save, sender=AmbulanceRequestModel)
 def create_ambulance_noti(sender, instance=None, created=False, **kwargs):
     if created:
         AmbulanceNoti.objects.create(noti_for=instance)

@@ -69,6 +69,15 @@ urlpatterns = [
     path('has_membership_or_not/', has_membership_or_not, name = 'has_membership_or_not'),
     path('change/ScheduleStatus/<int:id>/', changeScheduleStatus, name = 'changeScheduleStatus'),
     path('set/amount/schedule/<int:id>/', setAmountforScheduleTrip, name = 'setAmountforScheduleTrip'),
+    path('electronic/cash/', electronic_cash_receipt, name = 'electronic_cash_receipt'),
+    path('electronic/invoice/details/<int:id>/', electronic_invoice_details, name = 'electronic_invoice_details'),
+    path('financial/reports/', reports, name = 'reports'),
+    path('expense/Reimbursement/record/form/', expense_reimbursement_record_form, name = 'expense_reimbursement_record_form'),
+    path('expense/transactions/<int:id>/', expense_transactions, name = 'expense_transactions'),
+    path('photographical/evidence/<int:expense_reimbursement_record_id>/', photographical_evidence, name = 'photographical_evidence'),
+    path('request/summary/<int:expense_reimbursement_record_id>/', request_summary, name = 'request_summary'),
+    path('adding/another/expense/<int:expense_reimbursement_record_id>', add_another_transaction, name = 'add_another_transaction'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

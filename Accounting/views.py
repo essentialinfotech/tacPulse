@@ -19,6 +19,8 @@ from Accounts.decorators import user_passes_test, has_perm_admin, has_perm_admin
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
+import base64
+from django.core.files.base import ContentFile
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -1011,3 +1013,143 @@ def setAmountforScheduleTrip(request,id):
             form.save()
             return redirect('trip_schedules')
     return render(request,'Accounting/set_amount_schedule.html',{'form': form,'id': id})
+
+
+@login_required
+def electronic_cash_receipt(request):
+    form = ElectricCashForm()
+    if request.method == 'POST':
+        form = ElectricCashForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.save()
+            return redirect('electronic_invoice_details', id=instance.id)
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/electronic_cash_receipt.html',context)
+
+
+@login_required
+def electronic_invoice_details(request,id):
+    data = Electric_Cash_Receipt.objects.get(id = id)
+    form = ElectricCashInvoiceDetailsForm()
+
+    if request.method == 'POST':
+        receiver_name = request.POST.get('receiver_name')
+        if receiver_name:
+            Invoice_cash_received_by.objects.create(receiver_name = receiver_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        form = ElectricCashInvoiceDetailsForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.invo_for_id = id
+
+            # decoding receiver signature from text string to image
+            receiver_signature = request.POST.get('receiver_signature')
+            format, imgstr = receiver_signature.split(';base64,') 
+            ext = format.split('/')[-1] 
+            receiver_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+            # decoding customer signature from text string to image
+            customer_signature = request.POST.get('customer_signature')
+            format, imgstr = customer_signature.split(';base64,') 
+            ext = format.split('/')[-1] 
+            customer_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+            instance.receiver_signature = receiver_signature
+            instance.customer_signature = customer_signature
+            instance.save()
+            return  redirect('reports')
+
+    context = {
+        'form': form,
+        'id': id,
+        'data': data,
+    }
+    return render(request,'Accounting/electronic_invoice_details.html',context)
+
+
+@login_required
+def expense_reimbursement_record_form(request):
+    form = Expense_Reimbursement_Record_Form()
+    if request.method == 'POST':
+        form = Expense_Reimbursement_Record_Form(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            return redirect('expense_transactions', id=instance.id)
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/expense_reimbursement_record_form.html',context)
+
+
+@login_required
+def expense_transactions(request,id):
+    form = ExpenseTransactionsForm()
+    if request.method == 'POST':
+        form = ExpenseTransactionsForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit = False)
+            instance.table_for_id = id
+            instance.save()
+            return redirect('add_another_transaction', expense_reimbursement_record_id = id )
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/expense_transactions.html',context)
+
+@login_required
+def add_another_transaction(request,expense_reimbursement_record_id):
+    parent_expense = Expense_Reimbursement_Record.objects.get(id = expense_reimbursement_record_id)
+    expense_transactions = parent_expense.expensetransactions_set.all()
+    context = {
+        'expense_transactions': expense_transactions,
+        'expense_reimbursement_record_id': expense_reimbursement_record_id,
+    }
+    return render(request,'Accounting/add_another_transaction.html',context)
+
+
+
+@login_required
+def photographical_evidence(request,expense_reimbursement_record_id):
+    if request.method == "POST":
+        photo = request.FILES.getlist('photo')
+        for i in photo:
+            PhotoGraphicalEvidence.objects.create(
+                photo_for_id = expense_reimbursement_record_id,
+                photo = i,
+            ) 
+        return redirect('request_summary', expense_reimbursement_record_id = expense_reimbursement_record_id) 
+    context = {
+        'id': expense_reimbursement_record_id,
+    }
+    return render(request,'Accounting/photographical_evidence.html',context)
+
+
+@login_required
+def request_summary(request,expense_reimbursement_record_id):
+    expense_reimbursement_record = Expense_Reimbursement_Record.objects.get(id = expense_reimbursement_record_id)
+    expense_transactions = expense_reimbursement_record.expensetransactions_set.all()
+    context = {
+        'expense_transactions': expense_transactions,
+        'expense_reimbursement_record_id': expense_reimbursement_record_id,
+    }
+    return render(request,'Accounting/request_summary.html',context)
+
+
+
+
+
+
+@login_required
+def reports(request):
+    e_c_r = Electric_Cash_Receipt.objects.all()
+    e_c_r_invoice = Electric_Cash_Receipt_Invoice.objects.all()
+    context  = {
+        'e_c_r': e_c_r,
+        'e_c_r_invoice': e_c_r_invoice,
+    }
+    return render(request,'Accounting/reports.html',context)

@@ -1,0 +1,210 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <form action="{% url 'purchase_order_customer_information' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12 mb-5">
+
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Requested By/Supplier or Company Name/Courier Address</button>
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    
+                                    <form method="POST" action="{% url 'purchase_order_customer_information' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="requested_by_name" class="col-form-label">Requested By Name:</label>
+                                            <input type="text" class="form-control" required name="requested_by_name"  id="requested_by_name">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                    </form>
+
+                                    <hr>
+
+                                    <form method="POST" action="{% url 'purchase_order_customer_information' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="name" class="col-form-label">Supplier/Company Name:</label>
+                                            <input type="text" class="form-control" required name="supp_name"  id="supp_name">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                    </form>
+
+                                    <form method="POST" action="{% url 'purchase_order_customer_information' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="name" class="col-form-label">Make Courier Address</label>
+                                            <input type="text" class="form-control" required name="address_name"  id="address_name">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+                {{ form.errors }}
+                <form action="{% url 'purchase_order_customer_information' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row shadow p-3 mb-5 bg-white rounded">
+                    
+                        <div class="form-group">
+                            <h3>Customer Information</h3>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="p_o_req_date">P/O Request Date</label>
+                                {{ form.p_o_req_date }}
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="req_by">Requested By</label>
+                                {{ form.req_by }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="transaction_cat">Transaction Category</label>
+                                {{ form.transaction_cat }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="supplier_acc_or_job_card">Supplier Account / Job Card#</label>
+                                {{ form.supplier_acc_or_job_card }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="supplier_or_company_name">Supplier / Company Name</label>
+                                {{ form.supplier_or_company_name }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="supplier_or_company_name">Supplier: Contact Person Name & Surname</label>
+                                {{ form.supplier_contact_person_name }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="supplier_or_company_name">Supplier: Contact Number</label>
+                                {{ form.supplier_contact_number }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="supplier_email">Supplier Email</label>
+                                {{ form.supplier_email }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="street_addrs">Street Address</label>
+                                {{ form.street_addrs }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="city_province">City, Province</label>
+                                {{ form.city_province }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="zip_code">Zip Code</label>
+                                {{ form.zip_code }}
+                            </div>
+
+                            <hr>
+
+                            <h3>Shipping</h3>
+                            <div class="form-group">
+                                <label for="shipping_method">Shipping Method</label>
+                                    {{ form.shipping_method }}
+                            </div>
+
+                            <div class="form-group" id="courier" style="display: none">
+                                <label for="courier_to_this_address">Courier To This Address</label>
+                                    {{ form.courier_to_this_address }}
+                            </div>
+
+                            <div class="form-group" id="person" style="display: none">
+                                <label for="person_collecting">Person Collecting</label>
+                                    {{ form.person_collecting }}
+                            </div>
+
+                            <div class="form-group">
+                                <input type="checkbox" name="main_form" id="main_form" required>
+                                <input type="submit" class="btn btn-primary" style="background-color: red!important;" value="Next">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var s_method = document.getElementById('id_shipping_method')
+    var courier_to_this_address = document.getElementById('id_courier_to_this_address')
+    var person_collecting = document.getElementById('id_person_collecting')
+
+    var courier = document.getElementById('courier')
+    var person = document.getElementById('person')
+
+    s_method.addEventListener('change', (e)=>{
+        if(s_method.options[s_method.selectedIndex].text == 'Courier'){
+            if(courier.style.display === 'none'){
+                courier.style.display = 'block';
+                person.style.display = 'none';
+            }
+        }
+
+        if(s_method.options[s_method.selectedIndex].text == 'Collection'){
+            if(person.style.display === 'none'){
+                person.style.display = 'block';
+                courier.style.display = 'none';
+            }
+        }
+
+        if(s_method.options[s_method.selectedIndex].text == 'Hand Delivery'){
+            person.style.display = 'none';
+            courier.style.display = 'none';
+        }
+    })
+</script>
+
+
+{% endblock %}

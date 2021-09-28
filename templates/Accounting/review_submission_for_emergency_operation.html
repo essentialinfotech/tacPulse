@@ -1,0 +1,169 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    label{
+        font-weight: bold!important;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row shadow p-3 mb-5 bg-white rounded">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <h3>Details of Prospective Client</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date_of_quote">Document Version</label><br>
+                        {{ client.doc_version }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date_of_quote">Date of Quote</label><br>
+                        {{ client.date_of_quote }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name_poc">Name & Surname (PoC)</label><br>
+                        {{ client.name_poc|title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company_org_name">Company/Organization Name</label><br>
+                        {{ client.company_org_name|title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="physical_address">Physical Address</label><br>
+                        {{ client.physical_address|title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client_phone_no">Client Phone Number</label><br>
+                        {{ client.client_phone_no }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clinet_email">Client Email</label><br>
+                        {{ client.clinet_email }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date_of_expiry">Date of Expiry</label><br>
+                        {{ client.date_of_expiry }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quote_prepared_by">Quote Prepared By</label><br>
+                        {{ client.quote_prepared_by }}
+                    </div>
+
+                    <!-- service details -->
+                    <div class="form-group">
+                        <h3>Service Details</h3>
+                    </div>
+
+                    {% for i in service_detail %}
+                        <div class="form-group">
+                            <label for="service_req">Service Request</label><br>
+                            {{ i.service_req }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service_req">Run ID</label><br>
+                            {{ i.run_id }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="special_notes">Special Notes</label><br>
+                            {{ i.special_notes }}
+                        </div>
+                    {% endfor %}
+
+
+                        <!-- emergency operations -->
+                    <div class="form-group">
+                        <h3>Emergency Operations</h3>
+                    </div>
+
+                    {% for i in emergency_operations %}
+                        <div class="form-group">
+                            <label for="level_of_care">Level of Care</label><br>
+                            {{ i.level_of_care }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="code">Code</label><br>
+                            {{ i.code }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service_description">Service Description</label><br>
+                            {{ i.service_description|title }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qty">QTY</label><br>
+                            {{ i.qty }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit_price">Unit Price</label><br>
+                            {{ i.unit_price }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="line_total">Line Total</label><br>
+                            {{ i.line_total }}
+                        </div>
+
+                        <hr>
+                    {% endfor %}
+
+
+                        <!-- total call costing -->
+                    <div class="form-group">
+                        <h3>Total Call Costing</h3>
+                    </div>
+
+                    {% for i in total_costing %}
+                        <div class="form-group">
+                            <label for="total_service_cost">Total Service Cost</label><br>
+                            {{ i.total_service_cost }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="discount">Discount(%)</label><br>
+                            {{ i.discount }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="discount_amount">Discount Calculation</label><br>
+                            {{ i.discount_amount }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="total_quotation_cost">Total Quotation Cost(R)</label><br>
+                            {{ i.total_quotation_cost }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="special_notes">Special Notes</label><br>
+                            {{ i.special_notes }}
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

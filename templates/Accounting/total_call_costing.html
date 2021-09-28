@@ -1,0 +1,93 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+           <form action="{% url 'total_call_costing' id %}" method="POST">
+               {% csrf_token %}
+                <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="total_service_cost">Total Service Cost(R)</label>
+                            <input type="number" name="total_service_cost" id="total_service_cost" class="form-control" value="{{ total }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="discount">Discount(%)</label>
+                            {{ form.discount }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="discount_amount">Discount Calculation</label>
+                            {{ form.discount_amount }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="total_quotation_cost">Total Quotation Cost(R)</label>
+                            {{ form.total_quotation_cost }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="special_notes">Special Notes:</label>
+                            {{ form.special_notes }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                    </div>
+                </div>
+           </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var  total_service_cost = document.getElementById('total_service_cost')
+    var  discount = document.getElementById('id_discount')
+    var  discount_amount = document.getElementById('id_discount_amount')
+    var  total_quotation_cost = document.getElementById('id_total_quotation_cost')
+
+    discount.addEventListener('keyup', (e)=>{
+        var discount_calculation = (total_service_cost.value) * (discount.value/100);
+        discount_amount.value = parseInt(discount_calculation);
+        total_quotation_cost.value = parseInt(total_service_cost.value) - parseInt(discount_calculation);
+    })
+
+</script>
+
+<script>
+    window.addEventListener('load', (e)=>{
+        document.getElementById('id_discount_amount').readOnly = true;
+        document.getElementById('id_total_quotation_cost').readOnly = true;
+    })
+</script>
+
+{% endblock %}

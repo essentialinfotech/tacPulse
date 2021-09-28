@@ -1,0 +1,136 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Purchase Inspected By</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'quality_assurance_check' id %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="initial_receiver_of_goods" class="col-form-label">Purchase Inspected By:</label>
+                                        <input type="text" class="form-control" required name="inpector_name"  id="inpector_name">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+            <form method="POST" action="{% url 'quality_assurance_check' id %}">
+                {% csrf_token %}
+                <div class="row shadow p-3 mb-5 bg-white rounded">
+                    <div class="col-md-12">
+                        <h3 class="mb-7">
+                           Quality Control Inspection
+                        </h3>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="purchase_inspected_by">Purchase Inspected By:</label>
+                            {{ form.purchase_inspected_by }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="has_all_items_been_received">Have all items been received?</label>
+                            {{ form.has_all_items_been_received }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="was_verification_done_to_ensure_that_what_was_ordered_is_what_was_received">Was verification done to ensure that what was ordered, is what was received?</label>
+                            {{ form.was_verification_done_to_ensure_that_what_was_ordered_is_what_was_received }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="was_verification_done_to_ensure_that_the_expiration_date_rule_was_complied_with">Was verification done to ensure that the expiration date rule was compiled with?</label>
+                            {{ form.was_verification_done_to_ensure_that_the_expiration_date_rule_was_complied_with }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quality_control_notes">Quality Control Notes</label>
+                            {{ form.quality_control_notes }}
+                        </div>
+
+                        
+
+                        <div class="form-group">
+                            <label for="">Initial Receiver Signature</label> <br>
+                            <canvas id="signature" width="auto" height="auto" style="border: 1px solid #ddd;"></canvas>
+                            <br>
+                            <!-- getting signature as image -->
+                            <input type="text" name="quality_control_signature" id="quality_control_signature" value="" style="display: none;">
+
+                            <button class="btn btn-danger" type="button" id="clear-signature">Clear</button>
+                            <button class="btn btn-info" type="button" id="save-signature">Save</button>
+                            <div id="signature_image"></div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <input type="checkbox" name="main_form" required id="main_form">
+                            <input type="submit" class="btn btn-primary" value="Next" style="background-color: red!important;">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+
+<script>
+    jQuery(document).ready(function($) {
+        var canvas = document.getElementById("signature");
+        var signaturePad = new SignaturePad(canvas);
+        var saveButton = document.getElementById('save-signature');
+        $('#clear-signature').on('click', function() {
+            signaturePad.clear();
+        });
+        saveButton.addEventListener('click', function(event) {
+            var data = signaturePad.toDataURL();
+            document.getElementById('signature_image').innerHTML = '<img type="file" src="' + data + '" name="quality_control_signature" />';
+            document.getElementById("quality_control_signature").value = signaturePad.toDataURL();
+        });
+    });
+</script>
+
+{% endblock %}

@@ -37,5 +37,19 @@ admin.site.register(InitialReceiverOfGoods)
 admin.site.register(PO_Items_Received)
 admin.site.register(PurchaseInspectedBy)
 admin.site.register(Quality_Control_Inspection)
+admin.site.register(Product)
+admin.site.register(Product_totals)
+admin.site.register(Services_Training)
+admin.site.register(Service_Totals)
+admin.site.register(QuotePreparedBy)
+admin.site.register(ProspectiveClient)
+admin.site.register(ServiceRequest)
+admin.site.register(ServiceDetails)
+admin.site.register(Code)
+admin.site.register(EmergencyOperations)
+admin.site.register(TotalCallCosting)
+
+
+
 
 

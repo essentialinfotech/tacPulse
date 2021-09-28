@@ -83,7 +83,23 @@ urlpatterns = [
     path('vehicle/maintainance/totals/<int:id>/', vehicle_maintenance_totals, name = 'vehicle_maintenance_totals'),
     path('order/terms/and/conditions/<int:id>/', terms_and_conditions, name = 'terms_and_conditions'),
     path('purchase/approval/<int:id>/', purchase_approval, name = 'purchase_approval'),
-
+    path('po_items_received_verification/<int:id>/', po_items_received_verification, name = 'po_items_received_verification'),
+    path('quality/control/inspection/<int:id>/', quality_assurance_check, name = 'quality_assurance_check'),
+    path('email/submission/<int:id>/', email_submission, name = 'email_submission'),
+    path('product/details/<int:id>/', product_details, name = 'product_details'),
+    path('add/another/product/<int:id>/', add_another_product, name = 'add_another_product'),
+    path('product/totals/<int:id>/', product_totals, name = 'product_totals'),
+    path('service_training/<int:id>/', services_training, name = 'services_training'),
+    path('add/another/service/<int:id>/', add_another_service, name = 'add_another_service'),
+    path('services/total/<int:id>/', service_totals, name = 'service_totals'),
+    path('reviewing/submission/<int:id>/', review_submission_for_order, name = 'review_submission_for_order'),
+    path('details/of/prospective/clint/', details_of_prospective_client, name = 'details_of_prospective_client'),
+    path('service/details/quotation/<int:id>/', quotation_service_details, name = 'quotation_service_details'),
+    path('emergency/operation/<int:id>/', emergency_operations, name = 'emergency_operations'),
+    path('add/another/emergency/<int:id>/', add_another_emergency_operation, name = 'add_another_emergency_operation'),
+    path('total/call/costing/<int:id>/', total_call_costing, name = 'total_call_costing'),
+    path('submission/emergency/operation/<int:id>/', emergency_email_submission, name = 'emergency_email_submission'),
+    path('review/submission/for/emergency/operation/<int:id>/', review_submission_for_emergency_operation, name = 'review_submission_for_emergency_operation'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -648,4 +648,11 @@ class Blog(models.Model):
 
 
 
+class FormBuilder(models.Model):
+    title = models.CharField(max_length=100,blank=True,null=True)
+    json = models.TextField(blank=True,null=True)
 
+
+class FormData(models.Model):
+    form = models.ForeignKey(FormBuilder,on_delete=models.CASCADE)
+    data = models.TextField()

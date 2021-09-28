@@ -4,10 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.api import success
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
+from django.urls.base import reverse_lazy
+from django.views.generic.base import TemplateView
 from rest_framework.views import APIView
 from .models import *
 from Accounting.models import *
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, request
 from django.contrib import messages
 import json
 from django.db.models import Sum, Q,query
@@ -27,7 +29,7 @@ from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
 import base64
 from django.core.files.base import ContentFile
-
+from django.views.generic import CreateView,ListView,TemplateView,UpdateView,DeleteView
 from Accounts.decorators import \
                                  user_passes_test,REDIRECT_FIELD_NAME,\
                                 INACTIVE_REDIRECT_FIELD_NAME, \
@@ -1204,3 +1206,74 @@ def h_transfer_noti_mark_seen(request,id):
         obj.mark_read_user = True
         obj.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+
+class FormSave(View):
+    def get(self,request):
+        data = request.GET.get('json')
+        title = request.GET.get('title')
+        FormBuilder.objects.create(title=title,json=data)
+        return render(request,'medic/form-builder.html')
+
+
+class FormList(ListView):
+    model = FormBuilder
+    template_name = 'medic/form-list.html'
+
+
+class Form(View):
+    def get(self, request,pk):
+        get_form = FormBuilder.objects.get(id=pk)
+        json_form = json.loads(get_form.json)
+        context = {
+            'id': json.dumps(pk),
+            'json_form':json.dumps(json_form),
+        }
+        return render(request,'medic/forms.html',context)
+
+
+def SaveForm(request):
+    data = request.GET.get('formdata')
+    id = request.GET.get('id')
+    FormData.objects.create(form_id=int(id),data=data)
+    return JsonResponse({"data":"success"})
+
+
+class FormDatatable(View):
+    def get(self,request,pk):
+        data = FormData.objects.filter(form_id=pk)
+        context = {
+            'data':data
+        }
+        return render(request,'medic/form-submit.html',context)
+
+
+class FormDatas(View):
+    def get(self,request):
+        data = [{
+            "zipcode": "01262",
+            "city": "Stockbridge",
+            "county": "Berkshire"
+        }, {
+            "zipcode": "02881",
+            "city": "Kingston",
+            "county": "Washington"
+        }, {
+            "zipcode": "03470",
+            "city": "Winchester",
+            "county": "Cheshire"
+        }, {
+            "zipcode": "14477",
+            "city": "Kent",
+            "county": "Orleans"
+        }, {
+            "zipcode": "28652",
+            "city": "Minneapolis",
+            "county": "Avery"
+        }, {
+            "zipcode": "98101",
+            "city": "Seattle",
+            "county": "King"
+        }]
+        return HttpResponse(data)

@@ -1700,6 +1700,82 @@ def review_submission_for_emergency_operation(request,id):
     }
     return render(request,'Accounting/review_submission_for_emergency_operation.html', context)
 
+
+@login_required
+def details_of_prospective_client_for_events(request):
+    form = EventsProspectiveClientForm()
+    if request.method == 'POST':
+        form = EventsProspectiveClientForm(request.POST)
+        prepared_by = request.POST.get('prepared_by')
+        if prepared_by:
+            QuotePreparedBy.objects.create(prepared_by = prepared_by)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.save()
+                return redirect('event_service_details', id=instance.id)
+            else:
+                return HttpResponse('Validation Error')
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/details_of_prospective_client_for_events.html',context)
+
+
+@login_required
+def event_service_details(request,id):
+    form = EventsServiceDetailsForm()
+    if request.method == 'POST':
+        service_req = request.POST.get('service_req')
+        if service_req:
+            EventServiceRequest.objects.create(service_req = service_req)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        risk_level = request.POST.get('risk_level')
+        if risk_level:
+            EventServiceDetailRiskLevel.objects.create(risk_level = risk_level)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = EventsServiceDetailsForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('event_sport_particulars', id)
+            else:
+                return HttpResponse('Validation error')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/event_service_details.html',context)
+
+@login_required
+def event_sport_particulars(request,id):
+    form = EventSportParticularsForm()
+    if request.method == 'POST':
+        ser_des = request.POST.get('ser_des')
+        if ser_des:
+            EventParticularServiceDescription.objects.create(ser_des = ser_des)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = EventSportParticularsForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                pass
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/event_sport_particulars.html',context)
+
 @login_required
 def reports(request):
     e_c_r = Electric_Cash_Receipt.objects.all()

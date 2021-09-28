@@ -48,6 +48,12 @@ admin.site.register(ServiceDetails)
 admin.site.register(Code)
 admin.site.register(EmergencyOperations)
 admin.site.register(TotalCallCosting)
+admin.site.register(EventsProspectiveClient)
+admin.site.register(EventsServiceDetails)
+admin.site.register(EventServiceRequest)
+admin.site.register(EventServiceDetailRiskLevel)
+admin.site.register(EventParticularServiceDescription)
+admin.site.register(EventSportParticulars)
 
 
 

@@ -814,13 +814,63 @@ class TotalCallCosting(models.Model):
         return str(self.parent.id)
 
 
+# Quotation Events and Sport
 
-
+class EventsProspectiveClient(models.Model):
+    doc_version = models.PositiveIntegerField(blank=True,null=True)
+    date_of_quote = models.DateField(blank=True,null=True)
+    name_poc = models.CharField(max_length=100,blank=True,null=True)
+    company_org_name = models.CharField(max_length=100,blank=True,null=True)
+    physical_address = models.TextField()
+    client_phone_no = models.PositiveIntegerField()
+    clinet_email = models.EmailField(blank=True,null=True)
+    date_of_expiry = models.DateField()
+    quote_prepared_by = models.ForeignKey(QuotePreparedBy, on_delete=SET_NULL,blank=True,null=True)
     
 
+class EventServiceRequest(models.Model):
+    service_req = models.CharField(max_length=200,blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.service_req
 
+class EventServiceDetailRiskLevel(models.Model):
+    risk_level = models.CharField(max_length=200,blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.risk_level
+
+class EventsServiceDetails(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    service_request = models.ForeignKey(EventServiceRequest,on_delete=SET_NULL,blank=True,null=True)
+    risk_lvl = models.ForeignKey(EventServiceDetailRiskLevel, on_delete=SET_NULL,blank=True,null=True)
+    evnt_name = models.CharField(max_length=100,blank=True,null=True)
+    special_notes = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.parent.id)
+
+class EventParticularServiceDescription(models.Model):
+    ser_des = models.CharField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.ser_des
+
+class EventSportParticulars(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    date_of_service = models.DateField()
+    service_description = models.ForeignKey(EventParticularServiceDescription,on_delete=SET_NULL,blank=True,null=True)
+    loc_address = models.CharField(max_length=500,blank=True,null=True)
+    service_start_time = models.TimeField()
+    service_end_time = models.TimeField()
+    total_service_time = models.CharField(max_length=500,blank=True,null=True)
+    price = models.PositiveIntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
 
 
 

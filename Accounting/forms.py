@@ -427,3 +427,45 @@ class TotalCallCostingForm(forms.ModelForm):
             'discount_amount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
             'total_quotation_cost': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
         }
+
+
+class EventsProspectiveClientForm(forms.ModelForm):
+    class Meta:
+        model = EventsProspectiveClient
+        fields = '__all__'
+        widgets = {
+            'doc_version': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'date_of_quote': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'name_poc': forms.TextInput(attrs={'class': 'form-control'}),
+            'company_org_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'physical_address': forms.Textarea(attrs={'class': 'form-control'}),
+            'client_phone_no': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'clinet_email': forms.EmailInput(attrs={'class': 'form-control','type': 'email'}),
+            'date_of_expiry': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'quote_prepared_by': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+class EventsServiceDetailsForm(forms.ModelForm):
+    class Meta:
+        model = EventsServiceDetails
+        fields = '__all__'
+        widgets = {
+            'service_request': forms.Select(attrs={'class': 'form-control'}),
+            'risk_lvl': forms.Select(attrs={'class': 'form-control'}),
+            'evnt_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class EventSportParticularsForm(forms.ModelForm):
+    class Meta:
+        model = EventSportParticulars
+        fields = '__all__'
+        widgets = {
+            'date_of_service': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'service_description': forms.Select(attrs={'class': 'form-control'}),
+            'loc_address': forms.TextInput(attrs={'class': 'form-control'}),
+            'service_start_time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+            'service_end_time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+            'total_service_time': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+        }

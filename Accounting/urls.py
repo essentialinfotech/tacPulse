@@ -100,6 +100,9 @@ urlpatterns = [
     path('total/call/costing/<int:id>/', total_call_costing, name = 'total_call_costing'),
     path('submission/emergency/operation/<int:id>/', emergency_email_submission, name = 'emergency_email_submission'),
     path('review/submission/for/emergency/operation/<int:id>/', review_submission_for_emergency_operation, name = 'review_submission_for_emergency_operation'),
+    path('events/details/of/prospective/client/', details_of_prospective_client_for_events, name = 'details_of_prospective_client_for_events'),
+    path('events/service/detail/<int:id>/', event_service_details, name = 'event_service_details'),
+    path('event/particular/<int:id>/', event_sport_particulars, name = 'event_sport_particulars'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

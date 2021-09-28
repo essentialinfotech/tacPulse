@@ -1,6 +1,4 @@
-{% extends '../base.html' %}
-{% load static %}
-{% block content %}
+{% extends '../base.html' %} {% load static %} {% block content %}
 
 
 <style>
@@ -16,7 +14,7 @@
         border-radius: 4px!important;
         background-color: #f1f1f1!important;
     }
-
+    
     textarea {
         padding: 5px!important;
         border: none!important;
@@ -35,30 +33,30 @@
                 <div class="col-md-12 mb-5">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Quote Prepared By</button>
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <form method="POST" action="{% url 'details_of_prospective_client' %}">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="initial_receiver_of_goods" class="col-form-label">Quote Prepared By Name</label>
-                                        <input type="text" class="form-control" required name="prepared_by"  id="prepared_by">
-                                    </div>
-                                    <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <form method="POST" action="{% url 'details_of_prospective_client_for_events' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="initial_receiver_of_goods" class="col-form-label">Quote Prepared By Name</label>
+                                            <input type="text" class="form-control" required name="prepared_by" id="prepared_by">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </div>
 
                 </div>
             </div>
 
-                {{ form.errors }}
-            <form method="POST" action="{% url 'details_of_prospective_client' %}">
+            {{ form.errors }}
+            <form method="POST" action="{% url 'details_of_prospective_client_for_events' %}">
                 {% csrf_token %}
                 <div class="row shadow-lg p-3 mb-5 bg-white rounded">
 
@@ -67,51 +65,43 @@
                             <h3>Details of Prospective Client</h3>
                         </div>
                     </div>
-                
+
+
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="doc_version">Document Version</label>
-                            {{ form.doc_version }}
+                            <label for="doc_version">Document Version</label> {{ form.doc_version }}
                         </div>
 
                         <div class="form-group">
-                            <label for="date_of_quote">Date of Quote</label>
-                            {{ form.date_of_quote }}
+                            <label for="date_of_quote">Date of Quote</label> {{ form.date_of_quote }}
                         </div>
 
                         <div class="form-group">
-                            <label for="name_poc">Name & Surname (PoC)</label>
-                            {{ form.name_poc }}
+                            <label for="name_poc">Name & Surname (PoC)</label> {{ form.name_poc }}
                         </div>
 
                         <div class="form-group">
-                            <label for="company_org_name">Company/Organization Name</label>
-                            {{ form.company_org_name }}
+                            <label for="company_org_name">Company/Organization Name</label> {{ form.company_org_name }}
                         </div>
 
                         <div class="form-group">
-                            <label for="physical_address">Physical Address</label>
-                            {{ form.physical_address }}
+                            <label for="physical_address">Physical Address</label> {{ form.physical_address }}
                         </div>
 
                         <div class="form-group">
-                            <label for="client_phone_no">Client Phone Number</label>
-                            {{ form.client_phone_no }}
+                            <label for="client_phone_no">Client Phone Number</label> {{ form.client_phone_no }}
                         </div>
 
                         <div class="form-group">
-                            <label for="clinet_email">Client Email</label>
-                            {{ form.clinet_email }}
+                            <label for="clinet_email">Client Email</label> {{ form.clinet_email }}
                         </div>
 
                         <div class="form-group">
-                            <label for="date_of_expiry">Date Of Expiry</label>
-                            {{ form.date_of_expiry }}
+                            <label for="date_of_expiry">Date Of Expiry</label> {{ form.date_of_expiry }}
                         </div>
 
                         <div class="form-group">
-                            <label for="quote_prepared_by">Quote Prepared By</label>
-                            {{ form.quote_prepared_by }}
+                            <label for="quote_prepared_by">Quote Prepared By</label> {{ form.quote_prepared_by }}
                         </div>
 
                         <div class="form-group">
@@ -127,4 +117,3 @@
 
 
 {% endblock %}
-

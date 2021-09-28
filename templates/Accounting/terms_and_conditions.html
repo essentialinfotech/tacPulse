@@ -1,0 +1,107 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <form method="POST" action="{% url 'terms_and_conditions' id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <h3>Terms & Condition</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="special_comments">Special Comments / Instructions</label>
+                        <textarea class="form-control" name="special_comments" id="special_comments"  rows="8"></textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="mt-5 mb-5" style="background-color: #f1f1f1;padding: 10px;">
+                            1. Order is to be entered in accordance with prices, delivery and specifications shown above. <br>
+                            2. Notify us immediately if you are unable to ship as specified or are out of stock of a specific item. <br>
+                            3. Expiration dates must be at a minimum of 12 months from date of purchase. In case of medication,<br>
+                               please communicate the expiration date with us, if it does not comply to the 12 month rule
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Was a quotation obtained prior to purchase?</label>
+                            {{ form.was_a_quotation_obtained_prior_to_purchase }}
+                        </div>
+
+                        <div id="hide_show" style="display: none;">
+                            <div class="form-group">
+                                <label for="">Copy Of Quotation-01</label>
+                                <input type="file" name="copy_of_quotation_1" id="copy_of_quotation_1" class="form-control-file">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Copy Of Quotation-02</label>
+                                <input type="file" name="copy_of_quotation_2" id="copy_of_quotation_2" class="form-control-file">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Copy Of Quotation-03</label>
+                                <input type="file" name="copy_of_quotation_3" id="copy_of_quotation_3" class="form-control-file">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Copy Of Quotation-04</label>
+                                <input type="file" name="copy_of_quotation_4" id="copy_of_quotation_4" class="form-control-file">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Next" style="background-color: red!important;">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var id_was_a_quotation_obtained_prior_to_purchase = document.getElementById('id_was_a_quotation_obtained_prior_to_purchase')
+    var hide_show = document.getElementById('hide_show')
+
+    id_was_a_quotation_obtained_prior_to_purchase.addEventListener('click', (e)=>{
+        if(id_was_a_quotation_obtained_prior_to_purchase.options[id_was_a_quotation_obtained_prior_to_purchase.selectedIndex].text == 'Yes' ){
+            hide_show.style.display = 'block'
+        }
+        else{
+            hide_show.style.display = 'none'
+        }
+    })
+</script>
+
+
+
+{% endblock %}

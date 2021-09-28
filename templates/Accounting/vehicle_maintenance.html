@@ -1,0 +1,140 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            
+
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Packaging</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'vehicle_maintenance' id %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="p_name" class="col-form-label">Requested By Name:</label>
+                                        <input type="text" class="form-control" required name="p_name"  id="p_name">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+            {{ form.errors }}
+            
+            <form action="{% url 'vehicle_maintenance' id %}" method="POST">
+                {% csrf_token %}
+                <div class="row shadow p-3 mb-5 bg-white rounded">
+                
+                    <div class="form-group">
+                        <h3>Vehicle</h3>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="item_description">Item Description</label>
+                            {{ form.item_description }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stock_no">Stock Number</label>
+                            {{ form.stock_no }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="packaging">Packaging</label>
+                            {{ form.packaging }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qty">QTY</label>
+                            {{ form.qty }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit_price">Unit Price(R)</label>
+                            {{ form.unit_price }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="total">Total(R)</label>
+                            {{ form.total }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comment">Comment</label>
+                            {{ form.comment }}
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" name="main_form" id="main_form" required>
+                            <input type="submit" class="btn btn-primary" style="background-color: red!important;" value="Next">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var  unit_price = document.getElementById('id_unit_price')
+    var  qty = document.getElementById('id_qty')
+    var  total = document.getElementById('id_total')
+
+    unit_price.addEventListener('keyup', (e)=>{
+        var price = unit_price.value;
+        var qt = qty.value; 
+        total.value = parseInt(price)*parseInt(qt);
+    })
+
+</script>
+
+<script>
+    window.addEventListener('load', (e)=>{
+        document.getElementById('id_total').readOnly = true;
+    })
+</script>
+
+
+
+{% endblock %}

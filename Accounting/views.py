@@ -1133,12 +1133,215 @@ def photographical_evidence(request,expense_reimbursement_record_id):
 def request_summary(request,expense_reimbursement_record_id):
     expense_reimbursement_record = Expense_Reimbursement_Record.objects.get(id = expense_reimbursement_record_id)
     expense_transactions = expense_reimbursement_record.expensetransactions_set.all()
+    form = ExpenseRequestSummaryForm()
+    total_reimbursement = 0
+    for i in expense_transactions:
+        total_reimbursement += i.amount
+    if request.method == 'POST':
+        form = ExpenseRequestSummaryForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+
+            # decoding receiver signature from text string to image
+            requester_signature = request.POST.get('requester_signature')
+            format, imgstr = requester_signature.split(';base64,') 
+            ext = format.split('/')[-1] 
+            requester_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+            instance.requester_signature = requester_signature
+            instance.summary_for_id = expense_reimbursement_record_id
+            instance.total_reimbursement = total_reimbursement
+            instance.save()
+            return redirect('reports')
+
     context = {
-        'expense_transactions': expense_transactions,
+        'total_reimbursement': total_reimbursement,
+        'form': form,
         'expense_reimbursement_record_id': expense_reimbursement_record_id,
+        'expense_transactions': expense_transactions,
     }
     return render(request,'Accounting/request_summary.html',context)
 
+
+@login_required
+def purchase_order_customer_information(request):
+    form = Order_Cus_Info()
+    if request.method == 'POST':
+        requested_by_name = request.POST.get('requested_by_name')
+        supp_name = request.POST.get('supp_name')
+        address_name = request.POST.get('address_name')
+        if requested_by_name:
+            RequestedBy.objects.create(requested_by_name = requested_by_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if supp_name:
+            SupplierOrCompany.objects.create(name = supp_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if address_name:
+            CourierToThisAddress.objects.create(address_name = address_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = Order_Cus_Info(request.POST)
+            if form.is_valid():
+                instance = form.save()
+                if instance.transaction_cat == 'Vehicle Maintenance':
+                    return redirect('vehicle_maintenance', id = instance.id)
+                if instance.transaction_cat == 'Products':
+                    pass
+                if instance.transaction_cat == 'Services / Training':
+                    pass
+
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/purchase_order.html',context)
+
+
+@login_required
+def vehicle_maintenance(request,id):
+    form = VehicleMaintenanceForm()
+    if request.method == 'POST':
+        p_name = request.POST.get('p_name')
+        if p_name:
+            PackagingForVehicle.objects.create(p_name = p_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        form = VehicleMaintenanceForm(request.POST)
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.order_id = id
+                instance.save()
+                return redirect('add_another_vehicle_maintenance', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/vehicle_maintenance.html',context)
+
+
+@login_required
+def add_another_vehicle_maintenance(request,id):
+    vehicle_details = VehicleMaintenance.objects.filter(order_id = id)
+    context = {
+        'vehicle_details': vehicle_details,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_vehicle_maintenance.html',context)
+
+@login_required
+def vehicle_maintenance_totals(request,id):
+    form = VehicleMaintenanceTotalsForm()
+    totals = 0
+    v_maintenance = VehicleMaintenance.objects.filter(order_id = id)
+    for i in v_maintenance:
+        totals += i.total
+    if request.method == 'POST':
+        form = VehicleMaintenanceTotalsForm(request.POST)
+        v_name = request.POST.get('v_name')
+        if v_name:
+            VehicleCallAsign.objects.create(v_name = v_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.order_for_id = id 
+                instance.totals = request.POST.get('totals')
+                instance.save()
+                return redirect('terms_and_conditions', id)
+            else:
+                return HttpResponse('Validation Failed')
+    context = {
+        'form': form,
+        'totals': totals,
+        'id': id,
+    }
+    return render(request,'Accounting/vehicle_maintenance_totals.html',context)
+
+
+@login_required
+def terms_and_conditions(request,id):
+    form = TermsAndConditionsForm()
+    if request.method == 'POST':
+        form = TermsAndConditionsForm(request.POST)
+        special_comments = request.POST.get('special_comments')
+        was_a_quotation_obtained_prior_to_purchase = request.POST.get('was_a_quotation_obtained_prior_to_purchase')
+        copy_of_quotation_1 = request.FILES.get('copy_of_quotation_1')
+        copy_of_quotation_2 = request.FILES.get('copy_of_quotation_2')
+        copy_of_quotation_3 = request.FILES.get('copy_of_quotation_3')
+        copy_of_quotation_4 = request.FILES.get('copy_of_quotation_4')
+
+        terms_conditions = TermsAndConditions.objects.create(
+                            terms_for_id = id,
+                            special_comments = special_comments,
+                            was_a_quotation_obtained_prior_to_purchase = was_a_quotation_obtained_prior_to_purchase,
+                            copy_of_quotation_1 = copy_of_quotation_1,
+                            copy_of_quotation_2 = copy_of_quotation_2,
+                            copy_of_quotation_3 = copy_of_quotation_3,
+                            copy_of_quotation_4 = copy_of_quotation_4,
+                        )
+        if terms_conditions:
+            return redirect('purchase_approval', id)
+        else:
+            return HttpResponse('Validation Error')
+
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/terms_and_conditions.html',context)
+
+
+@login_required
+def purchase_approval(request,id):
+    form = PurchaseApprovalForm()
+    if request.method == 'POST':
+        form = PurchaseApprovalForm(request.POST)
+        approver_name = request.POST.get('approver_name')
+        if approver_name:
+            POAPPROVEDBY.objects.create(approver_name = approver_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            po_items_received = request.POST.get('po_items_received')
+            quality_assurance_check = request.POST.get('quality_assurance_check')
+
+            if po_items_received is not None:
+                po_items_received = True
+            else:
+                po_items_received = False
+
+            if quality_assurance_check is not None:
+                quality_assurance_check = True
+            else:
+                quality_assurance_check = False
+
+            if form.is_valid():
+                # decoding approval_signature from text string to image
+                approval_signature = request.POST.get('approval_signature')
+                format, imgstr = approval_signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                approval_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                instance = form.save(commit=False)
+                instance.po_items_received = po_items_received
+                instance.quality_assurance_check = quality_assurance_check
+                instance.approval_signature = approval_signature
+                instance.approval_for_id = id
+                instance.save()
+
+                if instance.po_items_received == True:
+                    pass
+
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/purchase_approval.html',context)
 
 
 

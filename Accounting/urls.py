@@ -77,6 +77,12 @@ urlpatterns = [
     path('photographical/evidence/<int:expense_reimbursement_record_id>/', photographical_evidence, name = 'photographical_evidence'),
     path('request/summary/<int:expense_reimbursement_record_id>/', request_summary, name = 'request_summary'),
     path('adding/another/expense/<int:expense_reimbursement_record_id>', add_another_transaction, name = 'add_another_transaction'),
+    path('order/customer/information/', purchase_order_customer_information, name = 'purchase_order_customer_information'),
+    path('vehicle/maintenance/<int:id>/', vehicle_maintenance, name = 'vehicle_maintenance'),
+    path('add/more/vehicle/items/<int:id>/', add_another_vehicle_maintenance, name = 'add_another_vehicle_maintenance'),
+    path('vehicle/maintainance/totals/<int:id>/', vehicle_maintenance_totals, name = 'vehicle_maintenance_totals'),
+    path('order/terms/and/conditions/<int:id>/', terms_and_conditions, name = 'terms_and_conditions'),
+    path('purchase/approval/<int:id>/', purchase_approval, name = 'purchase_approval'),
 
 ]
 

@@ -488,14 +488,207 @@ class ExpenseRequestSummary(models.Model):
         ('Include in Next Salary','Include in Next Salary'),
     ]
 
-    summary_for = models.ForeignKey(ExpenseTransactions, on_delete=SET_NULL,blank=True,null=True)
+    summary_for = models.ForeignKey(Expense_Reimbursement_Record, on_delete=SET_NULL,blank=True,null=True)
     total_reimbursement = models.PositiveIntegerField(blank=True,null=True)
     reimbursement_method = models.CharField(max_length=100,choices=REIMBURSEMENT_METHOD)
     comments = models.TextField(blank=True,null=True)
-    requester_signature = models.FileField(upload_to='EXPENSEREIMBURSEMENT')
+    requester_signature = models.FileField(upload_to='EXPENSEREIMBURSEMENT',blank=True,null=True)
 
     def __str__(self):
         return str(self.summary_for.id)
+
+
+
+
+class RequestedBy(models.Model):
+    requested_by_name = models.CharField(max_length=500,blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.requested_by_name
+
+class SupplierOrCompany(models.Model):
+    name = models.CharField(max_length=500,blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class CourierToThisAddress(models.Model):
+    address_name = models.CharField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.address_name
+
+class PurchaseOrder(models.Model):
+    TRANSACTION_CATEGORY = [
+        ('Services / Training','Services / Training'),
+        ('Products','Products'),
+        ('Vehicle Maintenance','Vehicle Maintenance'),
+    ]
+
+    SHIPPING_ADDRESS = [
+        ('Courier','Courier'),
+        ('Collection','Collection'),
+        ('Hand Delivery','Hand Delivery'),
+    ]
+
+    p_o_req_date = models.DateField()
+    req_by = models.ForeignKey(RequestedBy,on_delete=SET_NULL,blank=True,null=True)
+    transaction_cat = models.CharField(max_length=100,choices=TRANSACTION_CATEGORY)
+    supplier_acc_or_job_card = models.CharField(max_length=200)
+    supplier_or_company_name = models.ForeignKey(SupplierOrCompany, on_delete=SET_NULL,blank=True,null=True)
+    supplier_contact_person_name = models.CharField(max_length=100,blank=True,null=True)
+    supplier_contact_number = models.PositiveIntegerField(blank=True,null=True)
+    supplier_email = models.EmailField(blank=True,null=True)
+    street_addrs = models.CharField(max_length=100)
+    city_province = models.CharField(max_length=100)
+    zip_code = models.PositiveIntegerField()
+
+    # shipping
+    shipping_method = models.CharField(max_length=200,choices=SHIPPING_ADDRESS)
+    # if courier
+    courier_to_this_address = models.ForeignKey(CourierToThisAddress,on_delete=SET_NULL,blank=True,null=True)
+    # if collection
+    person_collecting = models.CharField(max_length=300,blank=True,null=True)
+
+
+class PackagingForVehicle(models.Model):
+    p_name = models.CharField(max_length=500,blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.p_name
+
+class VehicleMaintenance(models.Model):
+    order = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE,blank=True,null=True)
+    item_description = models.CharField(max_length=500)
+    stock_no = models.CharField(max_length=200,blank=True,null=True)
+    packaging = models.ForeignKey(PackagingForVehicle,on_delete=SET_NULL,blank=True,null=True)
+    qty = models.PositiveIntegerField()
+    unit_price = models.PositiveIntegerField()
+    total = models.PositiveIntegerField(blank=True,null=True)
+    comment = models.TextField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.order.id)
+
+class VehicleCallAsign(models.Model):
+    v_name = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.v_name
+
+class VehicleMaintenanceTotal(models.Model):
+    order_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
+    vehicle_call_assign = models.ForeignKey(VehicleCallAsign,blank=True,null=True,on_delete=SET_NULL)
+    totals = models.IntegerField(blank=True,null=True)
+    year = models.CharField(max_length=100,blank=True,null=True)
+    make = models.CharField(max_length=100,blank=True,null=True)
+    model = models.CharField(max_length=100,blank=True,null=True)
+    vin = models.CharField(max_length=1000,blank=True,null=True)
+
+    def __str__(self):
+        return str(self.order_for.id)
+
+
+class TermsAndConditions(models.Model):
+
+    WAS_A_QUOTATION_OBTAINED_PRIOR_TO_PURCHASE = [
+        ('Yes','Yes'),
+        ('No','No'),
+    ]
+
+    terms_for = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE,blank=True,null=True)
+    special_comments = models.TextField()
+    was_a_quotation_obtained_prior_to_purchase = models.CharField(max_length=10,choices=WAS_A_QUOTATION_OBTAINED_PRIOR_TO_PURCHASE)
+    copy_of_quotation_1 = models.FileField(upload_to='Order',blank=True,null=True)
+    copy_of_quotation_2 = models.FileField(upload_to='Order',blank=True,null=True)
+    copy_of_quotation_3 = models.FileField(upload_to='Order',blank=True,null=True)
+    copy_of_quotation_4 = models.FileField(upload_to='Order',blank=True,null=True)
+    def __str__(self):
+        return str(self.terms_for.id)
+
+
+class POAPPROVEDBY(models.Model):
+    approver_name = models.CharField(max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+
+class PurchaseApproval(models.Model):
+    approval_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
+    quotation_approved = models.CharField(max_length=100,blank=True,null=True)
+    p_O_approval_date = models.DateField()
+    p_O_approved_by = models.ForeignKey(POAPPROVEDBY,on_delete=SET_NULL,blank=True,null=True)
+    approval_signature = models.FileField(upload_to='Order',blank=True,null=True)
+    po_items_received = models.BooleanField(default=False)
+    quality_assurance_check = models.BooleanField(default=False)
+
+
+class InitialReceiverOfGoods(models.Model):
+    r_name = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+
+class PO_Items_Received(models.Model):
+    received_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
+    date_of_items_received = models.DateField()
+    p_i_1 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_2 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_3 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_4 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_5 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_6 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_7 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_8 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_9 = models.FileField(upload_to='Order',blank=True,null=True)
+    p_i_10 = models.FileField(upload_to='Order',blank=True,null=True)
+
+    sup_invoice_1 = models.FileField(upload_to='Order',blank=True,null=True)
+    sup_invoice_2 = models.FileField(upload_to='Order',blank=True,null=True)
+    sup_invoice_3 = models.FileField(upload_to='Order',blank=True,null=True)
+    sup_invoice_4 = models.FileField(upload_to='Order',blank=True,null=True)
+    sup_invoice_5 = models.FileField(upload_to='Order',blank=True,null=True)
+    initial_receiver_of_goods = models.ForeignKey(InitialReceiverOfGoods, on_delete=SET_NULL,blank=True,null=True)
+    initial_receiver_signature = models.FileField(upload_to='Order',blank=True,null=True)
+    comments = models.TextField(blank=True,null=True)
+
+class PurchaseInspectedBy(models.Model):
+    inpector_name = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+
+class Quality_Control_Inspection(models.Model):
+
+    HAS_ALL_ITEMS_BEEN_RECEIVED = [
+        ('Yes','Yes'),
+        ('Pending B/O','Pending B/O'),
+    ]
+
+    WHAT_WAS_RECEIVED = [
+        ('Yes','Yes'),
+        ('No','No'),
+    ]
+
+    VERIFICATION_EXPIRATION_DATE_RULE = [
+        ('Yes','Yes'),
+        ('No','No'),
+    ]
+
+    quality_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
+    purchase_inspected_by = models.ForeignKey(PurchaseInspectedBy,on_delete=SET_NULL,blank=True,null=True)
+    hasve_all_items_been_received = models.CharField(max_length=200,choices=HAS_ALL_ITEMS_BEEN_RECEIVED)
+    was_verification_done_to_ensure_that_what_was_ordered_is_what_was_received = models.CharField(max_length=50,choices=WHAT_WAS_RECEIVED)
+    was_verification_done_to_ensure_that_the_expiration_date_rule_was_complied_with = models.CharField(max_length=20,choices=VERIFICATION_EXPIRATION_DATE_RULE)
+    quality_control_notes = models.TextField(blank=True,null=True)
+    quality_control_signature = models.FileField(upload_to='Order',blank=True,null=True)
+
+
+
+
+
+
+
+    
 
 
 

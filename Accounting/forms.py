@@ -245,3 +245,84 @@ class ExpenseTransactionsForm(forms.ModelForm):
             'amount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
             'payment_method': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+class ExpenseRequestSummaryForm(forms.ModelForm):
+    class Meta:
+        model = ExpenseRequestSummary
+        fields = '__all__'
+        widgets = {
+            'comments': forms.Textarea(attrs={'class': 'form-control'}),
+            'total_reimbursement': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'reimbursement_method': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    
+class Order_Cus_Info(forms.ModelForm):
+    class Meta:
+        model = PurchaseOrder
+        fields = '__all__'
+        widgets = {
+            'p_o_req_date': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'transaction_cat': forms.Select(attrs={'class': 'form-control'}),
+            'req_by': forms.Select(attrs={'class': 'form-control'}),
+            'supplier_acc_or_job_card': forms.TextInput(attrs={'class': 'form-control'}),
+            'supplier_or_company_name': forms.Select(attrs={'class': 'form-control'}),
+            'supplier_contact_person_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'supplier_contact_number': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'supplier_email': forms.EmailInput(attrs={'class': 'form-control','type': 'email'}),
+            'street_addrs': forms.TextInput(attrs={'class': 'form-control'}),
+            'city_province': forms.TextInput(attrs={'class': 'form-control'}),
+            'zip_code': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'shipping_method': forms.Select(attrs={'class': 'form-control'}),
+            'courier_to_this_address': forms.Select(attrs={'class': 'form-control'}),
+            'person_collecting': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class VehicleMaintenanceForm(forms.ModelForm):
+    class Meta:
+        model = VehicleMaintenance
+        fields = '__all__'
+        widgets = {
+            'item_description': forms.TextInput(attrs={'class': 'form-control'}),
+            'stock_no': forms.TextInput(attrs={'class': 'form-control'}),
+            'packaging': forms.Select(attrs={'class': 'form-control'}),
+            'qty': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'unit_price': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'total': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+class VehicleMaintenanceTotalsForm(forms.ModelForm):
+    class Meta:
+        model = VehicleMaintenanceTotal
+        fields = '__all__'
+        widgets = {
+            'vehicle_call_assign': forms.Select(attrs={'class': 'form-control'}),
+            'year': forms.TextInput(attrs={'class': 'form-control'}),
+            'make': forms.TextInput(attrs={'class': 'form-control'}),
+            'model': forms.TextInput(attrs={'class': 'form-control'}),
+            'vin': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class TermsAndConditionsForm(forms.ModelForm):
+    class Meta:
+        model = TermsAndConditions
+        fields = '__all__'
+        widgets = {
+            'was_a_quotation_obtained_prior_to_purchase': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class PurchaseApprovalForm(forms.ModelForm):
+    class Meta:
+        model = PurchaseApproval
+        fields = '__all__'
+        widgets = {
+            'quotation_approved': forms.TextInput(attrs={'class': 'form-control'}),
+            'p_O_approval_date': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'p_O_approved_by': forms.Select(attrs={'class': 'form-control'}),
+        }

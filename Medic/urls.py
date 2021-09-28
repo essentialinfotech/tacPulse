@@ -87,6 +87,14 @@ urlpatterns = [
      path('hospital_transfer_noti_mark_seen/<int:id>/', h_transfer_noti_mark_seen, name = 'h_transfer_noti_mark_seen'),
      path('vehicle/details/<int:id>/<str:total_unit>/', fill_vehicle_details, name = 'fill_vehicle_details'),
      path('dispatch/incident/report/pdf/<int:id>/', dispatch_incident_report_pdf, name = 'dispatch_incident_report_pdf'),
+
+     path('form/builder/', FormSave.as_view(), name='form_builder'),
+     path('form/list/', FormList.as_view(), name="form_list"),
+     path('form/<int:pk>/', Form.as_view(), name="form"),
+     path('save/form/', SaveForm, name="save_form"),
+     path('form/data/<int:pk>/', FormDatatable.as_view(), name="form_data"),
+     
+     path('form/data/', FormDatas.as_view(), name="form_data")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

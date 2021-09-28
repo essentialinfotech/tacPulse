@@ -1,0 +1,30 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Form Title</th>
+                        <th>Select</th>
+                        <th>Form Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for i in object_list %}
+                    <tr>
+                        <td>{{i.title}}</td>
+                        <td><a href="{% url 'form' i.id %}">Select</a></td>
+                        <td><a href="{% url 'form_data' i.id %}">Form Data</a></td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

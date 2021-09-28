@@ -1,0 +1,49 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <form id="formrender"></form>
+            <button class="btn btn-primary" onclick="submit()">Submit</button>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block js %}
+<script src="{% static 'package/dist/form-render.min.js' %} "></script>
+<script>
+    jQuery($ => {
+        const escapeEl = document.createElement("textarea");
+        const code = document.getElementById("formrender");
+        const formData = JSON.parse("{{json_form|escapejs}}"); //Your JSON data goes here
+        const addLineBreaks = html => html.replace(new RegExp("><", "g"), ">\n<");
+
+        // Grab markup and escape it
+        const $markup = $("<div/>");
+        $markup.formRender({
+            formData
+        });
+
+        // set < code > innerText with escaped markup
+        code.innerHTML = addLineBreaks($markup.formRender("html"));
+
+        hljs.highlightBlock(code);
+    });
+</script>
+<script>
+    function submit() {
+        var formdata = JSON.stringify($("#formrender").serializeArray());
+        var id = JSON.parse("{{id|escapejs}}")
+        $.ajax({
+            url: "{% url 'save_form' %}",
+            data: {
+                'id': id,
+                'formdata': formdata
+            },
+            success: function(data) {
+                alert('success')
+            }
+        })
+    }
+</script>
+{% endblock %}

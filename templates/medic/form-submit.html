@@ -1,0 +1,31 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            {% for i in data %} {{i.data}} {% endfor %}
+            <table class="table">
+                <thead id="header">
+                </thead>
+                <tbody id="content">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block js %}
+<script>
+    $(document).ready(function(e) {
+        var t = {
+            Qty: [61.0, 0.0, 8.0],
+            Name: ["2009 A", "2009 B", "2009 C "]
+        }
+        $("#header").append("<tr><th>" + parseFloat(t.Qty[0]).toFixed(1) + "</th><th>" + t.Name[0] + "</th></tr>");
+
+        $.each(t.Qty, function(i, ele) {
+            $("#content").append("<tr><td>" + parseFloat(t.Qty[i]).toFixed(1) + "</td><td>" + t.Name[i] + "</td></tr>");
+        })
+    })
+</script>
+{% endblock %}

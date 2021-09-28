@@ -217,6 +217,7 @@
 
 
                             {% if request.user.is_superuser %}
+
                             <li class="menu-section">
                                 <h4 class="menu-text">Our Blogs</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -513,7 +514,7 @@
                                 </a>
                             </li>
 
-                            <li class="menu-item" aria-haspopup="true"  data-menu-toggle="hover">
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'ambulance_request'%}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
@@ -1301,9 +1302,8 @@
                 <div class="col-md-12">
                     {% if request.user.is_superuser %}
                     <button class="form-control btn btn-danger mb-2" id="pn">Panic</button>
-                    <button class="form-control btn btn-success mb-2" id="membership">Membership</button> 
-                    <button class="form-control btn btn-success mb-5" id="transfer_h">Hospital Transfer</button>
-                    {% endif %}
+                    <button class="form-control btn btn-success mb-2" id="membership">Membership</button>
+                    <button class="form-control btn btn-success mb-5" id="transfer_h">Hospital Transfer</button> {% endif %}
                 </div>
 
                 <div id="noti_div" class="text-dark" style="display: none;">
@@ -2232,11 +2232,11 @@
                             var ambulance_req_id = value.ambulance_req_id;
                             var details = "<a href='/hospital/transfer/details/" + ambulance_req_id + "/'  id='aTag'>Details</a>";
                             var mark_seen = "<a href='/hospital_transfer_noti_mark_seen/" + noti_id + "/'  id='mark_seen'>Mark as seen</a>";
-                             
+
                             $("#h_transfer_noti").append(
                                 "<div>" + first_name + " <br> " + text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
                             );
-                            
+
                         })
                     }
                 })
@@ -2334,6 +2334,7 @@
                 $('.photos_and_other_choices').select2();
             });
         </script>
+        {% block js %} {% endblock %}
 </body>
 <!--end::Body-->
 

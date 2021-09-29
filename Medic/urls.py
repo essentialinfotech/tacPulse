@@ -85,7 +85,7 @@ urlpatterns = [
      path('ambulance/requests/notifications/', Ambulance_request_noti_for_admin_dispatch, name = 'Ambulance_request_noti_for_admin_dispatch'),
      path('hospital/transfer/notifications/', hospital_transfer_noti_for_admin_dispatch, name = 'hospital_transfer_noti_for_admin_dispatch'),
      path('hospital_transfer_noti_mark_seen/<int:id>/', h_transfer_noti_mark_seen, name = 'h_transfer_noti_mark_seen'),
-     path('vehicle/details/<int:id>/<str:total_unit>/', fill_vehicle_details, name = 'fill_vehicle_details'),
+     path('crew_and_vehicle/details/<int:id>', dispatch_incident_crew_and_vehicle, name = 'dispatch_incident_crew_and_vehicle'),
      path('dispatch/incident/report/pdf/<int:id>/', dispatch_incident_report_pdf, name = 'dispatch_incident_report_pdf'),
 
      path('form/builder/', FormSave.as_view(), name='form_builder'),

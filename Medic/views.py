@@ -222,35 +222,35 @@ def del_feedback(request,id):
 # this is for incident report by dispatch not a a form submitted by user
 def ambulance_request(request):
     form = EmergencyMedDisIncidentReportForm()
-    senior_form = SeniorForm()
-    scribe_form = ScribeForm()
-    assist_1_form = Assist01Form()
-    assist_2_form = Assist02Form()
+    # senior_form = SeniorForm()
+    # scribe_form = ScribeForm()
+    # assist_1_form = Assist01Form()
+    # assist_2_form = Assist02Form()
 
     if request.method == 'POST':
         form = EmergencyMedDisIncidentReportForm(request.POST,request.FILES)
-        senior_form = SeniorForm(request.POST)
-        scribe_form = ScribeForm(request.POST)
-        assist_1_form = Assist01Form(request.POST)
-        assist_2_form = Assist02Form(request.POST)
+        # senior_form = SeniorForm(request.POST)
+        # scribe_form = ScribeForm(request.POST)
+        # assist_1_form = Assist01Form(request.POST)
+        # assist_2_form = Assist02Form(request.POST)
 
         main_form = request.POST.get('main_form')
 
-        if senior_form.is_valid():
-            senior_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        # if senior_form.is_valid():
+        #     senior_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-        if scribe_form.is_valid():
-            scribe_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        # if scribe_form.is_valid():
+        #     scribe_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-        if assist_1_form.is_valid():
-            assist_1_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        # if assist_1_form.is_valid():
+        #     assist_1_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-        if assist_2_form.is_valid():
-            assist_2_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        # if assist_2_form.is_valid():
+        #     assist_2_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
         if main_form is not None:
@@ -277,61 +277,23 @@ def ambulance_request(request):
                 instance.photos_and_other_choices = photos_and_other_choices
                 instance.user = request.user
                 instance.save()
-                return redirect('fill_vehicle_details', id=instance.id,total_unit = instance.how_many_units_dispatched)
+                return redirect('dispatch_incident_crew_and_vehicle', id=instance.id)
 
     context = {
-        'senior_form': senior_form,
-        'scribe_form': scribe_form,
-        'assist_1_form': assist_1_form,
-        'assist_2_form': assist_2_form,
+        # 'senior_form': senior_form,
+        # 'scribe_form': scribe_form,
+        # 'assist_1_form': assist_1_form,
+        # 'assist_2_form': assist_2_form,
         'form': form,
         }
     return render(request, 'medic/ambulance_request.html',context)
 
 
-def fill_vehicle_details(request,id,total_unit):
-    incident = AmbulanceModel.objects.get(id = id)
-    vehicle_with_unit = Vehicles_count_with_info_for_ambulance_request.objects.filter(vehicle_for_id = id).count()
-
-    if vehicle_with_unit == int(incident.how_many_units_dispatched):
-        return redirect('dispatch_incident_report_pdf', id)
-
-    if request.method == 'POST':
-        vehicle_no = request.POST.get('vehicle_no')
-        responding = request.POST.get('responding')
-        odo01 = request.POST.get('odo01')
-        on_scene = request.POST.get('on_scene')
-        odo2 = request.POST.get('odo2')
-        depart_scene = request.POST.get('depart_scene')
-        arrive_fac = request.POST.get('arrive_fac')
-        odo3 = request.POST.get('odo3')
-        hand_over = request.POST.get('hand_over')
-        depart = request.POST.get('depart')
-        end_standing_free = request.POST.get('end_standing_free')
-        odo04 = request.POST.get('odo04')
-
-        Vehicles_count_with_info_for_ambulance_request.objects.create(
-            vehicle_for_id = id,
-            vehicle_no = vehicle_no,
-            responding = responding,
-            odo01 = odo01,
-            on_scene = on_scene,
-            odo2 = odo2,
-            depart_scene = depart_scene,
-            arrive_fac = arrive_fac,
-            odo3 = odo3,
-            hand_over = hand_over,
-            depart = depart,
-            end_standing_free = end_standing_free,
-            odo04 = odo04,
-        )
-
+def dispatch_incident_crew_and_vehicle(request,id):
     context = {
-        'incident': incident,
-        'id': id,
-        'total_unit': total_unit,
+        'id': id
     }
-    return render(request,'medic/vehicle_detail_for_incident.html',context)
+    return render(request,'medic/dispatch_incident_crew_and_vehicle.html',context)
 
 
 class AmbulanceRequestReport(LoginRequiredMixin, View):

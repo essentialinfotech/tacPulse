@@ -98,6 +98,8 @@ class Occurrence(models.Model):
     def __str__(self):
         return str(self.occurrence_id)
 
+
+# dispatch incident
 class Senior(models.Model):
     senior_name = models.CharField(max_length=500,blank=False,null=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -294,6 +296,35 @@ class AmbulanceModel(models.Model):
         ('5','5'),
     ]
     
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
+    run_id = models.CharField(max_length=100, blank=False, null=False)
+    chief_complain = models.TextField(blank=True,null=True)
+    incident_category = models.CharField(max_length=100, blank=False, null=False,choices=INCIDENT)
+    ppe_lvl = models.CharField(max_length = 100, blank=True,null=True,choices=PPE_LEVEL)
+    pick_up_address = models.CharField(max_length=500,blank=False,null=False)
+    billing_type = models.CharField(max_length = 300,choices=BILLING_TYPE)
+    billing_source = models.CharField(max_length=10000,blank=True,null=True,choices=BILLING_SOURCE)
+    amount_quoted = models.PositiveIntegerField(blank=True,null=True)
+    authorization_number = models.CharField(max_length=1000)
+    caller_name = models.CharField(max_length=200)
+    caller_number = models.CharField(max_length=50)
+    caller_company = models.CharField(max_length=200)
+    call_received_time = models.TimeField()
+    time_call_posted_to_crew_on_whatsapp = models.TimeField()
+    crew_operational_status = models.CharField(max_length=200,choices=CREW_OPERATIONAL_STATUS)
+    how_many_units_dispatched = models.CharField(max_length=50,choices=HOW_MANY_UNITS_DISPATCHED)
+    
+    assigned = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
+
+
+class DispatchIncidentCrewAndVehicle(models.Model):
+
     ASSIGNED_UNIT = [
         ('SDO1','SDO1'),
         ('L01','L01'),
@@ -326,6 +357,17 @@ class AmbulanceModel(models.Model):
         ('Mobile ICU','Mobile ICU'),
     ]
 
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
+    assigned_unit = models.CharField(max_length=100,choices=ASSIGNED_UNIT)
+    vehicle_total = models.CharField(max_length=50,choices=VEHICLE)
+    unit_reg = models.CharField(max_length=30,default='BH 17WM GP')
+    senior = models.ForeignKey(Senior,on_delete=SET_NULL,null=True)
+    assist01 = models.ForeignKey(Assist01,on_delete=SET_NULL,null=True)
+    assist02 = models.ForeignKey(Assist02,on_delete=SET_NULL,null=True)
+    loc = models.CharField(max_length=200,choices=LOC)
+
+
+class DispatchIncidentServiceNotes(models.Model):
     SERVICE_NOTES = [
         ('RESPONSE DELAY','RESPONSE DELAY'),
         ('ON SCENE DELAY','ON SCENE DELAY'),
@@ -333,6 +375,83 @@ class AmbulanceModel(models.Model):
         ('HANDOVER DELAY','HANDOVER DELAY'),
         ('SPECIAL RECORD','SPECIAL RECORD'),
     ]
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
+    service_notes = models.CharField(max_length=100,choices=SERVICE_NOTES)
+    scribe = models.ForeignKey(Scribe,on_delete=SET_NULL,blank=True,null=True)
+    service_note_time = models.TimeField(blank=True,null=True)
+    service_note_description = models.TextField(blank=True,null=True)
+
+
+class DispatchIncidentTravelDetails(models.Model):
+
+    ASSIGNED_UNIT = [
+        ('SDO1','SDO1'),
+        ('L01','L01'),
+        ('RV03','RV03'),
+        ('TP07','TP07'),
+        ('TP09','TP09'),
+        ('TP08','TP08'),
+        ('RV01','RV01'),
+        ('TP02','TP02'),
+        ('TP05','TP05'),
+        ('TP03','TP03'),
+        ('RM01','RM01'),
+        ('TP11','TP11'),
+        ('TP10','TP10'),
+    ]
+    
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
+    unit = models.CharField(blank=True,null=True,max_length=200,choices=ASSIGNED_UNIT)
+    responding_address = models.CharField(max_length=100,blank=True,null=True)
+    scene_address = models.CharField(max_length=100,blank=True,null=True)
+    facility_address = models.CharField(max_length=100,blank=True,null=True)
+    end_address = models.CharField(max_length=100,blank=True,null=True)
+
+
+class DispatchIncidentLocationDetails(models.Model):
+
+    ASSIGNED_UNIT = [
+        ('SDO1','SDO1'),
+        ('L01','L01'),
+        ('RV03','RV03'),
+        ('TP07','TP07'),
+        ('TP09','TP09'),
+        ('TP08','TP08'),
+        ('RV01','RV01'),
+        ('TP02','TP02'),
+        ('TP05','TP05'),
+        ('TP03','TP03'),
+        ('RM01','RM01'),
+        ('TP11','TP11'),
+        ('TP10','TP10'),
+    ]
+
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
+    unit = models.CharField(blank=True,null=True,max_length=200,choices=ASSIGNED_UNIT)
+    responding_address = models.CharField(max_length=100,blank=True,null=True)
+    scene_address = models.CharField(max_length=100,blank=True,null=True)
+    facility_address = models.CharField(max_length=100,blank=True,null=True)
+    end_address = models.CharField(max_length=100,blank=True,null=True)
+
+
+# travel details
+class Vehicles_count_with_info_for_ambulance_request(models.Model):
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
+    vehicle_no = models.CharField(max_length=40,blank=True,null=True)
+    responding = models.TimeField(blank=True,null=True)
+    odo01 = models.PositiveIntegerField(null=True)
+    on_scene = models.TimeField(null=True)
+    odo2 = models.PositiveIntegerField(null=True)
+    depart_scene = models.TimeField(null=True)
+    arrive_fac = models.TimeField(null=True)
+    odo3 = models.PositiveIntegerField(null=True)
+    hand_over = models.TimeField(null=True)
+    depart = models.TimeField(null=True)
+    end_standing_free = models.TimeField(null=True)
+    odo04 = models.PositiveIntegerField(null=True)
+
+
+class DispatchIncidentPatientInformation(models.Model):
 
     PATIENT = [
         ('A','A'),
@@ -379,50 +498,7 @@ class AmbulanceModel(models.Model):
         ('DOA','DOA'),
     ]
 
-    WAS_THE_CALL_HANDED_OVER = [
-        ('YES','YES'),
-        ('NO','NO'),
-    ]
-
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
-    run_id = models.CharField(max_length=100, blank=False, null=False)
-    chief_complain = models.TextField(blank=True,null=True)
-    incident_category = models.CharField(max_length=100, blank=False, null=False,choices=INCIDENT)
-    ppe_lvl = models.CharField(max_length = 100, blank=True,null=True,choices=PPE_LEVEL)
-    pick_up_address = models.CharField(max_length=500,blank=False,null=False)
-    billing_type = models.CharField(max_length = 300,choices=BILLING_TYPE)
-    billing_source = models.CharField(max_length=10000,blank=True,null=True,choices=BILLING_SOURCE)
-    amount_quoted = models.PositiveIntegerField(blank=True,null=True)
-    authorization_number = models.CharField(max_length=1000)
-    caller_name = models.CharField(max_length=200)
-    caller_number = models.CharField(max_length=50)
-    caller_company = models.CharField(max_length=200)
-    call_received_time = models.TimeField()
-    time_call_posted_to_crew_on_whatsapp = models.TimeField()
-    crew_operational_status = models.CharField(max_length=200,choices=CREW_OPERATIONAL_STATUS)
-    how_many_units_dispatched = models.CharField(max_length=50,choices=HOW_MANY_UNITS_DISPATCHED)
-    assigned_unit = models.CharField(max_length=100,choices=ASSIGNED_UNIT)
-    vehicle_total = models.CharField(max_length=50,choices=VEHICLE)
-    unit_reg = models.CharField(max_length=30,default='BH 17WM GP')
-    senior = models.ForeignKey(Senior,on_delete=SET_NULL,null=True)
-    assist01 = models.ForeignKey(Assist01,on_delete=SET_NULL,null=True)
-    assist02 = models.ForeignKey(Assist02,on_delete=SET_NULL,null=True)
-    loc = models.CharField(max_length=200,choices=LOC)
-
-    # service notes
-    service_notes = models.CharField(max_length=100,choices=SERVICE_NOTES)
-    scribe = models.ForeignKey(Scribe,on_delete=SET_NULL,blank=True,null=True)
-    service_note_time = models.TimeField(blank=True,null=True)
-    service_note_description = models.TextField(blank=True,null=True)
-
-    # location_details
-    unit = models.CharField(blank=True,null=True,max_length=200,choices=ASSIGNED_UNIT)
-    responding_address = models.CharField(max_length=100,blank=True,null=True)
-    scene_address = models.CharField(max_length=100,blank=True,null=True)
-    facility_address = models.CharField(max_length=100,blank=True,null=True)
-    end_address = models.CharField(max_length=100,blank=True,null=True)
-
-    # patient info
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
     patient = models.CharField(max_length=50,choices=PATIENT)
     p_priority = models.CharField(max_length=100,blank=True,null=True,choices=P_PRIORITY)
     p_lvl_of_care = models.CharField(max_length=100,blank=True,null=True,choices=P_LEVEL_OF_CARE)
@@ -430,46 +506,31 @@ class AmbulanceModel(models.Model):
     p_medical_aid_plan_option = models.CharField(max_length=50,blank=True,null=True)
     p_medical_aid = models.CharField(max_length=50,blank=True,null=True)
 
-    # photos and other
+
+class DispatchIncidentPhotos(models.Model):
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
     photos_and_other_choices = models.CharField(max_length=50,blank=True,null=True)
     photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
     scene_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
     unknown_person_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
     other_photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
 
-    # dispatcher certification
+
+class DispatchIncidentDispatcherCertification(models.Model):
+
+    WAS_THE_CALL_HANDED_OVER = [
+        ('YES','YES'),
+        ('NO','NO'),
+    ]
+
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
     senior_practitioner_csn = models.CharField(max_length=50,blank=True,null=True)
     name_of_dispatcher = models.ForeignKey(User,blank=True,null=True,on_delete=SET_NULL,related_name='dispatcher')
     was_the_call_handed_over_to_another_dispatcher = models.CharField(max_length=20,blank=True,null=True,choices=WAS_THE_CALL_HANDED_OVER)
     dispatch_special_notes = models.TextField(blank=True,null=True)
     signature = models.FileField(upload_to='Signature',blank=True,null=True)
 
-
-    assigned = models.BooleanField(default=False)
-    completed = models.BooleanField(default=False)
-
-    created_on = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.id)
-
-
-class Vehicles_count_with_info_for_ambulance_request(models.Model):
-    vehicle_for = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
-    vehicle_no = models.CharField(max_length=40,blank=True,null=True)
-    responding = models.TimeField(blank=True,null=True)
-    odo01 = models.PositiveIntegerField(null=True)
-    on_scene = models.TimeField(null=True)
-    odo2 = models.PositiveIntegerField(null=True)
-    depart_scene = models.TimeField(null=True)
-    arrive_fac = models.TimeField(null=True)
-    odo3 = models.PositiveIntegerField(null=True)
-    hand_over = models.TimeField(null=True)
-    depart = models.TimeField(null=True)
-    end_standing_free = models.TimeField(null=True)
-    odo04 = models.PositiveIntegerField(null=True)
-
-
+# dispatch incident ends
 class AmbulanceRequestModel(models.Model):
     pass
 

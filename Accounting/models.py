@@ -387,15 +387,13 @@ class PayrolDeduction(models.Model):
 
 
 # Finane
+# electronic cash
 class Electric_Cash_Receipt(models.Model):
     company_or_patient_name = models.CharField(blank=True,null=True,max_length=100)
     customer_email = models.EmailField(blank=False,null=True)
     cus_number = models.CharField(max_length=100,blank=True,null=True)
     date = models.DateField()
     time = models.TimeField()
-    # reason for payment
-    run_id_or_reference = models.CharField(max_length=200,blank=True,null=True,unique=True)
-
     def __str__(self):
         return str(self.id)
 
@@ -419,21 +417,28 @@ class Electric_Cash_Receipt_Invoice(models.Model):
     ]
 
     invo_for = models.ForeignKey(Electric_Cash_Receipt,on_delete=models.CASCADE,blank=True,null=True)
+    # reason for payment
+    run_id_or_reference = models.CharField(max_length=200,blank=True,null=True,unique=True)
     transaction = models.CharField(max_length=500,blank=True,null=True,choices=TRANSACTION)
     invoice = models.CharField(max_length=200,blank=True,null=True)
     quote_invoice_amount = models.PositiveIntegerField(blank=True,null=True)
     amount_received = models.PositiveIntegerField(blank=True,null=True)
     amount_outstanding = models.PositiveIntegerField(blank=True,null=True)
 
+    def __str__(self):
+        return str(self.invo_for.id)
+
+class ElectricInvoiceSummary(models.Model):
+    summary_for = models.ForeignKey(Electric_Cash_Receipt,on_delete=SET_NULL,blank=True,null=True)
     cash_received_by = models.ForeignKey(Invoice_cash_received_by,on_delete=SET_NULL,blank=True,null=True)
     receiver_signature = models.FileField(upload_to='InvoiceReceiverSignature',blank=True,null=True)
     customer_signature = models.FileField(upload_to='InvoiceCustomerSignature', blank=True,null=True)
     special_notes = models.TextField()
 
     def __str__(self):
-        return str(self.invo_for.id)
+        return str(self.summary_for.id)
 
-
+# expense reimbursement record
 class Expense_Reimbursement_Record(models.Model):
     processing_date = models.DateField()
     name_and_surname = models.CharField(max_length=80,blank=True,null=True)
@@ -499,7 +504,7 @@ class ExpenseRequestSummary(models.Model):
 
 
 
-
+# purchase order
 class RequestedBy(models.Model):
     requested_by_name = models.CharField(max_length=500,blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -872,6 +877,58 @@ class EventSportParticulars(models.Model):
     def __str__(self):
         return str(self.parent.id)
 
+
+class TotalEventSportCosting(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    total_service_cost = models.PositiveIntegerField(blank=True,null=True)
+    discount = models.PositiveIntegerField(blank=True,null=True)
+    discount_calculation = models.PositiveIntegerField(blank=True,null=True)
+    total_quotation_cost = models.PositiveIntegerField(blank=True,null=True)
+    special_notes = models.TextField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
+
+class EventServiceElement(models.Model):
+    ser_ele_name = models.CharField(max_length=1000)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.ser_ele_name
+
+class EventServiceInclusionDescription(models.Model):
+    description_name = models.CharField(max_length=1000)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.description_name
+
+class EventServiceInclusion(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    service_element = models.ForeignKey(EventServiceElement,on_delete=SET_NULL,blank=True,null=True)
+    description = models.ForeignKey(EventServiceInclusionDescription,on_delete=SET_NULL,blank=True,null=True)
+    qty = models.PositiveIntegerField(blank=True,null=True)
+    location = models.CharField(max_length=1000,default='N/A')
+
+    def __str__(self):
+        return str(self.parent.id)
+
+
+class EventServiceExclusionDescription(models.Model):
+    description_name = models.CharField(max_length=1000)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.description_name
+
+
+class EventServiceExclusion(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    service_element = models.ForeignKey(EventServiceElement,on_delete=SET_NULL,blank=True,null=True)
+    description = models.ForeignKey(EventServiceExclusionDescription,on_delete=SET_NULL,blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
 
 
 

@@ -25,48 +25,20 @@
             <form method="POST" action="{% url 'electronic_invoice_details' id %}">
                 {% csrf_token %}
                 <div class="row shadow-lg p-3 mb-5 bg-white rounded">
-
-                    <div class="col-md-12 mb-5 mt-5">
-                        <div class="m-auto">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                Create Name For Cash Received By
-                            </button>
-                            
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Create Cash Receiver Name</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-                                        <input type="text" name="receiver_name" id="receiver_name" class="form-control" placeholder="Cash Receiver Name">
-
-                                        <div class="form-group mt-5">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </form>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <h3>
+                                Invoice Details
+                            </h3>
                         </div>
                     </div>
 
-
-
-                   <div class="text-center m-auto">
-                        <u class="mb-15">{{ data.run_id_or_reference }}</u>
-                   </div>
-
                     <div class="col-md-12">
+                        <div class="form-group text-center  m-auto mb-5">
+                            <label for="run_id_or_reference">Run ID/ Reference</label>
+                            {{ form.run_id_or_reference }}
+                        </div>
+
                         <div class="form-group text-center  m-auto mb-5">
                             <label for="transaction">Transaction</label>
                             {{ form.transaction }}
@@ -92,45 +64,6 @@
                                 {{ form.amount_outstanding }}
                         </div>
 
-                        <hr>
-
-                        <div class="form-group text-center  m-auto mb-5" style="margin-bottom: 5px!important;">
-                            <label for="cash_received_by">Cash Received By</label>
-                                {{ form.cash_received_by }}
-                        </div>
-
-
-                        <div class="form-group text-center">
-                            <label for="receiver_signature"> Recipient Signature</label> <br>
-                            <canvas id="signature_r" width="auto" height="auto" style="border: 1px solid #ddd;"></canvas>
-                            <br>
-                            <!-- getting signature as image receiver -->
-                            <input type="text" name="receiver_signature" id="receiver_signature" value="" style="display: none;">
-
-                            <button class="btn btn-danger" type="button" id="clear-signature_r">Clear</button>
-                            <button class="btn btn-info" type="button" id="save-signature_r">Save</button>
-                            <div id="signature_image_r"></div>
-                        </div>
-
-                        <div class="form-group text-center">
-                            <label for="receiver_signature"> Customer Signature</label> <br>
-                            <canvas id="signature_c" width="auto" height="auto" style="border: 1px solid #ddd;"></canvas>
-                            <br>
-                            <!-- getting signature as image customer -->
-                            <input type="text" name="customer_signature" id="customer_signature" value="" style="display: none;">
-
-                            <button class="btn btn-danger" type="button" id="clear-signature_c">Clear</button>
-                            <button class="btn btn-info" type="button" id="save-signature_c">Save</button>
-                            <div id="signature_image_c"></div>
-                        </div>
-
-                        <div class="form-group text-center w-50  m-auto mb-5" style="margin-bottom: 5px!important;">
-                            <label for="special_notes">Special Notes</label>
-                                {{ form.special_notes }}
-                        </div>
-
-
-
                         <div class="form-group text-center m-auto">
                             <button type="submit" class="btn btn-success mt-5">Next</button>
                         </div>
@@ -142,7 +75,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 
 <script>
     var  id_quote_invoice_amount = document.getElementById('id_quote_invoice_amount')
@@ -163,42 +95,6 @@
     })
 </script>
 
-<!-- receiver signature -->
-<script>
-    jQuery(document).ready(function($) {
-        var canvas = document.getElementById("signature_r");
-        var signaturePad = new SignaturePad(canvas);
-        var saveButton = document.getElementById('save-signature_r');
-        $('#clear-signature_r').on('click', function() {
-            signaturePad.clear();
-        });
-
-        saveButton.addEventListener('click', function(event) {
-            var data = signaturePad.toDataURL();
-            document.getElementById('signature_image_r').innerHTML = '<img type="file" src="' + data + '" name="receiver_signature" />';
-            document.getElementById("receiver_signature").value = signaturePad.toDataURL();
-        });
-    });
-</script>
-
-
-<!-- customer signature -->
-<script>
-    jQuery(document).ready(function($) {
-        var canvas = document.getElementById("signature_c");
-        var signaturePad = new SignaturePad(canvas);
-        var saveButton = document.getElementById('save-signature_c');
-        $('#clear-signature_c').on('click', function() {
-            signaturePad.clear();
-        });
-
-        saveButton.addEventListener('click', function(event) {
-            var data = signaturePad.toDataURL();
-            document.getElementById('signature_image_c').innerHTML = '<img type="file" src="' + data + '" name="customer_signature" />';
-            document.getElementById("customer_signature").value = signaturePad.toDataURL();
-        });
-    });
-</script>
 
 
 {% endblock %}

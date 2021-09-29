@@ -783,13 +783,12 @@
 
 
 
-
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="" class="menu-link">
+                                            <a href="{% url 'reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text"> Reports</span>
+                                                <span class="menu-text">Financial Submission Reports</span>
                                             </a>
                                         </li>
 
@@ -797,7 +796,6 @@
                                 </div>
                             </li>
                             {% endif %}
-
 
 
                             <br> {% if request.user.is_staff %}

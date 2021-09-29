@@ -5,12 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:url"                content="http://127.0.0.1:8000/blog/detail/{{ blog.id }}" />
+    <meta property="og:type"               content="article" />
+    <meta property="og:title"              content="{{ blog.title }}" />
+    <meta property="og:description"        content="{{ blog.post }}" />
+    <meta property="og:image"              content="http://127.0.0.1:8000{{ blog.image.url }}" />
+
     <title>Tac-Pulse | Blogs</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
 <style>
 body {
   margin: 0;
@@ -77,6 +85,8 @@ body {
 </style>
 </head>
 <body>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v12.0" nonce="LQLIAC6Z"></script>
     
 
     <div class="topnav" id="myTopnav">
@@ -99,18 +109,19 @@ body {
 
     <div class="container">
         <div class="row">
-        {% for i in blog %}
+
             <div class="col-md-8">
                 <div class="text-left">
-                    <h4>{{ i.title|title }}</h4>
-                    {% if i.image %}
-                        <a href="{{ i.imageURL }}"><img src="{{ i.imageURL }}" id="img" height="250px" width="450px"></a>
+                    <h4>{{ blog.title|title }}</h4>
+                    {% if blog.image %}
+                        <a href="{{ blog.imageURL }}"><img src="{{ blog.imageURL }}" id="img" height="250px" width="450px"></a>
                     {% endif %}
-                    <p style="margin-top: 15px!important;">{{ i.post|title}}</p>
-                    <p style="margin-top: 7px!important;">{{ i.created }}</p>
+                    <p style="margin-top: 15px!important;">{{ blog.post|title}}</p>
+                    <p style="margin-top: 7px!important;">{{ blog.created }}</p>
                 </div>
             </div>
-        {% endfor %}
+            <div class="fb-like" data-href="http://127.0.0.1:8000/blog/detail/{{ blog.id }}" data-width=""  data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
+
         </div>
     </div>
     <!-- Latest compiled and minified JavaScript -->

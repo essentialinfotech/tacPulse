@@ -1149,7 +1149,7 @@ def blog_list(request):
 
 
 def single_blog(request,id):
-    blog = Blog.objects.filter(id = id)
+    blog = Blog.objects.get(id = id)
     context = {
         'blog': blog,
     }

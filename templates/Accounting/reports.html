@@ -1,0 +1,360 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .design{
+        border: transparent;
+        padding: 20px;
+        width: 50%;
+        margin: auto;
+        text-align: center;
+        background-color: #334756;
+        color: white;
+        font-size: large;
+        border-radius: 10px;
+        margin-bottom: 5px;
+    }
+
+    .design:hover{
+        width: 60%;
+        transition: 0.5s ease-in-out;
+        background-color: black;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="col-md-12">
+                <div class="design" id="electronic">
+                    Electronic Cash Receipt
+                </div>
+
+                <div class="design" id="reimbursement">
+                    Expense Reimbursement Record
+                </div>
+
+                <div class="design" id="order">
+                    Purchase Order
+                </div>
+
+                <div class="design" id="emergency">
+                    Quotation - Emergency Operations
+                </div>
+
+                <div class="design" id="events_sports">
+                    Quotation - Events & Sports
+                </div>
+            </div>
+
+
+            <div class="col-md-12 mt-5">
+                <!-- electronic -->
+                <div id="electronic_t" style="display: none;">
+                    <div class="text-center">
+                        <h3>Electronics</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-hover display table table-separate table-head-custom table-checkable">
+                            <thead>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Company / Patient Name
+                                </th>
+                                <th>
+                                    Customer Cellphone
+                                </th>
+                                <th>
+                                    Customer Email
+                                </th>
+                                <th>
+                                    Submission
+                                </th>
+                            </thead>
+                            <tbody>
+                                {% for i in electronic_cash %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.company_or_patient_name }}</td>
+                                        <td>{{ i.customer_email }}</td>
+                                        <td>{{ i.cus_number }}</td>
+                                        <td>
+                                            <a href="{% url 'electronic_cash_review_submission' i.id %}">Full Version</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div id="expense_t" style="display: none;">
+                    <div class="text-center">
+                        <h3>Reimbursement</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-hover display table table-separate table-head-custom table-checkable">
+                            <thead>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                   Employee Name & Surname
+                                </th>
+                                <th>
+                                    Department
+                                </th>
+                                <th>
+                                    Employment or Start Date
+                                </th>
+                                <th>
+                                    Submission
+                                </th>
+                            </thead>
+                            <tbody>
+                                {% for i in expense_reimbursement %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.name_and_surname }}</td>
+                                        <td>{{ i.dept }}</td>
+                                        <td>{{ i.employment_or_start_date }}</td>
+                                        <td>
+                                            <a href="{% url 'expense_reimbursement_submission_review' i.id %}">Full Version</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div id="order_t" style="display: none;">
+                    <div class="text-center">
+                        <h3>Purchase Order</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-hover display table table-separate table-head-custom table-checkable">
+                            <thead>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                   Requested BY
+                                </th>
+                                <th>
+                                    P/O Request Date
+                                </th>
+                                <th>
+                                    Supplier Account or Job Card
+                                </th>
+                                <th>
+                                    Submission
+                                </th>
+                            </thead>
+                            <tbody>
+                                {% for i in purchase_order %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.req_by|title }}</td>
+                                        <td>{{ i.p_o_req_date }}</td>
+                                        <td>{{ i.supplier_acc_or_job_card }}</td>
+                                        <td>
+                                            <a href="{% url 'review_submission_for_order' i.id %}">Full Version</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div id="emergency_operations_t" style="display: none;">
+                    <div class="text-center">
+                        <h3>Quotation Emergency Operations</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-hover display table table-separate table-head-custom table-checkable">
+                            <thead>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                   Document Version
+                                </th>
+                                <th>
+                                    Date of Quote
+                                </th>
+                                <th>
+                                    Company or Organization Name
+                                </th>
+                                <th>
+                                    Submission
+                                </th>
+                            </thead>
+                            <tbody>
+                                {% for i in quotation_emergency_operations %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.doc_version }}</td>
+                                        <td>{{ i.date_of_quote }}</td>
+                                        <td>{{ i.company_org_name|title }}</td>
+                                        <td>
+                                            <a href="{% url 'review_submission_for_emergency_operation' i.id %}">Full Version</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div id="events_sports_t" style="display: none;">
+                    <div class="text-center">
+                        <h3>Quotation - Events & Sports</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-hover display table table-separate table-head-custom table-checkable">
+                            <thead>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                   Document Version
+                                </th>
+                                <th>
+                                    Date of Quote
+                                </th>
+                                <th>
+                                    Company or Organization Name
+                                </th>
+                                <th>
+                                    Submission
+                                </th>
+                            </thead>
+                            <tbody>
+                                {% for i in quotation_events_sports %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.doc_version }}</td>
+                                        <td>{{ i.date_of_quote }}</td>
+                                        <td>{{ i.company_org_name|title }}</td>
+                                        <td>
+                                            <a href="{% url 'review_submission_for_event_quotation' i.id %}">Full Version</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var electronic = document.getElementById('electronic')
+    var reimbursement = document.getElementById('reimbursement')
+    var order = document.getElementById('order')
+    var emergency = document.getElementById('emergency')
+    var events_sports = document.getElementById('events_sports')
+
+    // tables
+    var electronic_t = document.getElementById('electronic_t')
+    var expense_t = document.getElementById('expense_t')
+    var order_t = document.getElementById('order_t')
+    var emergency_operations_t = document.getElementById('emergency_operations_t')
+    var events_sports_t = document.getElementById('events_sports_t')
+
+
+    electronic.addEventListener('click', (e)=>{
+        if(electronic_t.style.display === 'none'){
+            electronic_t.style.display = 'block';
+            expense_t.style.display = 'none';
+            order_t.style.display = 'none';
+            emergency_operations_t.style.display = 'none';
+            events_sports_t.style.display = 'none';
+        }
+        else{
+            electronic_t.style.display = 'none';
+        }
+    })
+
+
+    reimbursement.addEventListener('click', (e)=>{
+        if(expense_t.style.display === 'none'){
+            expense_t.style.display = 'block';
+            electronic_t.style.display = 'none';
+            order_t.style.display = 'none';
+            emergency_operations_t.style.display = 'none';
+            events_sports_t.style.display = 'none';
+        }
+        else{
+            expense_t.style.display = 'none';
+        }
+    })
+
+
+    order.addEventListener('click', (e)=>{
+        if(order_t.style.display === 'none'){
+            order_t.style.display = 'block';
+            expense_t.style.display = 'none';
+            electronic_t.style.display = 'none';
+            emergency_operations_t.style.display = 'none';
+            events_sports_t.style.display = 'none';
+        }
+        else{
+            order_t.style.display = 'none';
+        }
+    })
+
+
+    emergency.addEventListener('click', (e)=>{
+        if(emergency_operations_t.style.display === 'none'){
+            emergency_operations_t.style.display = 'block';
+            expense_t.style.display = 'none';
+            order_t.style.display = 'none';
+            electronic_t.style.display = 'none';
+            events_sports_t.style.display = 'none';
+        }
+        else{
+            emergency_operations_t.style.display = 'none';
+        }
+    })
+
+
+    events_sports.addEventListener('click', (e)=>{
+        if(events_sports_t.style.display === 'none'){
+            events_sports_t.style.display = 'block';
+            expense_t.style.display = 'none';
+            order_t.style.display = 'none';
+            emergency_operations_t.style.display = 'none';
+            electronic_t.style.display = 'none';
+        }
+        else{
+            events_sports_t.style.display = 'none';
+        }
+    })
+
+</script>
+
+
+{% endblock %}

@@ -1036,32 +1036,12 @@ def electronic_invoice_details(request,id):
     form = ElectricCashInvoiceDetailsForm()
 
     if request.method == 'POST':
-        receiver_name = request.POST.get('receiver_name')
-        if receiver_name:
-            Invoice_cash_received_by.objects.create(receiver_name = receiver_name)
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
         form = ElectricCashInvoiceDetailsForm(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.invo_for_id = id
-
-            # decoding receiver signature from text string to image
-            receiver_signature = request.POST.get('receiver_signature')
-            format, imgstr = receiver_signature.split(';base64,') 
-            ext = format.split('/')[-1] 
-            receiver_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-
-            # decoding customer signature from text string to image
-            customer_signature = request.POST.get('customer_signature')
-            format, imgstr = customer_signature.split(';base64,') 
-            ext = format.split('/')[-1] 
-            customer_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-
-            instance.receiver_signature = receiver_signature
-            instance.customer_signature = customer_signature
             instance.save()
-            return  redirect('reports')
+            return  redirect('add_another_electronic_invoice_details', id)
 
     context = {
         'form': form,
@@ -1069,6 +1049,71 @@ def electronic_invoice_details(request,id):
         'data': data,
     }
     return render(request,'Accounting/electronic_invoice_details.html',context)
+
+
+@login_required
+def add_another_electronic_invoice_details(request,id):
+    run_id = Electric_Cash_Receipt_Invoice.objects.filter(invo_for_id = id)
+    context = {
+        'run_id': run_id,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_electronic_invoice_details.html',context)
+
+
+@login_required
+def electronic_invo_summary(request,id):
+    form = ElectricInvoiceSummaryForm()
+    if request.method == 'POST':
+        receiver_name = request.POST.get('receiver_name')
+        if receiver_name:
+            Invoice_cash_received_by.objects.create(receiver_name = receiver_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = ElectricInvoiceSummaryForm(request.POST)
+            if form.is_valid(): 
+                # decoding receiver signature from text string to image
+                receiver_signature = request.POST.get('receiver_signature')
+                format, imgstr = receiver_signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                receiver_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                # decoding customer signature from text string to image
+                customer_signature = request.POST.get('customer_signature')
+                format, imgstr = customer_signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                customer_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                instance = form.save(commit = False)
+                instance.summary_for_id = id
+                instance.receiver_signature = receiver_signature
+                instance.customer_signature = customer_signature
+                instance.save()
+                return  redirect('electronic_cash_review_submission', id)
+            else:
+                return HttpResponse('Validation Error')
+    context = {
+        'id': id,
+        'form': form,
+    }
+
+    return render(request,'Accounting/electronic_invo_summary.html',context)
+
+
+@login_required
+def electronic_cash_review_submission(request,id):
+    electronic_cash_receipt = Electric_Cash_Receipt.objects.get(id = id)
+    cash_invoice = electronic_cash_receipt.electric_cash_receipt_invoice_set.all()
+    invoice_summary = electronic_cash_receipt.electricinvoicesummary_set.all()
+    context = {
+        'electronic_cash_receipt': electronic_cash_receipt,
+        'cash_invoice': cash_invoice,
+        'invoice_summary': invoice_summary,
+        'id': id,
+    }
+    return render(request,'Accounting/electronic_cash_review_submission.html',context)
 
 
 @login_required
@@ -1151,7 +1196,7 @@ def request_summary(request,expense_reimbursement_record_id):
             instance.summary_for_id = expense_reimbursement_record_id
             instance.total_reimbursement = total_reimbursement
             instance.save()
-            return redirect('reports')
+            return redirect('expense_reimbursement_submission_review', id=expense_reimbursement_record_id)
 
     context = {
         'total_reimbursement': total_reimbursement,
@@ -1160,6 +1205,22 @@ def request_summary(request,expense_reimbursement_record_id):
         'expense_transactions': expense_transactions,
     }
     return render(request,'Accounting/request_summary.html',context)
+
+
+@login_required
+def expense_reimbursement_submission_review(request,id):
+    expense = Expense_Reimbursement_Record.objects.get(id = id)
+    expense_transactions = expense.expensetransactions_set.all()
+    photo_evidence = expense.photographicalevidence_set.all()
+    expense_summary = expense.expenserequestsummary_set.all()
+    context = {
+        'expense': expense,
+        'expense_transactions': expense_transactions,
+        'photo_evidence': photo_evidence,
+        'expense_summary': expense_summary,
+        'id': id,
+    }
+    return render(request,'Accounting/expense_reimbursement_submission_review.html',context)
 
 
 @login_required
@@ -1187,9 +1248,9 @@ def purchase_order_customer_information(request):
                 if instance.transaction_cat == 'Vehicle Maintenance':
                     return redirect('vehicle_maintenance', id = instance.id)
                 if instance.transaction_cat == 'Products':
-                    pass
+                    return redirect('product_details', id = instance.id)
                 if instance.transaction_cat == 'Services / Training':
-                    pass
+                    return redirect('services_training', id = instance.id)
 
     context = {
         'form': form,
@@ -1261,6 +1322,96 @@ def vehicle_maintenance_totals(request,id):
     }
     return render(request,'Accounting/vehicle_maintenance_totals.html',context)
 
+
+@login_required
+def product_details(request,id):
+    form = ProductForm()
+    if request.method == 'POST':
+        p_name = request.POST.get('p_name')
+        if p_name:
+            PackagingForVehicle.objects.create(p_name = p_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        form = ProductForm(request.POST)
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.order_id = id
+                instance.save()
+                return redirect('add_another_product', id)
+    context = {
+        'id': id,
+        'form': form,
+    }
+    return render(request,'Accounting/product_details.html',context)
+
+
+@login_required
+def add_another_product(request,id):
+    product_details = Product.objects.filter(order_id = id)
+    context = {
+        'product_details': product_details,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_product.html',context)
+
+
+@login_required
+def product_totals(request,id):
+    totals = 0
+    p_maintenance = Product.objects.filter(order_id = id)
+    for i in p_maintenance:
+        totals += i.total
+    Product_totals.objects.get_or_create(order_for_id = id, totals = totals)
+    context = {
+        'totals': totals,
+        'id': id,
+    }
+    return render(request,'Accounting/product_totals.html',context)
+
+
+@login_required
+def services_training(request,id):
+    form = Services_TrainingForm()
+    if request.method == 'POST':
+        form = Services_TrainingForm(request.POST)
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.service_for_id = id
+                instance.save()
+                return redirect('add_another_service', id)
+    context = {
+        'id': id,
+        'form': form,
+    }
+    return render(request,'Accounting/services_training.html',context)
+
+
+@login_required
+def add_another_service(request,id):
+    service_details = Services_Training.objects.filter(service_for_id = id)
+    context = {
+        'service_details': service_details,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_service.html',context)
+
+
+@login_required
+def service_totals(request,id):
+    totals = 0
+    service = Services_Training.objects.filter(service_for_id = id)
+    for i in service:
+        totals += i.unit_price
+    Service_Totals.objects.get_or_create(service_for_id = id, totals = totals)
+    context = {
+        'totals': totals,
+        'id': id,
+    }
+    return render(request,'Accounting/service_totals.html',context)
 
 @login_required
 def terms_and_conditions(request,id):
@@ -1335,8 +1486,11 @@ def purchase_approval(request,id):
                 instance.save()
 
                 if instance.po_items_received == True:
-                    pass
-
+                    return redirect('po_items_received_verification', id)
+                if instance.quality_assurance_check == True:
+                    return redirect('quality_assurance_check', id)
+                else:
+                    return redirect('email_submission',id)
     context = {
         'form': form,
         'id': id,
@@ -1344,15 +1498,497 @@ def purchase_approval(request,id):
     return render(request,'Accounting/purchase_approval.html',context)
 
 
+@login_required
+def po_items_received_verification(request,id):
+    form = PO_Items_ReceivedForm()
+    initial_receiver_of_goods = None
+    if form.is_valid():
+        initial_receiver_of_goods = form.cleaned_data['initial_receiver_of_goods']
+    if request.method == 'POST':
+        form = PO_Items_ReceivedForm(request.POST)
+        r_name = request.POST.get('r_name')
+        if r_name:
+            initial_receiver_of_goods = InitialReceiverOfGoods.objects.create(r_name = r_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            # decoding receiver signature from text string to image
+            initial_receiver_signature = request.POST.get('initial_receiver_signature')
+            format, imgstr = initial_receiver_signature.split(';base64,') 
+            ext = format.split('/')[-1] 
+            initial_receiver_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
 
+            create = PO_Items_Received.objects.create(
+                received_for_id = id,
+                date_of_items_received = request.POST.get('date_of_items_received'),
+                p_i_1 = request.FILES.get('p_i_1'),
+                p_i_2 = request.FILES.get('p_i_2'),
+                p_i_3 = request.FILES.get('p_i_3'),
+                p_i_4 = request.FILES.get('p_i_4'),
+                p_i_5 = request.FILES.get('p_i_5'),
+                p_i_6 = request.FILES.get('p_i_6'),
+                p_i_7 = request.FILES.get('p_i_7'),
+                p_i_8 = request.FILES.get('p_i_8'),
+                p_i_9 = request.FILES.get('p_i_9'),
+                p_i_10 = request.FILES.get('p_i_10'),
+                sup_invoice_1 = request.FILES.get('sup_invoice_1'),
+                sup_invoice_2 = request.FILES.get('sup_invoice_2'),
+                sup_invoice_3 = request.FILES.get('sup_invoice_3'),
+                sup_invoice_4 = request.FILES.get('sup_invoice_4'),
+                sup_invoice_5 = request.FILES.get('sup_invoice_5'),
+                initial_receiver_of_goods = initial_receiver_of_goods,
+                initial_receiver_signature = initial_receiver_signature,
+                comments = request.POST.get('comments'),
+            )
+        
+            purchase_approval = PurchaseApproval.objects.get(approval_for_id = id)
+            if purchase_approval.quality_assurance_check == True:
+                return redirect('quality_assurance_check', id)
+            else:
+                return redirect('email_submission',id)
+
+    context = {
+        'id': id,
+        'form': form,
+    }
+    return render(request,'Accounting/po_items_received_verification.html',context)
+
+
+@login_required
+def quality_assurance_check(request,id):
+    form = Quality_Control_InspectionForm()
+    if request.method == 'POST':
+        inpector_name = request.POST.get('inpector_name')
+        if inpector_name:
+            PurchaseInspectedBy.objects.create(inpector_name = inpector_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        form = Quality_Control_InspectionForm(request.POST)
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                # decoding quality_control_signature from text string to image
+                quality_control_signature = request.POST.get('quality_control_signature')
+                format, imgstr = quality_control_signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                quality_control_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+
+                instance = form.save(commit=False)
+                instance.quality_for_id = id
+                instance.quality_control_signature = quality_control_signature
+                instance.save()
+                return redirect('email_submission',id)
+    context = {
+        'form': form,
+        'id': id
+    }
+    return render(request,'Accounting/quality_control_inspection.html',context)
+
+
+@login_required
+def email_submission(request,id):
+    if request.method == 'POST':
+        pass
+    context = {
+        'id': id,
+    }
+    return render(request,'Accounting/email_submission.html',context)
+
+@login_required
+def review_submission_for_order(request,id):
+    order = PurchaseOrder.objects.get(id = id)
+    v_maintenance = order.vehiclemaintenance_set.all()
+    v_maintenance_total = order.vehiclemaintenancetotal_set.all()
+    product = order.product_set.all()
+    product_total = order.product_totals_set.all()
+    service = order.services_training_set.all()
+    service_total = order.service_totals_set.all()
+    terms = order.termsandconditions_set.all()
+    approval = order.purchaseapproval_set.all()
+    po_itms_received = order.po_items_received_set.all()
+    quality_contrl_inspection = order.quality_control_inspection_set.all()
+    
+    context = {
+        'order': order,
+        'v_maintenance': v_maintenance,
+        'v_maintenance_total': v_maintenance_total,
+        'product': product,
+        'product_total': product_total,
+        'service': service,
+        'service_total': service_total,
+        'terms': terms,
+        'approval': approval,
+        'po_itms_received': po_itms_received,
+        'quality_contrl_inspection': quality_contrl_inspection,
+    }
+    return render(request,'Accounting/review_submission_for_order.html', context)
+
+
+@login_required
+def details_of_prospective_client(request):
+    form = ProspectiveClientForm()
+    if request.method == 'POST':
+        form = ProspectiveClientForm(request.POST)
+        prepared_by = request.POST.get('prepared_by')
+        if prepared_by:
+            QuotePreparedBy.objects.create(prepared_by = prepared_by)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.save()
+                return redirect('quotation_service_details', id=instance.id)
+            else:
+                return HttpResponse('Validation Error')
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/details_of_prospective_client.html',context)
+
+
+@login_required
+def quotation_service_details(request,id):
+    form = ServiceDetailsForm()
+    if request.method == 'POST':
+        service_request = request.POST.get('service_request')
+        if service_request:
+            ServiceRequest.objects.create(service_request = service_request)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_from = request.POST.get('main_form')
+        if main_from is not None:
+            form = ServiceDetailsForm(request.POST)
+
+            special_notes = request.POST.get('special_notes')
+            if special_notes is not None:
+                special_notes = True
+            else:
+                special_notes = False
+
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.special_notes = special_notes
+                instance.save()
+                return redirect('emergency_operations', id)
+    context = {
+        'id': id,
+        'form': form,
+    }
+    return render(request,'Accounting/quotation_service_details.html',context)
+
+@login_required
+def emergency_operations(request,id):
+    form = EmergencyOperationsForm()
+    if request.method == 'POST':
+        code_name = request.POST.get('code_name')
+        if code_name:
+            Code.objects.create(code_name = code_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = EmergencyOperationsForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('add_another_emergency_operation', id)
+    context = {
+        'id': id,
+        'form': form
+    }
+    return render(request,'Accounting/emergency_operations.html',context)
+
+
+@login_required
+def add_another_emergency_operation(request,id):
+    emergency = EmergencyOperations.objects.filter(parent_id = id)
+    context = {
+        'emergency': emergency,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_emergency_operation.html',context)
+
+@login_required
+def total_call_costing(request,id):
+    form = TotalCallCostingForm()
+    total = 0
+    emergency = EmergencyOperations.objects.filter(parent_id = id)
+    for i in emergency:
+        total += i.line_total
+    if request.method == 'POST':
+        total_service_cost = request.POST.get('total_service_cost')
+        form = TotalCallCostingForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.parent_id = id
+            instance.save()
+            return redirect('emergency_email_submission', id)
+    context = {
+        'id': id,
+        'form': form,
+        'total': total,
+    }
+    return render(request,'Accounting/total_call_costing.html',context)
+
+
+@login_required
+def emergency_email_submission(request,id):
+    if request.method == 'POST':
+        pass
+    context = {
+        'id': id,
+    }
+    return render(request,'Accounting/emergency_email_submission.html',context)
+
+
+@login_required
+def review_submission_for_emergency_operation(request,id):
+    client = ProspectiveClient.objects.get(id = id)
+    service_detail = client.servicedetails_set.all()
+    emergency_operations = client.emergencyoperations_set.all()
+    total_costing = client.totalcallcosting_set.all()
+
+    context = {
+        'client': client,
+        'service_detail': service_detail,
+        'emergency_operations': emergency_operations,
+        'total_costing': total_costing,
+    }
+    return render(request,'Accounting/review_submission_for_emergency_operation.html', context)
+
+
+@login_required
+def details_of_prospective_client_for_events(request):
+    form = EventsProspectiveClientForm()
+    if request.method == 'POST':
+        form = EventsProspectiveClientForm(request.POST)
+        prepared_by = request.POST.get('prepared_by')
+        if prepared_by:
+            QuotePreparedBy.objects.create(prepared_by = prepared_by)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.save()
+                return redirect('event_service_details', id=instance.id)
+            else:
+                return HttpResponse('Validation Error')
+    context = {
+        'form': form,
+    }
+    return render(request,'Accounting/details_of_prospective_client_for_events.html',context)
+
+
+@login_required
+def event_service_details(request,id):
+    form = EventsServiceDetailsForm()
+    if request.method == 'POST':
+        service_req = request.POST.get('service_req')
+        if service_req:
+            EventServiceRequest.objects.create(service_req = service_req)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        risk_level = request.POST.get('risk_level')
+        if risk_level:
+            EventServiceDetailRiskLevel.objects.create(risk_level = risk_level)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = EventsServiceDetailsForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('event_sport_particulars', id)
+            else:
+                return HttpResponse('Validation error')
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/event_service_details.html',context)
+
+@login_required
+def event_sport_particulars(request,id):
+    form = EventSportParticularsForm()
+    if request.method == 'POST':
+        ser_des = request.POST.get('ser_des')
+        if ser_des:
+            EventParticularServiceDescription.objects.create(ser_des = ser_des)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = EventSportParticularsForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('add_another_event_sport_particulars', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/event_sport_particulars.html',context)
+
+
+@login_required
+def add_another_event_sport_particulars(request,id):
+    event = EventSportParticulars.objects.filter(parent_id = id)
+    context = {
+        'event': event,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_event_sport_particulars.html',context)
+
+
+@login_required
+def total_evnt_sport_cost(request,id):
+    form = TotalEventSportCostingForm()
+    total = 0
+    event_particulars = EventSportParticulars.objects.filter(parent_id = id)
+    for i in event_particulars:
+        total += i.price
+    if request.method == 'POST':
+        total_service_cost = request.POST.get('total_service_cost')
+        form = TotalEventSportCostingForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.parent_id = id
+            instance.save()
+            return redirect('event_service_inclusion', id)
+    context = {
+        'form': form,
+        'total': total,
+        'id': id,
+    }
+    return render(request,'Accounting/total_evnt_sport_cost.html',context)
+
+@login_required
+def event_service_inclusion(request,id):
+    form = EventServiceInclusionForm()
+    if request.method == 'POST':
+        ser_ele_name = request.POST.get('ser_ele_name')
+        if ser_ele_name:
+            EventServiceElement.objects.create(ser_ele_name = ser_ele_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        description_name = request.POST.get('description_name')
+        if description_name:
+            EventServiceInclusionDescription.objects.create(description_name = description_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = EventServiceInclusionForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('add_another_event_service_inclusion', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/event_service_inclusion.html',context)
+
+@login_required
+def add_another_event_service_inclusion(request,id):
+    service_inclusions_event = EventServiceInclusion.objects.filter(parent_id = id)
+    context = {
+        'service_inclusions_event': service_inclusions_event,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_event_service_inclusion.html',context)
+
+
+@login_required
+def event_service_exclusion(request,id):
+    form = EventServiceExclusionForm()
+    if request.method == 'POST':
+        ser_ele_name = request.POST.get('ser_ele_name')
+        if ser_ele_name:
+            EventServiceElement.objects.create(ser_ele_name = ser_ele_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        description_name = request.POST.get('description_name')
+        if description_name:
+            EventServiceExclusionDescription.objects.create(description_name = description_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form is not None:
+            form = EventServiceExclusionForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('add_another_event_service_exclusion', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'Accounting/event_service_exclusion.html',context)
+
+@login_required
+def add_another_event_service_exclusion(request,id):
+    exclusion_service_element = EventServiceExclusion.objects.filter(parent_id = id)
+    context = {
+        'exclusion_service_element': exclusion_service_element,
+        'id': id,
+    }
+    return render(request,'Accounting/add_another_event_service_exclusion.html',context)
+
+
+@login_required
+def event_email_review_submission(request,id):
+    context = {
+        'id': id,
+    }
+    return render(request,'Accounting/event_email_review_submission.html',context)
+
+
+@login_required
+def review_submission_for_event_quotation(request,id):
+    client = EventsProspectiveClient.objects.get(id = id)
+    service_detail = client.eventsservicedetails_set.all()
+    event_sport_particular = client.eventsportparticulars_set.all()
+    total_event_sport_costing = client.totaleventsportcosting_set.all()
+    event_service_inclusions = client.eventserviceinclusion_set.all()
+    event_service_exclusion = client.eventserviceexclusion_set.all()
+
+    context = {
+        'client': client,
+        'service_detail': service_detail,
+        'event_sport_particular': event_sport_particular,
+        'total_event_sport_costing': total_event_sport_costing,
+        'event_service_inclusions': event_service_inclusions,
+        'event_service_exclusion': event_service_exclusion,
+    }
+    return render(request,'Accounting/review_submission_for_event_sport.html', context)
 
 
 @login_required
 def reports(request):
-    e_c_r = Electric_Cash_Receipt.objects.all()
-    e_c_r_invoice = Electric_Cash_Receipt_Invoice.objects.all()
+    electronic_cash = Electric_Cash_Receipt.objects.all()
+    expense_reimbursement = Expense_Reimbursement_Record.objects.all()
+    purchase_order = PurchaseOrder.objects.all()
+    quotation_emergency_operations = ProspectiveClient.objects.all()
+    quotation_events_sports = EventsProspectiveClient.objects.all()
+
     context  = {
-        'e_c_r': e_c_r,
-        'e_c_r_invoice': e_c_r_invoice,
+        'electronic_cash': electronic_cash,
+        'expense_reimbursement': expense_reimbursement,
+        'purchase_order': purchase_order,
+        'quotation_emergency_operations': quotation_emergency_operations,
+        'quotation_events_sports': quotation_events_sports,
     }
     return render(request,'Accounting/reports.html',context)

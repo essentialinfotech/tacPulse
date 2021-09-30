@@ -279,49 +279,51 @@
         </th>
 
     <tbody>
-        <tr>
-            <td>
-                <div class="text-center">
-                    {{ incident.assigned_unit }}
-                </div>
-            </td>
+        {% for incident in crew_vehicle %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.assigned_unit }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.vehicle_total }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.vehicle_total }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.unit_reg }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.unit_reg }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.senior|title }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.senior|title }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.assist01|title }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.assist01|title }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.assist02|title }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.assist02|title }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.loc }}
-                </div>
-            </td>
-        </tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.loc }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
     </thead>
 
@@ -364,38 +366,40 @@
 
 
     <tbody>
-        <tr>
-            <td>
-                <div class="text-center">
-                    {{ incident.unit }}
-                </div>
-            </td>
+        {% for incident in loc_details %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.unit }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.responding_address }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.responding_address }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.scene_address }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.scene_address }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.facility_address }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.facility_address }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.end_address }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.end_address }}
+                    </div>
+                </td>
 
-        </tr>
+            </tr>
+        {% endfor %}
     </tbody>
     </thead>
 
@@ -448,57 +452,57 @@
         </th>
     </thead>
     <tbody>
-        {% for i in vehicles %}
-        <tr>
-            <td>
-                <div class="text-center">
-                    {{ i.vehicle_for.unit }}
-                </div>
-            </td>
+        {% for i in odo %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        {{ i.unit }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.responding }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.responding }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.on_scene }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.on_scene }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.depart_scene }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.depart_scene }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.arrive_fac }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.arrive_fac }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.hand_over }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.hand_over }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.depart }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.depart }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.end_standing_free }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.end_standing_free }}
+                    </div>
+                </td>
 
-        </tr>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
@@ -542,37 +546,55 @@
         </th>
     </thead>
     <tbody>
-        {% for i in vehicles %}
-        <tr>
-            <td>
-                <div class="text-center">
-                    {{ i.odo01 }}
-                </div>
-            </td>
+        {% for i in odo %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        {{ i.odo01 }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.odo2 }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.odo2 }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.odo3 }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ i.odo3 }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ i.odo04 }}
-                </div>
-            </td>
-        </tr>
+                <td>
+                    <div class="text-center">
+                        {{ i.odo04 }}
+                    </div>
+                </td>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
 
 <br>
+<br>
+<br>
+<table>
+    <thead>
+        <th>
+            <img src="http://{{ domain }}/static/assets2/media/logos/taclogo.png" width="300px"  alt="">
+        </th>
+        <th>
+            <h1 style="color: red; font-size: 16px; margin-left: 10px;">Emergency Medical Dispatch Incident Record</h1>
+        </th>
+        <th>No. <br>{{ incident.created_on }} <br>DIR02053-2020</th>
+    </thead>
+</table>
+
+<hr>
+<strong style="font-size: larger;text-align: center;">Address: 18 Maluti Avenue, Paulshof, 2191,GP | Tel: 010 590 6265 | Email:
+    info@tac-pulse.co.za </strong>
+<hr>
 <strong class="font-weight-bold">SERVICE NOTES</strong>
 
 <table border="1px">
@@ -603,31 +625,33 @@
     </thead>
 
     <tbody>
-        <tr>
-            <td>
-                <div class="text-center">
-                    {{ incident.service_notes }}
-                </div>
-            </td>
+        {% for incident in service_notes %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.service_notes }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.scribe|title }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.scribe|title }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.service_note_time }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.service_note_time }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.service_note_description|title }}
-                </div>
-            </td>
-        </tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.service_note_description|title }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
 <br>
@@ -672,64 +696,48 @@
         </th>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                <div class="text-center">
-                    {{ incident.patient }}
-                </div>
-            </td>
+        {% for incident in patient_info %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.patient }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.p_priority }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.p_priority }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.p_lvl_of_care }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.p_lvl_of_care }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.p_name|title }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.p_name|title }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.p_medical_aid_plan_option|title }}
-                </div>
-            </td>
+                <td>
+                    <div class="text-center">
+                        {{ incident.p_medical_aid_plan_option|title }}
+                    </div>
+                </td>
 
-            <td>
-                <div class="text-center">
-                    {{ incident.p_medical_aid|title }}
-                </div>
-            </td>
-        </tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.p_medical_aid|title }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
 
 </table>
-
-
-<table>
-    <thead>
-        <th>
-            <img src="http://{{ domain }}/static/assets2/media/logos/taclogo.png" width="300px"  alt="">
-        </th>
-        <th>
-            <h1 style="color: red; font-size: 16px; margin-left: 10px;">Emergency Medical Dispatch Incident Record</h1>
-        </th>
-        <th>No. <br>{{ incident.created_on }} <br>DIR02053-2020</th>
-    </thead>
-</table>
-
-<hr>
-<strong style="font-size: larger;text-align: center;">Address: 18 Maluti Avenue, Paulshof, 2191,GP | Tel: 010 590 6265 | Email:
-    info@tac-pulse.co.za </strong>
-<hr>
 
 <table border="1px" style="margin-top: 10px;">
     <thead>
@@ -743,50 +751,54 @@
 
 <table border="1px">
     <tbody>
-        <tr>
-            <td>
-                <div class="text-center">
-                    Name of Dispatcher <br>
-                    {{ incident.name_of_dispatcher.fist_name|title }} {{ incident.name_of_dispatcher.last_name|title }} <br>
-                    Was the call handed over to
-                    another Dispatcher?
-                    {{ incident.was_the_call_handed_over_to_another_dispatcher }}
-                </div>
-            </td>
+        {% for incident in certificate %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        Name of Dispatcher <br>
+                        {{ incident.name_of_dispatcher }}<br>
+                        Was the call handed over to
+                        another Dispatcher?
+                        {{ incident.was_the_call_handed_over_to_another_dispatcher }} <br>
+                        Name of Other Dispatcher <br>
+                        {{ incident.other_dispatcher|title }}
+                    </div>
+                </td>
 
-            <td>
-                <div style="border: 1px solid black; text-align: center; background-color: yellow; padding: 10px;">
-                    Dispatch Special Notes <br>
-                    {{ incident.dispatch_special_notes }}
-                </div>
+                <td>
+                    <div style="border: 1px solid black; text-align: center; background-color: yellow; padding: 10px;">
+                        Dispatch Special Notes <br>
+                        {{ incident.dispatch_special_notes }}
+                    </div>
 
-                <div class="text-center">
-                    Record Completion Date<br>
-                    {{ i.created_on|date }}<br>
-                    Record Closure Time <br>
-                    {{ i.created_on|time }}
-                </div>
-            </td>
+                    <div class="text-center">
+                        Record Completion Date<br>
+                        {{ incident.parent.created_on }}<br>
+                        Record Closure Time <br>
+                        {{ incident.created|time }}
+                    </div>
+                </td>
 
-            <td>
-                <div style="padding: 10px;">
-                    I, undersigned, hereby declare
-                    the information provided to be
-                    comprehensive and accurate,
-                    as to the best of my knowledge
-                    at the time of reporting.
-                    Signature of Dispatcher
-                </div>
-                <div>
-                    <img src="http://{{ domain }}/media/{{ incident.signature  }}" height="70" width="70" alt="">
-                </div>
+                <td>
+                    <div style="padding: 10px;">
+                        I, undersigned, hereby declare
+                        the information provided to be
+                        comprehensive and accurate,
+                        as to the best of my knowledge
+                        at the time of reporting.
+                        Signature of Dispatcher
+                    </div>
+                    <div>
+                        <img src="http://{{ domain }}/media/{{ incident.signature  }}" height="70" width="70" alt="">
+                    </div>
 
-                <div class="text-center" style="background-color: red; color: white; font-size: large;">
-                    Senior Practitioner CSN# <br>
-                    {{ incident.senior_practitioner_csn }}
-                </div>
-            </td>
-        </tr>
+                    <div class="text-center" style="background-color: red; color: white; font-size: large;">
+                        Senior Practitioner CSN# <br>
+                        {{ incident.senior_practitioner_csn }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
 
@@ -885,6 +897,8 @@
 </tbody>
 </table>
 <br>
+<br>
+<br>
 <strong class="font-weight-bold">PHOTOS & OTHER</strong>
 
 <table border="1px">
@@ -892,51 +906,34 @@
         <tr>
             <th>
                 <div class="back-ground-common text-center">
+                    Item
+                </div>
+            </th>
+            <th>
+                <div class="back-ground-common text-center">
                     Photo
-                </div>
-            </th>
-            <th>
-                <div class="back-ground-common text-center">
-                    Scene Photo
-                </div>
-            </th>
-            <th>
-                <div class="back-ground-common text-center">
-                    Unknown Person Photo
-                </div>
-            </th>
-            <th>
-                <div class="back-ground-common text-center">
-                    Other Photo
                 </div>
             </th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                <div class="text-center">
-                    <img src="http://{{ domain }}/media/{{ incident.photo  }}" height="100" width="100" alt="">
-                </div>
-            </td>
-
-            <td>
-                <div class="text-center">
-                    <img src="http://{{ domain }}/media/{{ incident.scene_photo  }}" height="100" width="100" alt="">
-                </div>
-            </td>
-
-            <td>
-                <div class="text-center">
-                    <img src="http://{{ domain }}/media/{{ incident.unlnown_person_photo  }}" height="100" width="100" alt="">
-                </div>
-            </td>
-
-            <td>
-                <div class="text-center">
-                    <img src="http://{{ domain }}/media/{{ incident.other_photo  }}" height="100" width="100" alt="">
-                </div>
-            </td>
-        </tr>
+        {% for incident in photos_other_documents %}
+            <tr>
+                <td>
+                    <div class="text-center">
+                        {{ incident.photos_and_other_choices }}
+                    </div>
+                </td>
+                <td>
+                    <div class="text-center">
+                        {% if incident.photo %}
+                            <img src="http://{{ domain }}/media/{{ incident.photo  }}" height="100" width="100" alt="">
+                        {% else %}
+                         N/A
+                         {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>

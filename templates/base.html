@@ -31,6 +31,7 @@
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="{% static 'assets/js/googlemapsearch.js' %}"></script>
@@ -218,8 +219,47 @@
                             </a>
 
 
-                            {% if request.user.is_superuser %}
+                        {% if request.user.is_superuser %}
 
+                            <!-- form builder -->
+                            <li class="menu-section">
+                                <h4 class="menu-text">Foem Builder</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fa fa-plus-square"></i>
+                                        </span>
+                                        <span class="menu-text">Builder</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'form_builder' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Form Builder</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'form_list' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                <span class="menu-text">Form Lists</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- blogs -->
                             <li class="menu-section">
                                 <h4 class="menu-text">Our Blogs</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -522,20 +562,20 @@
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                     <i class="fas fa-car"></i>
                                     </span>
-                                    <span class="menu-text">Emergency Medical Dispatch</span>
+                                    <span class="menu-text">Emergency Medical Dispatch Form</span>
                                 </a>
                             </li>
-
 
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="" class="menu-link menu-toggle">
+                                <a href="{% url 'dispatch_incident_submission_review_all' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                    <i class="fas fa-book"></i>
+                                    <i class="fas fa-car"></i>
                                     </span>
-                                    <span class="menu-text">Incident Report</span>
+                                    <span class="menu-text">Emergency Medical Dispatch Incident Report</span>
                                 </a>
                             </li>
+
 
 
 
@@ -756,7 +796,7 @@
                                         </li>
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{%url 'purchase_order_customer_information'%}" class="menu-link">
+                                            <a href="{%url 'purchase_order_customer_information' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                 <span></span></i>
 
@@ -764,15 +804,33 @@
                                             </a>
                                         </li>
 
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{%url 'details_of_prospective_client' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                <span></span></i>
+
+                                                <span class="menu-text">Quotation Emergency Operation</span>
+                                            </a>
+                                        </li>
+
+
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{%url 'details_of_prospective_client_for_events' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                <span></span></i>
+
+                                                <span class="menu-text">Quotation- Events & Sport</span>
+                                            </a>
+                                        </li>
 
 
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="" class="menu-link">
+                                            <a href="{% url 'reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                <span class="menu-text"> Reports</span>
+                                                <span class="menu-text">Financial Submission Reports</span>
                                             </a>
                                         </li>
 
@@ -782,8 +840,7 @@
                             {% endif %}
 
 
-
-                            <br> {% if request.user.is_staff %}
+                            {% if request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Leaves</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -2123,6 +2180,13 @@
         <script src="{% static 'assets/js/pages/features/cards/draggable.js' %}"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+        <script>
+            $(document).ready( function () {
+            $('#table_id').DataTable();
+        } );
+        </script>
 
 
         <!-- google map key for current location keep it plabon vai cause cdn ekta ektar jnne alada -->
@@ -2340,11 +2404,6 @@
             })
         </script>
 
-        <script>
-            $(document).ready(function() {
-                $('.photos_and_other_choices').select2();
-            });
-        </script>
         {% block js %} {% endblock %}
 </body>
 <!--end::Body-->

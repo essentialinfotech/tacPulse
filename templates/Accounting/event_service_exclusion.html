@@ -1,0 +1,102 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            
+
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Service Element/ Emergency Vehicle's Description</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'event_service_exclusion' id %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="ser_ele_name" class="col-form-label">Service Element Name</label>
+                                        <input type="text" class="form-control" required name="ser_ele_name"  id="ser_ele_name">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                </form>
+
+                                <form method="POST" action="{% url 'event_service_exclusion' id %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="description_name" class="col-form-label">Description Details</label>
+                                        <input type="text" class="form-control" required name="description_name"  id="description_name">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+            {{ form.errors }}
+            
+            <form action="{% url 'event_service_exclusion' id %}" method="POST">
+                {% csrf_token %}
+                <div class="row shadow p-3 mb-5 bg-white rounded">
+                
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <h3>Emergency Vehicles</h3>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="service_element">Service Element</label>
+                            {{ form.service_element }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" name="main_form" id="main_form" required>
+                            <input type="submit" class="btn btn-primary" style="background-color: red!important;" value="Next">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -9,6 +9,13 @@
         border-radius: 4px!important;
         background-color: #f1f1f1!important;
     }
+
+    select {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
 </style>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -30,90 +37,97 @@
                 </div>
             </div>
             {% endif %}
-            <form action="{% url 'fill_vehicle_details' id total_unit %}" method="POST">
+            <form action="{% url 'dispatch_incident_travel_details' id %}" method="POST">
                 {% csrf_token %}
                 <div class="row shadow p-3 mb-10 bg-white rounded">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label for="vehicle_no">Unit</label>
+                            {{ form.unit }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label for="vehicle_no">VEHICLE</label>
-                            <input type="text" name="vehicle_no" id="vehicle_no" placeholder="enter vehicle number" class="form-control">
+                            {{ form.vehicle_no }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="responding">RESPONDING</label>
-                            <input type="time" name="responding" id="responding" class="form-control">
+                            {{ form.responding }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="odo01">ODO1</label>
-                            <input type="number" name="odo01" id="odo01" class="form-control">
+                            {{ form.odo01 }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="on_scene">ON SCENE</label>
-                            <input type="time" name="on_scene" id="on_scene" class="form-control">
+                            {{ form.on_scene }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="odo2">ODO2</label>
-                            <input type="number" name="odo2" id="odo2" class="form-control">
+                            {{ form.odo2 }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="depart_scene">DEPART SCENE</label>
-                            <input type="time" name="depart_scene" id="depart_scene" class="form-control">
+                            {{ form.depart_scene }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="arrive_fac">ARRIVE -FAC</label>
-                            <input type="time" name="arrive_fac" id="arrive_fac" class="form-control">
+                            {{ form.arrive_fac }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="odo3">ODO3</label>
-                            <input type="number" name="odo3" id="odo3" class="form-control">
+                            {{ form.odo3 }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="hand_over">HAND OVER</label>
-                            <input type="time" name="hand_over" id="hand_over" class="form-control">
+                            {{ form.hand_over }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="depart">DEPART/RTB</label>
-                            <input type="time" name="depart" id="depart" class="form-control">
+                            {{ form.depart }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="end_standing_free">END/STANDING FREE</label>
-                            <input type="time" name="end_standing_free" id="end_standing_free" class="form-control">
+                            {{ form.end_standing_free }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="odo04">ODO4</label>
-                            <input type="number" name="odo04" id="odo04" class="form-control">
+                            {{ form.odo04 }}
                         </div>
                     </div>
 

@@ -387,15 +387,13 @@ class PayrolDeduction(models.Model):
 
 
 # Finane
+# electronic cash
 class Electric_Cash_Receipt(models.Model):
     company_or_patient_name = models.CharField(blank=True,null=True,max_length=100)
     customer_email = models.EmailField(blank=False,null=True)
     cus_number = models.CharField(max_length=100,blank=True,null=True)
     date = models.DateField()
     time = models.TimeField()
-    # reason for payment
-    run_id_or_reference = models.CharField(max_length=200,blank=True,null=True,unique=True)
-
     def __str__(self):
         return str(self.id)
 
@@ -419,21 +417,28 @@ class Electric_Cash_Receipt_Invoice(models.Model):
     ]
 
     invo_for = models.ForeignKey(Electric_Cash_Receipt,on_delete=models.CASCADE,blank=True,null=True)
+    # reason for payment
+    run_id_or_reference = models.CharField(max_length=200,blank=True,null=True,unique=True)
     transaction = models.CharField(max_length=500,blank=True,null=True,choices=TRANSACTION)
     invoice = models.CharField(max_length=200,blank=True,null=True)
     quote_invoice_amount = models.PositiveIntegerField(blank=True,null=True)
     amount_received = models.PositiveIntegerField(blank=True,null=True)
     amount_outstanding = models.PositiveIntegerField(blank=True,null=True)
 
+    def __str__(self):
+        return str(self.invo_for.id)
+
+class ElectricInvoiceSummary(models.Model):
+    summary_for = models.ForeignKey(Electric_Cash_Receipt,on_delete=SET_NULL,blank=True,null=True)
     cash_received_by = models.ForeignKey(Invoice_cash_received_by,on_delete=SET_NULL,blank=True,null=True)
     receiver_signature = models.FileField(upload_to='InvoiceReceiverSignature',blank=True,null=True)
     customer_signature = models.FileField(upload_to='InvoiceCustomerSignature', blank=True,null=True)
     special_notes = models.TextField()
 
     def __str__(self):
-        return str(self.invo_for.id)
+        return str(self.summary_for.id)
 
-
+# expense reimbursement record
 class Expense_Reimbursement_Record(models.Model):
     processing_date = models.DateField()
     name_and_surname = models.CharField(max_length=80,blank=True,null=True)
@@ -499,7 +504,7 @@ class ExpenseRequestSummary(models.Model):
 
 
 
-
+# purchase order
 class RequestedBy(models.Model):
     requested_by_name = models.CharField(max_length=500,blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -594,6 +599,44 @@ class VehicleMaintenanceTotal(models.Model):
         return str(self.order_for.id)
 
 
+class Product(models.Model):
+    order = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE,blank=True,null=True)
+    item_description = models.CharField(max_length=500)
+    stock_no = models.CharField(max_length=200,blank=True,null=True)
+    packaging = models.ForeignKey(PackagingForVehicle,on_delete=SET_NULL,blank=True,null=True)
+    qty = models.PositiveIntegerField()
+    unit_price = models.PositiveIntegerField()
+    total = models.PositiveIntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.order.id)
+
+class Product_totals(models.Model):
+    order_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
+    totals = models.IntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.order_for.id)
+
+
+class Services_Training(models.Model):
+    service_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
+    item_description = models.CharField(max_length=500)
+    date_of_service = models.DateField()
+    unit_price = models.PositiveIntegerField(blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.service_for.id)
+
+class Service_Totals(models.Model):
+    service_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
+    totals = models.IntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.service_for.id)
+
+
 class TermsAndConditions(models.Model):
 
     WAS_A_QUOTATION_OBTAINED_PRIOR_TO_PURCHASE = [
@@ -616,6 +659,9 @@ class POAPPROVEDBY(models.Model):
     approver_name = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.approver_name
+
 class PurchaseApproval(models.Model):
     approval_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
     quotation_approved = models.CharField(max_length=100,blank=True,null=True)
@@ -629,6 +675,10 @@ class PurchaseApproval(models.Model):
 class InitialReceiverOfGoods(models.Model):
     r_name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.r_name
+
 
 class PO_Items_Received(models.Model):
     received_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
@@ -653,9 +703,15 @@ class PO_Items_Received(models.Model):
     initial_receiver_signature = models.FileField(upload_to='Order',blank=True,null=True)
     comments = models.TextField(blank=True,null=True)
 
+    def __str__(self):
+        return str(self.received_for.id)
+
 class PurchaseInspectedBy(models.Model):
     inpector_name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.inpector_name
 
 class Quality_Control_Inspection(models.Model):
 
@@ -676,24 +732,203 @@ class Quality_Control_Inspection(models.Model):
 
     quality_for = models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True)
     purchase_inspected_by = models.ForeignKey(PurchaseInspectedBy,on_delete=SET_NULL,blank=True,null=True)
-    hasve_all_items_been_received = models.CharField(max_length=200,choices=HAS_ALL_ITEMS_BEEN_RECEIVED)
+    has_all_items_been_received = models.CharField(max_length=200,choices=HAS_ALL_ITEMS_BEEN_RECEIVED)
     was_verification_done_to_ensure_that_what_was_ordered_is_what_was_received = models.CharField(max_length=50,choices=WHAT_WAS_RECEIVED)
     was_verification_done_to_ensure_that_the_expiration_date_rule_was_complied_with = models.CharField(max_length=20,choices=VERIFICATION_EXPIRATION_DATE_RULE)
     quality_control_notes = models.TextField(blank=True,null=True)
     quality_control_signature = models.FileField(upload_to='Order',blank=True,null=True)
 
+    def __str__(self):
+        return str(self.quality_for.id)
 
 
+#quotation emergency operations
+class QuotePreparedBy(models.Model):
+    prepared_by = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.prepared_by
 
-
-
+class ProspectiveClient(models.Model):
+    doc_version = models.PositiveIntegerField(blank=True,null=True)
+    date_of_quote = models.DateField(blank=True,null=True)
+    name_poc = models.CharField(max_length=100,blank=True,null=True)
+    company_org_name = models.CharField(max_length=100,blank=True,null=True)
+    physical_address = models.TextField()
+    client_phone_no = models.PositiveIntegerField()
+    clinet_email = models.EmailField(blank=True,null=True)
+    date_of_expiry = models.DateField()
+    quote_prepared_by = models.ForeignKey(QuotePreparedBy, on_delete=SET_NULL,blank=True,null=True)
     
 
+class ServiceRequest(models.Model):
+    service_request = models.CharField(max_length=600)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.service_request
+
+class ServiceDetails(models.Model):
+    parent = models.ForeignKey(ProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    service_req = models.ForeignKey(ServiceRequest, on_delete=SET_NULL,blank=True,null=True)
+    run_id = models.CharField(max_length=1000,blank=True,null=True)
+    special_notes = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.parent.id)
+
+class Code(models.Model):
+    code_name = models.CharField(max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.code_name
+
+class EmergencyOperations(models.Model):
+
+    LEVEL_OF_CARE = [
+        ('Basic Life Support','Basic Life Support'),
+        ('Intermediate Life Support','Intermediate Life Support'),
+        ('Advanced Life Support','Advanced Life Support'),
+        ('Mobile Intensive Care','Mobile Intensive Care'),
+        ('Non-Emergency Transport','Non-Emergency Transport'),
+    ]
+
+    parent = models.ForeignKey(ProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    level_of_care = models.CharField(max_length=200,choices=LEVEL_OF_CARE)
+    code = models.ForeignKey(Code, on_delete=SET_NULL,blank=True,null=True)
+    service_description = models.CharField(max_length=1000,blank=True,null=True)
+    qty = models.PositiveIntegerField()
+    unit_price = models.PositiveIntegerField()
+    line_total = models.PositiveIntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
 
 
+class TotalCallCosting(models.Model):
+    parent = models.ForeignKey(ProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    total_service_cost = models.PositiveIntegerField(blank=True,null=True)
+    discount = models.PositiveIntegerField(blank=True,null=True)
+    discount_amount = models.PositiveIntegerField(blank=True,null=True)
+    total_quotation_cost = models.PositiveIntegerField(blank=True,null=True)
+    special_notes = models.TextField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
 
 
+# Quotation Events and Sport
+
+class EventsProspectiveClient(models.Model):
+    doc_version = models.PositiveIntegerField(blank=True,null=True)
+    date_of_quote = models.DateField(blank=True,null=True)
+    name_poc = models.CharField(max_length=100,blank=True,null=True)
+    company_org_name = models.CharField(max_length=100,blank=True,null=True)
+    physical_address = models.TextField()
+    client_phone_no = models.PositiveIntegerField()
+    clinet_email = models.EmailField(blank=True,null=True)
+    date_of_expiry = models.DateField()
+    quote_prepared_by = models.ForeignKey(QuotePreparedBy, on_delete=SET_NULL,blank=True,null=True)
+    
+
+class EventServiceRequest(models.Model):
+    service_req = models.CharField(max_length=200,blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.service_req
+
+class EventServiceDetailRiskLevel(models.Model):
+    risk_level = models.CharField(max_length=200,blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.risk_level
+
+class EventsServiceDetails(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    service_request = models.ForeignKey(EventServiceRequest,on_delete=SET_NULL,blank=True,null=True)
+    risk_lvl = models.ForeignKey(EventServiceDetailRiskLevel, on_delete=SET_NULL,blank=True,null=True)
+    evnt_name = models.CharField(max_length=100,blank=True,null=True)
+    special_notes = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.parent.id)
+
+class EventParticularServiceDescription(models.Model):
+    ser_des = models.CharField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.ser_des
+
+class EventSportParticulars(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    date_of_service = models.DateField()
+    service_description = models.ForeignKey(EventParticularServiceDescription,on_delete=SET_NULL,blank=True,null=True)
+    loc_address = models.CharField(max_length=500,blank=True,null=True)
+    service_start_time = models.TimeField()
+    service_end_time = models.TimeField()
+    total_service_time = models.CharField(max_length=500,blank=True,null=True)
+    price = models.PositiveIntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
+
+
+class TotalEventSportCosting(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    total_service_cost = models.PositiveIntegerField(blank=True,null=True)
+    discount = models.PositiveIntegerField(blank=True,null=True)
+    discount_calculation = models.PositiveIntegerField(blank=True,null=True)
+    total_quotation_cost = models.PositiveIntegerField(blank=True,null=True)
+    special_notes = models.TextField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
+
+class EventServiceElement(models.Model):
+    ser_ele_name = models.CharField(max_length=1000)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.ser_ele_name
+
+class EventServiceInclusionDescription(models.Model):
+    description_name = models.CharField(max_length=1000)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.description_name
+
+class EventServiceInclusion(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    service_element = models.ForeignKey(EventServiceElement,on_delete=SET_NULL,blank=True,null=True)
+    description = models.ForeignKey(EventServiceInclusionDescription,on_delete=SET_NULL,blank=True,null=True)
+    qty = models.PositiveIntegerField(blank=True,null=True)
+    location = models.CharField(max_length=1000,default='N/A')
+
+    def __str__(self):
+        return str(self.parent.id)
+
+
+class EventServiceExclusionDescription(models.Model):
+    description_name = models.CharField(max_length=1000)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.description_name
+
+
+class EventServiceExclusion(models.Model):
+    parent = models.ForeignKey(EventsProspectiveClient,on_delete=models.CASCADE,blank=True,null=True)
+    service_element = models.ForeignKey(EventServiceElement,on_delete=SET_NULL,blank=True,null=True)
+    description = models.ForeignKey(EventServiceExclusionDescription,on_delete=SET_NULL,blank=True,null=True)
+
+    def __str__(self):
+        return str(self.parent.id)
 
 
 

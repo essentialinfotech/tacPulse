@@ -1,0 +1,111 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    textarea {
+        padding: 16px 20px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+</style>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card mb-5">
+                <div class="card-header">
+                    <div class="card-title text-center">
+                        <h3 class="card-label">Location Details</h3>
+                    </div>
+                </div>
+            </div>
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{message}}
+                        </p>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            <form method="POST" action="{% url 'dispatch_incident_location_details' id %}" >
+                {% csrf_token %}
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
+                    <div class="col-md-12">
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Location Details</h3>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="unit">Unit</label> {{ form.unit }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="responding_address">Responding Address</label> {{ form.responding_address }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="scene_address">Scene Address</label> {{ form.scene_address }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="facility_address">Facility Address</label> {{ form.facility_address }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="end_address">End Address</label> {{ form.end_address }}
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <div style="border-radius: 0px!important;" class="input-group-text btn btn-success">
+                            <input type="checkbox" required name="main_form" id="main_form">
+                        </div>
+                    </div>
+                    <button type="submit" style="border-radius: 0px!important;" class="btn btn-success">Move Next <i class="fa fa-arrow-right"></i> </button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

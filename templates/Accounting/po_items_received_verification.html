@@ -1,0 +1,200 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Initial Receiver of Good</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'po_items_received_verification' id %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="initial_receiver_of_goods" class="col-form-label">Initial Receiver of Goods/Services</label>
+                                        <input type="text" class="form-control" required name="r_name"  id="r_name">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+            <form method="POST" action="{% url 'po_items_received_verification' id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row shadow p-3 mb-5 bg-white rounded">
+                    <div class="col-md-12">
+                        <h3 class="mb-7">
+                            PO Items Received Verification
+                        </h3>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="date_of_items_received">Date of Items Received</label>
+                            {{ form.date_of_items_received }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_1">Photos of Items 01</label>
+                            <input type="file" name="p_i_1" id="p_i_1" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_2">Photos of Items 02</label>
+                            <input type="file" name="p_i_2" id="p_i_2" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_3">Photos of Items 03</label>
+                            <input type="file" name="p_i_3" id="p_i_3" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_4">Photos of Items 04</label>
+                            <input type="file" name="p_i_4" id="p_i_4" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_5">Photos of Items 05</label>
+                            <input type="file" name="p_i_5" id="p_i_5" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_6">Photos of Items 06</label>
+                            <input type="file" name="p_i_6" id="p_i_6" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_7">Photos of Items 07</label>
+                            <input type="file" name="p_i_7" id="p_i_7" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_8">Photos of Items 08</label>
+                            <input type="file" name="p_i_8" id="p_i_8" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_9">Photos of Items 09</label>
+                            <input type="file" name="p_i_9" id="p_i_9" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_i_10">Photos of Items 10</label>
+                            <input type="file" name="p_i_10" id="p_i_10" class="form-control-file">
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label for="sup_invoice_1">Photo of Supplier Invoice-01</label>
+                            <input type="file" name="sup_invoice_1" id="sup_invoice_1" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sup_invoice_2">Photo of Supplier Invoice-02</label>
+                            <input type="file" name="sup_invoice_2" id="sup_invoice_2" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sup_invoice_3">Photo of Supplier Invoice-03</label>
+                            <input type="file" name="sup_invoice_3" id="sup_invoice_3" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sup_invoice_4">Photo of Supplier Invoice-04</label>
+                            <input type="file" name="sup_invoice_4" id="sup_invoice_4" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sup_invoice_5">Photo of Supplier Invoice-05</label>
+                            <input type="file" name="sup_invoice_5" id="sup_invoice_5" class="form-control-file">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="initial_receiver_of_goods">Initial Receiver of Goods/Services</label>
+                            {{ form.initial_receiver_of_goods }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Initial Receiver Signature</label> <br>
+                            <canvas id="signature" width="auto" height="auto" style="border: 1px solid #ddd;"></canvas>
+                            <br>
+                            <!-- getting signature as image -->
+                            <input type="text" name="initial_receiver_signature" id="initial_receiver_signature" value="" style="display: none;">
+
+                            <button class="btn btn-danger" type="button" id="clear-signature">Clear</button>
+                            <button class="btn btn-info" type="button" id="save-signature">Save</button>
+                            <div id="signature_image"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comments">Comments</label>
+                            {{ form.comments }}
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" name="main_form" required id="main_form">
+                            <input type="submit" class="btn btn-primary" value="Next" style="background-color: red!important;">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+
+<script>
+    jQuery(document).ready(function($) {
+        var canvas = document.getElementById("signature");
+        var signaturePad = new SignaturePad(canvas);
+        var saveButton = document.getElementById('save-signature');
+        $('#clear-signature').on('click', function() {
+            signaturePad.clear();
+        });
+        saveButton.addEventListener('click', function(event) {
+            var data = signaturePad.toDataURL();
+            document.getElementById('signature_image').innerHTML = '<img type="file" src="' + data + '" name="initial_receiver_signature" />';
+            document.getElementById("initial_receiver_signature").value = signaturePad.toDataURL();
+        });
+    });
+</script>
+
+{% endblock %}

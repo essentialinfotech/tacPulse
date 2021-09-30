@@ -1,0 +1,64 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+            <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <div class="text-center w-50 m-auto" style="margin-bottom: 10px!important;">
+                            <u class="mb-15">Products</u>
+                        </div>
+    
+                        <strong>Description</strong>
+                        {% for i in product_details %}
+                            <li>{{ i.item_description|title }}</li>
+                        {% endfor %}
+    
+                        <div class="form-group">
+                            <a href="{% url 'product_details' id %}" class="btn btn-success mt-5">Add Another Product Items</a>
+                            <a href="{% url 'product_totals' id %}" class="btn btn-success mt-5">Next</a>   
+                        </div>
+                    </div>
+                    
+                </div>
+
+                
+
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

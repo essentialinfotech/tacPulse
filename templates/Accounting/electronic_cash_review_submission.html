@@ -1,0 +1,122 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    label{
+        font-weight: bold!important;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="col-md-12">
+                    <u><h3 style="color: red;">Customer Information</h3></u>
+                </div>
+                <div class="col-md-12">
+                    <label for="company_or_patient_name">Company or Patient Name & Surname</label> <br>
+                    {{ electronic_cash_receipt.company_or_patient_name }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="customer_email">Customer Email(To Send a copy of the email)</label> <br>
+                    {{ electronic_cash_receipt.customer_email }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="cus_number">Customer Cellphone #</label> <br>
+                    {{ electronic_cash_receipt.cus_number }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="date">Date</label> <br>
+                    {{ electronic_cash_receipt.date }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="date">Time</label> <br>
+                    {{ electronic_cash_receipt.time }}
+                </div>
+
+
+                <!-- reason for payment -->
+                <div class="col-md-12 mt-15">
+                    <u><h3 style="color: red;">Reason for Payment?</h3></u>
+                </div>
+                {% for i in cash_invoice %}
+                    <div class="col-md-12">
+                        <label for="run_id_or_reference">Run ID / Reference -> {{ forloop.counter }}</label> <br>
+                        {{ i.run_id_or_reference }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="transaction">Transaction</label> <br>
+                        {{ i.transaction }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="invoice">Invoice</label> <br>
+                        {{ i.invoice }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="quote_invoice_amount">Quote Invoice Amount</label> <br>
+                        {{ i.quote_invoice_amount }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="amount_received">Amount Received</label> <br>
+                        {{ i.amount_received }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="amount_received">Amount Outstanding</label> <br>
+                        {{ i.amount_outstanding }}
+                    </div>
+                    <div class="col-md-12">
+                        <hr style="border: 1px solid black!important;">
+                    </div>
+                {% endfor %}
+
+
+                <div class="col-md-12 mt-15">
+                    <u><h3 style="color: red;">Invoice Summary</h3></u>
+                </div>
+                {% for i in invoice_summary %}
+                    <div class="col-md-12">
+                        <label for="cash_received_by">Cash Received By</label> <br>
+                        {{ i.cash_received_by }}
+                    </div>
+
+                    {% if i.receiver_signature %}
+                        <div class="col-md-12">
+                            <label for="receiver_signature">Receiver Signature</label> <br>
+                            <img src="{{ i.receiver_signature.url }}" class="img-thumbnail" alt="">
+                        </div>
+                    {% endif %}
+
+                    {% if i.customer_signature %}
+                        <div class="col-md-12">
+                            <label for="customer_signature">Customer Signature</label> <br>
+                            <img src="{{ i.customer_signature.url }}" class="img-thumbnail" alt="">
+                        </div>
+                    {% endif %}
+
+                    <div class="col-md-12">
+                        <label for="special_notes">Special Notes</label> <br>
+                        {{ i.special_notes }}
+                    </div>
+                    <hr>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

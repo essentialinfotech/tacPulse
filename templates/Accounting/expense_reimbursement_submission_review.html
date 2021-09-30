@@ -1,0 +1,132 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    label{
+        font-weight: bold!important;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row shadow p-3 mb-5 bg-white rounded">
+                <div class="col-md-12">
+                    <u><h3 style="color: red;">Employee Information</h3></u>
+                </div>
+                <div class="col-md-12">
+                    <label for="processing_date">Precessing Date</label> <br>
+                    {{ expense.processing_date }}
+                </div>
+
+                <div class="col-md-12"> 
+                    <label for="name_and_surname">Name & Surname</label> <br>
+                    {{ expense.name_and_surname }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="dept">Department</label><br>
+                    {{ expense.dept }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="employment_or_start_date">Employment# ir Start Date</label><br>
+                    {{ expense.employment_or_start_date }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="personal_email">Personal Email</label><br>
+                    {{ expense.personal_email }}
+                </div>
+
+
+                <!-- expense transactions -->
+                <div class="col-md-12 mt-15">
+                    <u><h3 style="color: red;">Expense Transactions</h3></u>
+                </div>
+
+                {% for i in expense_transactions %}
+                    <div class="col-md-12">
+                        <label for="description_of_expense">Description of Expense</label><br>
+                        {{ i.description_of_expense }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="date_of_expense">Date of Expense</label><br>
+                        {{ i.date_of_expense }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="reason">Reason</label><br>
+                        {{ i.reason }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="amount">Amount</label><br>
+                        {{ i.amount }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="payment_method">Payment Method</label><br>
+                        {{ i.payment_method }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="created">Report Created At</label><br>
+                        {{ i.created }}
+                    </div>
+                    <hr>
+                {% endfor %}
+
+
+                 <!-- Photographical Evidence -->
+                 <div class="col-md-12 mt-15">
+                    <u><h3 style="color: red;">Photographical Evidence</h3></u>
+                </div>
+
+                {% for i in photo_evidence %}
+
+                    {% if i.photo %}
+                        <label for="">Invoice Page 0{{ forloop.counter }}</label><br>
+                        <img src="{{ i.photo.url }}" class="img-thumbnail" alt="">
+                    {% endif %}
+
+                {% endfor %}
+
+
+                <!-- expense Request summary -->
+                <div class="col-md-12 mt-15">
+                    <u><h3 style="color: red;">Photographical Evidence</h3></u>
+                </div>
+
+                {% for i in expense_summary %}
+                    <div class="col-md-12">
+                        <label for="total_reimbursement">Total Reimbursement (R)</label> <br>
+                        {{ i.total_reimbursement }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="reimbursement_method">Reimbursement Method</label> <br>
+                        {{ i.reimbursement_method }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="comments">Comments (if any)</label> <br>
+                        {{ i.comments }}
+                    </div>
+
+                    {% if i.requester_signature %}
+                        <label for="requester_signature">Requester Signature</label> <br>
+                        <img src="{{ i.requester_signature.url }}" class="img-thumbnail" alt="">
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

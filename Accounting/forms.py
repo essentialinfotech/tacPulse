@@ -202,7 +202,6 @@ class ElectricCashForm(forms.ModelForm):
             'cus_number': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
             'date': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
             'time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
-            'run_id_or_reference': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Run ID / Reference'}),
         }
 
 class ElectricCashInvoiceDetailsForm(forms.ModelForm):
@@ -215,8 +214,15 @@ class ElectricCashInvoiceDetailsForm(forms.ModelForm):
             'quote_invoice_amount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
             'amount_received': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
             'amount_outstanding': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
-            'cash_received_by': forms.Select(attrs={'class': 'form-control'}),
             'run_id_or_reference': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Run ID / Reference'}),
+        }
+
+class ElectricInvoiceSummaryForm(forms.ModelForm):
+    class Meta:
+        model = ElectricInvoiceSummary
+        fields = '__all__'
+        widgets = {
+            'cash_received_by': forms.Select(attrs={'class': 'form-control'}),
             'special_notes': forms.Textarea(attrs={'class': 'form-control','placeholder': 'No Note to record'}),
         }
 
@@ -325,4 +331,180 @@ class PurchaseApprovalForm(forms.ModelForm):
             'quotation_approved': forms.TextInput(attrs={'class': 'form-control'}),
             'p_O_approval_date': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
             'p_O_approved_by': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class PO_Items_ReceivedForm(forms.ModelForm):
+    class Meta:
+        model = PO_Items_Received
+        fields = '__all__'
+        widgets = {
+            'comments': forms.Textarea(attrs={'class': 'form-control'}),
+            'date_of_items_received': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'initial_receiver_of_goods': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class Quality_Control_InspectionForm(forms.ModelForm):
+    class Meta:
+        model = Quality_Control_Inspection
+        fields = '__all__'
+        widgets = {
+            'has_all_items_been_received': forms.Select(attrs={'class': 'form-control'}),
+            'was_verification_done_to_ensure_that_what_was_ordered_is_what_was_received': forms.Select(attrs={'class': 'form-control'}),
+            'purchase_inspected_by': forms.Select(attrs={'class': 'form-control'}),
+            'was_verification_done_to_ensure_that_the_expiration_date_rule_was_complied_with': forms.Select(attrs={'class': 'form-control'}),
+            'quality_control_notes': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = '__all__'
+        widgets = {
+            'item_description': forms.TextInput(attrs={'class': 'form-control'}),
+            'stock_no': forms.TextInput(attrs={'class': 'form-control'}),
+            'packaging': forms.Select(attrs={'class': 'form-control'}),
+            'qty': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'unit_price': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'total': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+        }
+
+
+class Services_TrainingForm(forms.ModelForm):
+    class Meta:
+        model = Services_Training
+        fields = '__all__'
+        widgets = {
+            'item_description': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_of_service': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'unit_price': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+        }
+
+
+class ProspectiveClientForm(forms.ModelForm):
+    class Meta:
+        model = ProspectiveClient
+        fields = '__all__'
+        widgets = {
+            'doc_version': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'date_of_quote': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'name_poc': forms.TextInput(attrs={'class': 'form-control'}),
+            'company_org_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'physical_address': forms.Textarea(attrs={'class': 'form-control'}),
+            'client_phone_no': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'clinet_email': forms.EmailInput(attrs={'class': 'form-control','type': 'email'}),
+            'date_of_expiry': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'quote_prepared_by': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class ServiceDetailsForm(forms.ModelForm):
+    class Meta:
+        model = ServiceDetails
+        fields = '__all__'
+        widgets = {
+            'service_req': forms.Select(attrs={'class': 'form-control'}),
+            'run_id': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class EmergencyOperationsForm(forms.ModelForm):
+    class Meta:
+        model = EmergencyOperations
+        fields = '__all__'
+        widgets = {
+            'level_of_care': forms.Select(attrs={'class': 'form-control'}),
+            'code': forms.Select(attrs={'class': 'form-control'}),
+            'service_description': forms.TextInput(attrs={'class': 'form-control'}),
+            'qty': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'unit_price': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'line_total': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+        }
+
+
+class TotalCallCostingForm(forms.ModelForm):
+    class Meta:
+        model = TotalCallCosting
+        fields = '__all__'
+        widgets = {
+            'special_notes': forms.Textarea(attrs={'class': 'form-control'}),
+            'discount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'discount_amount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'total_quotation_cost': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+        }
+
+
+class EventsProspectiveClientForm(forms.ModelForm):
+    class Meta:
+        model = EventsProspectiveClient
+        fields = '__all__'
+        widgets = {
+            'doc_version': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'date_of_quote': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'name_poc': forms.TextInput(attrs={'class': 'form-control'}),
+            'company_org_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'physical_address': forms.Textarea(attrs={'class': 'form-control'}),
+            'client_phone_no': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'clinet_email': forms.EmailInput(attrs={'class': 'form-control','type': 'email'}),
+            'date_of_expiry': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'quote_prepared_by': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+class EventsServiceDetailsForm(forms.ModelForm):
+    class Meta:
+        model = EventsServiceDetails
+        fields = '__all__'
+        widgets = {
+            'service_request': forms.Select(attrs={'class': 'form-control'}),
+            'risk_lvl': forms.Select(attrs={'class': 'form-control'}),
+            'evnt_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class EventSportParticularsForm(forms.ModelForm):
+    class Meta:
+        model = EventSportParticulars
+        fields = '__all__'
+        widgets = {
+            'date_of_service': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'service_description': forms.Select(attrs={'class': 'form-control'}),
+            'loc_address': forms.TextInput(attrs={'class': 'form-control'}),
+            'service_start_time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+            'service_end_time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+            'total_service_time': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+        }
+
+
+class TotalEventSportCostingForm(forms.ModelForm):
+    class Meta:
+        model = TotalEventSportCosting
+        fields = '__all__'
+        widgets = {
+            'special_notes': forms.Textarea(attrs={'class': 'form-control'}),
+            'discount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'discount_calculation': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'total_quotation_cost': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+        }
+
+
+class EventServiceInclusionForm(forms.ModelForm):
+    class Meta:
+        model = EventServiceInclusion
+        fields = '__all__'
+        widgets = {
+            'service_element': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Select(attrs={'class': 'form-control'}),
+            'qty': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class EventServiceExclusionForm(forms.ModelForm):
+    class Meta:
+        model = EventServiceExclusion
+        fields = '__all__'
+        widgets = {
+            'service_element': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Select(attrs={'class': 'form-control'}),
         }

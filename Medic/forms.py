@@ -85,11 +85,6 @@ class BlogForm(forms.ModelForm):
 
 
 class EmergencyMedDisIncidentReportForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(EmergencyMedDisIncidentReportForm, self).__init__(*args, **kwargs)
-        instance = kwargs.pop('instance', User)
-        self.fields["name_of_dispatcher"].queryset = User.objects.filter(is_superuser=False,is_staff = True)
-        
     class Meta:
         model = AmbulanceModel
         fields = '__all__'
@@ -109,30 +104,77 @@ class EmergencyMedDisIncidentReportForm(forms.ModelForm):
                 'time_call_posted_to_crew_on_whatsapp': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
                 'crew_operational_status': forms.Select(attrs={'class': 'form-control'}),
                 'how_many_units_dispatched': forms.Select(attrs={'class': 'form-control'}),
-                'assigned_unit': forms.Select(attrs={'class': 'form-control'}),
-                'vehicle_total': forms.Select(attrs={'class': 'form-control'}),
-                'unit_reg': forms.TextInput(attrs={'class': 'form-control'}),
-                'senior': forms.Select(attrs={'class': 'form-control'}),
-                'assist01': forms.Select(attrs={'class': 'form-control'}),
-                'assist02': forms.Select(attrs={'class': 'form-control'}),
-                'loc': forms.Select(attrs={'class': 'form-control'}),
+            }
+
+
+class DispatchIncidentCrewAndVehicleForm(forms.ModelForm):
+    class Meta:
+        model = DispatchIncidentCrewAndVehicle
+        fields = '__all__'
+        widgets = {
+            'assigned_unit': forms.Select(attrs={'class': 'form-control'}),
+            'vehicle_total': forms.Select(attrs={'class': 'form-control'}),
+            'unit_reg': forms.TextInput(attrs={'class': 'form-control'}),
+            'senior': forms.Select(attrs={'class': 'form-control'}),
+            'assist01': forms.Select(attrs={'class': 'form-control'}),
+            'assist02': forms.Select(attrs={'class': 'form-control'}),
+            'loc': forms.Select(attrs={'class': 'form-control'}),
+            }
+
+
+class DispatchIncidentServiceNoteForm(forms.ModelForm):
+    class Meta:
+        model = DispatchIncidentServiceNotes
+        fields = '__all__'
+        widgets = {
                 'service_notes': forms.Select(attrs={'class': 'form-control'}),
                 'scribe': forms.Select(attrs={'class': 'form-control'}),
                 'service_note_time': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
                 'service_note_description': forms.Textarea(attrs={'class': 'form-control'}),
+            }
+
+class DispatchIncidentLocationDetailsForm(forms.ModelForm):
+    class Meta:
+        model = DispatchIncidentLocationDetails
+        fields = '__all__'
+        widgets = {
                 'unit': forms.Select(attrs={'class': 'form-control'}),
                 'responding_address': forms.TextInput(attrs={'class': 'form-control'}),
                 'scene_address': forms.TextInput(attrs={'class': 'form-control'}),
                 'facility_address': forms.TextInput(attrs={'class': 'form-control'}),
                 'end_address': forms.TextInput(attrs={'class': 'form-control'}),
+            }
+
+class DispatchIncidentPatientInformationForm(forms.ModelForm):
+    class Meta:
+        model = DispatchIncidentPatientInformation
+        fields = '__all__'
+        widgets = {
                 'patient': forms.Select(attrs={'class': 'form-control'}),
                 'p_priority': forms.Select(attrs={'class': 'form-control'}),
                 'p_lvl_of_care': forms.Select(attrs={'class': 'form-control'}),
                 'p_name': forms.TextInput(attrs={'class': 'form-control'}),
                 'p_medical_aid_plan_option': forms.TextInput(attrs={'class': 'form-control'}),
                 'p_medical_aid': forms.TextInput(attrs={'class': 'form-control'}),
+            }
+
+class DispatchIncidentPhotosForm(forms.ModelForm):
+    class Meta:
+        model = DispatchIncidentPhotos
+        fields = '__all__'
+        widgets = {
+                'photos_and_other_choices': forms.Select(attrs={'class': 'form-control'}),
+            }
+
+
+class DispatchIncidentDispatcherCertificationForm(forms.ModelForm):
+    class Meta:
+        model = DispatchIncidentDispatcherCertification
+        fields = '__all__'
+        widgets = {
                 'senior_practitioner_csn': forms.TextInput(attrs={'class': 'form-control'}),
                 'name_of_dispatcher': forms.Select(attrs={'class': 'form-control'}),
+                'other_dispatcher': forms.Select(attrs={'class': 'form-control'}),
                 'was_the_call_handed_over_to_another_dispatcher': forms.Select(attrs={'class': 'form-control'}),
                 'dispatch_special_notes': forms.Textarea(attrs={'class': 'form-control'}),
             }
@@ -177,6 +219,7 @@ class VehicleCountForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
                 'vehicle_no': forms.TextInput(attrs={'class': 'form-control'}),
+                'unit': forms.Select(attrs={'class': 'form-control'}),
                 'responding': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
                 'odo01': forms.NumberInput(attrs={'class': 'form-control'}),
                 'on_scene': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),

@@ -1,0 +1,57 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <form method="POST" action="{% url 'emergency_email_submission' id %}">
+                            <div class="form-group">
+                                <label for="">Email Submission</label>
+                                <input type="email" name="email" id="email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Email Me a copy</label>
+                                <input type="email" name="email_me" id="email_me" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Send Email</button>
+                            </div>
+                        </form>
+                        <a href="{% url 'review_submission_for_emergency_operation' id %}" class="btn btn-primary">Review Submission</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

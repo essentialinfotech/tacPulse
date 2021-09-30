@@ -1,0 +1,539 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    label{
+        font-weight: bold!important;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row shadow p-3 mb-5 bg-white rounded">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <h3>
+                            Customer Information
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">P/O Request Date</label> <br>
+                        {{ order.p_o_req_date }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Requested By</label> <br>
+                        {{ order.req_by|title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Transaction Category</label> <br>
+                        {{ order.transaction_cat }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Supplier / Job Card#</label> <br>
+                        {{ order.supplier_acc_or_job_card|title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Supplier / Company Name</label> <br>
+                        {{ order.supplier_or_company_name }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Supplier: Contact Person Name & Surname</label> <br>
+                        {{ order.supplier_contact_person_name }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Supplier: Contact Number</label> <br>
+                        {{ order.supplier_contact_number }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Supplier: Email</label> <br>
+                        {{ order.supplier_email }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Street Address</label> <br>
+                        {{ order.street_addrs|title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">City, Province</label> <br>
+                        {{ order.city_province }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Zip Code</label> <br>
+                        {{ order.zip_code }}
+                    </div>
+
+                    <div class="text-center">
+                        <h3>
+                            Shipping
+                        </h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Shipping Method:</label> <br>
+                        {{ order.shipping_method }}
+                    </div>
+
+
+                    {% if order.courier_to_this_address %}
+                        <div class="form-group">
+                            <label for="">Courier to this Address:</label> <br>
+                            {{ order.courier_to_this_address }}
+                        </div>
+                    {% endif %}
+
+                    {% if order.person_collecting %}
+                        <div class="form-group">
+                            <label for="">Person Collecting</label> <br>
+                            {{ order.person_collecting }}
+                        </div>
+                    {% endif %}
+
+
+
+                        <!-- product -->
+                    {% if product %}
+                        <div class="text-center">
+                            <h3>
+                                Product Details
+                            </h3>
+                        </div>
+
+                    {% for i in product %}
+                        <div class="form-group">
+                            <label for="">Description - {{ forloop.counter }}</label> <br>
+                            {{ i.item_description|title }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Stock Number</label> <br>
+                            {{ i.stock_no }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Packaging</label> <br>
+                            {{ i.packaging }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">QTY</label> <br>
+                            {{ i.qty }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Unit Price</label> <br>
+                            {{ i.unit_price }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Total</label> <br>
+                            {{ i.total }}
+                        </div>
+                        <hr>
+                    {% endfor %}
+
+                    <div class="text-center">
+                        <h3>
+                            Product Totals
+                        </h3>
+                    </div>
+                    {% for i in product_total %}
+                        <div class="form-group">
+                            <label for="">Total</label> <br>
+                            {{ i.totals }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+
+
+
+                        <!-- vehicle -->
+                    {% if v_maintenance %}
+                        <div class="text-center">
+                            <h3>
+                                Vehicle Maintenance
+                            </h3>
+                        </div>
+
+                    {% for i in v_maintenance %}
+                        <div class="form-group">
+                            <label for="">Description - {{ forloop.counter }}</label> <br>
+                            {{ i.item_description|title }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Stock Number</label> <br>
+                            {{ i.stock_no }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Packaging</label> <br>
+                            {{ i.packaging }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">QTY</label> <br>
+                            {{ i.qty }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Unit Price</label> <br>
+                            {{ i.unit_price }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Total</label> <br>
+                            {{ i.total }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Comment</label> <br>
+                            {{ i.comment|title }}
+                        </div>
+                        <hr>
+                    {% endfor %}
+
+                    <div class="text-center">
+                        <h3>
+                            Vehicle Totals
+                        </h3>
+                    </div>
+                    {% for i in v_maintenance_total %}
+                        <div class="form-group">
+                            <label for="">Total</label> <br>
+                            {{ i.totals }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+
+
+
+                        <!-- service/training -->
+                    
+                    {% if service %}
+                        <div class="text-center">
+                            <h3>
+                                Service
+                            </h3>
+                        </div>
+
+                        {% for i in service %}
+                            <div class="form-group">
+                                <label for="">Description - {{ forloop.counter }}</label> <br>
+                                {{ i.item_description|title }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Date of Service</label> <br>
+                                {{ i.date_of_service }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Unit Price</label> <br>
+                                {{ i.unit_price }}
+                            </div>
+                            <hr>
+                        {% endfor %}
+
+                        <div class="text-center">
+                            <h3>
+                                Service Totals
+                            </h3>
+                        </div>
+                        {% for i in service_total %}
+                            <div class="form-group">
+                                <label for="">Total</label> <br>
+                                {{ i.totals }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+
+
+
+
+
+                    {% if terms %}
+                        <div class="text-center">
+                            <h3>
+                                Terms & Conditions
+                            </h3>
+                        </div>
+                        {% for i in terms %}
+                            <div class="form-group">
+                                <label for="">Special Comments / Instructions</label> <br>
+                                {{ i.special_comments }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Was a quotation obtained prior to purchase?</label> <br>
+                                {{ i.was_a_quotation_obtained_prior_to_purchase }}
+                            </div>
+
+                            {% if i.copy_of_quotation_1 %}
+                                <div class="form-group">
+                                    <label for="">Copy of quotation 01</label> <br>
+                                    <img src="{{ i.copy_of_quotation_1.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.copy_of_quotation_2 %}
+                                <div class="form-group">
+                                    <label for="">Copy of quotation 02</label> <br>
+                                    <img src="{{ i.copy_of_quotation_2.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.copy_of_quotation_3 %}
+                                <div class="form-group">
+                                    <label for="">Copy of quotation 03</label> <br>
+                                    <img src="{{ i.copy_of_quotation_3.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.copy_of_quotation_4 %}
+                                <div class="form-group">
+                                    <label for="">Copy of quotation 04</label> <br>
+                                    <img src="{{ i.copy_of_quotation_4.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endif %}
+
+
+                    {% if approval %}
+                        <div class="text-center">
+                            <h3>
+                                Purchase Approval
+                            </h3>
+                        </div>
+                        {% for i in approval %}
+                            <div class="form-group">
+                                <label for="">Quotation Approved:</label> <br>
+                                {{ i.quotation_approved }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">P/O Approval Date:</label> <br>
+                                {{ i.p_O_approval_date }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">P/O Approved By:</label> <br>
+                                {{ i.p_O_approved_by|title }}
+                            </div>
+
+                            {% if i.approval_signature %}
+                                <div class="form-group">
+                                    <label for="">Approval Signature</label> <br>
+                                    <img src="{{ i.approval_signature.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if po_itms_received %}
+                        <div class="text-center">
+                            <h3>
+                                P/O items received verification
+                            </h3>
+                        </div>
+                        {% for i in po_itms_received %}
+                            <div class="form-group">
+                                <label for="">Date of Items Received</label> <br>
+                                {{ i.date_of_items_received }}
+                            </div>
+
+
+                            {% if i.p_i_1 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 01</label> <br>
+                                    <img src="{{ i.p_i_1.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_2 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 02</label> <br>
+                                    <img src="{{ i.p_i_2.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_3 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 03</label> <br>
+                                    <img src="{{ i.p_i_3.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_4 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 04</label> <br>
+                                    <img src="{{ i.p_i_4.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_5 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 05</label> <br>
+                                    <img src="{{ i.p_i_5.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_6 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 06</label> <br>
+                                    <img src="{{ i.p_i_6.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_7 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 07</label> <br>
+                                    <img src="{{ i.p_i_7.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_8 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 08</label> <br>
+                                    <img src="{{ i.p_i_8.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_9 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 09</label> <br>
+                                    <img src="{{ i.p_i_9.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.p_i_10 %}
+                                <div class="form-group">
+                                    <label for="">Photos of item 10</label> <br>
+                                    <img src="{{ i.p_i_10.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+
+
+                            {% if i.sup_invoice_1 %}
+                                <div class="form-group">
+                                    <label for="">Photo of Supplier Invoice-01</label> <br>
+                                    <img src="{{ i.sup_invoice_1.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.sup_invoice_2 %}
+                                <div class="form-group">
+                                    <label for="">Photo of Supplier Invoice-02</label> <br>
+                                    <img src="{{ i.sup_invoice_2.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.sup_invoice_3 %}
+                                <div class="form-group">
+                                    <label for="">Photo of Supplier Invoice-03</label> <br>
+                                    <img src="{{ i.sup_invoice_3.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.sup_invoice_4 %}
+                                <div class="form-group">
+                                    <label for="">Photo of Supplier Invoice-04</label> <br>
+                                    <img src="{{ i.sup_invoice_4.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% if i.sup_invoice_5 %}
+                                <div class="form-group">
+                                    <label for="">Photo of Supplier Invoice-05</label> <br>
+                                    <img src="{{ i.sup_invoice_5.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+
+
+
+                            <div class="form-group">
+                                <label for="">Initial Receiver of Goods</label> <br>
+                                {{ i.initial_receiver_of_goods }}
+                            </div>
+
+                            {% if i.initial_receiver_signature %}
+                                <div class="form-group">
+                                    <label for="">Initial Receiver Signature</label> <br>
+                                    <img src="{{ i.initial_receiver_signature.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+
+                    {% if quality_contrl_inspection %}
+                        <div class="text-center">
+                            <h3>
+                                Quality Control Inspection
+                            </h3>
+                        </div>
+                        {% for i in quality_contrl_inspection %}
+                            <div class="form-group">
+                                <label for="">Purchase Inspected By</label> <br>
+                                {{ i.purchase_inspected_by|title }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Have all items been received?</label> <br>
+                                {{ i.has_all_items_been_received }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Was verification done to ensure that what was ordered is what was received?</label> <br>
+                                {{ i.was_verification_done_to_ensure_that_what_was_ordered_is_what_was_received }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Was verification done to ensure that expiration date rule was complied with?</label> <br>
+                                {{ i.was_verification_done_to_ensure_that_the_expiration_date_rule_was_complied_with }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Quality Control Notes</label> <br>
+                                {{ i.quality_control_notes|title }}
+                            </div>
+
+                            {% if i.quality_control_signature %}
+                                <div class="form-group">
+                                    <label for="">Quality Control Signature</label> <br>
+                                    <img src="{{ i.quality_control_signature.url }}" class="img-thumbnail" alt="">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

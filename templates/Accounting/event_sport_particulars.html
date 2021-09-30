@@ -1,0 +1,133 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Service descriptions</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <form method="POST" action="{% url 'event_sport_particulars' id %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="initial_receiver_of_goods" class="col-form-label">Service Description Option</label>
+                                            <input type="text" class="form-control" required name="ser_des" id="ser_des">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary" value="Save" style="background-color: red!important;">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {{ form.errors }}
+            <form method="POST" action="{% url 'event_sport_particulars' id %}">
+                {% csrf_token %}
+                <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+
+                    <div class="col-md-12">
+                        <div class="mb-5">
+                            <h3>Details</h3>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="date_of_service">Date of Service</label> {{ form.date_of_service }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service_description">Service Description</label> {{ form.service_description }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loc_address">Location Address</label> {{ form.loc_address }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service_start_time">Service Start</label> {{ form.service_start_time }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service_end_time">Service End</label> {{ form.service_end_time }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="total_service_time">Total Service Time</label> {{ form.total_service_time }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Price(R)</label> {{ form.price }}
+                        </div>
+
+
+                        <div class="form-group">
+                            <input type="checkbox" name="main_form" id="main_form" required>
+                            <input type="submit" class="btn btn-primary" value="Next" style="background-color: red!important;">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $("#id_service_end_time").on("change", function(e) {
+        var valuestart = $('#id_service_start_time').val();
+        var valuestop = $('#id_service_end_time').val();
+
+        var start = moment(valuestart, 'HH:mm');
+        var stop = moment(valuestop, 'HH:mm');
+        var diff = moment(stop, "HH:mm") - moment(start, "HH:mm");
+
+        var service_time_total = (diff / 60000) / 60;
+        var final_service_time_total = service_time_total.toFixed(2)
+        $("#id_total_service_time").val(final_service_time_total);
+    });
+</script>
+
+<script>
+    window.addEventListener('load', (e) => {
+        document.getElementById('id_total_service_time').readOnly = true;
+    })
+</script>
+
+{% endblock %}

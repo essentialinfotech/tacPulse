@@ -1,0 +1,49 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="table_id" class="display">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Run ID</th>
+                                    <th>Incident Category</th>
+                                    <th>Billing Type</th>
+                                    <th>Caller Name</th>
+                                    <th>How Many Units Dispatched?</th>
+                                    <th>Submission</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in incident %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.run_id }}</td>
+                                        <td>{{ i.incident_category }}</td>
+                                        <td>{{ i.billing_type }}</td>
+                                        <td>{{ i.caller_name }}</td>
+                                        <td>{{ i.how_many_units_dispatched }}</td>
+                                        <td>
+                                            <a href="{% url 'dispatch_incident_submission_review' i.id %}">Full Version</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

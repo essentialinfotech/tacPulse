@@ -1,0 +1,64 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    select {
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+    
+    input {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+    }
+
+    textarea {
+        padding: 5px!important;
+        border: none!important;
+        border-radius: 4px!important;
+        background-color: #f1f1f1!important;
+        resize: none;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+            <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <div class="text-center w-50 m-auto" style="margin-bottom: 10px!important;">
+                            <u class="mb-15">Photos & Other</u>
+                        </div>
+    
+                        <strong>Item</strong>
+                        {% for i in photos_and_other_choices %}
+                            <li>{{ i.photos_and_other_choices }}</li>
+                        {% endfor %}
+    
+                        <div class="form-group">
+                            <a href="{% url 'dispatch_incident_photos_and_others' id %}" class="btn btn-success mt-5">Add More Photos & Document</a>
+                            <a href="{% url 'dispatch_incident_dispatcher_certification' id %}" class="btn btn-success mt-5">Next</a>   
+                        </div>
+                    </div>
+                    
+                </div>
+
+                
+
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,414 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    label{
+        font-weight: bold!important;
+    }
+</style>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="col-md-12">
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Call Intake Primary Phase</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="run_id">Run ID</label> <br>
+                        {{ incident.run_id }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chief_complain">Chief Complain</label> <br>
+                        {{ incident.chief_complain }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incident_category">Incident Category</label> <br>
+                        {{ incident.incident_category }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ppe_lvl">PPE Level</label> <br>
+                        {{ incident.ppe_lvl }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pick_up_address">Pick Up Address</label> <br>
+                        {{ incident.pick_up_address }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="billing_type">Billing Type</label> <br>
+                        {{ incident.billing_type }}
+                    </div>
+
+                    {% if incident.billing_source %}
+                        <div class="form-group">
+                            <label for="billing_source">Billing Source</label> <br>
+                            {{ incident.billing_source }}
+                        </div>
+                    {% endif %}
+
+                    {% if incident.amount_quoted %}
+                        <div class="form-group">
+                            <label for="amount_quoted">Amount Quoted</label> <br>
+                            {{ incident.amount_quoted }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <label for="authorization_number">Authorization Number</label> <br>
+                        {{ incident.authorization_number }}
+                    </div>
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Call Intake Secondary Phase</h3>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="caller_name">Caller Name & Surname</label> <br>
+                        {{ incident.caller_name }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="caller_number">Caller Number</label> <br>
+                        {{ incident.caller_number }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="caller_company">Caller Company</label> <br>
+                        {{ incident.caller_company }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="call_received_time">Calle Received Time</label> <br>
+                        {{ incident.call_received_time }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted On Whatsapp</label> <br>
+                        {{ incident.time_call_posted_to_crew_on_whatsapp }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="crew_operational_status">Crew Operational Status</label> <br>
+                        {{ incident.crew_operational_status }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="how_many_units_dispatched">How many Units Dispatched?</label> <br>
+                        {{ incident.how_many_units_dispatched }}
+                    </div>
+
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Crew & Vehicle</h3>
+                    </div>
+
+                    {% for i in crew_vehicle %}
+                        <div class="form-group">
+                            <label for="assigned_unit">Assisgned Unit</label> <br>
+                            {{ i.assigned_unit }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vehicle_total">Vehicle</label> <br>
+                            {{ i.vehicle_total }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit_reg">UNIT REG#</label> <br>
+                            {{ i.unit_reg }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="senior">Senior</label> <br>
+                            {{ i.senior }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assist01">Assist01</label> <br>
+                            {{ i.assist01 }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assist02">Assist02</label> <br>
+                            {{ i.assist02 }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loc">LoC</label> <br>
+                            {{ i.loc }}
+                        </div>
+                        <hr style="border: 1px solid grey;">
+                    {% endfor %}
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Travel Details</h3>
+                    </div>
+
+                    {% for i in odo %}
+                        <div class="form-group">
+                            <label for="unit">Unit</label> <br>
+                            {{ i.unit }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="responding">RESPONDING</label> <br>
+                            {{ i.responding }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="odo01">ODO01</label> <br>
+                            {{ i.odo01 }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="on_scene">ON SCENE</label> <br>
+                            {{ i.on_scene }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="odo2">ODO02</label> <br>
+                            {{ i.odo2 }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="depart_scene">DEPAR SCENE</label> <br>
+                            {{ i.depart_scene }}
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="arrive_fac">ARRIVE -FAC</label> <br>
+                            {{ i.arrive_fac }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="odo3">ODO03</label> <br>
+                            {{ i.odo3 }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hand_over">HAND OVER</label> <br>
+                            {{ i.hand_over }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="depart">DEPART/RTB</label> <br>
+                            {{ i.depart }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end_standing_free">END/STANDING FREE</label> <br>
+                            {{ i.end_standing_free }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="odo04">ODO04</label> <br>
+                            {{ i.odo04 }}
+                        </div>
+
+                        <hr style="border: 1px solid grey;">
+                    {% endfor %}
+
+                    
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Service Notes</h3>
+                    </div>
+
+
+                    {% for i in service_notes %}
+                        <div class="form-group">
+                            <label for="service_notes">Action</label> <br>
+                            {{ i.service_notes }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="scribe">Scribe</label> <br>
+                            {{ i.scribe }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service_note_time">Time</label> <br>
+                            {{ i.service_note_time }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service_note_description">Note</label> <br>
+                            {{ i.service_note_description }}
+                        </div>
+
+                        <hr style="border: 1px solid grey">
+                    {% endfor %}
+
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Location Details</h3>
+                    </div>
+
+
+                    {% for i in loc_details %}
+                        <div class="form-group">
+                            <label for="unit">unit</label> <br>
+                            {{ i.unit }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="responding_address">Responding Address</label> <br>
+                            {{ i.responding_address }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="scene_address">Scene Address</label> <br>
+                            {{ i.scene_address }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="facility_address">Facility Address</label> <br>
+                            {{ i.facility_address }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end_address">End Address</label> <br>
+                            {{ i.end_address }}
+                        </div>
+
+                        <hr style="border: 1px solid grey">
+
+                    {% endfor %}
+
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Patient Information</h3>
+                    </div>
+
+
+                    {% for i in patient_info %}
+                        <div class="form-group">
+                            <label for="patient">Patient</label> <br>
+                            {{ i.patient }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_priority">Priority</label> <br>
+                            {{ i.p_priority }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_lvl_of_care">LEVEL OF CARE</label> <br>
+                            {{ i.p_lvl_of_care }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_name">Name & Surname</label> <br>
+                            {{ i.p_name }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_medical_aid_plan_option">Medical Aid Plan</label> <br>
+                            {{ i.p_medical_aid_plan_option }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p_medical_aid">Medical Aid</label> <br>
+                            {{ i.p_medical_aid }}
+                        </div>
+
+                        <hr style="border: 1px solid grey">
+                    {% endfor %}
+
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Photos & Other</h3>
+                    </div>
+
+
+                    {% for i in photos_other_documents %}
+                        <div class="form-group">
+                            <label for="photos_and_other_choices">Item</label> <br>
+                            {{ i.photos_and_other_choices }}
+                        </div>
+
+                        {% if i.photo %}
+                            <div class="form-group">
+                                <label for="photos_and_other_choices">Item</label> <br>
+                                <img src="{{ i.photo.url }}" class="img-thumbnail" alt="">
+                            </div>
+                        {% endif %}
+
+                        {% if i.document %}
+                            <div class="form-group">
+                                <label for="photos_and_other_choices">Document</label> <br>
+                                <img src="{{ i.document.url }}" class="img-thumbnail" alt="">
+                            </div>
+                        {% endif %}
+
+                        <hr style="border: 1px solid grey">
+                    {% endfor %}
+
+
+                    <div class="text-center bg-gray-600 text-white">
+                        <h3 style="font-family: lobster;">Dispatcher Certification</h3>
+                    </div>
+
+
+                    {% for i in certificate %}
+                        <div class="form-group">
+                            <label for="senior_practitioner_csn">Senior Practitioner CSN#</label> <br>
+                            {{ i.senior_practitioner_csn }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name_of_dispatcher">Name Of Dispatcher</label> <br>
+                            {{ i.name_of_dispatcher }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="was_the_call_handed_over_to_another_dispatcher">Was the call handed over to another dispatcher?</label> <br>
+                            {{ i.was_the_call_handed_over_to_another_dispatcher }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="other_dispatcher">Name Of other Dispatcher</label> <br>
+                            {{ i.other_dispatcher }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dispatch_special_notes"> Dispatch Special Notes </label> <br>
+                            {{ i.dispatch_special_notes }}
+                        </div>
+
+                        {% if i.signature %}
+                            <div class="form-group">
+                                <label for="photos_and_other_choices">Signature of Dispatcher</label> <br>
+                                <img src="{{ i.signature.url }}" class="img-thumbnail" alt="">
+                            </div>
+                        {% endif %}
+
+                        <hr style="border: 1px solid grey">
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

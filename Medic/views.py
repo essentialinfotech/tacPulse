@@ -219,82 +219,299 @@ def del_feedback(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# this is for incident report by dispatch not a a form submitted by user
+# this is for dispatch emergency incident report . not an ambulance  form submitted by user
 def ambulance_request(request):
     form = EmergencyMedDisIncidentReportForm()
-    # senior_form = SeniorForm()
-    # scribe_form = ScribeForm()
-    # assist_1_form = Assist01Form()
-    # assist_2_form = Assist02Form()
-
     if request.method == 'POST':
-        form = EmergencyMedDisIncidentReportForm(request.POST,request.FILES)
-        # senior_form = SeniorForm(request.POST)
-        # scribe_form = ScribeForm(request.POST)
-        # assist_1_form = Assist01Form(request.POST)
-        # assist_2_form = Assist02Form(request.POST)
-
         main_form = request.POST.get('main_form')
-
-        # if senior_form.is_valid():
-        #     senior_form.save()
-        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        # if scribe_form.is_valid():
-        #     scribe_form.save()
-        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        # if assist_1_form.is_valid():
-        #     assist_1_form.save()
-        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        # if assist_2_form.is_valid():
-        #     assist_2_form.save()
-        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
         if main_form is not None:
+            form = EmergencyMedDisIncidentReportForm(request.POST)
             if form.is_valid():
-                # decoding webcam image from text string to image
-                photo = request.POST.get('photo')
-                format, imgstr = photo.split(';base64,') 
-                ext = format.split('/')[-1] 
-                photo = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-
-                # decoding signature canvas from text string to image
-                signature = request.POST.get('signature')
-                format, imgstr = signature.split(';base64,') 
-                ext = format.split('/')[-1] 
-                signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-
-                photos_and_other_choices = request.POST.get('photos_and_other_choices')
-                if photos_and_other_choices is not None:
-                    add_space = " "
-                    photos_and_other_choices = add_space.join(photos_and_other_choices)
                 instance = form.save(commit=False)
-                instance.photo = photo
-                instance.signature = signature
-                instance.photos_and_other_choices = photos_and_other_choices
                 instance.user = request.user
                 instance.save()
                 return redirect('dispatch_incident_crew_and_vehicle', id=instance.id)
 
     context = {
-        # 'senior_form': senior_form,
         # 'scribe_form': scribe_form,
-        # 'assist_1_form': assist_1_form,
-        # 'assist_2_form': assist_2_form,
         'form': form,
         }
     return render(request, 'medic/ambulance_request.html',context)
 
 
 def dispatch_incident_crew_and_vehicle(request,id):
+    form = DispatchIncidentCrewAndVehicleForm()
+    senior_form = SeniorForm()
+    assist_1_form = Assist01Form()
+    assist_2_form = Assist02Form()
+    if request.method == 'POST':
+        senior_form = SeniorForm(request.POST)
+        assist_1_form = Assist01Form(request.POST)
+        assist_2_form = Assist02Form(request.POST)
+
+        main_form = request.POST.get('main_form')
+
+        if senior_form.is_valid():
+            senior_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_1_form.is_valid():
+            assist_1_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_2_form.is_valid():
+            assist_2_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if main_form is not None:
+            form = DispatchIncidentCrewAndVehicleForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('add_another_dispatch_incident_crew_and_vehicle', id)
+
     context = {
+        'form': form,
+        'senior_form': senior_form,
+        'assist_1_form': assist_1_form,
+        'assist_2_form': assist_2_form,
         'id': id
     }
     return render(request,'medic/dispatch_incident_crew_and_vehicle.html',context)
 
+
+@login_required
+def add_another_dispatch_incident_crew_and_vehicle(request,id):
+    assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
+    context = {
+        'assigned_units': assigned_units,
+        'id':id,
+    }
+    return render(request,'medic/add_another_dispatch_incident_crew_and_vehicle.html',context)
+
+
+@login_required
+def dispatch_incident_travel_details(request,id):
+    dispatch_incident_main_model = AmbulanceModel.objects.get(id = id)
+    units = dispatch_incident_main_model.how_many_units_dispatched
+    total_form = Vehicles_count_with_info_for_ambulance_request.objects.filter(parent_id = id).count()
+    print(units,type(units),total_form)
+    if int(units) == total_form:
+        return redirect('dispatch_incident_service_notes', id)
+
+    form = VehicleCountForm()
+    if request.method == 'POST':
+        form = VehicleCountForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.parent_id = id
+            instance.save()
+        if int(units) == total_form:
+            return redirect('dispatch_incident_service_notes', id)
+        else:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/vehicle_detail_for_incident.html',context)
+
+
+@login_required
+def dispatch_incident_service_notes(request,id):
+    form = DispatchIncidentServiceNoteForm()
+    scribe_form = ScribeForm()
+    if request.method == 'POST':
+        scribe_form = ScribeForm(request.POST)
+        main_form = request.POST.get('main_form')
+        if scribe_form.is_valid():
+            scribe_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        if main_form is not None:
+            form = DispatchIncidentServiceNoteForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.save()
+                return redirect('add_another_dispatch_incident_service_notes', id)
+    context = {
+        'scribe_form': scribe_form,
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/dispatch_incident_service_notes.html',context)
+
+
+@login_required
+def add_another_dispatch_incident_service_notes(request,id):
+    service_notes = DispatchIncidentServiceNotes.objects.filter(parent_id = id)
+    context = {
+        'service_note': service_notes,
+        'id': id,
+    }
+    return render(request,'medic/add_another_dispatch_incident_service_notes.html',context)
+
+
+@login_required
+def dispatch_incident_location_details(request,id):
+    form = DispatchIncidentLocationDetailsForm()
+    if request.method == 'POST':
+        form = DispatchIncidentLocationDetailsForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.parent_id = id
+            instance.save()
+            return redirect('add_another_dispatch_incident_location_details', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/dispatch_incident_location_details.html',context)
+
+
+@login_required
+def add_another_dispatch_incident_location_details(request,id):
+    unit = DispatchIncidentLocationDetails.objects.filter(parent_id = id)
+    context = {
+        'unit': unit,
+        'id': id,
+    }
+    return render(request,'medic/add_another_dispatch_incident_location_details.html',context)
+
+
+@login_required
+def dispatch_incident_patient_info(request,id):
+    form = DispatchIncidentPatientInformationForm()
+    if request.method == 'POST':
+        form = DispatchIncidentPatientInformationForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.parent_id = id
+            instance.save()
+            return redirect('add_another_dispatch_incident_patient_info', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/dispatch_incident_patient_info.html',context)
+
+
+@login_required
+def add_another_dispatch_incident_patient_info(request,id):
+    patient = DispatchIncidentPatientInformation.objects.filter(parent_id = id)
+    context = {
+        'patient': patient,
+        'id': id,
+    }
+    return render(request,'medic/add_another_dispatch_incident_patient_info.html',context)
+
+
+@login_required
+def dispatch_incident_photos_and_others(request,id):
+    form = DispatchIncidentPhotosForm()
+    if request.method == 'POST':
+        form = DispatchIncidentPhotosForm(request.POST,request.FILES)
+        photo = request.POST.get('photo')
+        if photo:
+            # decoding webcam image from text string to image
+            format, imgstr = photo.split(';base64,') 
+            ext = format.split('/')[-1] 
+            photo = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+        else:
+            photo = None
+
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.parent_id = id
+            instance.photo = photo
+            instance.save()
+            return redirect('add_another_dispatch_incident_photos_and_others', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/dispatch_incident_photos_and_others.html',context)
+
+
+@login_required
+def add_another_dispatch_incident_photos_and_others(request,id):
+    photos_and_other_choices = DispatchIncidentPhotos.objects.filter(parent_id = id)
+    context = {
+        'photos_and_other_choices': photos_and_other_choices,
+        'id': id,
+    }
+    return render(request,'medic/add_another_dispatch_incident_photos_and_others.html',context)
+
+
+@login_required
+def dispatch_incident_dispatcher_certification(request,id):
+    form = DispatchIncidentDispatcherCertificationForm()
+    if request.method == 'POST':
+        dispatcher_name = request.POST.get('dispatcher_name')
+        if dispatcher_name:
+            DispatchIncidentNameOfDispatcher.objects.create(dispatcher_name = dispatcher_name)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        main_form = request.POST.get('main_form')
+        if main_form:
+            form = DispatchIncidentDispatcherCertificationForm(request.POST)
+
+            # decoding signature canvas from text string to image
+            signature = request.POST.get('signature')
+            if signature:
+                format, imgstr = signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+            else:
+                signature = None
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent_id = id
+                instance.signature = signature
+                instance.save()
+                return redirect('dispatch_incident_report_pdf', id)
+            
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/dispatch_incident_dispatcher_certification.html', context)
+
+
+@login_required
+def dispatch_incident_submission_review_all(request):
+    incident = AmbulanceModel.objects.all()
+    context = {
+        'incident': incident,
+    }
+    return render(request,'medic/dispatch_incident_submission_review_all.html',context)
+
+@login_required
+def dispatch_incident_submission_review(request,id):
+    incident = AmbulanceModel.objects.get(id = id)
+    crew_vehicle = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
+    service_notes = DispatchIncidentServiceNotes.objects.filter(parent_id = id)
+    loc_details = DispatchIncidentLocationDetails.objects.filter(parent_id = id)
+    odo = Vehicles_count_with_info_for_ambulance_request.objects.filter(parent_id = id)
+    patient_info = DispatchIncidentPatientInformation.objects.filter(parent_id = id)
+    photos_other_documents = DispatchIncidentPhotos.objects.filter(parent_id = id)
+    certificate = DispatchIncidentDispatcherCertification.objects.filter(parent_id = id)
+
+    context = {
+        'incident': incident,
+        'crew_vehicle': crew_vehicle,
+        'service_notes': service_notes,
+        'loc_details': loc_details,
+        'photos_other_documents': photos_other_documents,
+        'certificate': certificate,
+        'odo': odo,
+        'patient_info': patient_info,
+        'id':id,
+    }
+    return render(request,'medic/dispatch_incident_submission_review.html',context)
 
 class AmbulanceRequestReport(LoginRequiredMixin, View):
     from datetime import datetime, timedelta
@@ -710,11 +927,25 @@ def invoice_pdf_property(request,id):
 
 def dispatch_incident_report_pdf(request,id):
     incident = AmbulanceModel.objects.get(id = id)
-    vehicles = Vehicles_count_with_info_for_ambulance_request.objects.filter(vehicle_for_id = id)
+    crew_vehicle = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
+    service_notes = DispatchIncidentServiceNotes.objects.filter(parent_id = id)
+    loc_details = DispatchIncidentLocationDetails.objects.filter(parent_id = id)
+    odo = Vehicles_count_with_info_for_ambulance_request.objects.filter(parent_id = id)
+    patient_info = DispatchIncidentPatientInformation.objects.filter(parent_id = id)
+    photos_other_documents = DispatchIncidentPhotos.objects.filter(parent_id = id)
+    certificate = DispatchIncidentDispatcherCertification.objects.filter(parent_id = id)
+
     current_site = get_current_site(request)
+
     context = {
         'incident': incident,
-        'vehicles': vehicles,
+        'crew_vehicle': crew_vehicle,
+        'service_notes': service_notes,
+        'loc_details': loc_details,
+        'photos_other_documents': photos_other_documents,
+        'certificate': certificate,
+        'odo': odo,
+        'patient_info': patient_info,
         'id':id,
         'domain': current_site.domain,
     }
@@ -1210,7 +1441,7 @@ class FormDatatable(View):
         }
         return render(request,'medic/form-submit.html',context)
 
-
+# unknown
 class FormDatas(View):
     def get(self,request):
         data = [{

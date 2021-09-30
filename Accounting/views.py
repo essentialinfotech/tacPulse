@@ -1042,6 +1042,7 @@ def electronic_invoice_details(request,id):
             instance.invo_for_id = id
             instance.save()
             return  redirect('add_another_electronic_invoice_details', id)
+
     context = {
         'form': form,
         'id': id,

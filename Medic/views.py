@@ -36,6 +36,7 @@ from Accounts.decorators import \
                                 has_perm_dispatch,has_perm_user,has_perm_admin,\
                                 has_perm_admin_dispatch
 
+from django.utils.decorators import method_decorator
 
 # global
 this_month = datetime.datetime.now().month
@@ -1208,13 +1209,13 @@ def h_transfer_noti_mark_seen(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-
-class FormSave(View):
-    def get(self,request):
-        data = request.GET.get('json')
-        title = request.GET.get('title')
+@csrf_exempt
+def form_save(request):
+    if request.method == "POST":
+        data = request.POST.get('json')
+        title = request.POST.get('title')
         FormBuilder.objects.create(title=title,json=data)
-        return render(request,'medic/form-builder.html')
+    return render(request,'medic/form-builder.html')
 
 
 class FormList(ListView):
@@ -1232,11 +1233,12 @@ class Form(View):
         }
         return render(request,'medic/forms.html',context)
 
-
-def SaveForm(request):
-    data = request.GET.get('formdata')
-    id = request.GET.get('id')
-    FormData.objects.create(form_id=int(id),data=data)
+@csrf_exempt
+def save_form(request):
+    if request.method == "POST":
+        data = request.POST.get('formdata')
+        id = request.POST.get('id')
+        FormData.objects.create(form_id=int(id),data=data)
     return JsonResponse({"data":"success"})
 
 
@@ -1246,7 +1248,7 @@ class FormDatatable(View):
         context = {
             'data':data
         }
-        return render(request,'medic/form-submit.html',context)
+        return render(request,'medic/form-datas.html',context)
 
 
 class FormDatas(View):
@@ -1277,3 +1279,41 @@ class FormDatas(View):
             "county": "King"
         }]
         return HttpResponse(data)
+
+
+class AddVehicleInformation(CreateView):
+    model = CallSign
+    fields = '__all__'
+    template_name = 'medic/add_vehicle_information.html'
+    success_url = reverse_lazy('vehicle_information')
+
+
+class VehicleInformation(CreateView):
+    model = VehicleProfile
+    fields = '__all__'
+    template_name = "medic/vehicle-information.html"
+    success_url = reverse_lazy('vehicle_information')
+
+    def get_context_data(self, **kwargs):
+        context = super(VehicleInformation,self).get_context_data(**kwargs)
+        context['call_sign'] = CallSign.objects.all()
+        context['values'] = CallSign.objects.get(id=1)
+        return context
+
+
+class GetVehicleInformation(View):
+    def get(self,request):
+        id = request.GET.get('id')
+        call_sign = CallSign.objects.get(id=id)
+        context = {
+            'registration' : call_sign.registration,
+            'make':call_sign.make,
+            'model':call_sign.model,
+            'color':call_sign.color,
+            'vin':call_sign.vin,
+            'yofr':call_sign.yofr,
+            'petrolium':call_sign.petrolium,
+            'service_interval':call_sign.service_interval,
+            'dot':call_sign.dot,
+        }
+        return JsonResponse(context)

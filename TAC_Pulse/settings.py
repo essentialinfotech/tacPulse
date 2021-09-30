@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_rest_passwordreset',
 ]
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

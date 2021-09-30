@@ -34,13 +34,16 @@
         var title = $("#id_title").val()
             // Send data to server
         $.ajax({
+            method: "post",
             url: "{% url 'form_builder' %}",
             data: {
                 'json': json,
                 'title': title
             },
+            dataType: 'json',
             success: function(data) {
                 alert("saved")
+                location.href = "http://localhost:8000/form/list/"
             }
         })
     }

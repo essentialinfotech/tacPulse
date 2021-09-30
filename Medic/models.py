@@ -654,5 +654,130 @@ class FormBuilder(models.Model):
 
 
 class FormData(models.Model):
+    date = models.DateField(auto_now=True)
     form = models.ForeignKey(FormBuilder,on_delete=models.CASCADE)
     data = models.TextField()
+
+
+
+class CallSign(models.Model):
+    CALLSIGN = [
+        ('L02','L02'),
+        ('SDO1','SDO1'),
+        ('L01','L01'),
+        ('RV03','RV03'),
+        ('TP07','TP07'),
+        ('TP09','TP09'),
+        ('TP08','TP08'),
+        ('RV01','RV01'),
+        ('TP02','TP02'),
+        ('TP05','TP05'),
+        ('TP03','TP03'),
+        ('RM01','RM01'),
+        ('TP11','TP11'),
+        ('TP10','TP10'),
+    ]
+    call_sign = models.CharField(choices=CALLSIGN,max_length=10)
+    registration = models.CharField(max_length=100)
+    make = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    color = models.CharField(max_length=100)
+    vin = models.CharField(max_length=100)
+    yofr = models.CharField(max_length=100)
+    petrolium = models.CharField(max_length=100)
+    service_interval = models.CharField(max_length=100)
+    dot = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.call_sign
+
+class DateOfPicture(models.Model):
+    date_of_image = models.DateField()
+    description = models.TextField()
+    photograph = models.ImageField(upload_to='dateofpicture/')
+
+
+
+class Category(models.Model):
+    CATEGORY = [
+        ('Crew Safety & SOS','Crew Safety & SOS'),
+        ('Distress Signalling','Distress Signalling'),
+        ('Patient Treatment','Patient Treatment'),
+        ('Scene Safety','Scene Safety'),
+        ('Vehicle Safety','Vehicle Safety'),
+        ('Other','Other')
+    ]
+
+class VehicleProfile(models.Model):
+    PERFORMANCE=[
+        ('Yes','Yes'),
+        ('No','No')
+    ]
+    THIRDPARTY=[
+         ('Yes','Yes'),
+        ('No','No'),
+        ('Not Applicable','Not Applicable')
+    ]
+    CONTINGENTLIABILITY=[
+         ('Yes','Yes'),
+        ('No','No'),
+        ('Not Applicable','Not Applicable')
+    ]
+    ROADASSISTANCE=[
+         ('Yes','Yes'),
+        ('No','No'),
+        ('Not Applicable','Not Applicable')
+    ]
+    PASSENGERLIABILITY=[
+         ('Yes','Yes'),
+        ('No','No'),
+        ('Not Applicable','Not Applicable')
+    ]
+    PASSENGERLIABILITYMaxPerPerson=[
+        ('R1 000 000.00 (One Million Rand,alone)','R1 000 000.00 (One Million Rand,alone)'),
+        ('R3 000 000.00 (One Million Rand,alone)','R3 000 000.00 (One Million Rand,alone)'),
+        ('R5 000 000.00 (One Million Rand,alone)','R5 000 000.00 (One Million Rand,alone)'),
+        ('R10 000 000.00 (One Million Rand,alone)','R10 000 000.00 (One Million Rand,alone)'),
+        ('Not Applicable/Not Covered','Not Applicable/Not Covered')
+    ]
+    call_sign = models.ForeignKey(CallSign,on_delete=models.CASCADE)
+    performance = models.CharField(choices=PERFORMANCE,max_length=10)
+    odo = models.IntegerField()
+    company = models.CharField(max_length=100)
+    policy_number = models.CharField(max_length=100)
+    cover = models.CharField(max_length=100)
+    thirdparty_cover = models.CharField(choices=THIRDPARTY,max_length=100)
+    passenger_liability = models.CharField(choices=PASSENGERLIABILITY,max_length=500)
+    passenger_liabilitycover_maxpp = models.CharField(choices=PASSENGERLIABILITYMaxPerPerson,max_length=500)
+    contingent_liability = models.CharField(choices=CONTINGENTLIABILITY,max_length=100)
+    road_assistance = models.CharField(choices=ROADASSISTANCE,max_length=100)
+    assignedbase_address = models.TextField()
+    assignedbase_gps = models.TextField()
+    driving_licensingcode = models.TextField()
+    classification_type = models.TextField()
+    classification_levelofcare = models.TextField()
+    subclassification_special = models.CharField(max_length=100)
+    maximum_crewcount = models.IntegerField()
+    maximum_patientcount = models.IntegerField()
+    mifi = models.CharField(max_length=100)
+    bst = models.BooleanField(default=False)
+    ht = models.BooleanField(default=False)
+    lfbr = models.BooleanField(default=False)
+    cp = models.BooleanField(default=False)
+    none = models.BooleanField(default=False)
+    dcro = models.BooleanField(default=False)
+    dcrodc = models.BooleanField(default=False)
+    dcbv = models.BooleanField(default=False)
+    icdc = models.BooleanField(default=False)
+    icpc = models.BooleanField(default=False)
+    none = models.BooleanField(default=False)
+    navigation_system = models.CharField(max_length=100)
+    tracking_recovery_system = models.CharField(max_length=100)
+    company_installation_cn = models.CharField(max_length=100)
+    transponder_installation_date = models.DateField()
+    category = models.ForeignKey(Category,on_delete=models.CASCADE)
+    pcd = models.DateField()
+    signature = models.ImageField(upload_to='signature')
+    dateofpicture = models.ForeignKey(DateOfPicture,on_delete=models.CASCADE)
+
+    

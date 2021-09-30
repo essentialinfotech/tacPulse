@@ -88,13 +88,17 @@ urlpatterns = [
      path('vehicle/details/<int:id>/<str:total_unit>/', fill_vehicle_details, name = 'fill_vehicle_details'),
      path('dispatch/incident/report/pdf/<int:id>/', dispatch_incident_report_pdf, name = 'dispatch_incident_report_pdf'),
 
-     path('form/builder/', FormSave.as_view(), name='form_builder'),
+     path('form/builder/', form_save, name='form_builder'),
      path('form/list/', FormList.as_view(), name="form_list"),
      path('form/<int:pk>/', Form.as_view(), name="form"),
-     path('save/form/', SaveForm, name="save_form"),
+     path('save/form/', save_form, name="save_form"),
      path('form/data/<int:pk>/', FormDatatable.as_view(), name="form_data"),
      
-     path('form/data/', FormDatas.as_view(), name="form_data")
+     path('form/data/', FormDatas.as_view(), name="form_data"),
+
+     path('add/vehicle/information/', AddVehicleInformation.as_view(),name="add_vehicle_information"),
+     path('vehicle/information/', VehicleInformation.as_view(), name="vehicle_information"),
+     path('get/vehicle/information/', GetVehicleInformation.as_view(), name="get_vehicle_information")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

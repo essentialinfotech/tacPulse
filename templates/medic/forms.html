@@ -12,38 +12,34 @@
 {% endblock %} {% block js %}
 <script src="{% static 'package/dist/form-render.min.js' %} "></script>
 <script>
-    jQuery($ => {
-        const escapeEl = document.createElement("textarea");
-        const code = document.getElementById("formrender");
-        const formData = JSON.parse("{{json_form|escapejs}}"); //Your JSON data goes here
-        const addLineBreaks = html => html.replace(new RegExp("><", "g"), ">\n<");
-
-        // Grab markup and escape it
-        const $markup = $("<div/>");
-        $markup.formRender({
-            formData
-        });
-
-        // set < code > innerText with escaped markup
-        code.innerHTML = addLineBreaks($markup.formRender("html"));
-
-        hljs.highlightBlock(code);
-    });
-</script>
-<script>
     function submit() {
         var formdata = JSON.stringify($("#formrender").serializeArray());
         var id = JSON.parse("{{id|escapejs}}")
         $.ajax({
+            method: 'post',
             url: "{% url 'save_form' %}",
             data: {
                 'id': id,
                 'formdata': formdata
             },
+            dataType: 'json',
             success: function(data) {
                 alert('success')
             }
         })
     }
+</script>
+<script>
+    jQuery(function($) {
+        var fbRender = document.getElementById('formrender'),
+            formData = JSON.parse("{{json_form|escapejs}}");
+
+        var formRenderOpts = {
+            formData,
+            dataType: 'json'
+        };
+
+        $(fbRender).formRender(formRenderOpts);
+    });
 </script>
 {% endblock %}

@@ -1,0 +1,186 @@
+{% extends '../base.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css"> {% endblock %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Battery</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Elements</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in battery %}
+                            <tr>
+                                <td>{{i.elements}}</td>
+                                <td>{{i.status}}</td>
+                                <td>{{i.notes}}</td>
+                                <td><a href="{% url 'edit_battery' i.id %}">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Inverter</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Elements</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in inverter %}
+                            <tr>
+                                <td>{{i.elements}}</td>
+                                <td>{{i.status}}</td>
+                                <td>{{i.notes}}</td>
+                                <td><a href="{% url 'edit_inverter' i.id %}">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Body Branding</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Elements</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in bodybranding %}
+                            <tr>
+                                <td>{{i.elements}}</td>
+                                <td>{{i.status}}</td>
+                                <td>{{i.notes}}</td>
+                                <td><a href="{% url 'edit_body_branding' i.id %}">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Fluid Inspection</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Elements</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in fluidinspection %}
+                            <tr>
+                                <td>{{i.elements}}</td>
+                                <td>{{i.status}}</td>
+                                <td>{{i.notes}}</td>
+                                <td><a href="{% url 'edit_fluid_inspections' i.id %}">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Internal System</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Elements</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in internalsystem %}
+                            <tr>
+                                <td>{{i.elements}}</td>
+                                <td>{{i.status}}</td>
+                                <td>{{i.notes}}</td>
+                                <td><a href="{% url 'edit_internal_systems' i.id %}">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Lights</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Elements</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in light %}
+                            <tr>
+                                <td>{{i.elements}}</td>
+                                <td>{{i.status}}</td>
+                                <td>{{i.notes}}</td>
+                                <td><a href="{% url 'edit_lights' i.id %}">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

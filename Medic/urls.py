@@ -110,9 +110,36 @@ urlpatterns = [
      
      path('form/data/', FormDatas.as_view(), name="form_data"),
 
-     path('add/vehicle/information/', AddVehicleInformation.as_view(),name="add_vehicle_information"),
+     path('add/call/sign/', AddCallSign.as_view(),name="add_call_sign"),
+     path('edit/call/sign/<int:pk>/', EditCallSign.as_view(),name="edit_call_sign"),
+     path('call/sign/', CallSignList.as_view(), name="call_sign"),
      path('vehicle/information/', VehicleInformation.as_view(), name="vehicle_information"),
-     path('get/vehicle/information/', GetVehicleInformation.as_view(), name="get_vehicle_information")
+     path('get/vehicle/information/', GetVehicleInformation.as_view(), name="get_vehicle_information"),
+     path('photograph/<int:pk>/',VehiclePhotograph.as_view(), name='vehicle_photograph'),
+     path('vehicle/category/<int:pk>/',VehicleCategory.as_view(), name="vehicle_category"),
+     path('vehicle/profile/report/', VehicleProfileReport.as_view(), name="vehicle_profile_report"),
+     path('categories & pictures/<int:pk>/', categories_pictures, name='categories_pictures'),
+     path('edit/vehicle/information/<int:pk>/', EditVehicleInformation.as_view(), name='edit_vehicle_information'),
+
+     path('daily preventive inspection/', DailyPreventiveInsperctions.as_view(), name="daily_preventive_insperctions"),
+     path('vehicle/information/<int:pk>/', VehicleInformations.as_view(), name="vehicle_information"),
+     path('pre inspection/selections/<int:pk>/', PreinspectionSelections.as_view(), name="pre_inspection_selection"),
+     path('battery/main/<int:pk>/', BatteryMain.as_view(),name="battery_main"),
+     path('edit/battery/<int:pk>/', EditBattery.as_view(), name="edit_battery"),
+     path('inverter/main/<int:pk>/', InverterMain.as_view(),name="inverter_main"),
+     path('edit/inverter/<int:pk>/', EditInverter.as_view(), name="edit_inverter"),
+     path('body&branding/<int:pk>/', BodyBrandings.as_view(),name="bodybranding"),
+     path('edit/body/branding/<int:pk>/', EditBodyBranding.as_view(), name="edit_body_branding"),
+     path('fluid/inspection/<int:pk>/', FluidInspections.as_view(),name="fluid_inspection"),
+     path('edit/fluid/inspection/<int:pk>/', EditFluidInspections.as_view(), name="edit_fluid_inspections"),
+     path('internal/systems/<int:pk>/', InternalSystems.as_view(),name="internal_systems"),
+     path('edit/internal/system/<int:pk>/', EditInternalSystems.as_view(), name="edit_internal_systems"),
+     path('lights/<int:pk>/', Lights.as_view(),name="lights"),
+     path('edit/light/<int:pk>/', EditLights.as_view(), name="edit_lights"),
+     path('fleet/management/technician/<int:pk>/', FleetTechnicianConfirmations.as_view(),name="technician"),
+     path('fleet/preventive/management/report/', FleetPreventiveManagementReport.as_view(), name="fleet_preventive_management_report"),
+     path('vehicle/fleetmanagement/other/data/<int:pk>/',FleetManagementOtherData.as_view(),name="vehicle_fleetmanagement_other_data"),
+     path('edit/fleet/management/<int:pk>/', EditFleetManagement.as_view(), name="edit_fleet_management"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

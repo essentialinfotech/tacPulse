@@ -1,0 +1,55 @@
+{% extends '../base.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h5>FleetTechnician Confirmation</h5>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %} {{form.notes|as_crispy_field}}
+                        <label for="">Hereby I, the undersigned, certify that the information contained within this Company Vehicle Profile to be as comprehensive,accurate and true , to the best of my knowledge.</label>
+                        <div class="form-group text-center">
+                            <canvas id="signature" width="auto" height="auto" style="border: 1px solid #ddd;"></canvas>
+                            <br>
+                            <input type="text" name="signature" id="signature-image" value="" hidden>
+
+                            <button class="btn btn-danger" type="button" id="clear-signature">Clear</button>
+                            <button class="btn btn-info" type="button" id="save-signature">Save</button>
+                            <div id="signature_image"></div>
+                        </div>
+                        <label for="">Certification Date</label>
+                        <input type="date" class="form-control" name="certification_date">
+                        <label for="">Certification Time</label>
+                        <input type="time" class="form-control mb-3" name="certification_time">
+                        <input type="submit" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block js %}
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+
+<script>
+    jQuery(document).ready(function($) {
+        var canvas = document.getElementById("signature");
+        var signaturePad = new SignaturePad(canvas);
+        var saveButton = document.getElementById('save-signature');
+        $('#clear-signature').on('click', function() {
+            signaturePad.clear();
+        });
+
+        saveButton.addEventListener('click', function(event) {
+            var data = signaturePad.toDataURL();
+            document.getElementById('signature_image').innerHTML = '<img src="' + data + '" />';
+            document.getElementById("signature-image").value = signaturePad.toDataURL();
+        });
+    });
+</script>
+
+{% endblock %}

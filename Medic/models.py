@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.aggregates import Count
 from django.db.models.deletion import SET_NULL
 from django.db.models.enums import Choices
+from django.views.generic.base import TemplateView
 from Accounts.models import *
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -757,22 +758,7 @@ class CallSign(models.Model):
     def __str__(self):
         return self.call_sign
 
-class DateOfPicture(models.Model):
-    date_of_image = models.DateField()
-    description = models.TextField()
-    photograph = models.ImageField(upload_to='dateofpicture/')
 
-
-
-class Category(models.Model):
-    CATEGORY = [
-        ('Crew Safety & SOS','Crew Safety & SOS'),
-        ('Distress Signalling','Distress Signalling'),
-        ('Patient Treatment','Patient Treatment'),
-        ('Scene Safety','Scene Safety'),
-        ('Vehicle Safety','Vehicle Safety'),
-        ('Other','Other')
-    ]
 
 class VehicleProfile(models.Model):
     PERFORMANCE=[
@@ -836,14 +822,148 @@ class VehicleProfile(models.Model):
     dcbv = models.BooleanField(default=False)
     icdc = models.BooleanField(default=False)
     icpc = models.BooleanField(default=False)
-    none = models.BooleanField(default=False)
+    none_installed = models.BooleanField(default=False)
     navigation_system = models.CharField(max_length=100)
     tracking_recovery_system = models.CharField(max_length=100)
     company_installation_cn = models.CharField(max_length=100)
     transponder_installation_date = models.DateField()
-    category = models.ForeignKey(Category,on_delete=models.CASCADE)
     pcd = models.DateField()
-    signature = models.ImageField(upload_to='signature')
-    dateofpicture = models.ForeignKey(DateOfPicture,on_delete=models.CASCADE)
+    signature = models.ImageField(upload_to='signature',blank=True,null=True)
 
-    
+
+
+class DateOfPicture(models.Model):
+    vehicle_profile = models.ForeignKey(VehicleProfile,on_delete=models.CASCADE)
+    date_of_image = models.DateField()
+    description = models.TextField()
+    photograph = models.ImageField(upload_to='dateofpicture/')
+
+
+class Category(models.Model):
+    CATEGORY = [
+        ('Distress Signaling','Distress Signaling'),
+        ('Patient Treatment','Patient Treatment'),
+        ('Scene Safety','Scene Safety'),
+        ('Vehicle Safety','Vehicle Safety'),
+        ('Other','Other')
+    ]
+    vehicle_profile = models.ForeignKey(VehicleProfile,on_delete=models.CASCADE)
+    category = models.CharField(choices=CATEGORY,max_length=100)
+    description = models.CharField(max_length=500)
+    quantity = models.IntegerField()
+
+
+
+class FleetPreventiveManagement(models.Model):
+    SECONDARY_BATTERY = [
+        ('Yes','Yes'),
+        ('No','No')
+    ]
+    SECONDARY_INVERTER= [
+        ('Yes','Yes'),
+        ('No','No')
+    ]
+    date = models.DateField()
+    call_sign = models.ForeignKey(CallSign,on_delete=models.CASCADE)
+    location = models.TextField()
+    expiry = models.DateField()
+    current_odo = models.IntegerField(blank=True,null=True)
+    secondary_battery = models.CharField(choices=SECONDARY_BATTERY,max_length=100,blank=True,null=True)
+    secondary_inverter = models.CharField(choices=SECONDARY_INVERTER,max_length=100,blank=True,null=True)
+    notes = models.TextField(blank=True,null=True)
+    signature = models.ImageField(upload_to='technician/',blank=True,null=True)
+    certification_date = models.DateField(blank=True,null=True)
+    certification_time = models.TimeField(blank=True,null=True)
+
+
+class Battery(models.Model):
+    STATUS = [
+        ('Good','Good'),
+        ('Repair Required','Repair Required'),
+        ('Damaged/Replace','Damaged/Replace'),
+        ('N/A','N/A')
+    ]
+    fleet_preventive = models.ForeignKey(FleetPreventiveManagement,on_delete=models.CASCADE)
+    elements = models.CharField(max_length=100)
+    status = models.CharField(choices=STATUS,max_length=100)
+    notes = models.TextField()
+    photo = models.ImageField(upload_to='fleet/',blank=True,null=True)
+
+
+class Inverter(models.Model):
+    STATUS = [
+        ('Good','Good'),
+        ('Repair Required','Repair Required'),
+        ('Damaged/Replace','Damaged/Replace'),
+        ('N/A','N/A')
+    ]
+    fleet_preventive = models.ForeignKey(FleetPreventiveManagement,on_delete=models.CASCADE)
+    elements = models.CharField(max_length=100)
+    status = models.CharField(choices=STATUS,max_length=100)
+    notes = models.TextField()
+    photo = models.ImageField(upload_to='fleet/',blank=True,null=True)
+
+
+class BodyBranding(models.Model):
+    STATUS = [
+        ('Good','Good'),
+        ('Damaged','Damaged'),
+        ('Dents','Dents'),
+        ('Scratches','Scratches'),
+        ('Repair Required','Repair Required'),
+    ]
+    fleet_preventive = models.ForeignKey(FleetPreventiveManagement,on_delete=models.CASCADE)
+    elements = models.CharField(max_length=100)
+    status = models.CharField(choices=STATUS,max_length=100)
+    notes = models.TextField()
+    photo = models.ImageField(upload_to='fleet/',blank=True,null=True)
+
+
+class FluidInspection(models.Model):
+    STATUS = [
+        ('1/4','1/4'),
+        ('2/4','2/4'),
+        ('3/4','3/4'),
+        ('4/4','4/4'),
+        ('Good','Good'),
+        ('Master Cylinder Leakage','Master Cylinder Leakage'),
+        ('Front LT Leak','Front LT Leak'),
+        ('Front RT Leak','Front RT Leak'),
+        ('Back LT Leak','Back LT Leak'),
+        ('Back RT Leak','Back RT Leak'),
+        ('Repair Required','Repair Required'),
+        ('N/A','N/A')
+    ]
+    fleet_preventive = models.ForeignKey(FleetPreventiveManagement,on_delete=models.CASCADE)
+    elements = models.CharField(max_length=100)
+    status = models.CharField(choices=STATUS,max_length=100)
+    notes = models.TextField()
+    photo = models.ImageField(upload_to='fleet/',blank=True,null=True)
+
+
+class InternalSystem(models.Model):
+    STATUS = [
+        ('Good','Good'),
+        ('Repair Required','Repair Required'),
+        ('Damaged/Replace','Damaged/Replace'),
+        ('N/A','N/A')
+    ]
+    fleet_preventive = models.ForeignKey(FleetPreventiveManagement,on_delete=models.CASCADE)
+    elements = models.CharField(max_length=100)
+    status = models.CharField(choices=STATUS,max_length=100)
+    notes = models.TextField()
+    photo = models.ImageField(upload_to='fleet/',blank=True,null=True)
+
+
+class Light(models.Model):
+    STATUS = [
+        ('Good','Good'),
+        ('Repair Required','Repair Required'),
+        ('Damaged/Replace','Damaged/Replace'),
+        ('N/A','N/A')
+    ]
+    fleet_preventive = models.ForeignKey(FleetPreventiveManagement,on_delete=models.CASCADE)
+    elements = models.CharField(max_length=100)
+    status = models.CharField(choices=STATUS,max_length=100)
+    notes = models.TextField()
+    photo = models.ImageField(upload_to='fleet/',blank=True,null=True)

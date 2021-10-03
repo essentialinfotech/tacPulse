@@ -1,6 +1,4 @@
-{% extends '../base.html' %}
-{% load static %}
-{% block content %}
+{% extends '../base.html' %} {% load static %} {% block content %}
 
 <style>
     select {
@@ -25,39 +23,34 @@
             <form method="POST" action="{% url 'electronic_cash_receipt' %}">
                 {% csrf_token %}
                 <div class="row shadow-lg p-3 mb-5 bg-white rounded">
-                   <div class="text-center w-50 m-auto">
-                    <u class="mb-15">Received Form</u>
-                   </div>
+                    <div class="text-center w-50 m-auto">
+                        <u class="mb-15">Received Form</u>
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group text-center w-50 m-auto mb-5">
-                            <label for="company_or_patient_name">Company or Patient Name & Surname</label>
-                            {{ form.company_or_patient_name }}
+                            <label for="company_or_patient_name">Company or Patient Name & Surname</label> {{ form.company_or_patient_name }}
                         </div>
 
                         <div class="form-group text-center w-50  m-auto mb-5">
-                            <label for="customer_email">Customer E-mail(To send a copy of the receipt)</label>
-                                {{ form.customer_email }}
+                            <label for="customer_email">Customer E-mail(To send a copy of the receipt)</label> {{ form.customer_email }}
                         </div>
 
                         <div class="form-group text-center w-50  m-auto mb-5">
-                            <label for="cus_number">Customer Cellphone#</label>
-                                {{ form.cus_number }}
+                            <label for="cus_number">Customer Cellphone#</label> {{ form.cus_number }}
                         </div>
 
                         <div class="form-group text-center w-50  m-auto mb-5">
-                            <label for="date">Date</label>
-                                {{ form.date }}
+                            <label for="date">Date</label> {{ form.date }}
                         </div>
 
                         <div class="form-group text-center w-50  m-auto mb-5">
-                            <label for="time">Time</label>
-                                {{ form.time }}
+                            <label for="time">Time</label> {{ form.time }}
                         </div>
 
                         <div class="form-group text-center m-auto">
                             <button type="submit" class="btn btn-success mt-5">Next</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </form>

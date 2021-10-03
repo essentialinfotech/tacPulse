@@ -1,0 +1,35 @@
+{% extends '../base.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css"> {% endblock %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Categories</h5>
+                </div>
+                <div class="card-body">
+                    {% for i in categories %}
+                    <p>Category:<span class="text-primary"> {{i.category}}</span></p>
+                    <p>{{i.description}}</p>
+                    <p>{{i.quantity}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Photgraphs</h5>
+                </div>
+                <div class="card-body">
+                    {% for i in photographs %}
+                    <p>Date: <span class="text-primary"> {{i.date_of_image}}</span></p>
+                    <p>{{i.description}}</p>
+                    <img src="{{i.photograph.url}}" alt="photograph" class="img-fluid"> {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

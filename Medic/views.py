@@ -1474,24 +1474,105 @@ class FormDatas(View):
         return HttpResponse(data)
 
 
-class AddVehicleInformation(CreateView):
+class AddCallSign(CreateView):
     model = CallSign
     fields = '__all__'
-    template_name = 'medic/add_vehicle_information.html'
-    success_url = reverse_lazy('vehicle_information')
+    template_name = 'medic/add_call_sign.html'
+    success_url = reverse_lazy('call_sign')
+
+
+class CallSignList(ListView):
+    model = CallSign
+    template_name = 'medic/call_sign.html'
+
+
+class EditCallSign(UpdateView):
+    model = CallSign
+    fields = '__all__'
+    template_name = 'medic/edit/call_sign.html'
+    success_url = reverse_lazy('call_sign')
+
+
+class EditVehicleInformation(UpdateView):
+    model = VehicleProfile
+    fields = '__all__'
+    template_name = 'medic/edit/vehicle_information.html'
+    success_url = reverse_lazy('vehicle_profile_report')
 
 
 class VehicleInformation(CreateView):
     model = VehicleProfile
     fields = '__all__'
     template_name = "medic/vehicle-information.html"
-    success_url = reverse_lazy('vehicle_information')
 
     def get_context_data(self, **kwargs):
         context = super(VehicleInformation,self).get_context_data(**kwargs)
         context['call_sign'] = CallSign.objects.all()
         context['values'] = CallSign.objects.get(id=1)
         return context
+
+    def form_valid(self, form):
+        signature = self.request.POST.get('signature')
+        format, imgstr = signature.split(';base64,') 
+        ext = format.split('/')[-1] 
+        signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+        self.obj = form.save(commit=False)
+        self.obj.signature = signature
+        self.obj = form.save()
+        return redirect('vehicle_category',self.obj.id)
+
+
+class VehicleCategory(CreateView):
+    model = Category
+    fields = ['category','description','quantity']
+    template_name = 'medic/vehicle_category.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super(VehicleCategory,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['categories'] = Category.objects.filter(vehicle_profile_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+            self.obj = form.save(commit=False)
+            self.obj.vehicle_profile_id = self.kwargs['pk']
+            self.obj = form.save()
+            return redirect('vehicle_category',self.obj.vehicle_profile_id)
+
+
+class VehiclePhotograph(CreateView):
+    model = DateOfPicture
+    fields = ['date_of_image','description','photograph']
+    template_name = 'medic/vehicle_photograph.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VehiclePhotograph,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['photographs'] = DateOfPicture.objects.filter(vehicle_profile_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+            self.obj = form.save(commit=False)
+            self.obj.vehicle_profile_id = self.kwargs['pk']
+            self.obj = form.save()
+            return redirect('vehicle_photograph',self.obj.vehicle_profile_id)
+
+
+class VehicleProfileReport(ListView):
+    model = VehicleProfile
+    template_name = 'medic/vehicle_profile_report.html'
+
+
+def categories_pictures(request,pk):
+    categories = Category.objects.filter(vehicle_profile_id=pk)
+    photographs = DateOfPicture.objects.filter(vehicle_profile_id=pk)
+    context = {
+        'categories':categories,
+        'photographs':photographs
+    }
+    return render(request,'medic/vehicle_categories&pictures.html',context)
+
 
 
 class GetVehicleInformation(View):
@@ -1510,3 +1591,230 @@ class GetVehicleInformation(View):
             'dot':call_sign.dot,
         }
         return JsonResponse(context)
+
+
+
+class DailyPreventiveInsperctions(CreateView):
+    model = FleetPreventiveManagement
+    fields = ['date','location','call_sign','expiry']
+    template_name = 'medic/vehicle_daily_preventive_insperctions.html'
+
+    def form_valid(self, form):
+        self.obj = form.save()
+        return redirect('vehicle_information', self.obj.id)
+
+
+class VehicleInformations(View):
+    def get(self,request,pk):
+        obj = FleetPreventiveManagement.objects.get(id=pk)
+        context = {
+            'obj':obj
+        }
+        return render(request,'medic/vehicle_information_fleet.html',context)
+
+
+class PreinspectionSelections(UpdateView):
+    model = FleetPreventiveManagement
+    fields = ['current_odo','secondary_battery','secondary_inverter']
+    template_name = 'medic/vehicle_preinspection_selections.html'
+
+    def form_valid(self, form):
+        self.obj = form.save()
+        return redirect('battery_main', self.obj.id)
+
+
+class FleetTechnicianConfirmations(UpdateView):
+    model = FleetPreventiveManagement
+    fields = ['notes','signature','certification_date','certification_time']
+    template_name = 'medic/vehicle_fleettechnicianconfirmations.html'
+
+    def form_valid(self, form):
+        signature = self.request.POST.get('signature')
+        format, imgstr = signature.split(';base64,') 
+        ext = format.split('/')[-1] 
+        signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+        self.obj = form.save(commit=False)
+        self.obj.signature = signature
+        self.obj = form.save()
+        return redirect('fleet_preventive_management_report')
+
+
+class BatteryMain(CreateView):
+    model = Battery
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/vehicle_battery.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BatteryMain,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['battery'] = Battery.objects.filter(fleet_preventive_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        self.obj = form.save(commit=False)
+        self.obj.fleet_preventive_id = self.kwargs['pk']
+        self.obj = form.save()
+        return redirect('battery_main',self.obj.fleet_preventive_id)
+
+
+class EditBattery(UpdateView):
+    model = Battery
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/edit/battery.html'
+    success_url = reverse_lazy('fleet_preventive_management_report')
+
+
+class InverterMain(CreateView):
+    model = Inverter
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/vehicle_inverter.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(InverterMain,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['inverter'] = Inverter.objects.filter(fleet_preventive_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        self.obj = form.save(commit=False)
+        self.obj.fleet_preventive_id = self.kwargs['pk']
+        self.obj = form.save()
+        return redirect('inverter_main',self.obj.fleet_preventive_id)
+
+
+class EditInverter(UpdateView):
+    model = Inverter
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/edit/inverter.html'
+    success_url = reverse_lazy('fleet_preventive_management_report')
+
+
+class BodyBrandings(CreateView):
+    model = BodyBranding
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/vehicle_bodybranding.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BodyBrandings,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['bodybranding'] = BodyBranding.objects.filter(fleet_preventive_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        self.obj = form.save(commit=False)
+        self.obj.fleet_preventive_id = self.kwargs['pk']
+        self.obj = form.save()
+        return redirect('bodybranding',self.obj.fleet_preventive_id)
+
+
+class EditBodyBranding(UpdateView):
+    model = BodyBranding
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/edit/body_branding.html'
+    success_url = reverse_lazy('fleet_preventive_management_report')
+
+
+class FluidInspections(CreateView):
+    model = FluidInspection
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/vehicle_fluidinspection.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FluidInspections,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['fluidinspection'] = FluidInspection.objects.filter(fleet_preventive_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        self.obj = form.save(commit=False)
+        self.obj.fleet_preventive_id = self.kwargs['pk']
+        self.obj = form.save()
+        return redirect('fluid_inspection',self.obj.fleet_preventive_id)
+
+
+class EditFluidInspections(UpdateView):
+    model = FluidInspection
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/edit/fluid_inspection.html'
+    success_url = reverse_lazy('fleet_preventive_management_report')
+
+
+class InternalSystems(CreateView):
+    model = InternalSystem
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/vehicle_internalsystems.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(InternalSystems,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['internalsystems'] = InternalSystem.objects.filter(fleet_preventive_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        self.obj = form.save(commit=False)
+        self.obj.fleet_preventive_id = self.kwargs['pk']
+        self.obj = form.save()
+        return redirect('internal_systems',self.obj.fleet_preventive_id)
+
+
+class EditInternalSystems(UpdateView):
+    model = InternalSystem
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/edit/internal_system.html'
+    success_url = reverse_lazy('fleet_preventive_management_report')
+
+
+class Lights(CreateView):
+    model = Light
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/vehicle_lights.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Lights,self).get_context_data(**kwargs)
+        context['id'] = self.kwargs['pk']
+        context['light'] = Light.objects.filter(fleet_preventive_id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        self.obj = form.save(commit=False)
+        self.obj.fleet_preventive_id = self.kwargs['pk']
+        self.obj = form.save()
+        return redirect('technician',self.obj.fleet_preventive_id)
+
+
+class EditLights(UpdateView):
+    model = Light
+    fields = ['elements','status','notes','photo']
+    template_name = 'medic/edit/light.html'
+    success_url = reverse_lazy('fleet_preventive_management_report')
+
+
+class FleetPreventiveManagementReport(ListView):
+    model = FleetPreventiveManagement
+    template_name = 'medic/vehicle_fleetPreventive_management_report.html'
+
+
+class FleetManagementOtherData(View):
+    def get(self,request,pk):
+        battery = Battery.objects.filter(fleet_preventive_id = pk)
+        inverter = Inverter.objects.filter(fleet_preventive_id = pk)
+        bodybranding = BodyBranding.objects.filter(fleet_preventive_id = pk)
+        fluidinspection = FluidInspection.objects.filter(fleet_preventive_id = pk)
+        internalsystem = InternalSystem.objects.filter(fleet_preventive_id = pk)
+        light = Light.objects.filter(fleet_preventive_id = pk)
+        context = {
+            'battery':battery,
+            'inverter':inverter,
+            'bodybranding':bodybranding,
+            'fluidinspection':fluidinspection,
+            'internalsystem':internalsystem,
+            'light':light
+        }
+        return render(request,'medic/vehicle_fleetmanagementotherdata.html',context)
+
+
+class EditFleetManagement(UpdateView):
+    model = FleetPreventiveManagement
+    fields = '__all__'
+    template_name = 'medic/edit/fleet_management.html'
+    success_url = reverse_lazy('fleet_preventive_management_report')

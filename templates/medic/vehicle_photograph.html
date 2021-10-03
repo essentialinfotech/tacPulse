@@ -1,0 +1,36 @@
+{% extends '../base.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Photgraphs</h5>
+                </div>
+                <div class="card-body">
+                    {% for i in photographs %}
+                    <p>Date: <span class="text-primary"> {{i.date_of_image}}</span></p>
+                    <p>{{i.description}}</p>
+                    <img src="{{i.photograph.url}}" alt="photograph" class="img-fluid"> {% endfor %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Date Of Picture</h5>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="date" name="date_of_image" class="form-control"> {{form.description|as_crispy_field}} {{form.photograph|as_crispy_field}}
+                        <div class="d-flex justify-content-between">
+                            <input type="submit" class="btn btn-primary" value="+">
+                            <a href="{% url 'vehicle_profile_report' %}" class="btn btn-success">Go to Report</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

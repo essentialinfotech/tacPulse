@@ -1,0 +1,51 @@
+{% extends '../base.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Internal Systems</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Elements</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in internalsystems %}
+                            <tr>
+                                <td>{{i.elements}}</td>
+                                <td>{{i.status}}</td>
+                                <td>{{i.notes}}</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Internal Systems</h5>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %} {{form|crispy}}
+                        <div class="d-flex justify-content-between">
+                            <input type="submit" class="btn btn-primary">
+                            <a href="{% url 'lights' id %}" class="btn btn-success">Next</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

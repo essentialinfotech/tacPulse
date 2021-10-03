@@ -83,7 +83,7 @@
 <div class="card-header">
     <a href="{% url 'add_vehicle_information' %}" class="btn btn-outline-primary">Add vehicle Information</a>
 </div>
-<form id="regForm" action="">
+<form id="regForm" action="" enctype="multipart/form-data" method="POST">
     {% csrf_token %} {{form.errors}}
     <h1>Vehicle Information:</h1>
     <!-- One "tab" for each step in the form: -->
@@ -119,7 +119,7 @@
             <option value="No">No</option>
         </select>
         <label for="">odo</label>
-        <input type="text" class="form-control mb-2" name="odo" id="id_odo" value="">
+        <input type="number" class="form-control mb-2" name="odo" id="id_odo" value="">
     </div>
     <div class="tab">
         <p>Insurance Details:</p>
@@ -136,7 +136,7 @@
             <option value="Not Applicable">Not Applicable</option>
         </select>
         <label for="">Passenger Liability Cover</label>
-        <select name="thirdparty_cover" id="id_thirdparty_cover" class="form-control mb-2">
+        <select name="passenger_liability" id="id_passenger_liability" class="form-control mb-2">
             <option value="Yes" selected>Yes</option>
             <option value="No">No</option>
             <option value="Not Applicable">Not Applicable</option>
@@ -177,47 +177,75 @@
         <label for="">Sub-Classification > Special</label>
         <input class="form-control mb-2" oninput="this.className = ''" name="subclassification_special" id="id_subclassification_special">
         <label for="">Maximum Crew Count</label>
-        <input class="form-control mb-2" oninput="this.className = ''" name="maximum_crewcount" id="id_maximum_crewcount">
+        <input type="number" class="form-control mb-2" oninput="this.className = ''" name="maximum_crewcount" id="id_maximum_crewcount">
         <label for="">Maximum Patient Count</label>
-        <input class="form-control mb-2" oninput="this.className = ''" name="maximum_patientcount" id="id_maximum_patientcount">
+        <input type="number" class="form-control mb-2" oninput="this.className = ''" name="maximum_patientcount" id="id_maximum_patientcount">
     </div>
     <div class="tab">
         <p>Communications, Navigation & Tracking:</p>
         <label for="">Mobile Internet Access Point Available(MIFI)</label>
         <input class="form-control mb-2" oninput="this.className = ''" name="mifi" id="id_mifi">
         <label for="">Onboard Communication System</label>
-        <div class="d-flex">
-            <input type="checkbox" name="bst" id="id_bst">
-            <p>Base Station Type: GSM Digital Radio with GPS Tracking & Communication Recording</p>
+        <div class="radio-list">
+            <label class="radio">
+            <input type="radio" name="bst">
+            <span></span>Base Station Type: GSM Digital Radio with GPS Tracking & Communication Recording</label>
+            <label class="radio">
+            <input type="radio" name="ht">
+            <span></span>Handheld Type: GSM Digital Radio with GPS Tracking & Communication Recording</label>
+            <label class="radio">
+            <input type="radio" name="lfbr">
+            <span></span>Low Frequency Base Radio - Subscribed to Tower/Server Service</label>
+            <label class="radio">
+            <input type="radio" name="cp">
+            <span></span>Cellular Phone (WhatsApp)</label>
+            <label class="radio">
+                <input type="radio" name="none">
+                <span></span>None</label>
         </div>
-        <div class="d-flex">
-            <input type="checkbox" name="ht" id="id_ht">
-            <p>Handheld Type: GSM Digital Radio with GPS Tracking & Communication Recording</p>
+        <label for="">Onboard Video Surveilance System</label>
+        <div class="radio-list">
+            <label class="radio">
+            <input type="radio" name="dcro">
+            <span></span>Dash Camera - Front View(Road Only)</label>
+            <label class="radio">
+            <input type="radio" name="dcrodc">
+            <span></span>Dash Camera - Front View(Road & Driver Compartment)</label>
+            <label class="radio">
+            <input type="radio" name="dcbv">
+            <span></span>Dash Camera - Rear View(Back of Vehicle)</label>
+            <label class="radio">
+            <input type="radio" name="icdc">
+            <span></span>Internal Camera - Driver Compartment</label>
+            <label class="radio">
+                <input type="radio" name="icpc">
+                <span></span>Internal Camera - Patient Compartment</label>
+            <label class="radio">
+                    <input type="radio" name="none_installed">
+                    <span></span>None Installed</label>
         </div>
-        <div class="d-flex">
-            <input type="checkbox" name="lfbr" id="id_lfbr">
-            <p>Low Frequency Base Radio - Subscribed to Tower/Server Service</p>
-        </div>
-        <div class="d-flex">
-            <input type="checkbox" name="cp" id="id_cp">
-            <p>Cellular Phone (WhatsApp)</p>
-        </div>
-        <div class="d-flex">
-            <input type="checkbox" name="none" id="id_none">
-            <p>None</p>
-        </div>
-    </div>
-    <div class="tab">Specialised Onboard Equipment:
-        <p><input placeholder="Username..." oninput="this.className = ''" name="uname"></p>
-        <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"></p>
+        <label for="">Navigation System</label>
+        <input type="text" class="form-control" name="navigation_system">
+        <label for="">Tracking & Recovery System</label>
+        <input type="text" class="form-control" name="tracking_recovery_system">
+        <label for="">Company & Installation Certificate Number</label>
+        <input type="text" class="form-control" name="company_installation_cn">
+        <label for="">Transponder Installation Date</label>
+        <input type="date" name="transponder_installation_date">
     </div>
     <div class="tab">Company Classification Declaration:
-        <p><input placeholder="Username..." oninput="this.className = ''" name="uname"></p>
-        <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"></p>
-    </div>
-    <div class="tab">Photographs:
-        <p><input placeholder="Username..." oninput="this.className = ''" name="uname"></p>
-        <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"></p>
+        <label for="">Profile Certification Date</label>
+        <input type="date" name="pcd">
+        <label for="">Hereby I, the undersigned, certify that the information contained within this Company Vehicle Profile to be as comprehensive,accurate and true , to the best of my knowledge.</label>
+        <div class="form-group text-center">
+            <canvas id="signature" width="auto" height="auto" style="border: 1px solid #ddd;"></canvas>
+            <br>
+            <input type="text" name="signature" id="signature-image" value="" hidden>
+
+            <button class="btn btn-danger" type="button" id="clear-signature">Clear</button>
+            <button class="btn btn-info" type="button" id="save-signature">Save</button>
+            <div id="signature_image"></div>
+        </div>
     </div>
     <div style="overflow:auto;">
         <div style="float:right;">
@@ -227,8 +255,6 @@
     </div>
     <!-- Circles which indicates the steps of the form: -->
     <div style="text-align:center;margin-top:40px;">
-        <span class="step"></span>
-        <span class="step"></span>
         <span class="step"></span>
         <span class="step"></span>
         <span class="step"></span>
@@ -332,6 +358,26 @@
                 $("#id_dot").val(data.dot)
             }
         })
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+
+
+<script>
+    jQuery(document).ready(function($) {
+        var canvas = document.getElementById("signature");
+        var signaturePad = new SignaturePad(canvas);
+        var saveButton = document.getElementById('save-signature');
+        $('#clear-signature').on('click', function() {
+            signaturePad.clear();
+        });
+
+        saveButton.addEventListener('click', function(event) {
+            var data = signaturePad.toDataURL();
+            document.getElementById('signature_image').innerHTML = '<img src="' + data + '" />';
+            document.getElementById("signature-image").value = signaturePad.toDataURL();
+        });
     });
 </script>
 {% endblock %}

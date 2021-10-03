@@ -1,0 +1,123 @@
+{% extends '../base.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css"> {% endblock %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <table id="example" class="display nowrap" style="width:100%">
+                <thead>
+                    <th>Call Sign</th>
+                    <th>Performance</th>
+                    <th>ODO</th>
+                    <th>Company</th>
+                    <th>Policy Number</th>
+                    <th>Cover</th>
+                    <th>Thirdparty Cover</th>
+                    <th>Passenger Liability</th>
+                    <th>Passenger Liability Cover Max per Person</th>
+                    <th>Contingent Liability</th>
+                    <th>Road Assistance</th>
+                    <th>Assigned Base Address</th>
+                    <th>Assigned Base GPS</th>
+                    <th>Driving Licensing Code</th>
+                    <th>Classification Type</th>
+                    <th>Classification Level of Care</th>
+                    <th>Sub Classification Special</th>
+                    <th>Maximum Crew Count</th>
+                    <th>Maximum Patient Count</th>
+                    <th>MIFI</th>
+                    <th>Base Station Type: GSM Digital Radio with GPS Tracking & Communication Recording</th>
+                    <th>Handheld Type: GSM Digital Radio with GPS Tracking & Communication Recording</th>
+                    <th>Low Frequency Base Radio - Subscribed to Tower/Server Service</th>
+                    <th>Cellular Phone (WhatsApp)</th>
+                    <th>None</th>
+                    <th>Dash Camera - Front View(Road Only)</th>
+                    <th>Dash Camera - Front View(Road & Driver Compartment)</th>
+                    <th>Dash Camera - Rear View(Back of Vehicle)</th>
+                    <th>Internal Camera - Driver Compartment</th>
+                    <th>Internal Camera - Patient Compartment</th>
+                    <th>None Installed</th>
+                    <th>Navigation System</th>
+                    <th>Tracking & Recovery System</th>
+                    <th>Company & Installation Certificate Number</th>
+                    <th>Transponder Installation Date</th>
+                    <th>Company Classification Declaration: Profile Certification Date</th>
+                    <th>Signature</th>
+                    <th>Categories & Pictures</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    {% for i in object_list %}
+                    <tr id="vehicle_profile{{i.id}}">
+                        <td>{{i.call_sign}}</td>
+                        <td>{{i.performance}}</td>
+                        <td>{{i.odo}}</td>
+                        <td>{{i.company}}</td>
+                        <td>{{i.policy_number}}</td>
+                        <td>{{i.cover}}</td>
+                        <td>{{i.thirdparty_cover}}</td>
+                        <td>{{i.passenger_liability}}</td>
+                        <td>{{i.passenger_liabilitycover_maxpp}}</td>
+                        <td>{{i.contingent_liability}}</td>
+                        <td>{{i.road_assistance}}</td>
+                        <td>{{i.assignedbase_address}}</td>
+                        <td>{{i.assignedbase_gps}}</td>
+                        <td>{{i.driving_licensingcode}}</td>
+                        <td>{{i.classification_type}}</td>
+                        <td>{{i.classification_levelofcare}}</td>
+                        <td>{{i.subclassification_special}}</td>
+                        <td>{{i.maximum_crewcount}}</td>
+                        <td>{{i.maximum_patientcount}}</td>
+                        <td>{{i.mifi}}</td>
+                        <td>{{i.bst}}</td>
+                        <td>{{i.ht}}</td>
+                        <td>{{i.lfbr}}</td>
+                        <td>{{i.cp}}</td>
+                        <td>{{i.none}}</td>
+                        <td>{{i.dcro}}</td>
+                        <td>{{i.dcrodc}}</td>
+                        <td>{{i.dcbv}}</td>
+                        <td>{{i.icdc}}</td>
+                        <td>{{i.icpc}}</td>
+                        <td>{{i.none_installed}}</td>
+                        <td>{{i.navigation_system}}</td>
+                        <td>{{i.tracking_recovery_system}}</td>
+                        <td>{{i.company_installation_cn}}</td>
+                        <td>{{i.transponder_installation_date}}</td>
+                        <td>{{i.pcd}}</td>
+                        <td><img src="{{i.signature.url}}" alt="signature" class="img-fluid"></td>
+                        <td><a href="{% url 'categories_pictures' i.id %}">Select</a></td>
+                        <td><a href="{% url 'edit_vehicle_information' i.id %}">Edit</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block js %}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            scrollX: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'pdf', {
+                    extend: 'print',
+                    text: 'Print all (not just selected)',
+                    exportOptions: {
+                        modifier: {
+                            selected: null
+                        }
+                    }
+                }
+            ],
+            select: true
+        });
+    });
+</script>
+{% endblock %}

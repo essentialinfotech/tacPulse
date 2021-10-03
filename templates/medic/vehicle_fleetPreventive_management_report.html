@@ -1,0 +1,73 @@
+{% extends '../base.html' %} {% load static %} {% load crispy_forms_tags %}{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css"> {% endblock %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <table id="example" class="display nowrap" style="width:100%">
+                <thead>
+                    <th>Inspection Date</th>
+                    <th>Vehicle - Call Sign</th>
+                    <th>Current Location Assignment</th>
+                    <th>Company</th>
+                    <th>Vehicle License Expiry</th>
+                    <th>Current ODO Reading</th>
+                    <th>Secondary Battery</th>
+                    <th>Secondary Inverter</th>
+                    <th>Technician Notes</th>
+                    <th>Signature</th>
+                    <th>Certification Date</th>
+                    <th>Certification Time</th>
+                    <th>Other</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    {% for i in object_list %}
+                    <tr id="fleetmanagement{{i.id}}">
+                        <td>{{i.date}}</td>
+                        <td>{{i.call_sign}}</td>
+                        <td>{{i.location}}</td>
+                        <td>{{i.location}}</td>
+                        <td>{{i.expiry}}</td>
+                        <td>{{i.current_odo}}</td>
+                        <td>{{i.secondary_battery}}</td>
+                        <td>{{i.secondary_inverter}}</td>
+                        <td>{{i.notes}}</td>
+                        <td><img src="{{i.signature.url}}" alt="" class="img-fluid"></td>
+                        <td>{{i.certification_date}}</td>
+                        <td>{{i.certification_time}}</td>
+                        <td><a href="{% url 'vehicle_fleetmanagement_other_data' i.id %}">Select</a></td>
+                        <td><a href="{% url 'edit_fleet_management' i.id %}">Edit</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}{% block js %}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            scrollX: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'pdf', {
+                    extend: 'print',
+                    text: 'Print all (not just selected)',
+                    exportOptions: {
+                        modifier: {
+                            selected: null
+                        }
+                    }
+                }
+            ],
+            select: true
+        });
+    });
+</script>
+{% endblock %}

@@ -720,6 +720,9 @@ class FormBuilder(models.Model):
     json = models.TextField(blank=True,null=True)
 
 
+    def __str__(self):
+        return self.title
+
 class FormData(models.Model):
     date = models.DateField(auto_now=True)
     form = models.ForeignKey(FormBuilder,on_delete=models.CASCADE)

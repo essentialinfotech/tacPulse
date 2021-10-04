@@ -10,15 +10,17 @@
                         <th>Form Title</th>
                         <th>Select</th>
                         <th>Form Data</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     {% for i in object_list %}
-                    <tr>
+                    <tr id="form-list{{i.id}}">
                         <td>{{i.title}}</td>
                         <td><a href="{% url 'form' i.id %}">Select</a></td>
                         <td><a href="{% url 'form_data' i.id %}">Form Data</a></td>
+                        <td><button class="btn btn-danger" onclick="formlistdelete({{i.id}})">Delete</button></td>
                     </tr>
                     {% endfor %}
 
@@ -27,4 +29,21 @@
         </div>
     </div>
 </div>
+{% endblock %}{% block js %}
+<script>
+    function formlistdelete(id) {
+        var action = confirm("Are you sure?")
+        if (action != false) {
+            $.ajax({
+                url: "{% url 'form_list_delete' %}",
+                data: {
+                    'id': id
+                },
+                success: function(data) {
+                    $("#form-list" + id).remove()
+                }
+            })
+        }
+    }
+</script>
 {% endblock %}

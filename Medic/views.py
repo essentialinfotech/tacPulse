@@ -1416,6 +1416,14 @@ class FormList(ListView):
     template_name = 'medic/form-list.html'
 
 
+class FormListDelete(View):
+    def get(self,request):
+        id = request.GET.get('id')
+        obj = FormBuilder.objects.get(id=id)
+        obj.delete()
+        return JsonResponse({"deleted":True})
+
+
 class Form(View):
     def get(self, request,pk):
         get_form = FormBuilder.objects.get(id=pk)
@@ -1443,35 +1451,33 @@ class FormDatatable(View):
         }
         return render(request,'medic/form-datas.html',context)
 
-# unknown
-class FormDatas(View):
+
+
+class FormDataDetails(DetailView):
+    model = FormData
+    template_name = 'medic/form-data-details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FormDataDetails,self).get_context_data(**kwargs)
+        data = FormData.objects.get(id=self.kwargs['pk'])
+        values = []
+        for i in json.loads(data.data):
+            values.append(i['value'])
+        labels = []
+        for i in json.loads(data.form.json):
+            labels.append(i['label'])
+        context['values'] = json.dumps(values)
+        context['labels'] = json.dumps(labels)
+        return context
+
+
+
+class FormDataDelete(View):
     def get(self,request):
-        data = [{
-            "zipcode": "01262",
-            "city": "Stockbridge",
-            "county": "Berkshire"
-        }, {
-            "zipcode": "02881",
-            "city": "Kingston",
-            "county": "Washington"
-        }, {
-            "zipcode": "03470",
-            "city": "Winchester",
-            "county": "Cheshire"
-        }, {
-            "zipcode": "14477",
-            "city": "Kent",
-            "county": "Orleans"
-        }, {
-            "zipcode": "28652",
-            "city": "Minneapolis",
-            "county": "Avery"
-        }, {
-            "zipcode": "98101",
-            "city": "Seattle",
-            "county": "King"
-        }]
-        return HttpResponse(data)
+        id = request.GET.get('id')
+        obj = FormData.objects.get(id=id)
+        obj.delete()
+        return JsonResponse({"deleted":True})
 
 
 class AddCallSign(CreateView):
@@ -1563,6 +1569,13 @@ class VehicleProfileReport(ListView):
     model = VehicleProfile
     template_name = 'medic/vehicle_profile_report.html'
 
+
+class VehicleProfileDelete(View):
+    def get(self,request):
+        id = request.GET.get('id')
+        obj = VehicleProfile.objects.get(id=id)
+        obj.delete()
+        return JsonResponse({"deleted":True})
 
 def categories_pictures(request,pk):
     categories = Category.objects.filter(vehicle_profile_id=pk)
@@ -1818,3 +1831,11 @@ class EditFleetManagement(UpdateView):
     fields = '__all__'
     template_name = 'medic/edit/fleet_management.html'
     success_url = reverse_lazy('fleet_preventive_management_report')
+
+ 
+class FleetManagementDelete(View):
+    def get(self,request):
+        id = request.GET.get('id')
+        obj = FleetPreventiveManagement.objects.get(id=id)
+        obj.delete()
+        return JsonResponse({"deleted":True})

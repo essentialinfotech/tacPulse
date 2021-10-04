@@ -81,7 +81,7 @@
 </style>
 {% endblock css %} {% block content %}
 <div class="card-header">
-    <a href="{% url 'add_vehicle_information' %}" class="btn btn-outline-primary">Add vehicle Information</a>
+    <a href="{% url 'add_call_sign' %}" class="btn btn-outline-primary">Add vehicle Information</a>
 </div>
 <form id="regForm" action="" enctype="multipart/form-data" method="POST">
     {% csrf_token %} {{form.errors}}

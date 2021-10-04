@@ -1,0 +1,27 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <table class="table">
+                <tbody id="content">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block js %}
+<script>
+    $(document).ready(function(e) {
+        var data = {
+            values: JSON.parse("{{values|escapejs}}"),
+            labels: JSON.parse("{{labels|escapejs}}")
+        }
+
+        $.each(data.values, function(i, ele) {
+            $("#content").append("<tr><td>" + data.labels[i] + "</td><td>" + data.values[i] + "</td></tr>");
+        })
+    })
+</script>
+{% endblock %}

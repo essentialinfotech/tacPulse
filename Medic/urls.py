@@ -104,11 +104,12 @@ urlpatterns = [
 
      path('form/builder/', form_save, name='form_builder'),
      path('form/list/', FormList.as_view(), name="form_list"),
+     path('form/list/delete/', FormListDelete.as_view(), name="form_list_delete"),
      path('form/<int:pk>/', Form.as_view(), name="form"),
      path('save/form/', save_form, name="save_form"),
      path('form/data/<int:pk>/', FormDatatable.as_view(), name="form_data"),
-     
-     path('form/data/', FormDatas.as_view(), name="form_data"),
+     path('form/data/details/<int:pk>/', FormDataDetails.as_view(), name="form_data_details"),
+     path('form/data/delete/', FormDataDelete.as_view(), name="form_data_delete"),
 
      path('add/call/sign/', AddCallSign.as_view(),name="add_call_sign"),
      path('edit/call/sign/<int:pk>/', EditCallSign.as_view(),name="edit_call_sign"),
@@ -118,6 +119,7 @@ urlpatterns = [
      path('photograph/<int:pk>/',VehiclePhotograph.as_view(), name='vehicle_photograph'),
      path('vehicle/category/<int:pk>/',VehicleCategory.as_view(), name="vehicle_category"),
      path('vehicle/profile/report/', VehicleProfileReport.as_view(), name="vehicle_profile_report"),
+     path('vehicle/profile/delete/', VehicleProfileDelete.as_view(), name="vehicle_profile_delete"),
      path('categories & pictures/<int:pk>/', categories_pictures, name='categories_pictures'),
      path('edit/vehicle/information/<int:pk>/', EditVehicleInformation.as_view(), name='edit_vehicle_information'),
 
@@ -140,6 +142,7 @@ urlpatterns = [
      path('fleet/preventive/management/report/', FleetPreventiveManagementReport.as_view(), name="fleet_preventive_management_report"),
      path('vehicle/fleetmanagement/other/data/<int:pk>/',FleetManagementOtherData.as_view(),name="vehicle_fleetmanagement_other_data"),
      path('edit/fleet/management/<int:pk>/', EditFleetManagement.as_view(), name="edit_fleet_management"),
+     path('fleet/management/delete/', FleetManagementDelete.as_view(), name="fleet_management_delete"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

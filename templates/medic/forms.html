@@ -10,7 +10,7 @@
     </div>
 </div>
 {% endblock %} {% block js %}
-<script src="{% static 'package/dist/form-render.min.js' %} "></script>
+<script src="{% static 'package/form-builder/form-render.min.js' %} "></script>
 <script>
     function submit() {
         var formdata = JSON.stringify($("#formrender").serializeArray());

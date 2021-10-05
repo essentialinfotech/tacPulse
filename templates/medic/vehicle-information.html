@@ -91,6 +91,7 @@
         <p>Vehicle Details:</p>
         <label for="">Call Sign</label>
         <select name="call_sign" id="id_call_sign" class="form-control">
+            <option value="---" disabled selected>---</option>
     {% for i in call_sign %}
         <option value="{{i.id}}">{{i.call_sign}}</option>
     {% endfor %}

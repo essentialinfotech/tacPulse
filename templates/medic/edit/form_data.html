@@ -1,4 +1,4 @@
-{% extends '../base.html' %} {% load static %} {% block content %}
+{% extends '../../base.html' %} {% load static %} {% block content %}
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
@@ -10,7 +10,7 @@
     </div>
 </div>
 {% endblock %} {% block js %}
-<script src="{% static 'package/form-builder/form-render.min.js' %} "></script>
+<script src="{% static 'package/dist/form-render.min.js' %} "></script>
 <script>
     function submit() {
         var formdata = JSON.stringify($("#formrender").serializeArray());
@@ -25,7 +25,6 @@
             dataType: 'json',
             success: function(data) {
                 alert('success')
-                location.href = "http://localhost:8000/form/list/"
             }
         })
     }

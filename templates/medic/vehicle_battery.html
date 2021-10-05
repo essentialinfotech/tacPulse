@@ -40,7 +40,7 @@
                         {% csrf_token %} {{form|crispy}}
                         <div class="d-flex justify-content-between">
                             <input type="submit" class="btn btn-primary">
-                            <a href="{% url 'inverter_main' id %}" class="btn btn-success">Next</a>
+                            <button class="btn btn-success" onclick="alertmessage({{id}})">Next</button>
                         </div>
                     </form>
                 </div>
@@ -49,3 +49,15 @@
     </div>
 </div>
 {% endblock %}
+
+{% block js %}
+    <script>
+        function alertmessage(id){
+            var action = confirm("Please click add option to save data")
+            if (action != false){
+                window.location = '/inverter/main/'+id
+            }
+        }
+    </script>
+{% endblock  %}
+    

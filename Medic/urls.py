@@ -108,8 +108,9 @@ urlpatterns = [
      path('form/<int:pk>/', Form.as_view(), name="form"),
      path('save/form/', save_form, name="save_form"),
      path('form/data/<int:pk>/', FormDatatable.as_view(), name="form_data"),
-     path('form/data/details/<int:pk>/', FormDataDetails.as_view(), name="form_data_details"),
+     path('form/data/pdf/<int:pk>/', GenerateFormBuilderDataPdf.as_view(), name="form_data_pdf"),
      path('form/data/delete/', FormDataDelete.as_view(), name="form_data_delete"),
+     path('form/data/edit/<int:pk>/',FormDataEdit.as_view(), name="edit_form_data"),
 
      path('add/call/sign/', AddCallSign.as_view(),name="add_call_sign"),
      path('edit/call/sign/<int:pk>/', EditCallSign.as_view(),name="edit_call_sign"),

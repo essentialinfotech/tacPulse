@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data</title>
+</head>
+
+<body>
+
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <!--begin::Entry-->
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <table>
+                    <tbody>
+                    <tbody>
+                        <tr>
+                            {% for i in labels %}
+                                <th>{{i}}</th>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                        {% for i in values %}
+                            <td style="text-align: center;">{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

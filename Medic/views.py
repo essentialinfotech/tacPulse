@@ -7,6 +7,8 @@ from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.urls.base import reverse_lazy
 from django.views.generic.base import TemplateView
 from rest_framework.views import APIView
+
+from Accounting.views import vehicle_maintenance
 from .models import *
 from Accounting.models import *
 from django.http import HttpResponseRedirect, HttpResponse, request
@@ -1839,3 +1841,132 @@ class FleetManagementDelete(View):
         obj = FleetPreventiveManagement.objects.get(id=id)
         obj.delete()
         return JsonResponse({"deleted":True})
+
+
+# not done
+def electronic_cash_pdf(request,id):
+    electronic_cash = Electric_Cash_Receipt.objects.get(id = id)
+    electronic_invoice = Electric_Cash_Receipt_Invoice.objects.filter(invo_for_id = id)
+    invoice_summary = ElectricInvoiceSummary.objects.filter(summary_for_id = id)
+
+    current_site = get_current_site(request)
+    context = {
+        'electronic_cash': electronic_cash,
+        'electronic_invoice': electronic_invoice,
+        'invoice_summary': invoice_summary,
+        'id':id,
+        'domain': current_site.domain,
+    }
+    
+    template = get_template('medic/electronic_cash_pdf.html')
+    pdf = render_to_pdf(template, context)
+    if pdf:
+        response = HttpResponse(pdf, content_type="application/pdf")
+        content = "inline; filename=electronic_cash_invoice_report.pdf"
+        response['Content-Disposition']=content
+        return response
+    return HttpResponse("not found")
+
+
+def purchaseOrder_pdf(request,id):
+    order = PurchaseOrder.objects.get(id = id)
+    vehicle_maintenance = VehicleMaintenance.objects.filter(order_id = id)
+    vehicle_maintenance_total = VehicleMaintenanceTotal.objects.filter(order_for_id = id)
+    product = Product.objects.filter(order_id = id)
+    p_totals = Product_totals.objects.filter(order_for_id = id)
+    services = Services_Training.objects.filter(service_for_id = id)
+    s_totals = Service_Totals.objects.filter(service_for_id = id)
+    terms = TermsAndConditions.objects.filter(terms_for_id = id)
+    approvals = PurchaseApproval.objects.filter(approval_for_id = id)
+    p_o_rec = PO_Items_Received.objects.filter(received_for_id = id)
+    quality = Quality_Control_Inspection.objects.filter(quality_for_id = id)
+
+    current_site = get_current_site(request)
+    context = {
+        'order': order,
+        'vehicle_maintenance': vehicle_maintenance,
+        'vehicle_maintenance_total': vehicle_maintenance_total,
+        'product': product,
+        'p_totals': p_totals,
+        'services': services,
+        's_totals': s_totals,
+        'terms': terms,
+        'p_o_rec': p_o_rec,
+        'quality': quality,
+        'approvals': approvals,
+        'id':id,
+        'domain': current_site.domain,
+    }
+    
+    template = get_template('medic/purchase_order_pdf.html')
+    pdf = render_to_pdf(template, context)
+    if pdf:
+        response = HttpResponse(pdf, content_type="application/pdf")
+        content = "inline; filename=order_invoice_report.pdf"
+        response['Content-Disposition']=content
+        return response
+    return HttpResponse("not found")
+
+
+def quotation_emergency_operations_pdf(request,id):
+    client = ProspectiveClient.objects.get(id = id)
+    service_details = ServiceDetails.objects.filter(parent_id = id)
+    em_operations = EmergencyOperations.objects.filter(parent_id = id)
+    total_call_costing = TotalCallCosting.objects.filter(parent_id = id)
+
+    current_site = get_current_site(request)
+    context = {
+        'client': client,
+        'service_details': service_details,
+        'em_operations': em_operations,
+        'total_call_costing': total_call_costing,
+        'id':id,
+        'domain': current_site.domain,
+    }
+    
+    template = get_template('medic/quotation_emergency_operation_pdf.html')
+    pdf = render_to_pdf(template, context)
+    if pdf:
+        response = HttpResponse(pdf, content_type="application/pdf")
+        content = "inline; filename=quotation_emergency_operation.pdf"
+        response['Content-Disposition']=content
+        return response
+    return HttpResponse("not found")
+
+
+def quotation_events_sports_pdf(request,id):
+    client = EventsProspectiveClient.objects.get(id = id)
+    service_details = EventsServiceDetails.objects.filter(parent_id = id)
+    particulars = EventSportParticulars.objects.filter(parent_id = id)
+    total_costing = TotalEventSportCosting.objects.filter(parent_id = id)
+    inclusion = EventServiceInclusion.objects.filter(parent_id = id)
+    exclusion = EventServiceExclusion.objects.filter(parent_id = id)
+
+    current_site = get_current_site(request)
+    context = {
+        'client': client,
+        'service_details': service_details,
+        'particulars': particulars,
+        'total_costing': total_costing,
+        'inclusion': inclusion,
+        'exclusion': exclusion,
+        'id':id,
+        'domain': current_site.domain,
+    }
+    
+    template = get_template('medic/quotation_events_sports_pdf.html')
+    pdf = render_to_pdf(template, context)
+
+    if pdf:
+        response = HttpResponse(pdf, content_type="application/pdf")
+        content = "inline; filename=quotation_sport_event.pdf"
+        response['Content-Disposition']=content
+        return response
+    return HttpResponse("not found")
+
+
+
+# from django.views import generic
+# class FontListAjaxView(generic.View):
+#     def get(self, *args, **kwargs):
+#         return JsonResponse(data=list(Electric_Cash_Receipt.objects.values()), safe=False)

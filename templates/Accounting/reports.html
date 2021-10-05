@@ -163,6 +163,9 @@
                                 <th>
                                     Submission
                                 </th>
+                                <th>
+                                    PDF
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in purchase_order %}
@@ -173,6 +176,9 @@
                                         <td>{{ i.supplier_acc_or_job_card }}</td>
                                         <td>
                                             <a href="{% url 'review_submission_for_order' i.id %}">Full Version</a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'purchaseOrder_pdf' i.id %}">PDF</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -205,6 +211,10 @@
                                 <th>
                                     Submission
                                 </th>
+
+                                <th>
+                                    PDF
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in quotation_emergency_operations %}
@@ -215,6 +225,10 @@
                                         <td>{{ i.company_org_name|title }}</td>
                                         <td>
                                             <a href="{% url 'review_submission_for_emergency_operation' i.id %}">Full Version</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'quotation_emergency_operations_pdf' i.id %}">PDF</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -247,6 +261,10 @@
                                 <th>
                                     Submission
                                 </th>
+
+                                <th>
+                                    PDF
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in quotation_events_sports %}
@@ -257,6 +275,10 @@
                                         <td>{{ i.company_org_name|title }}</td>
                                         <td>
                                             <a href="{% url 'review_submission_for_event_quotation' i.id %}">Full Version</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'quotation_events_sports_pdf' i.id %}">PDF</a>
                                         </td>
                                     </tr>
                                 {% endfor %}

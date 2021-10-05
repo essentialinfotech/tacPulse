@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 import base64
 from django.core.files.base import ContentFile
+from django.core.mail import EmailMessage
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -1189,9 +1190,12 @@ def request_summary(request,expense_reimbursement_record_id):
 
             # decoding receiver signature from text string to image
             requester_signature = request.POST.get('requester_signature')
-            format, imgstr = requester_signature.split(';base64,') 
-            ext = format.split('/')[-1] 
-            requester_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+            if requester_signature:
+                format, imgstr = requester_signature.split(';base64,') 
+                ext = format.split('/')[-1] 
+                requester_signature = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+            else:
+                requester_signature = None
             instance.requester_signature = requester_signature
             instance.summary_for_id = expense_reimbursement_record_id
             instance.total_reimbursement = total_reimbursement
@@ -1491,6 +1495,7 @@ def purchase_approval(request,id):
                     return redirect('quality_assurance_check', id)
                 else:
                     return redirect('email_submission',id)
+
     context = {
         'form': form,
         'id': id,
@@ -1585,11 +1590,9 @@ def quality_assurance_check(request,id):
     }
     return render(request,'Accounting/quality_control_inspection.html',context)
 
-
+# email submission
 @login_required
 def email_submission(request,id):
-    if request.method == 'POST':
-        pass
     context = {
         'id': id,
     }
@@ -1950,9 +1953,35 @@ def add_another_event_service_exclusion(request,id):
 
 @login_required
 def event_email_review_submission(request,id):
+
+    client = EventsProspectiveClient.objects.get(id = id)
+    service_details = EventsServiceDetails.objects.filter(parent_id = id)
+    particulars = EventSportParticulars.objects.filter(parent_id = id)
+    total_costing = TotalEventSportCosting.objects.filter(parent_id = id)
+    inclusion = EventServiceInclusion.objects.filter(parent_id = id)
+    exclusion = EventServiceExclusion.objects.filter(parent_id = id)
+
+    current_site = get_current_site(request)
     context = {
-        'id': id,
+        'client': client,
+        'service_details': service_details,
+        'particulars': particulars,
+        'total_costing': total_costing,
+        'inclusion': inclusion,
+        'exclusion': exclusion,
+        'id':id,
+        'domain': current_site.domain,
     }
+    
+    if request.method == 'POST':
+        to_email = request.POST.get('email')
+        mail_subject = 'Verify Your Email.'
+        message = render_to_string('medic/email_quotation_event.html', context)
+        # try:
+        send_mail(mail_subject, message, EMAIL_HOST_USER, [to_email])
+        # except:
+        #     return HttpResponse('Error')
+
     return render(request,'Accounting/event_email_review_submission.html',context)
 
 
@@ -1992,3 +2021,6 @@ def reports(request):
         'quotation_events_sports': quotation_events_sports,
     }
     return render(request,'Accounting/reports.html',context)
+
+
+

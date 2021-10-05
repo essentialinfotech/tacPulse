@@ -469,6 +469,7 @@ class ExpenseTransactions(models.Model):
     reason = models.CharField(max_length=80,choices=REASON)
     amount = models.PositiveIntegerField()
     payment_method = models.CharField(max_length=80,choices=PAYMENT_METHOD)
+    purchase_card = models.PositiveIntegerField(blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

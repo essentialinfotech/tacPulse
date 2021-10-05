@@ -143,6 +143,12 @@ urlpatterns = [
      path('vehicle/fleetmanagement/other/data/<int:pk>/',FleetManagementOtherData.as_view(),name="vehicle_fleetmanagement_other_data"),
      path('edit/fleet/management/<int:pk>/', EditFleetManagement.as_view(), name="edit_fleet_management"),
      path('fleet/management/delete/', FleetManagementDelete.as_view(), name="fleet_management_delete"),
+
+     # not done pdf
+     path('electronic/cash/invoice/<int:id>/', electronic_cash_pdf, name = 'electronic_cash_pdf'),
+     path('order/pdf/<int:id>/', purchaseOrder_pdf, name = 'purchaseOrder_pdf'),
+     path('quotation/emergency/operations/pdf/<int:id>/', quotation_emergency_operations_pdf, name = 'quotation_emergency_operations_pdf'),
+     path('quotation/sports/events/pdf/<int:id>/', quotation_events_sports_pdf, name = 'quotation_events_sports_pdf'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

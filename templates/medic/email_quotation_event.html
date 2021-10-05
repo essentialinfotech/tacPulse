@@ -1,0 +1,331 @@
+
+{% autoescape off %}
+<table>
+    <thead>
+        <th>
+            Details of Prospective Client
+        </th>
+    </thead>
+</table>
+
+<br>
+
+<table border="1px">
+    <thead>
+        <th>
+            Document Version
+        </th>
+
+        <th>
+            Date of Quote
+        </th>
+
+        <th>
+            Name & Surname (PoC)
+        </th>
+
+        <th width="20%">
+            Company/Organization Name
+        </th>
+
+        <th>
+            Physical Address
+        </th>
+
+        <th>
+            Client Phone Number
+        </th>
+
+
+        <th>
+            Date of Expiry
+        </th>
+
+        <th>
+            Quote Prepared By
+        </th>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>
+                {{ client.doc_version }}
+            </td>
+
+            <td>
+                {{ client.date_of_quote }}
+            </td>
+
+            <td>
+                {{ client.name_poc }}
+            </td>
+
+            <td>
+                {{ client.company_org_name }}
+            </td>
+
+            <td>
+                {{ client.physical_address }}
+            </td>
+
+            <td>
+                {{ client.client_phone_no }}
+            </td>
+
+
+            <td>
+                {{ client.date_of_expiry }}
+            </td>
+
+            <td>
+                {{ client.quote_prepared_by }}
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+<table>
+    <tr>
+        <td>
+            client Email - {{ client.clinet_email }}
+        </td>
+    </tr>
+</table>
+
+<br>
+
+{% if particulars %}
+<table>
+    <thead>
+        <th>
+            Event / Sport Particulars
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Date of Service
+        </th>
+
+        <th>
+            Service Description
+        </th>
+
+        <th>
+            Location Address
+        </th>
+
+        <th>
+            Service Start Time
+        </th>
+
+        <th>
+            Service End Time
+        </th>
+
+        <th>
+            Total Service Time
+        </th>
+
+        <th>
+            Price
+        </th>
+    </thead>
+    <tbody>
+        {% for i in particulars %}
+        <tr>
+            <td>
+                {{ i.date_of_service }}
+            </td>
+
+            <td>
+                {{ i.service_description }}
+            </td>
+
+            <td>
+                {{ i.loc_address }}
+            </td>
+
+            <td>
+                {{ i.service_start_time }}
+            </td>
+
+            <td>
+                {{ i.service_end_time }}
+            </td>
+
+            <td>
+                {{ i.total_service_time }}
+            </td>
+
+            <td>
+                {{ i.price }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<br>
+
+{% if total_costing %}
+
+<table>
+    <thead>
+        <th>
+            Total Event/Sport Costing
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Total Service Cost
+        </th>
+
+        <th>
+            Discount(%)
+        </th>
+
+        <th>
+            Discount Calculation
+        </th>
+
+        <th>
+            Total Quotation Cost(R)
+        </th>
+
+        <th>
+            Special Notes
+        </th>
+    </thead>
+
+    <tbody>
+        {% for i in total_costing %}
+        <tr>
+            <td>
+                {{ i.total_service_cost }}
+            </td>
+
+            <td>
+                {{ i.discount }}
+            </td>
+
+            <td>
+                {{ i.discount_calculation }}
+            </td>
+
+            <td>
+                {{ i.total_quotation_cost }}
+            </td>
+
+            <td>
+                {{ i.special_notes }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+<br>
+
+{% if inclusion %}
+<table>
+    <thead>
+        <th>
+            Service Inclusion
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Service Element
+        </th>
+
+        <th>
+            Description
+        </th>
+
+        <th>
+            QTY
+        </th>
+
+        <th>
+            Location
+        </th>
+    </thead>
+
+    <tbody>
+        {% for i in inclusion %}
+        <tr>
+            <td>
+                {{ i.service_element }}
+            </td>
+
+            <td>
+                {{ i.description }}
+            </td>
+
+            <td>
+                {{ i.qty }}
+            </td>
+
+            <td>
+                {{ i.location }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endif %}
+
+<br>
+
+{% if exclusion %}
+<table>
+    <thead>
+        <th>
+            Service Exclusion
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Service Element
+        </th>
+
+        <th>
+            Description
+        </th>
+    </thead>
+
+    <tbody>
+        {% for i in exclusion %}
+        <tr>
+            <td>
+                {{ i.service_element }}
+            </td>
+
+            <td>
+                {{ i.description }}
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endautoescape %}

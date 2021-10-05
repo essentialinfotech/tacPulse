@@ -1,0 +1,227 @@
+<style>
+    td {
+        text-align: center;
+        padding: 10px;
+    }
+
+</style>
+
+<table>
+    <thead>
+        <th>
+            Details of Prospective Client
+        </th>
+    </thead>
+</table>
+
+<br>
+
+<table border="1px">
+    <thead>
+        <th>
+            Document Version
+        </th>
+
+        <th>
+            Date of Quote
+        </th>
+
+        <th>
+            Name & Surname (PoC)
+        </th>
+
+        <th width="20%">
+            Company/Organization Name
+        </th>
+
+        <th>
+            Physical Address
+        </th>
+
+        <th>
+            Client Phone Number
+        </th>
+
+
+        <th>
+            Date of Expiry
+        </th>
+
+        <th>
+            Quote Prepared By
+        </th>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>
+                {{ client.doc_version }}
+            </td>
+
+            <td>
+                {{ client.date_of_quote }}
+            </td>
+
+            <td>
+                {{ client.name_poc }}
+            </td>
+
+            <td>
+                {{ client.company_org_name }}
+            </td>
+
+            <td>
+                {{ client.physical_address }}
+            </td>
+
+            <td>
+                {{ client.client_phone_no }}
+            </td>
+
+
+            <td>
+                {{ client.date_of_expiry }}
+            </td>
+
+            <td>
+                {{ client.quote_prepared_by }}
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+<table>
+    <tr>
+        <td>
+            client Email - {{ client.clinet_email }}
+        </td>
+    </tr>
+</table>
+
+<br>
+
+{% if em_operations %}
+<table>
+    <thead>
+        <th>
+            Emergency Operations
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Level of Care
+        </th>
+        <th>
+            Code
+        </th>
+        <th>
+            Service Description
+        </th>
+        <th>
+            QTY
+        </th>
+        <th>
+            Unit Price
+        </th>
+        <th>
+            Line Total
+        </th>
+    </thead>
+    <tbody>
+        {% for i in em_operations %}
+            <tr>
+                <td>
+                    {{ i.level_of_care }}
+                </td>
+
+                <td>
+                    {{ i.code }}
+                </td>
+
+                <td>
+                    {{ i.service_description }}
+                </td>
+
+                <td>
+                    {{ i.qty }}
+                </td>
+
+                <td>
+                    {{ i.unit_price }}
+                </td>
+
+                <td>
+                    {{ i.line_total }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<br>
+
+{% if total_call_costing %}
+
+<table>
+    <thead>
+        <th>
+            Total Call Costing
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Total Service Cost
+        </th>
+
+        <th>
+            Discount(%)
+        </th>
+
+        <th>
+            Discount Calculation
+        </th>
+
+        <th>
+            Total Quotation Cost(R)
+        </th>
+
+        <th>
+            Special Notes
+        </th>
+    </thead>
+
+    <tbody>
+        {% for i in total_call_costing %}
+            <tr>
+                <td>
+                    {{ i.total_service_cost }}
+                </td>
+
+                <td>
+                    {{ i.discount }}
+                </td>
+
+                <td>
+                    {{ i.discount_amount }}
+                </td>
+
+                <td>
+                    {{ i.total_quotation_cost }}
+                </td>
+
+                <td>
+                    {{ i.special_notes }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}

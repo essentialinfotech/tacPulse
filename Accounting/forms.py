@@ -250,6 +250,7 @@ class ExpenseTransactionsForm(forms.ModelForm):
             'reason': forms.Select(attrs={'class': 'form-control'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
             'payment_method': forms.Select(attrs={'class': 'form-control'}),
+            'purchase_card': forms.NumberInput(attrs={'class': 'form-control','type': 'number'}),
         }
 
 

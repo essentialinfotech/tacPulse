@@ -1,0 +1,398 @@
+<style>
+    td{
+        text-align: center;
+        padding: 10px;
+    }
+</style>
+
+<table>
+    <thead>
+        <th>
+            Customer Information
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            P/O Request Date
+        </th>
+        <th>
+            Requested By
+        </th>
+        <th>
+            Transaction Category
+        </th>
+        <th>
+            Supplier / Job Card#
+        </th>
+        <th>
+            Supplier / Company Name
+        </th>
+        <th>
+            Supplier: Contact Person Name & Surname
+        </th>
+        <th>
+            Supplier: Contact Number
+        </th>
+
+        <th>
+            Street Address
+        </th>
+        <th>
+            City, Province
+        </th>
+        <th>
+            Zip Code
+        </th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                {{ order.p_o_req_date }}
+            </td>
+            <td>{{ order.req_by }}</td>
+            <td>{{ order.transaction_cat }}</td>
+            <td>{{ order.supplier_acc_or_job_card }}</td>
+            <td>{{ order.supplier_or_company_name }}</td>
+            <td>{{ order.supplier_contact_person_name }}</td>
+            <td>{{ order.supplier_contact_number }}</td>
+            <td>{{ order.street_addrs }}</td>
+            <td>{{ order.city_province }}</td>
+            <td>{{ order.zip_code }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+<table>
+    <thead>
+        <th>
+            Shipping
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Shipping Method
+        </th>
+
+        <th>
+            Courier to this Address/Person Collecting
+        </th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                {{ order.shipping_method }}
+            </td>
+            <td>
+                {% if order.courier_to_this_address %}
+                    {{ order.courier_to_this_address }}
+                {% elif order.person_collecting %}
+                    {{ order.person_collecting }}
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+<table>
+    <thead>
+        <th>
+            Service
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Description
+        </th>
+
+        <th>
+            Date of Service
+        </th>
+
+        <th>
+            Unit Price
+        </th>
+    </thead>
+    <tbody>
+        {% for order in services %}
+            <tr>
+                <td>
+                    {{ order.item_description }}
+                </td>
+
+                <td>
+                    {{ order.date_of_service }}
+                </td>
+
+                <td>
+                    {{ order.unit_price }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+
+<table>
+    <thead>
+        <th>
+            Service Totals
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Total
+        </th>
+
+    </thead>
+    <tbody>
+        {% for order in s_totals %}
+        <tr>
+            <td>
+                {{ order.totals }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<br>
+
+<table>
+    <thead>
+        <th>
+            Terms & Conditions
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Special Comments / Instructions
+        </th>
+        <th>
+            Was a quotation obtained prior to purchase?
+        </th>
+
+    </thead>
+    <tbody>
+        {% for order in terms %}
+            <tr>
+                <td>
+                    {{ order.special_comments }}
+                </td>
+
+                <td>
+                    {{ order.was_a_quotation_obtained_prior_to_purchase }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<br>
+{% if p_o_rec %}
+
+<table>
+    <thead>
+        <th>
+            Purchase Approval
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Quotation Approved
+        </th>
+        <th>
+            P/O Approval Date
+        </th>
+        <th>
+            P/O Approved By
+        </th>
+        <th>
+            Approval Signature
+        </th>
+
+    </thead>
+    <tbody>
+        {% for order in approvals %}
+        <tr>
+            <td>
+                {{ order.quotation_approved }}
+            </td>
+
+            <td>
+                {{ order.p_O_approval_date }}
+            </td>
+
+            <td>
+                {{ order.p_O_approved_by }}
+            </td>
+
+            <td>
+                {% if order.approval_signature %}
+                    <img src="http://{{ domain }}/media/{{ order.approval_signature }}" alt="">
+                {% else %}
+                 N/A
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+
+<br>
+
+<table>
+    <thead>
+        <th>
+            P/O items received verification
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Date of Items Received
+        </th>
+
+        <th>
+            Initial Receiver of Goods
+        </th>
+
+        <th>
+            Initial Receiver Signature
+        </th>
+
+        <th>
+            Comments
+        </th>
+    </thead>
+
+    <tbody>
+        {% for i in p_o_rec %}
+            <td>
+                {{ i.date_of_items_received }}
+            </td>
+
+            <td>
+                {{ i.initial_receiver_of_goods }}
+            </td>
+
+            <td>
+                {% if i.initial_receiver_signature %}
+                    <img src="http://{{ domain }}/media/{{ i.initial_receiver_signature }}" alt="">
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+
+            <td>
+                {{ i.comments }}
+            </td>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<br>
+{% if quality %}
+<table>
+    <thead>
+        <th>
+            Quality Controls Inspection
+        </th>
+    </thead>
+</table>
+
+<table border="1px">
+    <thead>
+        <th>
+            Purchase Inspected By
+        </th>
+
+        <th>
+            Has all items been received?
+        </th>
+
+        <th>
+            Was verification done to ensure that what was ordered is what was received?
+        </th>
+
+        <th>
+            Was verification done to ensure that the expiration date rule was complied with?
+        </th>
+
+        <th>
+            Notes
+        </th>
+
+        <th>
+            Signature
+        </th>
+    </thead>
+    <tbody>
+        {% for i in quality %}
+            <tr>
+                <td>
+                    {{ i.purchase_inspected_by }}
+                </td>
+
+                <td>
+                    {{ i.has_all_items_been_received }}
+                </td>
+
+                <td>
+                    {{ i.was_verification_done_to_ensure_that_what_was_ordered_is_what_was_received }}
+                </td>
+
+                <td>
+                    {{ i.was_verification_done_to_ensure_that_the_expiration_date_rule_was_complied_with }}
+                </td>
+
+                <td>
+                    {{ i.quality_control_notes }}
+                </td>
+
+                <td>
+                    {% if i.quality_control_signature %}
+                        <img src="http://{{ domain }}/media/{{ i.quality_control_signature }}" alt="">
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endif %}
+

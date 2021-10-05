@@ -1,4 +1,4 @@
-{% extends '../base.html' %} {% load static %} {% block content %}
+{% extends '../../base.html' %} {% load static %} {% block content %}
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
@@ -25,7 +25,6 @@
             dataType: 'json',
             success: function(data) {
                 alert('success')
-                location.href = "http://localhost:8000/form/list/"
             }
         })
     }

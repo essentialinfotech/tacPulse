@@ -18,7 +18,7 @@
                     <tr id="form-data{{i.id}}">
                         <td>{{i.form}}</td>
                         <td>{{i.date}}</td>
-                        <td><a href="{% url 'form_data_details' i.id %}">Details</a></td>
+                        <td><a href="{% url 'form_data_pdf' i.id %}" download="">PDF</a></td>
                         <td><button class="btn btn-danger" onclick="formdatadelete({{i.id}})">Delete</button></td>
                     </tr>
                     {% endfor %}

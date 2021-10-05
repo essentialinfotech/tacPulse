@@ -25,7 +25,7 @@
                         <input type="date" name="date_of_image" class="form-control"> {{form.description|as_crispy_field}} {{form.photograph|as_crispy_field}}
                         <div class="d-flex justify-content-between">
                             <input type="submit" class="btn btn-primary" value="+">
-                            <a href="{% url 'vehicle_profile_report' %}" class="btn btn-success">Go to Report</a>
+                            <button class="btn btn-success" onclick="alertmessage()">Go to Report</button>
                         </div>
                     </form>
                 </div>
@@ -34,3 +34,15 @@
     </div>
 </div>
 {% endblock %}
+
+{% block js %}
+    <script>
+        function alertmessage(){
+            var action = confirm("Please click add option to save data")
+            if (action != false){
+                window.location = '/vehicle/profile/report/'
+            }
+        }
+    </script>
+{% endblock  %}
+    

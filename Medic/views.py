@@ -23,6 +23,7 @@ from django.views import View
 from xhtml2pdf import pisa
 from io import BytesIO
 from django.template.loader import get_template
+from Medic.utils import pdf
 from django.views.generic import UpdateView, DetailView
 from rest_framework.generics import ListAPIView
 from rest_framework import generics
@@ -1408,6 +1409,7 @@ def form_save(request):
         data = request.POST.get('json')
         title = request.POST.get('title')
         FormBuilder.objects.create(title=title,json=data)
+        return JsonResponse({'data':"success"})
     return render(request,'medic/form-builder.html')
 
 
@@ -1422,6 +1424,16 @@ class FormListDelete(View):
         obj = FormBuilder.objects.get(id=id)
         obj.delete()
         return JsonResponse({"deleted":True})
+
+
+class FormDataEdit(View):
+    def get(self,request,pk):
+        obj = FormData.objects.get(id=pk)
+        json_form = json.loads(obj.form.json)
+        context = {
+            'json_form':json.dumps(json_form)
+        }
+        return render(request,'medic/edit/form_data.html',context)
 
 
 class Form(View):
@@ -1514,7 +1526,6 @@ class VehicleInformation(CreateView):
     def get_context_data(self, **kwargs):
         context = super(VehicleInformation,self).get_context_data(**kwargs)
         context['call_sign'] = CallSign.objects.all()
-        context['values'] = CallSign.objects.get(id=1)
         return context
 
     def form_valid(self, form):
@@ -1839,3 +1850,20 @@ class FleetManagementDelete(View):
         obj = FleetPreventiveManagement.objects.get(id=id)
         obj.delete()
         return JsonResponse({"deleted":True})
+
+
+class GenerateFormBuilderDataPdf(View):
+    def get(self, request, *args, **kwargs):
+        data = FormData.objects.get(id=self.kwargs['pk'])
+        values = []
+        for i in json.loads(data.data):
+            values.append(i['value'])
+        labels = []
+        for i in json.loads(data.form.json):
+            labels.append(i['label'])
+        context = {
+            'values':values,
+            'labels':labels
+        }
+        get_pdf = pdf('medic/pdf/form_builder_pdf.html',context)
+        return HttpResponse(get_pdf, content_type='application/pdf')

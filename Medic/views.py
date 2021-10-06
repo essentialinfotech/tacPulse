@@ -1976,11 +1976,6 @@ def quotation_events_sports_pdf(request,id):
     return HttpResponse("not found")
 
 
-
-# from django.views import generic
-# class FontListAjaxView(generic.View):
-#     def get(self, *args, **kwargs):
-#         return JsonResponse(data=list(Electric_Cash_Receipt.objects.values()), safe=False)
 class GenerateFormBuilderDataPdf(View):
     def get(self, request, *args, **kwargs):
         data = FormData.objects.get(id=self.kwargs['pk'])

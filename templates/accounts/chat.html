@@ -62,8 +62,9 @@
                 </div>
             </div>
             <div class="messages">
-                <ul style="height: auto!important; overflow-y: auto!important;">
+                <ul id="uldown" style="height: auto!important; overflow-y: auto!important;">
                     {% for i in messages %} {% if i.sender.username == request.user.username %}
+
                         <li class="sent">
                             <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
 
@@ -76,7 +77,9 @@
                             {% endif %}
                             
                         </li>
+
                     {% else %}
+
                         <li class="replies">
                             <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
 
@@ -89,6 +92,7 @@
                             {% endif %}
 
                         </li>
+                        
                     {% endif %} {% endfor %}
                 </ul>
             </div>

@@ -592,8 +592,10 @@ def send_message(request,id):
     if request.method == 'POST':
         sender = request.user
         message = request.POST.get('message')
-        if message:
-            Message.objects.create(sender = sender, receiver_id = id, message = message)
+        file = request.FILES.get('file')
+        print(file)
+        if message or file:
+            Message.objects.create(sender = sender, file = file , receiver_id = id, message = message)
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'messages': messages,

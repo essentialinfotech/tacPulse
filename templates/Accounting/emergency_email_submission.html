@@ -33,20 +33,24 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="text-center">
-                        <form method="POST" action="{% url 'emergency_email_submission' id %}">
+                        <form method="POST" action="{% url 'emergency_email_submission' id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label for="">Email Submission</label>
-                                <input type="email" name="email" id="email" class="form-control">
+                                <input type="email" required name="email" id="email" placeholder="email" class="form-control">
                             </div>
+                            
                             <div class="form-group">
-                                <label for="">Email Me a copy</label>
-                                <input type="email" name="email_me" id="email_me" class="form-control">
+                                <label for="">File</label>
+                                <input type="file" required name="pdf" id="pdf" class="form-control">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">Send Email</button>
                             </div>
                         </form>
                         <a href="{% url 'review_submission_for_emergency_operation' id %}" class="btn btn-primary">Review Submission</a>
+
+                        <a href="{% url 'quotation_emergency_operations_pdf' id %}" class="btn btn-primary">Download PDF</a>
                     </div>
                 </div>
             </div>

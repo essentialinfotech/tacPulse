@@ -90,8 +90,10 @@
                 {% for i in photo_evidence %}
 
                     {% if i.photo %}
-                        <label for="">Invoice Page 0{{ forloop.counter }}</label><br>
-                        <img src="{{ i.photo.url }}" class="img-thumbnail" alt="">
+                        <div class="col-md-12 mb-5">
+                            <label for="">Invoice Page 0{{ forloop.counter }}</label> <br>
+                            <a href="{{ i.photo.url }}"><img src="{{ i.photo.url }}" height="300px" width="300px" alt=""></a>
+                        </div>
                     {% endif %}
 
                 {% endfor %}
@@ -119,8 +121,10 @@
                     </div>
 
                     {% if i.requester_signature %}
-                        <label for="requester_signature">Requester Signature</label> <br>
-                        <img src="{{ i.requester_signature.url }}" class="img-thumbnail" alt="">
+                        <div class="col-md-12">
+                            <label for="requester_signature">Requester Signature</label> <br>
+                            <img src="{{ i.requester_signature.url }}" class="img-thumbnail" alt="">
+                        </div>
                     {% endif %}
 
                 {% endfor %}

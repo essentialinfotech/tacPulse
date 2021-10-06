@@ -1991,3 +1991,60 @@ class GenerateFormBuilderDataPdf(View):
         }
         get_pdf = pdf('medic/pdf/form_builder_pdf.html',context)
         return HttpResponse(get_pdf, content_type='application/pdf')
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_electronic_cash_receipt(request,id):
+    obj = get_object_or_404(Electric_Cash_Receipt, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# delete view for finance part and emergency dispatch incident part
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_emergency_dispatch_incident_report(request,id):
+    obj = get_object_or_404(AmbulanceModel, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_expense_reimbursement_record_report(request,id):
+    obj = get_object_or_404(Expense_Reimbursement_Record, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_purchase_order_report(request,id):
+    obj = get_object_or_404(PurchaseOrder, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_quotation_emergency_operation_report(request,id):
+    obj = get_object_or_404(ProspectiveClient, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_quotation_event_sport_report(request,id):
+    obj = get_object_or_404(EventsProspectiveClient, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+# ends

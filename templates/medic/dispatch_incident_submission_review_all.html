@@ -20,6 +20,7 @@
                                     <th>Caller Name</th>
                                     <th>How Many Units Dispatched?</th>
                                     <th>Submission</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,6 +34,10 @@
                                         <td>{{ i.how_many_units_dispatched }}</td>
                                         <td>
                                             <a href="{% url 'dispatch_incident_submission_review' i.id %}">Full Version</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'delete_emergency_dispatch_incident_report' i.id %}" class="btn btn-danger">Remove</a>
                                         </td>
                                     </tr>
                                 {% endfor %}

@@ -79,6 +79,10 @@
                                 <th>
                                     Submission
                                 </th>
+
+                                <th>
+                                    Delete
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in electronic_cash %}
@@ -89,6 +93,10 @@
                                         <td>{{ i.cus_number }}</td>
                                         <td>
                                             <a href="{% url 'electronic_cash_review_submission' i.id %}">Full Version</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'delete_electronic_cash_receipt' i.id %}" class="btn btn-danger">Remove</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -121,6 +129,9 @@
                                 <th>
                                     Submission
                                 </th>
+                                <th>
+                                    Delete
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in expense_reimbursement %}
@@ -131,6 +142,10 @@
                                         <td>{{ i.employment_or_start_date }}</td>
                                         <td>
                                             <a href="{% url 'expense_reimbursement_submission_review' i.id %}">Full Version</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'delete_expense_reimbursement_record_report' i.id %}" class="btn btn-danger">Remove</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -166,6 +181,10 @@
                                 <th>
                                     PDF
                                 </th>
+
+                                <th>
+                                    Delete
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in purchase_order %}
@@ -179,6 +198,10 @@
                                         </td>
                                         <td>
                                             <a href="{% url 'purchaseOrder_pdf' i.id %}">PDF</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'delete_purchase_order_report' i.id %}" class="btn btn-danger">Remove</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -215,6 +238,10 @@
                                 <th>
                                     PDF
                                 </th>
+
+                                <th>
+                                    Delete
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in quotation_emergency_operations %}
@@ -229,6 +256,10 @@
 
                                         <td>
                                             <a href="{% url 'quotation_emergency_operations_pdf' i.id %}">PDF</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'delete_quotation_emergency_operation_report' i.id %}" class="btn btn-danger">Remove</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -265,6 +296,10 @@
                                 <th>
                                     PDF
                                 </th>
+
+                                <th>
+                                    Delete
+                                </th>
                             </thead>
                             <tbody>
                                 {% for i in quotation_events_sports %}
@@ -279,6 +314,10 @@
 
                                         <td>
                                             <a href="{% url 'quotation_events_sports_pdf' i.id %}">PDF</a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'delete_quotation_event_sport_report' i.id %}" class="btn btn-danger">Remove</a>
                                         </td>
                                     </tr>
                                 {% endfor %}

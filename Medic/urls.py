@@ -150,6 +150,13 @@ urlpatterns = [
      path('order/pdf/<int:id>/', purchaseOrder_pdf, name = 'purchaseOrder_pdf'),
      path('quotation/emergency/operations/pdf/<int:id>/', quotation_emergency_operations_pdf, name = 'quotation_emergency_operations_pdf'),
      path('quotation/sports/events/pdf/<int:id>/', quotation_events_sports_pdf, name = 'quotation_events_sports_pdf'),
+
+     path('delete/electronic/cash/receipt/<int:id>/', delete_electronic_cash_receipt, name = 'delete_electronic_cash_receipt'),
+     path('delete/dispatch/emergency/incident/report/<int:id>/', delete_emergency_dispatch_incident_report, name = 'delete_emergency_dispatch_incident_report'),
+     path('delete/expense/reimbursement/record/report/<int:id>/', delete_expense_reimbursement_record_report, name = 'delete_expense_reimbursement_record_report'),
+     path('delete/purchased/order/report/<int:id>/', delete_purchase_order_report, name = 'delete_purchase_order_report'),
+     path('delete/quotation/emergency/operation/<int:id>/', delete_quotation_emergency_operation_report, name = 'delete_quotation_emergency_operation_report'),
+     path('delete/quotation/event-sport=true/<int:id>/', delete_quotation_event_sport_report, name = 'delete_quotation_event_sport_report'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

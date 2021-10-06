@@ -1993,6 +1993,7 @@ class GenerateFormBuilderDataPdf(View):
         return HttpResponse(get_pdf, content_type='application/pdf')
 
 
+# delete view for finance part and emergency dispatch incident part
 @login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def delete_electronic_cash_receipt(request,id):
@@ -2002,7 +2003,6 @@ def delete_electronic_cash_receipt(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# delete view for finance part and emergency dispatch incident part
 @login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def delete_emergency_dispatch_incident_report(request,id):
@@ -2048,3 +2048,7 @@ def delete_quotation_event_sport_report(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 # ends
+
+@login_required
+def edit_emergency_dispatch_incident_report(request,id):
+    pass

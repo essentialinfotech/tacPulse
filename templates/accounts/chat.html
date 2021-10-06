@@ -64,26 +64,31 @@
             <div class="messages">
                 <ul style="height: auto!important; overflow-y: auto!important;">
                     {% for i in messages %} {% if i.sender.username == request.user.username %}
-                    <li class="sent">
-                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
-                        {% if i.message %}
-                            <p style="word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{ i.sent }}</small><br>{{ i.message }} </p> <br>
-                        {% endif %}
-                        
-                        {% if i.file %}
-                           <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a> 
-                        {% endif %}
-                    </li>
+                        <li class="sent">
+                            <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
+
+                            {% if i.message %}
+                                <p style="word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{ i.sent }}</small><br>{{ i.message }} </p> <br>
+                            {% endif %}
+                            
+                            {% if i.file %}
+                            <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a> 
+                            {% endif %}
+                            
+                        </li>
                     {% else %}
-                    <li class="replies">
-                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
-                        {% if i.message %}
-                            <p style="word-break: break-all;"><small id="show-name">{{ i.sender.first_name|title }}</small id="time-show">{{ i.sent }}</small><br> {{ i.message }}</p> <br>
-                        {% endif %}
-                        {% if i.file %}
-                            <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a>
-                        {% endif %}
-                    </li>
+                        <li class="replies">
+                            <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
+
+                            {% if i.message %}
+                                <p style="word-break: break-all;"><small id="show-name">{{ i.sender.first_name|title }}</small id="time-show">{{ i.sent }}</small><br> {{ i.message }}</p> <br>
+                            {% endif %}
+
+                            {% if i.file %}
+                                <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a>
+                            {% endif %}
+
+                        </li>
                     {% endif %} {% endfor %}
                 </ul>
             </div>

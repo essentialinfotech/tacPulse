@@ -101,7 +101,7 @@ body {
                     {% if i.image %}
                         <a href="{{ i.imageURL }}"><img src="{{ i.imageURL }}" width="350px" height="250px" alt=""></a>
                     {% endif %}
-                    <p style="margin-top: 15px!important;">{{ i.post|title|truncatechars:255 }}...</p>
+                    <p style="margin-top: 15px!important;">{{ i.post|title|truncatechars:200 }}...</p>
                     <a href="{% url 'single_blog' i.id %}">Read Full Blog</a>
                     <p style="margin-top: 7px!important;">{{ i.created }}</p>
                 </div>

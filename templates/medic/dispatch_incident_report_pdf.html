@@ -914,6 +914,12 @@
                     Photo
                 </div>
             </th>
+
+            <th>
+                <div class="back-ground-common text-center">
+                    Others
+                </div>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -931,6 +937,16 @@
                         {% else %}
                          N/A
                          {% endif %}
+                    </div>
+                </td>
+
+                <td>
+                    <div class="text-center">
+                        {% if incident.document %}
+                        <img src="http://{{ domain }}/media/{{ incident.document  }}" height="100" width="100" alt="">
+                        {% else %}
+                        N/A
+                        {% endif %}
                     </div>
                 </td>
             </tr>

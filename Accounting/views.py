@@ -355,7 +355,7 @@ def task_create(request):
         form = TaskModelForm()
         dispatch = User.objects.filter(is_staff=True, is_superuser=False)
         schedule = ScheduleModel.objects.filter(assigned=False)
-        ambulance = AmbulanceModel.objects.filter(assigned=False)
+        ambulance = AmbulanceRequestModel.objects.filter(assigned=False)
         hospital = HospitalTransferModel.objects.filter(assigned=False)
         panic = Panic.objects.filter(assigned=False)
         if request.method == 'POST':
@@ -373,7 +373,7 @@ def task_create(request):
                     data.status = 'Approved'
                     data.save()
                 elif x == 'ambr':
-                    data = get_object_or_404(AmbulanceModel, pk=at)
+                    data = get_object_or_404(AmbulanceRequestModel, pk=at)
                     data.assigned = True
                     data.save()
                 elif x == 'HT':

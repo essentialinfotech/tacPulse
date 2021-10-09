@@ -53,10 +53,10 @@ def dashboard(request):
 
         membership = MembershipModel.objects.all()
 
-        ambulance_requests_monthly = AmbulanceModel.objects.filter(created_on__month = this_month)
+        ambulance_requests_monthly = AmbulanceRequestModel.objects.filter(created_on__month = this_month)
         ambulance_requests_monthly = len(ambulance_requests_monthly)
 
-        ambulance_requests_daily = AmbulanceModel.objects.filter(created_on__date = this_day)
+        ambulance_requests_daily = AmbulanceRequestModel.objects.filter(created_on__date = this_day)
         ambulance_requests_daily = len(ambulance_requests_daily)
 
         panic_requests_daily = Panic.objects.filter(timestamp__date = this_day)

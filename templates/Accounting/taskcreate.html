@@ -114,7 +114,7 @@
                             <label class="draggable-handle" for="ambulance_task">Ambulance Task*</label>
                             <select class="form-control mb-2 draggable-handle" id="ambulance_task" name="ambulance_task">
                             {% for a in ambulance %}
-                            <option value="{{a.id}}" class="draggable-handle">{{a.location}}</option>
+                            <option value="{{a.id}}" class="draggable-handle">{{ a.loc }}</option>
                           {% endfor %}
                         </select> </div>
 

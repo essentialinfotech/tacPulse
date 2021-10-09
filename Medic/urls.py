@@ -160,7 +160,7 @@ urlpatterns = [
 
      path('ambulance/request/procedure/', ambulance_request_real, name = 'ambulance_request_real'),
 
-     path('blog/comment/for/<int:id>/', blog_comment, name = 'blog_comment'),
+     path('blog/comment/for/', blog_comment, name = 'blog_comment'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

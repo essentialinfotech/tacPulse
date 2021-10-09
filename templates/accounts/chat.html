@@ -46,8 +46,7 @@
                             <div class="wrap">
                                 <img src="{{ i.imageURL }}" height="40px" width="70px" alt="" />
                                 <div class="meta">
-                                    <p class="name" style="color: white;">{{ i.first_name|title }} {{ i.last_name|title
-                                        }}</p>
+                                    <p class="name" style="color: white;">{{ i.first_name|title }} {{ i.last_name|title }}</p>
                                     <p class="preview" style="color: white;">{{ i.contact }} {% if i.is_superuser %}
                                         (Admin) {% elif i.is_staff %} (Dispatch) {% else %} (User) {% endif %}</p>
                                 </div>
@@ -86,8 +85,8 @@
                         <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px" />
 
                         {% if i.message %}
-                        <p style="word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{
-                                i.sent }}</small><br>{{ i.message }} </p> <br>
+                        <p style="word-break: break-all;"><small id="show-name">you</small> <small id="time-show">
+                            {{ i.sent }}</small><br>{{ i.message }} </p> <br>
                         {% endif %}
 
                         {% if i.file %}

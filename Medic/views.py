@@ -637,7 +637,7 @@ class AmbulanceRequestDelete(LoginRequiredMixin,View):
 @login_required
 def ambulance_task_complete(request, pk):
     TaskModel.objects.filter(task_type='ambr', ambulance_task=pk).update(status='Completed')
-    ambulance = get_object_or_404(AmbulanceModel, pk=pk)
+    ambulance = get_object_or_404(AmbulanceRequestModel, pk=pk)
     ambulance.completed = True
     ambulance.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

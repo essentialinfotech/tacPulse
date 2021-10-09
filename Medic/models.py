@@ -561,6 +561,8 @@ class AmbulanceRequestModel(models.Model):
     lng = models.FloatField(blank=True,null=True)
 
     created_on = models.DateTimeField(auto_now_add=True)
+    assigned = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
 
 
 

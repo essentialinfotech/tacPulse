@@ -6,13 +6,26 @@
 <head>
     <meta charset='UTF-8'>
     <meta name="robots" content="noindex">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet'
+        type='text/css'>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+    <link rel='stylesheet prefetch'
+        href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
     <link rel="stylesheet" href="{% static 'chat.css' %}">
     <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
+    <style>
+        #profile-img {
+            border-radius: 0px !important;
+        }
+
+        #img_edit {
+            border-radius: 0px !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,8 +46,10 @@
                             <div class="wrap">
                                 <img src="{{ i.imageURL }}" height="40px" width="70px" alt="" />
                                 <div class="meta">
-                                    <p class="name" style="color: white;">{{ i.first_name|title }} {{ i.last_name|title }}</p>
-                                    <p class="preview" style="color: white;">{{ i.contact }} {% if i.is_superuser %} (Admin) {% elif i.is_staff %} (Dispatch) {% else %} (User) {% endif %}</p>
+                                    <p class="name" style="color: white;">{{ i.first_name|title }} {{ i.last_name|title
+                                        }}</p>
+                                    <p class="preview" style="color: white;">{{ i.contact }} {% if i.is_superuser %}
+                                        (Admin) {% elif i.is_staff %} (Dispatch) {% else %} (User) {% endif %}</p>
                                 </div>
                             </div>
                         </li>
@@ -44,7 +59,8 @@
             </div>
             <div id="bottom-bar">
                 <a href="{% url 'profile' request.user.id %}" style="color: white;">
-                    <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>My Profile</span></button>
+                    <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>My
+                            Profile</span></button>
                 </a>
                 <a href="{% url 'logout' %}" style="color: white;">
                     <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i>Logout</button>
@@ -58,41 +74,46 @@
                     <u>{{ other_user.first_name|title }} {{ other_user.last_name|title }}</u>
                 </p>
                 <div class="social-media">
-                    <a href="{% url 'delete_message' other_user.id %}" class="btn btn-danger" style="margin-right: 5px;">Delete</a>
+                    <a href="{% url 'delete_message' other_user.id %}" class="btn btn-danger"
+                        style="margin-right: 5px;">Delete</a>
                 </div>
             </div>
             <div class="messages">
                 <ul id="uldown" style="height: auto!important; overflow-y: auto!important;">
                     {% for i in messages %} {% if i.sender.username == request.user.username %}
 
-                        <li class="sent">
-                            <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
+                    <li class="sent">
+                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px" />
 
-                            {% if i.message %}
-                                <p style="word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{ i.sent }}</small><br>{{ i.message }} </p> <br>
-                            {% endif %}
-                            
-                            {% if i.file %}
-                            <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a> 
-                            {% endif %}
-                            
-                        </li>
+                        {% if i.message %}
+                        <p style="word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{
+                                i.sent }}</small><br>{{ i.message }} </p> <br>
+                        {% endif %}
+
+                        {% if i.file %}
+                        <a href="{{ i.file.url }}"><img id="img_edit" src="{{ i.file.url }}"
+                                style="height: 70px!important; width: 70px!important;" alt=""></a>
+                        {% endif %}
+
+                    </li>
 
                     {% else %}
 
-                        <li class="replies">
-                            <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
+                    <li class="replies">
+                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px" />
 
-                            {% if i.message %}
-                                <p style="word-break: break-all;"><small id="show-name">{{ i.sender.first_name|title }}</small id="time-show">{{ i.sent }}</small><br> {{ i.message }}</p> <br>
-                            {% endif %}
+                        {% if i.message %}
+                        <p style="word-break: break-all;"><small id="show-name">{{ i.sender.first_name|title }}</small
+                                id="time-show">{{ i.sent }}</small><br> {{ i.message }}</p> <br>
+                        {% endif %}
 
-                            {% if i.file %}
-                                <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a>
-                            {% endif %}
+                        {% if i.file %}
+                        <a href="{{ i.file.url }}"><img id="img_edit" src="{{ i.file.url }}"
+                                style="height: 70px!important; width: 70px!important;" alt=""></a>
+                        {% endif %}
 
-                        </li>
-                        
+                    </li>
+
                     {% endif %} {% endfor %}
                 </ul>
             </div>
@@ -104,7 +125,8 @@
                         <input type="text" name="message" placeholder="Write your message..." id="chat-message-input" />
                         <i class="fa fa-paperclip attachment" id="file-manipulation" aria-hidden="true"></i>
                         <input type="file" name="file" id="file" style="display: none;">
-                        <button class="submit" id="chat-message-submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        <button class="submit" id="chat-message-submit"><i class="fa fa-paper-plane"
+                                aria-hidden="true"></i></button>
                     </form>
                 </div>
             </div>
@@ -112,16 +134,19 @@
     </div>
 
     <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 <input type="text" name="" id="user" value="{{ request.user.id }}" style="display: none;">
+
 </html>
 
 <script>
     var icon = document.getElementById('file-manipulation')
     var file = document.getElementById('file')
 
-    icon.addEventListener('click', (e)=>{
+    icon.addEventListener('click', (e) => {
         file.click();
         file.style.display = 'block';
     })

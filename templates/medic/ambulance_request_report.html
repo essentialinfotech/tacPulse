@@ -5,7 +5,7 @@
         border: 1px solid #ccc;
         background-color: #f1f1f1;
     }
-    
+
     .tab button {
         background-color: inherit;
         float: left;
@@ -16,15 +16,15 @@
         transition: 0.3s;
         font-size: 17px;
     }
-    
+
     .tab button:hover {
         background-color: #ddd;
     }
-    
+
     .tab button.active {
         background-color: #ccc;
     }
-    
+
     .tabcontent {
         display: none;
         padding: 6px 12px;
@@ -52,10 +52,10 @@
                 <div class="alert-text">
                     <p class="messages">
                         {% for message in messages %}
-                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                            {{message}}
-                        </p>
-                        {% endfor %}
+                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                        {{message}}
+                    </p>
+                    {% endfor %}
                     </p>
                 </div>
             </div>
@@ -209,7 +209,7 @@
                                         <a href="{% url 'AmbulanceRequestDetail' i.id %}">
                                             <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
                                         </a>
-                                        
+
                                         <!-- <a href="{% url 'AmbulanceRequestUpdate' i.id %}">
                                             <i class="fas fa-edit text-hover-primary mr-2"></i>
                                         </a> -->
@@ -249,7 +249,7 @@
 
 
 <script>
-    $(function() {
+    $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>

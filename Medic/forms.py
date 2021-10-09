@@ -232,4 +232,20 @@ class VehicleCountForm(forms.ModelForm):
                 'end_standing_free': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
                 'odo04': forms.NumberInput(attrs={'class': 'form-control'}),
             }
+
+
+class AmbulanceModelForm(forms.ModelForm):
+    class Meta:
+        model = AmbulanceRequestModel
+        fields = '__all__'
+        widgets = {
+                'for_another_user': forms.TextInput(attrs={'class': 'form-control'}),
+                'contact': forms.TextInput(attrs={'class': 'form-control'}),
+                'reason': forms.Textarea(attrs={'class': 'form-control'}),
+                'email': forms.EmailInput(attrs={'class': 'form-control'}),
+                'national_id': forms.TextInput(attrs={'class': 'form-control'}),
+                'birth_certificate': forms.TextInput(attrs={'class': 'form-control'}),
+                'request_type': forms.Select(attrs={'class': 'form-control'}),
+                'preferable_date_time': forms.DateTimeInput(attrs={'class': 'form-control','type':'datetime-local'}),
+            }
                 

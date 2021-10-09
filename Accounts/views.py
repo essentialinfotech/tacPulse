@@ -198,13 +198,13 @@ def admin_profile(request, id):
     all_user = User.objects.filter(is_superuser=False)
     me = User.objects.filter(id=id)
 
-    daily_req = AmbulanceModel.objects.filter(
+    daily_req = AmbulanceRequestModel.objects.filter(
         created_on__date=this_day).order_by('-id')
 
-    monthly_req = AmbulanceModel.objects.filter(
+    monthly_req = AmbulanceRequestModel.objects.filter(
         created_on__month=this_month, created_on__year=this_year).order_by('-id')
 
-    weekly_req = AmbulanceModel.objects.filter(created_on__gte = last_seven_days,
+    weekly_req = AmbulanceRequestModel.objects.filter(created_on__gte = last_seven_days,
                                                created_on__month=this_month,
                                                created_on__year=this_year).order_by('-id')
 
@@ -248,11 +248,11 @@ def dispatch_profile(request, id):
 def user_profile(request, id):
     user = User.objects.filter(is_superuser=False, is_staff=False, id=id)
     chat = User.objects.filter(~Q(id = request.user.id))
-    ambulance_req = AmbulanceModel.objects.filter(
+    ambulance_req = AmbulanceRequestModel.objects.filter(
         user_id=id, created_on__year=this_year)
     panic_req_yearly = Panic.objects.filter(
         panic_sender_id=id, timestamp__year=this_year)
-    ambulance_req_total = AmbulanceModel.objects.filter(
+    ambulance_req_total = AmbulanceRequestModel.objects.filter(
         user_id=id, created_on__year=this_year).count()
     dispatch = User.objects.filter(is_staff=True, is_superuser=False)
     context = {
@@ -286,51 +286,51 @@ def monthly_request_chart_ambulance(request):
 
     for i in range(0, 13):
         if i == 1:
-            Jan = AmbulanceModel.objects.filter(
+            Jan = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Jan)
         if i == 2:
-            Feb = AmbulanceModel.objects.filter(
+            Feb = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Feb)
         if i == 3:
-            Mar = AmbulanceModel.objects.filter(
+            Mar = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Mar)
         if i == 4:
-            Apr = AmbulanceModel.objects.filter(
+            Apr = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Apr)
         if i == 5:
-            May = AmbulanceModel.objects.filter(
+            May = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(May)
         if i == 6:
-            Jun = AmbulanceModel.objects.filter(
+            Jun = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Jun)
         if i == 7:
-            Jul = AmbulanceModel.objects.filter(
+            Jul = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Jul)
         if i == 8:
-            Aug = AmbulanceModel.objects.filter(
+            Aug = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Aug)
         if i == 9:
-            Sep = AmbulanceModel.objects.filter(
+            Sep = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Sep)
         if i == 10:
-            Oct = AmbulanceModel.objects.filter(
+            Oct = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Oct)
         if i == 11:
-            Nov = AmbulanceModel.objects.filter(
+            Nov = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Nov)
         if i == 12:
-            Dec = AmbulanceModel.objects.filter(
+            Dec = AmbulanceRequestModel.objects.filter(
                 created_on__month=i, created_on__year=this_year).count()
             data.append(Dec)
 
@@ -592,8 +592,11 @@ def send_message(request,id):
     if request.method == 'POST':
         sender = request.user
         message = request.POST.get('message')
-        if message:
-            Message.objects.create(sender = sender, receiver_id = id, message = message)
+        file = request.FILES.get('file')
+        if file is None:
+            file = None
+        if message or file:
+            Message.objects.create(sender = sender, file = file , receiver_id = id, message = message)
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'messages': messages,

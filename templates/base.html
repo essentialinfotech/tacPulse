@@ -219,6 +219,85 @@
                             </a>
 
 
+                            <!-- vehicle -->
+                            {% if request.user.is_staff %}
+                                <li class="menu-section">
+                                    <h4 class="menu-text">Vehicle Information</h4>
+                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                                </li>
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <i class="fa fa-plus-square"></i>
+                                        </span>
+                                        <span class="menu-text">Vehicle Profile <strong style="color: red; margin-left: 5px;" > <i class="fas fa-bell"></i> New</strong> </span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item" aria-haspopup="true">
+                                                <a href="{% url 'vehicle_information' %}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Vehicle Profile Information</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item" aria-haspopup="true">
+                                                <a href="{% url 'vehicle_profile_report' %}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Vehicle Profile Report</span>
+                                                </a>
+                                            </li>
+                                
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-section">
+                                    <h4 class="menu-text">Fleet Preventive Management</h4>
+                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                                </li>
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <i class="fa fa-plus-square"></i>
+                                        </span>
+                                        <span class="menu-text">Fleet Preventive Management <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item" aria-haspopup="true">
+                                                <a href="{% url 'daily_preventive_insperctions' %}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Daily Preventive Insperctions</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item" aria-haspopup="true">
+                                                <a href="{% url 'fleet_preventive_management_report' %}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Fleet Preventive Management Report</span>
+                                                </a>
+                                            </li>
+                                
+                                        </ul>
+                                    </div>
+                                </li>
+
+                            {% endif %}
+
+
+
                         {% if request.user.is_superuser %}
 
                             <!-- form builder -->
@@ -232,7 +311,7 @@
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                         <i class="fa fa-plus-square"></i>
                                         </span>
-                                        <span class="menu-text">Builder</span>
+                                        <span class="menu-text">Builder <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -258,78 +337,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="menu-section">
-                                <h4 class="menu-text">Vehicle Information</h4>
-                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fa fa-plus-square"></i>
-                                        </span>
-                                        <span class="menu-text">Vehicle Profile</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'vehicle_information' %}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                <span class="menu-text">Vehicle Profile Information</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'vehicle_profile_report' %}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                <span class="menu-text">Vehicle Profile Report</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="menu-section">
-                                <h4 class="menu-text">Fleet Preventive Management</h4>
-                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fa fa-plus-square"></i>
-                                        </span>
-                                        <span class="menu-text">Fleet Preventive Management</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'daily_preventive_insperctions' %}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                <span class="menu-text">Daily Preventive Insperctions</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'fleet_preventive_management_report' %}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                <span class="menu-text">Fleet Preventive Management Report</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </li>
+                            
                             <!-- blogs -->
                             <li class="menu-section">
                                 <h4 class="menu-text">Our Blogs</h4>
@@ -341,7 +349,7 @@
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
 									<i class="fas fa-blog"></i>
 										</span>
-                                    <span class="menu-text">Blog</span>
+                                    <span class="menu-text">Blog <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -633,7 +641,7 @@
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                     <i class="fas fa-car"></i>
                                     </span>
-                                    <span class="menu-text">Emergency Medical Dispatch Form</span>
+                                    <span class="menu-text">Emergency Medical Dispatch Form <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
                                 </a>
                             </li>
 
@@ -643,7 +651,7 @@
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                     <i class="fas fa-car"></i>
                                     </span>
-                                    <span class="menu-text">Emergency Medical Dispatch Incident Report</span>
+                                    <span class="menu-text">Emergency Medical Dispatch Incident Report <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
                                 </a>
                             </li>
 
@@ -842,7 +850,7 @@
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
 											<i class="fas fa-book"></i>
 										</span>
-                                    <span class="menu-text">Finance</span>
+                                    <span class="menu-text">Finance <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -1021,7 +1029,7 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="" class="menu-link">
+                                            <a href="{% url 'ambulance_request_real' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>

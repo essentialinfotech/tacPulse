@@ -28,7 +28,6 @@
     <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="{% static 'assets/js/ambulance_re_trc.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style>
@@ -40,20 +39,6 @@
         }
         /* Optional: Makes the sample page fill the window. */
         
-        #floating-panel {
-            position: absolute;
-            z-index: 5;
-            background-color: #fff;
-            padding: 5px;
-            padding-left: 5px;
-            border: 1px solid #999;
-            text-align: center;
-            font-family: "Roboto", "sans-serif";
-            line-height: 30px;
-            padding-left: 10px;
-            right: 190px;
-            border-radius: 6px;
-        }
     </style>
 </head>
 <!--end::Head-->
@@ -124,21 +109,9 @@
 
                             <h4 id="dis_dur"></h4>
 
-                            <div id="floating-panel">
-                                <b>Mode of Travel: </b>
-                                <select id="mode">
-                                      <option value="DRIVING">Driving</option>
-                                      <option value="WALKING">Walking</option>
-                                      <option value="BICYCLING">Bicycling</option>
-                                      <option value="TRANSIT">Transit</option>
-                                    </select>
-                            </div>
-                            <input type="text" id="lat" name="lat" value="{{data.latitude}}">
-                            <input type="text" id="lng" name="lng" value="{{data.longitude}}">
-                            <!-- <h2 id="crnt_lat"></h2>
-                            <h2 id="crnt_lng"></h2> -->
-                            <input type="text" id="crnt_lat">
-                            <input type="text" id="crnt_lng">
+                            <input type="text" id="lat" name="lat" value="{{ data.lat }}">
+                            <input type="text" id="lng" name="lng" value="{{ data.lng }}">
+
                             <div id="map"></div>
 
 
@@ -275,27 +248,11 @@
                 <script src="{% static 'assets/plugins/custom/draggable/draggable.bundle.js' %}" type="text/javascript"></script>
                 <script src="{% static 'assets/js/pages/features/cards/draggable.js' %}"></script>
                 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-                <!-- <script id="src_lok" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initAutocomplete&libraries=places&v=weekly" async></script> -->
 
                 <!--end::Page Scripts-->
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=trackMap&libraries=&v=weekly" async></script>
-                <script>
-                    $(document).ready(function() {
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJBsTQEqHdW-LVk0ydR6b66909UgacdDg&callback=initMap&libraries=&v=weekly" async></script>
 
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(showPosition);
-
-                        } else {
-                            alert("Geolocation is not supported by this browser.");
-                        }
-
-
-                        function showPosition(position) {
-                            document.getElementById('crnt_lat').value = position.coords.latitude
-                            document.getElementById('crnt_lng').value = position.coords.longitude;
-                        }
-                    });
-                </script>
+                <script src="{% static 'assets/js/ambulance_re_trc.js' %}"></script>
 </body>
 <!--end::Body-->
 

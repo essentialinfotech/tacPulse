@@ -96,7 +96,7 @@ class AssessmentCreateSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ['sender','receiver','message']
+        fields = ['sender','receiver','message','file']
         depth = 1
 
 

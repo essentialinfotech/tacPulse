@@ -13,5 +13,6 @@ urlpatterns = [
     path('panic/list/', PanicList.as_view() , name = 'panic_api_list'), 
     path('panic/crerate/', PanicCreate.as_view(), name = 'PanicCreate_api'),
     path('faq/', FAQLIST.as_view(), name = 'FAQLIST_api'),
-    path('hospital/transfer/request/', HospitalTransferAPI.as_view(), name = 'HospitalTransferAPI_api')
+    path('hospital/transfer/request/', HospitalTransferAPI.as_view(), name = 'HospitalTransferAPI_api'),
+    path('hospital/transfer/request/list/', HospitalTransferList.as_view(), name = 'HospitalTransferList')
 ]

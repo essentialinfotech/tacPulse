@@ -150,7 +150,7 @@ class TaskModel(models.Model):
     task_title = models.CharField(max_length=100, blank=False, null=False)
     task_desc = models.TextField(max_length=1000, blank=True, null=True)
     scheduled_task = models.ForeignKey(ScheduleModel, on_delete=models.CASCADE, null=True, blank=True)
-    ambulance_task = models.ForeignKey(AmbulanceModel, on_delete=models.CASCADE, blank=True, null=True)
+    ambulance_task = models.ForeignKey(AmbulanceRequestModel, on_delete=models.CASCADE, blank=True, null=True)
     panic_task = models.ForeignKey(
         Panic, on_delete=models.CASCADE, blank=True, null=True)
     hos_tra = models.ForeignKey(HospitalTransferModel, on_delete=models.CASCADE, blank=True, null=True)

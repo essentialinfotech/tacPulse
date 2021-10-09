@@ -4,23 +4,23 @@
 
 <style>
     select {
-        border: none!important;
-        border-radius: 4px!important;
-        background-color: #f1f1f1!important;
+        border: none !important;
+        border-radius: 4px !important;
+        background-color: #f1f1f1 !important;
     }
-    
+
     input {
-        padding: 5px!important;
-        border: none!important;
-        border-radius: 4px!important;
-        background-color: #f1f1f1!important;
+        padding: 5px !important;
+        border: none !important;
+        border-radius: 4px !important;
+        background-color: #f1f1f1 !important;
     }
 
     textarea {
-        padding: 5px!important;
-        border: none!important;
-        border-radius: 4px!important;
-        background-color: #f1f1f1!important;
+        padding: 5px !important;
+        border: none !important;
+        border-radius: 4px !important;
+        background-color: #f1f1f1 !important;
         resize: none;
     }
 </style>
@@ -33,8 +33,28 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center">
+                        <form method="POST" action="{% url 'email_submission' id %}"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="">Email Submission</label>
+                                <input type="email" required name="email" id="email" placeholder="email" class="form-control">
+                            </div>
 
-                        <a href="{% url 'review_submission_for_order' id %}" class="btn btn-primary">Review Submission</a>
+                            <div class="form-group">
+                                <label for="">File</label>
+                                <input type="file" required name="pdf" id="pdf" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Send Email</button>
+                            </div>
+                        </form>
+                        <a href="{% url 'review_submission_for_order' id %}" class="btn btn-primary">Review
+                            Submission</a>
+
+                            <a href="{% url 'purchaseOrder_pdf' id %}" class="btn btn-primary">Download 
+                                PDF</a>
                     </div>
                 </div>
             </div>

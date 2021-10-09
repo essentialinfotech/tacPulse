@@ -201,7 +201,6 @@
                                                 <th scope="col">Requested By</th>
                                                 <th scope="col">Requested For</th>
                                                 <th scope="col">Contact</th>
-                                                <th scope="col">Email</th>
                                                 <th scope="col">Reason</th>
                                                 <th scope="col">Location</th>
                                                 <th scope="col">Date</th>
@@ -213,13 +212,12 @@
                                             <tr>
                                                 <th scope="row">{{ forloop.counter }}</th>
                                                 <td>{{ i.user.first_name|title }}</td>
-                                                <td>{{ i.Name|title }}</td>
+                                                <td>{{ i.for_another_user|title }}</td>
                                                 <td>{{ i.contact }}</td>
-                                                <td>{{ i.email }}</td>
                                                 <td>
                                                     <a href="{% url 'AmbulanceRequestDetail' i.id %}">View</a>
                                                 </td>
-                                                <td>{{ i.location }}</td>
+                                                <td>{{ i.loc }}</td>
                                                 <td>{{ i.created_on }}</td>
                                             </tr>
                                             {% endfor %}
@@ -237,7 +235,6 @@
                                                 <th scope="col">Requested By</th>
                                                 <th scope="col">Requested For</th>
                                                 <th scope="col">Contact</th>
-                                                <th scope="col">Email</th>
                                                 <th scope="col">Reason</th>
                                                 <th scope="col">Location</th>
                                                 <th scope="col">Date</th>
@@ -250,9 +247,8 @@
                                             <tr>
                                                 <th scope="row">{{ forloop.counter }}</th>
                                                 <td>{{ i.user.first_name|title }}</td>
-                                                <td>{{ i.Name|title }}</td>
+                                                <td>{{ i.for_another_user|title }}</td>
                                                 <td>{{ i.contact }}</td>
-                                                <td>{{ i.email }}</td>
                                                 <td>
                                                     <a href="{% url 'AmbulanceRequestDetail' i.id %}">View</a>
                                                 </td>
@@ -338,7 +334,7 @@
                     <div class="card card-custom card-stretch gutter-b">
                         <!--begin::Header-->
                         <div class="card-header border-0">
-                            <h3 class="card-title font-weight-bolder text-dark">Deactivate any User</h3>
+                            <h3 class="card-title font-weight-bolder text-dark">Delete any User</h3>
                         </div>
                         <!--end::Header-->
                         <!--begin::Body-->

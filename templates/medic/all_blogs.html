@@ -93,7 +93,7 @@ body {
       
 
     <div class="container">
-        <div class="row">
+        <div class="row" style="margin-bottom: 5px;">
         {% for i in blogs %}
             <div class="col-md-6">
                 <div class="text-left">
@@ -101,15 +101,29 @@ body {
                     {% if i.image %}
                         <a href="{{ i.imageURL }}"><img src="{{ i.imageURL }}" width="350px" height="250px" alt=""></a>
                     {% endif %}
-                    <p style="margin-top: 15px!important;">{{ i.post|title|truncatechars:255 }}...</p>
+                    <p style="margin-top: 15px!important;">{{ i.post|title|truncatechars:200 }}...</p>
                     <a href="{% url 'single_blog' i.id %}">Read Full Blog</a>
                     <p style="margin-top: 7px!important;">{{ i.created }}</p>
+
+
+                  <div class="comment">
+                      <button data-href="{% url 'blog_comment' i.id %}" type="button" class="btn btn-success cmnt_btns" id="{{ i.id }}">Add a Comment</button>
+                      
+                      <div class="comment-box" style="margin-top: 5px; display: none;" id="c-box" data-match = "{{ i.id }}">
+                        <textarea name="comment" class="c_text form-control" id="comment" data-comment_id = "{{ i.id }}" cols="30" rows="10"></textarea>
+                        <i id="{{ i.id }}" style="cursor: pointer;" class="fa fa-paper-plane submit_icon"></i>
+                      </div>
+                  </div>
+
                 </div>
             </div>
+
         {% endfor %}
         </div>
     </div>
     <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <script>
@@ -121,6 +135,58 @@ body {
         x.className = "topnav";
       }
     }
-    </script>
+</script>
+
+<script>
+  var comment_box = document.getElementsByClassName('comment-box')
+  var c_text = document.getElementsByClassName('c_text')
+
+  $(".cmnt_btns").click(function (e) {
+    var id = this.id;
+    var href = this.dataset.href
+    e.preventDefault();
+
+    for(var i = 0; i < comment_box.length; i++){
+      if(id == comment_box[i].dataset.match){
+        comment_box[i].style.display = 'block';
+      }
+      else{
+        comment_box[i].style.display = 'none';
+      }
+    }
+
+
+    
+    $(".submit_icon").click(function (e) {
+      if (id === this.id) {
+        for (var j = 0; j < c_text.length; j++) {
+          if (id == c_text[j].dataset.comment_id) {
+            var comment = c_text[j].value;
+          }
+        }
+
+        if (comment != '') {
+            backend_data = {
+              'comment': comment,
+              'id': id,
+            }
+            console.log(backend_data)
+
+            $.ajax({
+              url: href,
+              type: "post",
+              data: backend_data,
+              success: function (response) {
+                alert('Comment was added')
+                window.location.reload()
+              }
+            });
+
+        }
+      }
+    })
+  });
+</script>
+
 </body>
 </html>

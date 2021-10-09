@@ -62,28 +62,48 @@
                 </div>
             </div>
             <div class="messages">
-                <ul>
+                <ul id="uldown" style="height: auto!important; overflow-y: auto!important;">
                     {% for i in messages %} {% if i.sender.username == request.user.username %}
-                    <li class="sent">
-                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
-                        <p style="margin-bottom: 20px;word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{ i.sent }}</small><br>{{ i.message }}</p>
-                    </li>
+
+                        <li class="sent">
+                            <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
+
+                            {% if i.message %}
+                                <p style="word-break: break-all;"><small id="show-name">you</small> <small id="time-show">{{ i.sent }}</small><br>{{ i.message }} </p> <br>
+                            {% endif %}
+                            
+                            {% if i.file %}
+                            <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a> 
+                            {% endif %}
+                            
+                        </li>
+
                     {% else %}
-                    <li class="replies">
-                        <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
-                        <p style="margin-bottom: 20px;word-break: break-all;"><small id="show-name">{{ i.sender.first_name|title }}</small id="time-show">{{ i.sent }}</small><br> {{ i.message }}
-                        </p>
-                    </li>
+
+                        <li class="replies">
+                            <img src="{{ i.sender.imageURL }}" alt="" height="20px" width="40px"/>
+
+                            {% if i.message %}
+                                <p style="word-break: break-all;"><small id="show-name">{{ i.sender.first_name|title }}</small id="time-show">{{ i.sent }}</small><br> {{ i.message }}</p> <br>
+                            {% endif %}
+
+                            {% if i.file %}
+                                <a href="{{ i.file.url }}"><img src="{{ i.file.url }}" style="height: 70px!important; width: 70px!important;" alt=""></a>
+                            {% endif %}
+
+                        </li>
+                        
                     {% endif %} {% endfor %}
                 </ul>
             </div>
             <div class="message-input">
                 <div class="wrap">
-                    <form action="{% url 'send_message' id %}" method="post">
+                    <form action="{% url 'send_message' id %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
 
                         <input type="text" name="message" placeholder="Write your message..." id="chat-message-input" />
-                        <!-- <i class="fa fa-paperclip attachment" aria-hidden="true"></i> -->
+                        <i class="fa fa-paperclip attachment" id="file-manipulation" aria-hidden="true"></i>
+                        <input type="file" name="file" id="file" style="display: none;">
                         <button class="submit" id="chat-message-submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </form>
                 </div>
@@ -95,5 +115,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 <input type="text" name="" id="user" value="{{ request.user.id }}" style="display: none;">
-
 </html>
+
+<script>
+    var icon = document.getElementById('file-manipulation')
+    var file = document.getElementById('file')
+
+    icon.addEventListener('click', (e)=>{
+        file.click();
+        file.style.display = 'block';
+    })
+</script>

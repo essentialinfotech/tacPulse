@@ -140,3 +140,12 @@ class HospitalTransferAPI(generics.CreateAPIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+
+class HospitalTransferList(generics.ListAPIView):
+    serializer_class = HospitalTransferSerializer
+    permission_classes = [IsAuthenticated,]
+    def get(self,request):
+        transfers = HospitalTransferModel.objects.filter(requested_by = self.request.user).order_by('-id')
+        serializer = HospitalTransferSerializer(transfers, many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+

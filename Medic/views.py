@@ -529,14 +529,14 @@ class AmbulanceRequestReport(LoginRequiredMixin, View):
         daily=''
         weekly=''
         user_id = request.user.id
-        if self.request.user.is_superuser:
-            daily = AmbulanceModel.objects.filter(created_on__gte=self.today.date())
-            weekly = AmbulanceModel.objects.filter(created_on__gte=self.week)
-            monthly = AmbulanceModel.objects.filter(created_on__gte=self.month)
+        if self.request.user.is_staff:
+            daily = AmbulanceRequestModel.objects.filter(created_on__gte=self.today.date())
+            weekly = AmbulanceRequestModel.objects.filter(created_on__gte=self.week)
+            monthly = AmbulanceRequestModel.objects.filter(created_on__gte=self.month)
         elif not self.request.user.is_superuser and not self.request.user.is_staff:
-            daily = AmbulanceModel.objects.filter(user=user_id, created_on__gte=self.today.date())
-            weekly = AmbulanceModel.objects.filter(user=user_id, created_on__gte=self.week)
-            monthly = AmbulanceModel.objects.filter(user=user_id, created_on__gte=self.month)
+            daily = AmbulanceRequestModel.objects.filter(user=user_id, created_on__gte=self.today.date())
+            weekly = AmbulanceRequestModel.objects.filter(user=user_id, created_on__gte=self.week)
+            monthly = AmbulanceRequestModel.objects.filter(user=user_id, created_on__gte=self.month)
         context = {
             'weekly': weekly,
             'daily': daily,
@@ -547,13 +547,31 @@ class AmbulanceRequestReport(LoginRequiredMixin, View):
 
 @login_required
 def ambulance_request_real(request):
-    pass
+    form = AmbulanceModelForm()
+    if request.method == 'POST':
+        form = AmbulanceModelForm(request.POST,request.FILES)
+        if form.is_valid():
+            loc = request.POST.get('loc')
+            lat = request.POST.get('lat')
+            lng = request.POST.get('lng')
+            instance = form.save(commit = False)
+            instance.user = request.user
+            instance.loc = loc
+            instance.lat = float(lat)
+            instance.lng = float(lng)
+            instance.save()
+            messages.success(request,'Ambulance request was sent')
+            return redirect('ambulance_request_report')
+    context = {
+        'form': form
+    }
+    return render(request,'medic/ambulance_request_form.html',context)
 
 
 
 class AmbulanceRequestDetail(LoginRequiredMixin, View):
     def get(self, request, pk):
-        data = get_object_or_404(AmbulanceModel, pk=pk)
+        data = get_object_or_404(AmbulanceRequestModel, pk=pk)
         task = False
         task_data = ''
         desc = ''
@@ -597,7 +615,7 @@ class AmbulanceRequestUpdate(LoginRequiredMixin, View):
 
 class AmbulanceTrackLocation(LoginRequiredMixin, View):
     def get(self, request, pk):
-        data = AmbulanceModel.objects.get(pk=pk)
+        data = AmbulanceRequestModel.objects.get(pk=pk)
         context = {
             'data': data
         }
@@ -608,11 +626,11 @@ class AmbulanceRequestDelete(LoginRequiredMixin,View):
 
     def get(self, request, pk):
         try:
-            data = get_object_or_404(AmbulanceModel, pk=pk)
+            data = get_object_or_404(AmbulanceRequestModel, pk=pk)
             if data:
                 data.delete()
+                messages.success('Ambulance Report was deleted')
             return redirect('ambulance_request_report')
-
         except:
             return redirect('ambulance_request_report')
 
@@ -1347,11 +1365,32 @@ def blog_list(request):
 
 def single_blog(request,id):
     blog = Blog.objects.get(id = id)
+    commets = BlogComment.objects.filter(comment_for_id = id).order_by('-id')
+    count_comment = len(commets)
     context = {
         'blog': blog,
+        'commets': commets,
+        'count_comment': count_comment,
     }
     return render(request,'medic/single_blog.html',context)
 
+
+@login_required
+@csrf_exempt
+def blog_comment(request,id):
+    if request.method == 'POST':
+        data = request.POST
+        for k,v in data.items():
+            if k == 'comment':
+                comment = v
+            if k == 'id':
+                id = v
+        BlogComment.objects.create(
+            comment_for_id = id,
+            commenter = request.user,
+            comment = comment
+        )
+        return JsonResponse('success:' 'Comment was added',safe=False)
 
 @login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
@@ -1976,11 +2015,6 @@ def quotation_events_sports_pdf(request,id):
     return HttpResponse("not found")
 
 
-
-# from django.views import generic
-# class FontListAjaxView(generic.View):
-#     def get(self, *args, **kwargs):
-#         return JsonResponse(data=list(Electric_Cash_Receipt.objects.values()), safe=False)
 class GenerateFormBuilderDataPdf(View):
     def get(self, request, *args, **kwargs):
         data = FormData.objects.get(id=self.kwargs['pk'])
@@ -1996,3 +2030,64 @@ class GenerateFormBuilderDataPdf(View):
         }
         get_pdf = pdf('medic/pdf/form_builder_pdf.html',context)
         return HttpResponse(get_pdf, content_type='application/pdf')
+
+
+# delete view for finance part and emergency dispatch incident part
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_electronic_cash_receipt(request,id):
+    obj = get_object_or_404(Electric_Cash_Receipt, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_emergency_dispatch_incident_report(request,id):
+    obj = get_object_or_404(AmbulanceModel, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_expense_reimbursement_record_report(request,id):
+    obj = get_object_or_404(Expense_Reimbursement_Record, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_purchase_order_report(request,id):
+    obj = get_object_or_404(PurchaseOrder, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_quotation_emergency_operation_report(request,id):
+    obj = get_object_or_404(ProspectiveClient, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def delete_quotation_event_sport_report(request,id):
+    obj = get_object_or_404(EventsProspectiveClient, id=id)
+    obj.delete()
+    messages.success(request,'Report Deleted')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+# ends
+
+@login_required
+def edit_emergency_dispatch_incident_report(request,id):
+    pass

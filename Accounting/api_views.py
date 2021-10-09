@@ -296,4 +296,13 @@ class Schedule(generics.CreateAPIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
+class ScheduleList(generics.ListAPIView):
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAuthenticated,]
+    def get(self,request):
+        data = ScheduleModel.objects.filter(user = self.request.user)
+        serializer = ScheduleSerializer(data, many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
 

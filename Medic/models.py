@@ -2,6 +2,7 @@ import builtins
 from typing import Set
 from django.db import models
 from django.db.models.aggregates import Count
+from django.db.models.base import Model
 from django.db.models.deletion import SET_NULL
 from django.db.models.enums import Choices
 from django.views.generic.base import TemplateView
@@ -538,7 +539,29 @@ class DispatchIncidentDispatcherCertification(models.Model):
 
 # dispatch incident ends
 class AmbulanceRequestModel(models.Model):
-    pass
+
+    REQUEST_TYPE = [
+        ('Emergency','Emergency'),
+        ('Non-Emergency','Non-Emergency'),
+    ]
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+    for_another_user = models.CharField(max_length=500,blank=True,null=True)
+    contact = models.CharField(blank=True,null=True,max_length=200)
+    email = models.EmailField(blank=True,null=True)
+    document = models.FileField(upload_to='AmbulanceRequestModel', blank=True,null=True)
+    reason = models.TextField(blank=True,null=True)
+    national_id = models.CharField(blank=True,null=True,max_length=500)
+    birth_certificate = models.CharField(blank=True,null=True,max_length=100)
+    request_type = models.CharField(max_length=100,blank=True,null=True,choices=REQUEST_TYPE)
+    preferable_date_time = models.DateTimeField(blank=True,null=True)
+
+    loc = models.CharField(blank=True,null=True,max_length=100)
+    lat = models.FloatField(blank=True,null=True)
+    lng = models.FloatField(blank=True,null=True)
+
+    created_on = models.DateTimeField(auto_now_add=True)
+
 
 
 class AmbulanceNoti(models.Model):
@@ -713,6 +736,11 @@ class Blog(models.Model):
         return url
 
 
+class BlogComment(models.Model):
+    comment_for = models.ForeignKey(Blog,on_delete=models.CASCADE,blank=True,null=True)
+    commenter = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+    comment = models.TextField(blank=True,null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class FormBuilder(models.Model):

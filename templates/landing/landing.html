@@ -29,6 +29,27 @@
                    width: 160px;
                 }
                 }
+
+				/* width */
+			::-webkit-scrollbar {
+				width: 10px;
+			}
+
+			/* Track */
+			::-webkit-scrollbar-track {
+				background: #f1f1f1;
+			}
+
+			/* Handle */
+			::-webkit-scrollbar-thumb {
+				background: #181C32;
+				/* border-radius: 5px; */
+			}
+
+			/* Handle on hover */
+			::-webkit-scrollbar-thumb:hover {
+				background: #555;
+			}
         </style>
 	</head>
 	<!--end::Head-->
@@ -117,7 +138,7 @@
 								<!--begin::Toolbar-->
 								<div class="flex-equal text-end ms-1">
 									<a href="{% url 'login' %}" class="btn btn-success">Sign In</a>
-									<a href="{% url 'dashboard' %}" class="btn btn-success">Dashboard</a>
+									<a href="{% url 'dashboard' %}" class="btn btn-success" style="font-size: small;">Dashboard</a>
 								</div>
 								<!--end::Toolbar-->
 							</div>
@@ -146,42 +167,42 @@
 						<div class="d-flex flex-center flex-wrap position-relative px-5">
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Fujifilm">
-								<img src="assets/media/svg/brand-logos/fujifilm.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/fujifilm.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Vodafone">
-								<img src="assets/media/svg/brand-logos/vodafone.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/vodafone.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="KPMG International">
-								<img src="assets/media/svg/brand-logos/kpmg.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/kpmg.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Nasa">
-								<img src="assets/media/svg/brand-logos/nasa.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/nasa.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Aspnetzero">
-								<img src="assets/media/svg/brand-logos/aspnetzero.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/aspnetzero.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="AON - Empower Results">
-								<img src="assets/media/svg/brand-logos/aon.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/aon.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Hewlett-Packard">
-								<img src="assets/media/svg/brand-logos/hp-3.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/hp-3.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Truman">
-								<img src="assets/media/svg/brand-logos/truman.svg" class="mh-30px mh-lg-40px" alt="" />
+								<!-- <img src="{% static 'assets2/media/svg/brand-logos/truman.svg' %}" class="mh-30px mh-lg-40px" alt="" /> -->
 							</div>
 							<!--end::Client-->
 						</div>
@@ -600,7 +621,7 @@
                                                                 <img src="{{ i.imageURL }}" class="img-thumbnail" alt="">
                                                             {% endif %}
                                                         </div>
-                                                        <p class="text-muted fs-6 fw-bold mt-1">{{ i.post|title|truncatechars:255 }}</p>
+                                                        <p class="text-muted fs-6 fw-bold mt-1">{{ i.post|title|truncatechars:200 }}</p>
                                                         <span class="text-muted fs-6 fw-bold mt-1">{{ i.created }}</span>
                                                     </div>
                                                     <!--end::Action-->
@@ -654,7 +675,7 @@
 									<!--end::Title-->
 									<!--begin::Text-->
 									<span class="fw-normal fs-4 text-gray-700">Email us to
-									<a href="mailto:info@tac-pulse.co.za" class="text-white opacity-50 text-hover-primary">Email: info@tac-pulse.co.za</a></span>
+									<a href="mailto:info@tac-pulse.co.za" class="text-white opacity-50 text-hover-primary">info@tac-pulse.co.za</a></span>
 									<!--end::Text-->
 								</div>
 								<!--end::Block-->
@@ -703,13 +724,11 @@
 										<!--end::Subtitle-->
 										<!--begin::Link-->
 										<a href="#" class="mb-6">
-											
 											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">51 Platan Avenue, Flamwood</span>
 										</a>
 										<!--end::Link-->
 										<!--begin::Link-->
 										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/github.svg" class="h-20px me-2" alt="" />
 											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Klerksdorp, 2572, NW</span>
 										</a>
 										<!--end::Link-->
@@ -719,16 +738,7 @@
 										</a>
 										<!--end::Link-->
 										<!--begin::Link-->
-										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/dribbble-icon-1.svg" class="h-20px me-2" alt="" />
-											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Dribbble</span>
-										</a>
-										<!--end::Link-->
-										<!--begin::Link-->
-										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/instagram-2-1.svg" class="h-20px me-2" alt="" />
-											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Instagram</span>
-										</a>
+
 										<!--end::Link-->
 									</div>
 									<!--end::Links-->

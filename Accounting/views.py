@@ -1590,9 +1590,15 @@ def quality_assurance_check(request,id):
     }
     return render(request,'Accounting/quality_control_inspection.html',context)
 
-# email submission
+# email submission for order
 @login_required
 def email_submission(request,id):
+    if request.method == 'POST':
+        to_email = request.POST.get('email')
+        file = request.FILES.get('pdf')
+        email = EmailMessage('Tac-Pulse', 'Hello There', EMAIL_HOST_USER, [to_email])
+        email.attach(file.name, file.read(), file.content_type)
+        email.send()
     context = {
         'id': id,
     }
@@ -1738,11 +1744,15 @@ def total_call_costing(request,id):
     }
     return render(request,'Accounting/total_call_costing.html',context)
 
-
+# email submission emergebcy operation quotation
 @login_required
 def emergency_email_submission(request,id):
     if request.method == 'POST':
-        pass
+        to_email = request.POST.get('email')
+        file = request.FILES.get('pdf')
+        email = EmailMessage('Tac-Pulse', 'Hello There', EMAIL_HOST_USER, [to_email])
+        email.attach(file.name, file.read(), file.content_type)
+        email.send()
     context = {
         'id': id,
     }
@@ -1951,37 +1961,19 @@ def add_another_event_service_exclusion(request,id):
     return render(request,'Accounting/add_another_event_service_exclusion.html',context)
 
 
+# email submission event
 @login_required
 def event_email_review_submission(request,id):
-
-    client = EventsProspectiveClient.objects.get(id = id)
-    service_details = EventsServiceDetails.objects.filter(parent_id = id)
-    particulars = EventSportParticulars.objects.filter(parent_id = id)
-    total_costing = TotalEventSportCosting.objects.filter(parent_id = id)
-    inclusion = EventServiceInclusion.objects.filter(parent_id = id)
-    exclusion = EventServiceExclusion.objects.filter(parent_id = id)
-
-    current_site = get_current_site(request)
-    context = {
-        'client': client,
-        'service_details': service_details,
-        'particulars': particulars,
-        'total_costing': total_costing,
-        'inclusion': inclusion,
-        'exclusion': exclusion,
-        'id':id,
-        'domain': current_site.domain,
-    }
-    
     if request.method == 'POST':
         to_email = request.POST.get('email')
-        mail_subject = 'Verify Your Email.'
-        message = render_to_string('medic/email_quotation_event.html', context)
-        # try:
-        send_mail(mail_subject, message, EMAIL_HOST_USER, [to_email])
-        # except:
-        #     return HttpResponse('Error')
-
+        file = request.FILES.get('pdf')
+        email = EmailMessage('Tac-Pulse', 'Hello There', EMAIL_HOST_USER, [to_email])
+        email.attach(file.name, file.read(), file.content_type)
+        email.send()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'id': id
+    }
     return render(request,'Accounting/event_email_review_submission.html',context)
 
 

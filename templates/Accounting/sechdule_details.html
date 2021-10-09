@@ -79,17 +79,181 @@
                 <!--begin::Aside Menu-->
                 <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                     <!--begin::Menu Container-->
-                    <div id="kt_aside_menu" class="aside-menu min-h-lg-800px" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
+                    <div id="kt_aside_menu" class="aside-menu min-h-lg-800px" data-menu-vertical="1" data-menu-scroll="1"
+                        data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
                             <a href="/">
-                                <div style="display: flex;" class="ml-7"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                                <div style="display: flex;" class="ml-7"><i class="fas fa-star-of-life"
+                                        style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
                                     <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
                                 </div>
                             </a>
-
-
+            
+            
+                            <!-- vehicle -->
+                            {% if request.user.is_staff %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Vehicle Information</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fa fa-plus-square"></i>
+                                    </span>
+                                    <span class="menu-text">Vehicle Profile <strong style="color: red; margin-left: 5px;"> <i
+                                                class="fas fa-bell"></i> New</strong> </span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'vehicle_information' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Vehicle Profile Information</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'vehicle_profile_report' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Vehicle Profile Report</span>
+                                            </a>
+                                        </li>
+            
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="menu-section">
+                                <h4 class="menu-text">Fleet Preventive Management</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fa fa-plus-square"></i>
+                                    </span>
+                                    <span class="menu-text">Fleet Preventive Management <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'daily_preventive_insperctions' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Daily Preventive Insperctions</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'fleet_preventive_management_report' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Fleet Preventive Management Report</span>
+                                            </a>
+                                        </li>
+            
+                                    </ul>
+                                </div>
+                            </li>
+            
+                            {% endif %}
+            
+            
+            
                             {% if request.user.is_superuser %}
+            
+                            <!-- form builder -->
+                            <li class="menu-section">
+                                <h4 class="menu-text">Form Builder</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fa fa-plus-square"></i>
+                                    </span>
+                                    <span class="menu-text">Builder <strong style="color: red; margin-left: 5px;"> <i
+                                                class="fas fa-bell"></i> New</strong></span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'form_builder' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Form Builder</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'form_list' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Form Lists</span>
+                                            </a>
+                                        </li>
+            
+                                    </ul>
+                                </div>
+                            </li>
+            
+                            <!-- blogs -->
+                            <li class="menu-section">
+                                <h4 class="menu-text">Our Blogs</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-blog"></i>
+                                    </span>
+                                    <span class="menu-text">Blog <strong style="color: red; margin-left: 5px;"> <i
+                                                class="fas fa-bell"></i> New</strong></span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'create_blog' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Create a blog post</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'blog_list' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Blogs</span>
+                                            </a>
+                                        </li>
+            
+                                    </ul>
+                                </div>
+                            </li>
+            
+            
+            
                             <li class="menu-section">
                                 <h4 class="menu-text">Inspection</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -97,9 +261,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-									<i class="fas fa-search"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-search"></i>
+                                    </span>
                                     <span class="menu-text">Inspection</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -109,24 +273,24 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'create_inspection' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Inspection Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'inpection_reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Inspection Reports</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-
+            
                             <li class="menu-section">
                                 <h4 class="menu-text">Occurrence</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -134,9 +298,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-car-crash"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car-crash"></i>
+                                    </span>
                                     <span class="menu-text">Occurrence</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -146,24 +310,24 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'occurrence_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Occurrence Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'occurrence_report' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Occurrence Reports</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-
+            
                             <li class="menu-section">
                                 <h4 class="menu-text">Cases</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -171,9 +335,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="far fa-sticky-note"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="far fa-sticky-note"></i>
+                                    </span>
                                     <span class="menu-text">Case</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -183,27 +347,27 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'case_notes' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Case Reports</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-
+            
                             <li class="menu-section">
                                 <h4 class="menu-text">Audit</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-book-open"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
                                     <span class="menu-text">Audit</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -213,37 +377,35 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'audit_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Audit Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'audit_report' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Audit Reports</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %} 
-                            
-                            {% if request.user.is_superuser %}
+                            {% endif %} {% if request.user.is_superuser %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Payroll Deduction</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-book-open"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
                                     <span class="menu-text">Make Deduction</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -253,56 +415,50 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'payroll_deduction_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Create</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'payrol_deduction_reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Reports</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %}
-                            
-                            
-                            
-                            
-                            
-                            {% if request.user.is_superuser or request.user.is_staff %}
+                            {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Task</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-
-
-
+            
+            
+            
                             {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'task_create' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-pencil-alt"></i>
-										</span>
-
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </span>
+            
                                     <span class="menu-text">Assign Task</span>
-
+            
                                 </a>
                             </li>
                             {% endif %} {% if request.user.is_superuser or request.user.is_staff %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-exchange-alt"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </span>
                                     <span class="menu-text">Report</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -312,16 +468,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'task_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Task Reports</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'transferred_task' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Transfer Reports</span>
                                             </a>
                                         </li>
@@ -336,26 +492,51 @@
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-car"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
                                     <span class="menu-text">Dispatch List</span>
-
+            
                                 </a>
                             </li>
-
+            
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-car"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
                                     <span class="menu-text">Track Dispatches</span>
-
+            
                                 </a>
                             </li>
-
-
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'ambulance_request'%}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Medical Dispatch Form <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                </a>
+                            </li>
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'dispatch_incident_submission_review_all' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Medical Dispatch Incident Report <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                </a>
+                            </li>
+            
+            
+            
+            
+            
                             <li class="menu-section">
                                 <h4 class="menu-text">Assessments</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -363,9 +544,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-book-open"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
                                     <span class="menu-text">Assessment</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -375,39 +556,39 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'assetment_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Assessment</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'assesment_list_users' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">User Assessments</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
                             {% endif %}
-
-
-
+            
+            
+            
                             <li class="menu-section">
                                 <h4 class="menu-text">Accounting</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
                             {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-
+            
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i>R</i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i>R</i>
+                                    </span>
                                     <span class="menu-text">Paystub</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -417,20 +598,20 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'add_paystub'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Paystub Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'paystub_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Paystub Reports</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
@@ -438,22 +619,22 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-box"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-box"></i>
+                                    </span>
                                     <span class="menu-text">Package</span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
-
+            
                                         {% if request.user.is_superuser %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'add_package'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Packages</span>
                                             </a>
                                         </li>
@@ -461,22 +642,22 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'packages'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Packages</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-users"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-users"></i>
+                                    </span>
                                     <span class="menu-text">Membership</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -487,32 +668,32 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'members'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Membership holder</span>
                                             </a>
                                         </li>{% endif %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'getmembership'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Get Membership</span>
                                             </a>
                                         </li>
-
-
+            
+            
                                     </ul>
                                 </div>
                             </li>
-
-                            {% if request.user.is_superuser %}
+            
+                            {% if request.user.is_staff %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-tools"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-tools"></i>
+                                    </span>
                                     <span class="menu-text">Property/Tools</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -522,40 +703,114 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'property_add'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
-
+                                                    <span></span></i>
+            
                                                 <span class="menu-text">Property I/O</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'property_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Property Reports</span>
                                             </a>
                                         </li>
-
+            
+                                    </ul>
+                                </div>
+                            </li>
+            
+            
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book"></i>
+                                    </span>
+                                    <span class="menu-text">Finance <strong style="color: red; margin-left: 5px;"> <i
+                                                class="fas fa-bell"></i> New</strong></span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{%url 'electronic_cash_receipt'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span></i>
+            
+                                                <span class="menu-text">Electronics Cash Receipt</span>
+                                            </a>
+                                        </li>
+            
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{%url 'expense_reimbursement_record_form'%}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span></i>
+            
+                                                <span class="menu-text">Expense Reimbursement Record</span>
+                                            </a>
+                                        </li>
+            
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{%url 'purchase_order_customer_information' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span></i>
+            
+                                                <span class="menu-text">Purchase Order</span>
+                                            </a>
+                                        </li>
+            
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{%url 'details_of_prospective_client' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span></i>
+            
+                                                <span class="menu-text">Quotation Emergency Operation</span>
+                                            </a>
+                                        </li>
+            
+            
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{%url 'details_of_prospective_client_for_events' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span></i>
+            
+                                                <span class="menu-text">Quotation- Events & Sport</span>
+                                            </a>
+                                        </li>
+            
+            
+            
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'reports' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Financial Submission Reports</span>
+                                            </a>
+                                        </li>
+            
                                     </ul>
                                 </div>
                             </li>
                             {% endif %}
-
-
-
-                            <br> {% if request.user.is_staff %}
+            
+            
+                            {% if request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Leaves</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-
+            
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i>L</i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i>L</i>
+                                    </span>
                                     <span class="menu-text">Leaves</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -565,26 +820,26 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'employee_leave' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Leave Request</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'my_leaves' request.user.id %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">My Leaves</span>
                                             </a>
                                         </li>
-
+            
                                         {% if request.user.is_superuser %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'employee_leaves' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Employee Leaves</span>
                                             </a>
                                         </li>
@@ -601,9 +856,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-warehouse"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-warehouse"></i>
+                                    </span>
                                     <span class="menu-text">Stock</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -613,39 +868,39 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'stock_request'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request for stock</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'cancel_stock_request'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Cancel Stock Request</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'stock_requests' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Stock Request Reports</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
                             {% endif %}
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-ambulance "></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-ambulance "></i>
+                                    </span>
                                     <span class="menu-text">Ambulance</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -653,32 +908,32 @@
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'ambulance_request'%}" class="menu-link">
+                                            <a href="{% url 'ambulance_request_real' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request for Ambulance</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'ambulance_request_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Ambulance requests</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-calendar-alt"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
                                     <span class="menu-text">Schedule</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -688,49 +943,49 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'shcedule_trip'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                        </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request for Schedule</span>
                                             </a>
                                         </li>
-
+            
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'accepted_schedule' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Accepted Requests</span>
                                             </a>
                                         </li>
-
+            
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'trip_schedules' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Schedule requests</span>
                                             </a>
                                         </li>
-
+            
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'complete_schedule'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Completed Schedules</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-hospital"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-hospital"></i>
+                                    </span>
                                     <span class="menu-text">Hospital Transfer</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -740,37 +995,37 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'hospital_transfer'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request to Transfer</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'hospital_transfer_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
-
+                                                    <span></span></i>
+            
                                                 <span class="menu-text">Transfer reports</span>
                                             </a>
                                         </li>
-
-
+            
+            
                                     </ul>
                                 </div>
                             </li>
-
+            
                             {%endif%}
                             <li class="menu-section">
                                 <h4 class="menu-text">Rating/Feedback</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-star"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-star"></i>
+                                    </span>
                                     <span class="menu-text">Feedback</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -780,7 +1035,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'rating'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
                                                 <span class="menu-text">Rate Us(Customer app)</span>
                                             </a>
                                         </li>
@@ -793,7 +1048,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'feedbacks'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
                                                 <span class="menu-text">Feedbacks</span>
                                             </a>
                                         </li>
@@ -801,21 +1056,21 @@
                                 </div>
                                 {% endif %}
                             </li>
-
+            
                             <li class="menu-section">
                                 <h4 class="menu-text">FAQ</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-
+            
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<i class="fas fa-question"></i>
-										</span>
+                                        <i class="fas fa-question"></i>
+                                    </span>
                                     <span class="menu-text">Frequently Asked Questions</span>
                                     <i class="menu-arrow"></i>
                                 </a>
-
+            
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
@@ -833,7 +1088,7 @@
                                                 <span class="menu-text">FAQ</span>
                                             </a>
                                         </li>
-
+            
                                     </ul>
                                 </div>
                             </li>
@@ -2663,13 +2918,10 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=getDetails&libraries=&v=weekly" async></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJBsTQEqHdW-LVk0ydR6b66909UgacdDg&callback=getDetails&libraries=&v=weekly" async></script>
 
-        <!-- google map key for current location keep it plabon vai cause cdn ekta ektar jnne alada -->
-        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmk0JiD0QiKHxJsgv9_eWXucmCQWQX9G4&callback=initMap&libraries=&v=weekly" async></script> -->
-        <!-- endkey
 
-    end::Page Scripts-->
+
 
     <script>
         $("#tags").autocomplete({

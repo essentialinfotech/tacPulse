@@ -108,8 +108,7 @@ body {
       
 
     <div class="container">
-        <div class="row">
-
+        <div class="row" style="margin-bottom: 5px;">
             <div class="col-md-8">
                 <div class="text-left">
                     <h4>{{ blog.title|title }}</h4>
@@ -118,10 +117,35 @@ body {
                     {% endif %}
                     <p style="margin-top: 15px!important;">{{ blog.post|title}}</p>
                     <p style="margin-top: 7px!important;">{{ blog.created }}</p>
+                    <div class="fb-like" data-href="http://127.0.0.1:8000/blog/detail/{{ blog.id }}" data-width="" data-layout="standard"
+                      data-action="like" data-size="large" data-share="true"></div>
                 </div>
             </div>
-            <div class="fb-like" data-href="http://127.0.0.1:8000/blog/detail/{{ blog.id }}" data-width=""  data-layout="standard" data-action="like" data-size="large" data-share="true"></div>
 
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading"><strong>{{ count_comment }}</strong> Comments</div>
+                  <div class="panel-body" style="max-height: 400px; overflow-y: auto;">
+                    {% for i in commets %}
+                      <div class="form-group">
+                        <img src="{{ i.commenter.imageURL }}" height="30px" width="30px" style="border-radius: 10rem;" alt="">
+                        <strong>{{ i.commenter.first_name|title }} {{ i.commenter.last_name|title }}</strong>
+                        <div style="margin-left: 35px">
+
+                            {{ i.comment|title }}
+
+                          <p>
+                            {{ i.created }}
+                          </p>
+                          </div>
+                        </div>
+                    {% endfor %}
+
+                  </div>
+                  <div class="panel-footer">Comments For <strong>{{ blog.title }}</strong></div>
+                </div>
+            </div>
+            
         </div>
     </div>
     <!-- Latest compiled and minified JavaScript -->

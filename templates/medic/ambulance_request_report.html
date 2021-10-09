@@ -76,6 +76,7 @@
                                 <th>Creation Date</th>
                                 <th>Name</th>
                                 <th>Contact</th>
+                                <th>Request Type</th>
                                 <th>Email</th>
                                 <th>Reason</th>
                                 <th>Location</th>
@@ -87,12 +88,12 @@
                             {% for i in daily %}
                             <tr class="text-center" id="monthly">
                                 <td>{{ i.created_on }}</td>
-                                <td> {{i.Name}}</td>
+                                <td> {{i.for_another_user}}</td>
                                 <td>{{ i.contact }}</td>
+                                <td>{{ i.request_type }}</td>
                                 <td>{{ i.email }}</td>
                                 <td>{{ i.reason }}</td>
-                                <td>{{ i.location }}</td>
-
+                                <td>{{ i.loc }}</td>
 
                                 <td>
                                     <div style="display: flex;" class="text-center">
@@ -100,9 +101,11 @@
                                         <a href="{% url 'AmbulanceRequestDetail' i.id %}">
                                             <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
                                         </a>
-                                        <a href="{% url 'AmbulanceRequestUpdate' i.id %}">
+
+                                        <!-- <a href="{% url 'AmbulanceRequestUpdate' i.id %}">
                                             <i class="fas fa-edit text-hover-primary mr-2"></i>
-                                        </a>
+                                        </a> -->
+
                                         {% if request.user.is_superuser %}
                                         <a href="{% url 'AmbulanceRequestDelete' i.id %}">
                                             <i class="fas fa-trash-alt text-hover-primary mr-2"></i> {% endif%}
@@ -126,11 +129,10 @@
                                 <th>Creation Date</th>
                                 <th>Name</th>
                                 <th>Contact</th>
+                                <th>Request Type</th>
                                 <th>Email</th>
                                 <th>Reason</th>
                                 <th>Location</th>
-                                <th class="text-left">Action</th>
-
                                 <th class="text-left">Action</th>
                             </tr>
                         </thead>
@@ -139,11 +141,12 @@
                             {% for i in monthly %}
                             <tr class="text-center" id="monthly">
                                 <td>{{ i.created_on }}</td>
-                                <td> {{i.Name}}</td>
+                                <td> {{i.for_another_user}}</td>
                                 <td>{{ i.contact }}</td>
+                                <td>{{ i.request_type }}</td>
                                 <td>{{ i.email }}</td>
                                 <td>{{ i.reason }}</td>
-                                <td>{{ i.location }}</td>
+                                <td>{{ i.loc }}</td>
 
 
                                 <td>
@@ -152,9 +155,11 @@
                                         <a href="{% url 'AmbulanceRequestDetail' i.id %}">
                                             <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
                                         </a>
-                                        <a href="{% url 'AmbulanceRequestUpdate' i.id %}">
+
+                                        <!-- <a href="{% url 'AmbulanceRequestUpdate' i.id %}">
                                             <i class="fas fa-edit text-hover-primary mr-2"></i>
-                                        </a>
+                                        </a> -->
+
                                         {% if request.user.is_superuser %}
                                         <a href="{% url 'AmbulanceRequestDelete' i.id %}">
                                             <i class="fas fa-trash-alt text-hover-primary mr-2"></i> {% endif%}
@@ -178,6 +183,7 @@
                                 <th>Creation Date</th>
                                 <th>Name</th>
                                 <th>Contact</th>
+                                <th>Request Type</th>
                                 <th>Email</th>
                                 <th>Reason</th>
                                 <th>Location</th>
@@ -189,11 +195,12 @@
                             {% for i in weekly %}
                             <tr class="text-center" id="monthly">
                                 <td>{{ i.created_on }}</td>
-                                <td> {{i.Name}}</td>
+                                <td> {{i.for_another_user}}</td>
                                 <td>{{ i.contact }}</td>
+                                <td>{{ i.request_type }}</td>
                                 <td>{{ i.email }}</td>
                                 <td>{{ i.reason }}</td>
-                                <td>{{ i.location }}</td>
+                                <td>{{ i.loc }}</td>
 
 
                                 <td>
@@ -202,9 +209,11 @@
                                         <a href="{% url 'AmbulanceRequestDetail' i.id %}">
                                             <i class="fas fa-clipboard-list text-hover-primary mr-2"></i>
                                         </a>
-                                        <a href="{% url 'AmbulanceRequestUpdate' i.id %}">
+                                        
+                                        <!-- <a href="{% url 'AmbulanceRequestUpdate' i.id %}">
                                             <i class="fas fa-edit text-hover-primary mr-2"></i>
-                                        </a>
+                                        </a> -->
+
                                         {% if request.user.is_superuser %}
                                         <a href="{% url 'AmbulanceRequestDelete' i.id %}">
                                             <i class="fas fa-trash-alt text-hover-primary mr-2"></i> {% endif%}

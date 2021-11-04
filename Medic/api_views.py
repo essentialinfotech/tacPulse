@@ -80,10 +80,9 @@ class AmbulanceRequest(generics.CreateAPIView):
     serializer_class = AmbulanceRequestSerializer
     permission_classes = [IsAuthenticated,]
     def post(self, request, format=None):
-        user = request.user
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user_id = user.id)
+            serializer.save(user = request.user)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -92,8 +91,8 @@ class AmbulanceRequestList(generics.ListAPIView):
     serializer_class = AmbulanceRequestSerializer
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
-        if self.request.user.is_superuser:
-            requests = AmbulanceModel.objects.all()
+        if self.request.user.is_staff:
+            requests = AmbulanceRequestModel.objects.all()
             serializer = self.get_serializer(requests, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:

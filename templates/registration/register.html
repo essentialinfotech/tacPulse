@@ -48,9 +48,16 @@
                         {% endif %}
                         <form class="form" method="post" action="{% url 'register' %}" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div>
-                                <input type="checkbox" class="radioCheck" id="is_staff" name="is_staff" onclick="check(this);">
-                                <label for="is_staff" style="font-size: 15px;">Click the checkbox for Dispatch Registration</label>
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <input type="checkbox" class="radioCheck" id="is_staff" name="is_staff">
+                                    <label style="font-size: 15px;">Dispatch</label>
+                                </div>
+
+                                <div>
+                                    <input type="checkbox" class="radioCheck" id="medic" name="medic">
+                                    <label style="font-size: 15px;">Medic</label>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -170,24 +177,16 @@
     <!--end::Page Scripts-->
 
 
-
     <script>
-        function check(input) {
-            $('div.checkbox-group.required :checkbox:checked').length > 0
-            var checkboxes = document.getElementsByClassName("radioCheck");
-            for (var i = 0; i < checkboxes.length; i++) {
-                //uncheck all
-                if (checkboxes[i].checked == true) {
-                    checkboxes[i].checked = false;
-                }
+        $('.radioCheck').click(function(){
+            var id = this.id;
+            if(id.checked == true){
+                id.checked = false;
             }
-            //set checked of clicked object
-            if (input.checked == true) {
-                input.checked = false;
-            } else {
-                input.checked = true;
+            else{
+                id.checked = true;
             }
-        }
+        })
     </script>
     <!-- for checkboxes single selection ends -->
 </body>

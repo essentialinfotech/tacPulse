@@ -149,11 +149,14 @@ def dashboard(request):
         return redirect('user_profile', id=request.user.id)
 
 
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def register(request):
     form = UserCreation()
     if request.method == 'POST':
         form = UserCreation(request.POST, request.FILES)
         is_dispatch = request.POST.get('is_staff')
+        medic = request.POST.get('medic')
+        
         email = request.POST.get('username')
 
         if is_dispatch is not None:
@@ -161,9 +164,15 @@ def register(request):
         else:
             is_dispatch = False
 
+        if medic is not None:
+            medic = True
+        else:
+            medic = False
+
         if form.is_valid():
             user = form.save(commit=False)
             user.is_staff = is_dispatch
+            user.medic = medic
             user.email = email
             number = user.contact
             regex = regex_validation(number)

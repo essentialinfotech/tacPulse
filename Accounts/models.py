@@ -23,8 +23,11 @@ class User(AbstractUser):
         max_length=30, blank=False, null=False, default='')
     longitude = models.CharField(
         max_length=30, blank=False, null=False, default='')
+
     has_membership = models.BooleanField(default=False)
     renew_membership = models.BooleanField(default=False)
+
+    medic = models.BooleanField(default=False)
 
     def __str__(self):
         user = self.first_name

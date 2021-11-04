@@ -17,7 +17,7 @@ class PanicSerializer(serializers.ModelSerializer):
 
 class AmbulanceRequestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AmbulanceModel
+        model = AmbulanceRequestModel
         fields = '__all__'
         depth = 1
 

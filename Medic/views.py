@@ -1376,21 +1376,18 @@ def single_blog(request,id):
 
 
 @login_required
-@csrf_exempt
-def blog_comment(request,id):
+def blog_comment(request):
     if request.method == 'POST':
-        data = request.POST
-        for k,v in data.items():
-            if k == 'comment':
-                comment = v
-            if k == 'id':
-                id = v
-        BlogComment.objects.create(
-            comment_for_id = id,
-            commenter = request.user,
-            comment = comment
-        )
-        return JsonResponse('success:' 'Comment was added',safe=False)
+        comment = request.POST.get('comment')
+        id = request.POST.get('id')
+        print(id)
+        if comment:
+            BlogComment.objects.create(
+                comment_for_id = id,
+                commenter = request.user,
+                comment = comment
+            )
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)

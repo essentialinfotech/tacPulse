@@ -1,0 +1,29 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="{% url 'create_unit' %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="uni_name">Give a name to you unit/ambulance</label>
+                                    <br> {{ form.uni_name }}
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

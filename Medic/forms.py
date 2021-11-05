@@ -107,6 +107,14 @@ class EmergencyMedDisIncidentReportForm(forms.ModelForm):
             }
 
 
+class CreateUnitForm(forms.ModelForm):
+    class Meta:
+        model = UnitNames
+        fields = '__all__'
+        widgets = {
+            'uni_name': forms.TextInput(attrs={'class': 'form-control','required': True}),
+            }
+
 class AssignUnitFullFormWithParamedicsAdd(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AssignUnitFullFormWithParamedicsAdd, self).__init__(*args, **kwargs)
@@ -116,8 +124,8 @@ class AssignUnitFullFormWithParamedicsAdd(forms.ModelForm):
         model = AssignUnitCreateWithParamedics
         fields = '__all__'
         widgets = {
-            'paramedics': forms.Select(attrs={'class': 'form-control'}),
-            'uni_name': forms.Select(attrs={'class': 'form-control'}),
+            'paramedics': forms.Select(attrs={'class': 'form-control','required': True}),
+            'uni_name': forms.Select(attrs={'class': 'form-control', 'required': True}),
             }
 
 class DispatchIncidentCrewAndVehicleForm(forms.ModelForm):
@@ -268,3 +276,11 @@ class AmbulanceModelForm(forms.ModelForm):
                 'preferable_date_time': forms.DateTimeInput(attrs={'class': 'form-control','type':'datetime-local'}),
             }
                 
+
+class PanicForWhome(forms.ModelForm):
+    class Meta:
+        model = Panic
+        fields = ['for_whome']
+        widgets = {
+                'for_whome': forms.Select(attrs={'class': 'form-control', 'required': True}),
+            }

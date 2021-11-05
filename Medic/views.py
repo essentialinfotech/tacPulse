@@ -247,7 +247,6 @@ def ambulance_request(request):
 def dispatch_incident_crew_and_vehicle(request,id):
     user = User.objects.filter(medic = True)
     assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
-    assigned_medic_with_uni = AssignUnitCreateWithParamedics.objects.all()
 
     form = DispatchIncidentCrewAndVehicleForm()
     senior_form = SeniorForm()
@@ -296,7 +295,6 @@ def dispatch_incident_crew_and_vehicle(request,id):
     context = {
         'user': user,
         'form': form,
-        'assigned_medic_with_uni': assigned_medic_with_uni,
         'senior_form': senior_form,
         'assist_1_form': assist_1_form,
         'assist_2_form': assist_2_form,
@@ -739,18 +737,24 @@ def hospital_transfered(request, pk):
 @login_required
 def panic_system(request):
     panic = 'Give a panic request'
+    form = PanicForWhome()
     if request.method == 'POST':
         reason = request.POST.get('reason')
         emergency_contact = request.POST.get('emergency_contact')
+        for_whome = request.POST.get('for_whome')
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         place = request.POST.get('place')
-        my_panic = Panic.objects.create(panic_sender_id=request.user.id, emergency_contact = emergency_contact , reason=reason, place = place ,lat=lat, lng=lng)
+        my_panic = Panic.objects.create(panic_sender_id=request.user.id, 
+                                        emergency_contact = emergency_contact ,
+                                        for_whome = for_whome,
+                                        reason=reason, place = place ,
+                                        lat=lat, lng=lng)
         if request.user.is_staff:
             return redirect('check_panic_requests_location', id=my_panic.id)
         else:
             return HttpResponse('Panic request sent successfully')
-    return render(request, 'medic/panic.html', {'panic': panic})
+    return render(request, 'medic/panic.html', {'panic': panic,'form': form,})
 
 @login_required
 def del_panic(request, id):
@@ -775,13 +779,15 @@ def check_panic_requests_location(request, id):
         try:
             this_panic = Panic.objects.filter(id=id)
             panic = Panic.objects.get(id=id)
-            task_data = TaskModel.objects.filter(task_type='pan', panic_task=id)
+
+            task_data = TaskModel.objects.filter(task_type='pan', panic_task_id =id )
             for i in task_data:
                 task_data = i.task_desc
             if task_data:
                 task = True
 
             context = {
+                'panic': panic,
                 'task': task,
                 'task_data': task_data,
                 'email': panic.panic_sender.username,
@@ -2176,19 +2182,38 @@ def edit_dispatch_incident_crew_and_vehicle(request,id):
 
 @login_required
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def create_unit(request):
+    form = CreateUnitForm()
+    if request.method == 'POST':
+        form = CreateUnitForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('paramedics_with_assigned_unit_list')
+    context = {
+        'form': form,
+    }
+    return render(request,'medic/create_unit.html',context)
+
+
+
+@login_required
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def assign_paramedics_to_units(request):
     form = AssignUnitFullFormWithParamedicsAdd()
     if request.method == 'POST':
-        if AssignUnitCreateWithParamedics.objects.filter(paramedics = request.POST.get('paramedics'),
-                                                            uni_name = request.POST.get('uni_name')).exists():
-            messages.success(request,'Paramedic is already assigned to that group')
-            return redirect('assign_paramedics_to_units')
-
         form = AssignUnitFullFormWithParamedicsAdd(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request,'Paramedic assigned')
-            return redirect('assign_paramedics_to_units')
+            assigned, created = AssignUnitCreateWithParamedics.objects.get_or_create(
+                uni_name = form.cleaned_data['uni_name'],
+                paramedics = form.cleaned_data['paramedics']
+            )
+            if created:
+                messages.success(request,'Paramedic assigned')
+                return redirect('assign_paramedics_to_units')
+            if assigned:
+                messages.success(request,'Paramedic already assigned to this unit')
+                return redirect('assign_paramedics_to_units')
+            
     context = {
         'form': form,
     }
@@ -2204,3 +2229,31 @@ def paramedics_with_assigned_unit_list(request):
     return render(request,'medic/paramedics_with_assigned_unit_list.html',context)
 
 
+@csrf_exempt
+def show_medic_via_selected_unit(request):
+    data = []
+    if request.method == 'POST':
+        frontend_data = request.POST
+        for k,v in frontend_data.items():
+            if k == 'val':
+                id = v
+        medics = AssignUnitCreateWithParamedics.objects.filter(
+            uni_name_id = id
+        )
+
+        if medics:
+            for i in medics:
+                prefetch = {
+                    'found': True,
+                    'username': i.paramedics.username,
+                    'contact': i.paramedics.contact,
+                    'user_id': i.paramedics.id,
+                }
+                data.append(prefetch)
+        else:
+            prefetch = {
+                'found': False,
+                'msg': 'No paramedic assigned with this unit'
+            }
+            data.append(prefetch)
+        return JsonResponse(data,safe=False)

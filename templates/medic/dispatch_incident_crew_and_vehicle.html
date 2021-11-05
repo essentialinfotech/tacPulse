@@ -166,10 +166,7 @@
                     <div class="col-md-8">
                         <div class="fomr-group">
                             <label for="">These are the paramedics assigned with your selected unit</label> <br>
-                            {% for i in assigned_medic_with_uni %}
-                            <a style="display: none;" href="{% url 'profile' i.paramedics.id %}" class="medics"
-                                id="{{ i.id }}">{{ i.paramedics.username }}</a>
-                            {% endfor %}
+                            <p id="fetch_paramedics_from_server"></p>
                         </div>
                     </div>
 
@@ -178,14 +175,12 @@
                     
                     <div class="col-md-12">
                         <div class="form-group mt-2">
-                            <label for="other_medics">No I want to add other paramedics</label>
-                            <input type="checkbox" name="other_medics" id="other_medics"> <br>
-                            
+                            <label for="other_medics" style="font-weight: bold;">No I want to add other paramedics</label> <br>
+                            <input type="checkbox" name="other_medics" id="other_medics"> 
                         </div>
                     </div>
 
                     <div class="col-md-12" id="show_add_paramedics" >
-                        <label>Paramedics</label> <br>
                         <select class="form-control select2" id="paramedics" name="paramedics" multiple="multiple">
                             {% for i in user %}
                                 <option value="{{ i.id }}">{{ i.username }}</option>
@@ -239,16 +234,34 @@
 <script>
     $('#id_assigned_unit').change(function () {
         var selected_unit = $(this).children("option:selected").val();
-        var medics = document.getElementsByClassName('medics')
-
-        for (var i = 0; i < medics.length; i++) {
-            if (medics[i].id == selected_unit) {
-                medics[i].style.display = 'block';
-            }
-            else {
-                medics[i].style.display = 'none';
-            }
+        backend_data = {
+            'val': selected_unit,
         }
+        $.ajax({
+            type: 'POST',
+            url: '/showing/medic/via/unit/selection/',
+            data: backend_data,
+            success: function(response){
+            $("#fetch_paramedics_from_server").empty();
+                $.each(response, function(key, value) {
+                    if(value.found === true){
+                        var username = value.username;
+                        var contact = value.contact;
+                        console.log(username)
+                        $("#fetch_paramedics_from_server").append(
+                            "<div >" + username + ' ' + contact + " </div>"
+                        );
+                    } 
+
+                    if(value.found === false){
+                        $("#fetch_paramedics_from_server").append(
+                            "<div >" + value.msg + " </div>"
+                        );
+                    }
+                    
+                })
+            }
+        })
     })
 </script>
 

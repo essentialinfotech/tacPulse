@@ -14,10 +14,17 @@ from Accounts.models import User
 
 
 class Panic(models.Model):
+    
+    FOR_WHOME = [
+        ('Yes', 'Yes'),
+        ('No', 'No')
+    ]
+
     emergency_contact = models.CharField(max_length=40, blank=True, null=True)
     panic_sender = models.ForeignKey(
         User, blank=True, null=True, on_delete=models.CASCADE)
     reason = models.CharField(max_length=200, blank=False, null=False)
+    for_whome = models.CharField(max_length=10,blank=True,null=True, choices=FOR_WHOME)
     place = models.CharField(max_length=2000, blank=True, null=True)
     lat = models.CharField(max_length=200, blank=True, null=True)
     lng = models.CharField(max_length=200, blank=True, null=True)
@@ -326,7 +333,7 @@ class AmbulanceModel(models.Model):
         return str(self.id)
 
 
-class AssignUnitCreateWithParamedics(models.Model):
+class UnitNames(models.Model):
     ASSIGNED_UNIT = [
         ('SDO1','SDO1'),
         ('L01','L01'),
@@ -342,15 +349,20 @@ class AssignUnitCreateWithParamedics(models.Model):
         ('TP11','TP11'),
         ('TP10','TP10'),
     ]
-    paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
-    uni_name = models.CharField(max_length = 100,blank=True,null=True,choices = ASSIGNED_UNIT)
+    uni_name = models.CharField(max_length = 100,blank=True,null=True)
 
     def __str__(self):
         return self.uni_name
 
+class AssignUnitCreateWithParamedics(models.Model):
+    uni_name = models.ForeignKey(UnitNames,on_delete=models.CASCADE,blank=True,null=True)
+    paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+    
+    def __str__(self):
+        return self.uni_name.uni_name
+
 
 class DispatchIncidentCrewAndVehicle(models.Model):
-
 
     VEHICLE = [
         ('1','1'),
@@ -369,7 +381,7 @@ class DispatchIncidentCrewAndVehicle(models.Model):
     ]
 
     parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
-    assigned_unit = models.ForeignKey(AssignUnitCreateWithParamedics,on_delete=models.CASCADE,blank=True,null=True)
+    assigned_unit = models.ForeignKey(UnitNames,on_delete=models.CASCADE,blank=True,null=True)
     paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     vehicle_total = models.CharField(max_length=50,choices=VEHICLE)
     unit_reg = models.CharField(max_length=30,default='BH 17WM GP')

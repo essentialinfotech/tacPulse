@@ -19,6 +19,7 @@ urlpatterns = [
     path('dispatch/profile/<hashid:id>/',
          dispatch_profile, name='dispatch_profile'),
     path('user/profile/<hashid:id>/', user_profile, name='user_profile'),
+    path('medic/profile/<hashid:id>/', medic_profile, name = 'medic_profile'),
 
     path('monthly_request_chart_ambulance/', monthly_request_chart_ambulance,
          name='monthly_request_chart_ambulance'),

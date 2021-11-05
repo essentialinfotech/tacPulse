@@ -177,8 +177,8 @@ def register(request):
             regex = regex_validation(number)
             if regex is True:
                 user.save()
-                login(request, user,
-                      backend='django.contrib.auth.backends.ModelBackend')
+                # login(request, user,
+                #       backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('profile', id=user.id)
             else:
                 return HttpResponse('Invalid phone number')
@@ -231,6 +231,29 @@ def admin_profile(request, id):
         'id': id,
     }
     return render(request, 'accounts/admin_profile.html', context)
+
+
+@login_required
+@user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
+def medic_profile(request, id):
+    user = User.objects.filter(medic = True, id = id, is_superuser = False)
+    chat = User.objects.filter(~Q(id = request.user.id))
+    patients = User.objects.filter(is_superuser=False, is_staff=False)
+    panic_req_month = Panic.objects.filter(timestamp__month=this_month,
+                                           timestamp__year=this_year).order_by('-id')
+    task = TaskModel.objects.filter(dispatch_id=id, created_on__month = this_month)
+    assesments = Assesment.objects.filter(to_user_id=id)
+    context = {
+        'user': user,
+        'chat': chat,
+        'patients': patients,
+        'panic_req_month': panic_req_month,
+        'task': task,
+        'assesments': assesments,
+        'id': id,
+    }
+    return render(request, 'accounts/medic_profile.html', context)
+
 
 @login_required
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)

@@ -8,6 +8,7 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <style>
         #map {
             height: 100%;
@@ -119,7 +120,11 @@
                     <form id="form" method="post" action="{% url 'panic_system' %}">
                         {% csrf_token %}
                         <textarea required name="reason" id="reason" class="form-control mb-1" style="resize: none;" placeholder="Reason for a panic request"></textarea>
+                        <div class="form-group my-2">
+                            <label for="">Is This Panic is for you?</label> {{ form.for_whome }}
+                        </div>
                         <input type="text" name="emergency_contact" id="emergency_contact" class="form-control mb-1" placeholder="Emergency Contact">
+                        <button type="button" class="btn btn-info my-2" id="profile_contact">Add My Profile Number Here <i class="fa fa-arrow-up"></i> </button>
                         <input readonly class="form-control mb-1" type="text" name="lat" id="lat" placeholder="Latitude" style="display: none;">
                         <input readonly class="form-control mb-1" type="text" name="lng" id="lng" placeholder="Longitude" style="display: none;">
                         <input readonly class="form-control mb-1" type="text" name="place" id="place" placeholder="place">
@@ -384,6 +389,13 @@
                 input.value = "";
             });
         }
+    </script>
+
+    <script>
+        $('#profile_contact').click(function() {
+            contact = " {{ request.user.contact }} "
+            $('#emergency_contact').val(contact)
+        })
     </script>
 </body>
 

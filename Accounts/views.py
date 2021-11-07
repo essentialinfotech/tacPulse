@@ -156,7 +156,6 @@ def register(request):
         form = UserCreation(request.POST, request.FILES)
         is_dispatch = request.POST.get('is_staff')
         medic = request.POST.get('medic')
-        
         email = request.POST.get('username')
 
         if is_dispatch is not None:
@@ -192,6 +191,8 @@ def profile(request, id):
         return redirect('dispatch_profile', id)
     elif user.is_superuser:
         return redirect('my_profile', id)
+    elif user.medic and not user.is_staff:
+        return redirect('medic_profile', id)
     else:
         return redirect('user_profile', id)
 

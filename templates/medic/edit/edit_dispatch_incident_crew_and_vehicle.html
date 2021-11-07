@@ -1,4 +1,4 @@
-{% extends '../base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <style>
     select {
         border: none !important;
@@ -21,6 +21,7 @@
     }
 </style>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
@@ -48,7 +49,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <form method="POST"
-                                                action="{% url 'dispatch_incident_crew_and_vehicle' id %}">
+                                                action="{% url 'edit_dispatch_incident_crew_and_vehicle' id %}">
                                                 {% csrf_token %}
                                                 <div class="form-group">
                                                     <label for="recipient-name" class="col-form-label">Senior
@@ -60,7 +61,7 @@
                                             <hr>
 
                                             <form method="POST"
-                                                action="{% url 'dispatch_incident_crew_and_vehicle' id %}">
+                                                action="{% url 'edit_dispatch_incident_crew_and_vehicle' id %}">
                                                 {% csrf_token %}
                                                 <div class="form-group">
                                                     <label for="recipient-name" class="col-form-label">Assist01
@@ -72,7 +73,7 @@
 
 
                                             <form method="POST"
-                                                action="{% url 'dispatch_incident_crew_and_vehicle' id %}">
+                                                action="{% url 'edit_dispatch_incident_crew_and_vehicle' id %}">
                                                 {% csrf_token %}
                                                 <div class="form-group">
                                                     <label for="recipient-name" class="col-form-label">Assist02
@@ -111,7 +112,7 @@
                 </div>
             </div>
             {% endif %}
-            <form method="POST" action="{% url 'dispatch_incident_crew_and_vehicle' id %}">
+            <form method="POST" action="{% url 'edit_dispatch_incident_crew_and_vehicle' id %}">
                 {% csrf_token %}
 
                 <div class="row shadow p-3 mb-10 bg-white rounded">
@@ -163,39 +164,6 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
-                        <div class="fomr-group">
-                            <label for="">These are the paramedics assigned with your selected unit</label> <br>
-                            {% for i in assigned_medic_with_uni %}
-                            <a style="display: none;" href="{% url 'profile' i.paramedics.id %}" class="medics"
-                                id="{{ i.id }}">{{ i.paramedics.username }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-
-
-                    
-                    <div class="col-md-12">
-                        <div class="form-group mt-2">
-                            <label for="other_medics">No I want to add other paramedics</label>
-                            <input type="checkbox" name="other_medics" id="other_medics"> <br>
-                            
-                        </div>
-                    </div>
-
-                    <div class="col-md-12" id="show_add_paramedics" >
-                        <label>Paramedics</label> <br>
-                        <select class="form-control select2" id="paramedics" name="paramedics" multiple="multiple">
-                            {% for i in user %}
-                                <option value="{{ i.id }}">{{ i.username }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <br>
-
-
                 </div>
 
 
@@ -205,70 +173,29 @@
                             <input type="checkbox" required name="main_form" id="main_form">
                         </div>
                     </div>
-                    <button type="submit" style="border-radius: 0px!important;" class="btn btn-success">Move Next <i
-                            class="fa fa-arrow-right"></i> </button>
+                    <button type="submit" style="border-radius: 0px!important;" class="btn btn-success">Move Next 
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
                 </div>
 
 
             </form>
 
             <div class="input-group mb-3">
-                <a href="{% url 'edit_emergency_dispatch_incident_report_call_intake_phase' id  %}"
+                <a href="{% url 'edit_emergency_dispatch_incident_report_call_intake_phase' parent.id  %}"
                     style="border-radius: 0px!important;" class="btn btn-success">Edit Previous <i
-                        class="fa fa-arrow-left"></i>
+                        class="fa fa-arrow-left"></i> 
                 </a>
-
             </div>
 
-            <div>
-                {% for i in assigned_units %}
-                <li>
-                    <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}"> {{ i.assigned_unit }} Edit</a>
-                </li>
-                {% endfor %}
-            </div>
+            {% for i in assigned_units %}
+            <li>
+                <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}"> {{ i.assigned_unit }} Edit</a>
+            </li>
+            {% endfor %}
         </div>
     </div>
 </div>
 
-
-{% endblock %}
-
-{% block js %}
-
-<script>
-    $('#id_assigned_unit').change(function () {
-        var selected_unit = $(this).children("option:selected").val();
-        var medics = document.getElementsByClassName('medics')
-
-        for (var i = 0; i < medics.length; i++) {
-            if (medics[i].id == selected_unit) {
-                medics[i].style.display = 'block';
-            }
-            else {
-                medics[i].style.display = 'none';
-            }
-        }
-    })
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('#paramedics').select2();
-        $('#show_add_paramedics').css("pointer-events", "none");
-    });
-</script>
-
-<script>
-    $('#other_medics').click(function(){
-        if (this.checked == true){
-            $('#show_add_paramedics').css("pointer-events","");
-            $('.medics').css("display", "none");
-        }
-        else{
-            $('#show_add_paramedics').css("pointer-events", "none");
-        }
-    })
-</script>
 
 {% endblock %}

@@ -40,6 +40,7 @@ from Accounts.decorators import \
                                 has_perm_admin_dispatch
 
 from django.utils.decorators import method_decorator
+import requests
 
 # global
 this_month = datetime.datetime.now().month
@@ -244,6 +245,10 @@ def ambulance_request(request):
 
 
 def dispatch_incident_crew_and_vehicle(request,id):
+    user = User.objects.filter(medic = True)
+    assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
+    assigned_medic_with_uni = AssignUnitCreateWithParamedics.objects.all()
+
     form = DispatchIncidentCrewAndVehicleForm()
     senior_form = SeniorForm()
     assist_1_form = Assist01Form()
@@ -273,14 +278,30 @@ def dispatch_incident_crew_and_vehicle(request,id):
                 instance = form.save(commit=False)
                 instance.parent_id = id
                 instance.save()
+
+                # requests.post(
+                #     'https://api.bulksms.com/v1/messages',
+                #     headers = {
+                #             'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
+                #         },
+
+                #     json = {
+                #             "to": "+27662232625",
+                #             "body": "test"
+                #         }
+                # )
+
                 return redirect('add_another_dispatch_incident_crew_and_vehicle', id)
 
     context = {
+        'user': user,
         'form': form,
+        'assigned_medic_with_uni': assigned_medic_with_uni,
         'senior_form': senior_form,
         'assist_1_form': assist_1_form,
         'assist_2_form': assist_2_form,
-        'id': id
+        'assigned_units': assigned_units,
+        'id': id,
     }
     return render(request,'medic/dispatch_incident_crew_and_vehicle.html',context)
 
@@ -2086,5 +2107,100 @@ def delete_quotation_event_sport_report(request,id):
 # ends
 
 @login_required
-def edit_emergency_dispatch_incident_report(request,id):
-    pass
+def edit_emergency_dispatch_incident_report_call_intake_phase(request,id):
+    obj = get_object_or_404(AmbulanceModel, id=id)
+    form = EmergencyMedDisIncidentReportForm(instance = obj)
+    if request.method == 'POST':
+        form = EmergencyMedDisIncidentReportForm(request.POST,instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect('dispatch_incident_crew_and_vehicle', id)
+    context = {
+        'form': form,
+        'id': id,
+    }
+    return render(request,'medic/edit/edit_emergency_dispatch_incident_report_call_intake_phase.html',context)
+
+
+@login_required
+def edit_dispatch_incident_crew_and_vehicle(request,id):
+    user = User.objects.filter(medic = True)
+
+    obj = get_object_or_404(DispatchIncidentCrewAndVehicle, id=id)
+    parent = get_object_or_404(AmbulanceModel, id = obj.parent.id)
+    assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent = parent)
+
+    form = DispatchIncidentCrewAndVehicleForm(instance = obj)
+    senior_form = SeniorForm()
+    assist_1_form = Assist01Form()
+    assist_2_form = Assist02Form()
+    if request.method == 'POST':
+        senior_form = SeniorForm(request.POST)
+        assist_1_form = Assist01Form(request.POST)
+        assist_2_form = Assist02Form(request.POST)
+
+        main_form = request.POST.get('main_form')
+
+        if senior_form.is_valid():
+            senior_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_1_form.is_valid():
+            assist_1_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if assist_2_form.is_valid():
+            assist_2_form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        if main_form is not None:
+            form = DispatchIncidentCrewAndVehicleForm(request.POST,instance=obj)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.parent = parent
+                instance.save()
+                return redirect('add_another_dispatch_incident_crew_and_vehicle', id)
+
+    context = {
+        'user': user,
+        'form': form,
+        'senior_form': senior_form,
+        'assist_1_form': assist_1_form,
+        'assist_2_form': assist_2_form,
+        'parent': parent,
+        'assigned_units': assigned_units,
+        'id': id,
+    }
+    return render(request,'medic/edit/edit_dispatch_incident_crew_and_vehicle.html',context)
+
+
+@login_required
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def assign_paramedics_to_units(request):
+    form = AssignUnitFullFormWithParamedicsAdd()
+    if request.method == 'POST':
+        if AssignUnitCreateWithParamedics.objects.filter(paramedics = request.POST.get('paramedics'),
+                                                            uni_name = request.POST.get('uni_name')).exists():
+            messages.success(request,'Paramedic is already assigned to that group')
+            return redirect('assign_paramedics_to_units')
+
+        form = AssignUnitFullFormWithParamedicsAdd(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Paramedic assigned')
+            return redirect('assign_paramedics_to_units')
+    context = {
+        'form': form,
+    }
+    return render(request,'medic/assign_paramedics_to_units.html',context)
+
+
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def paramedics_with_assigned_unit_list(request):
+    units = AssignUnitCreateWithParamedics.objects.all()
+    context = {
+        'units': units,
+    }
+    return render(request,'medic/paramedics_with_assigned_unit_list.html',context)
+
+

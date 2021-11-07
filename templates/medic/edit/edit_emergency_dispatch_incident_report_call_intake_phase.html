@@ -1,0 +1,252 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+    select {
+        border: none !important;
+        border-radius: 4px !important;
+        background-color: #f1f1f1 !important;
+    }
+
+    input {
+        padding: 5px !important;
+        border: none !important;
+        border-radius: 4px !important;
+        background-color: #f1f1f1 !important;
+    }
+
+    textarea {
+        padding: 16px 20px !important;
+        border: none !important;
+        border-radius: 4px !important;
+        background-color: #f1f1f1 !important;
+    }
+</style>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card mb-5">
+                <div class="card-header">
+                    <div class="card-title text-center">
+                        <h3 class="card-label">Emergency Medical Dispatch - Incident Report</h3>
+                    </div>
+                </div>
+            </div>
+            {% if messages %}
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">
+                    <p class="messages">
+                        {% for message in messages %}
+                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                        {{message}}
+                    </p>
+                    {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            <form method="POST" action="{% url 'edit_emergency_dispatch_incident_report_call_intake_phase' id %}">
+                {% csrf_token %}
+                <div class="row shadow p-3 mb-10 bg-white rounded">
+
+                    <div class="col-md-12">
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Call Intake Primary Phase</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mt-2">
+                            <label for="run_id">Run ID</label> {{ form.run_id }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Incident Category</label> {{ form.incident_category }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Chief Complaint</label> {{ form.chief_complain }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">PPE Level</label> {{ form.ppe_lvl }}
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-6">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Scene / Pick-Up Address</label> {{ form.pick_up_address }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Billing Type</label> {{ form.billing_type }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" id="blng_source" style="display: none;">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Billing Source</label> {{ form.billing_source }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" id="am_quoted" style="display: none;">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Amount Quoted</label>
+                            <input type="number" name="amount_quoted" id="amount_quoted" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Authorization Number</label> {{ form.authorization_number }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
+                    <div class="col-md-12">
+                        <div class="text-center bg-gray-600 text-white">
+                            <h3 style="font-family: lobster;">Call Intake Secondary Phase</h3>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Caller Name & Surname</label> {{ form.caller_name }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Caller Number</label> {{ form.caller_number }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Caller Company</label> {{ form.caller_company }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Caller Received Time</label> {{ form.call_received_time }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Time Call Posted to crew on whatsapp?</label> {{ form.time_call_posted_to_crew_on_whatsapp }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="c_complain">Crew Operational Status</label> {{ form.crew_operational_status }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                            <label for="how_many_units_dispatched">How Many Units Dispatched?</label> {{ form.how_many_units_dispatched }}
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <div style="border-radius: 0px!important;" class="input-group-text btn btn-success">
+                            <input type="checkbox" required name="main_form" id="main_form">
+                        </div>
+                    </div>
+                    <button type="submit" style="border-radius: 0px!important;" class="btn btn-success">Move Next <i
+                            class="fa fa-arrow-right"></i> </button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    var amount_quoted = document.getElementById('amount_quoted')
+    var id_billing_type = document.getElementById('id_billing_type')
+    var id_billing_source = document.getElementById('id_billing_source')
+
+    var billing_source_hide = document.getElementById('blng_source')
+    var am_quoted = document.getElementById('am_quoted')
+
+    id_billing_type.addEventListener('change', (e) => {
+        var selected_option = $('#id_billing_type option:selected').text();
+
+        if (selected_option == "MEDICAL AID / INSURANCE") {
+            if (billing_source_hide.style.display === 'none') {
+                billing_source_hide.style.display = 'block';
+                am_quoted.style.display = 'none';
+            }
+        }
+
+        if (selected_option == "PRIVATE (CASH)") {
+            if (am_quoted.style.display === 'none') {
+                am_quoted.style.display = 'block';
+                billing_source_hide.style.display = 'none';
+            }
+        }
+
+        if (selected_option == "RAF") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "WCA") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "FIXED RATE TRANSFER") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "STATE (DoH)") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "MEMBERSHIP") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "COMMUNITY INITIATIVE") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+        if (selected_option == "HELIVAC / CIMS") {
+            am_quoted.style.display = 'none';
+            billing_source_hide.style.display = 'none';
+        }
+
+    })
+</script>
+
+{% endblock %}

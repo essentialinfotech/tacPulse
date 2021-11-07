@@ -107,12 +107,31 @@ class EmergencyMedDisIncidentReportForm(forms.ModelForm):
             }
 
 
+class AssignUnitFullFormWithParamedicsAdd(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AssignUnitFullFormWithParamedicsAdd, self).__init__(*args, **kwargs)
+        instance = kwargs.pop('instance', User)
+        self.fields["paramedics"].queryset = User.objects.filter(medic=True)
+    class Meta:
+        model = AssignUnitCreateWithParamedics
+        fields = '__all__'
+        widgets = {
+            'paramedics': forms.Select(attrs={'class': 'form-control'}),
+            'uni_name': forms.Select(attrs={'class': 'form-control'}),
+            }
+
 class DispatchIncidentCrewAndVehicleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DispatchIncidentCrewAndVehicleForm, self).__init__(*args, **kwargs)
+        instance = kwargs.pop('instance', User)
+        self.fields["paramedics"].queryset = User.objects.filter(medic=True)
+        
     class Meta:
         model = DispatchIncidentCrewAndVehicle
         fields = '__all__'
         widgets = {
             'assigned_unit': forms.Select(attrs={'class': 'form-control'}),
+            'paramedics': forms.Select(attrs={'class': 'form-control'}),
             'vehicle_total': forms.Select(attrs={'class': 'form-control'}),
             'unit_reg': forms.TextInput(attrs={'class': 'form-control'}),
             'senior': forms.Select(attrs={'class': 'form-control'}),

@@ -161,6 +161,10 @@ urlpatterns = [
      path('ambulance/request/procedure/', ambulance_request_real, name = 'ambulance_request_real'),
 
      path('blog/comment/for/', blog_comment, name = 'blog_comment'),
+     path('update/call_intake_phase/<int:id>/', edit_emergency_dispatch_incident_report_call_intake_phase, name = 'edit_emergency_dispatch_incident_report_call_intake_phase'),
+     path('update/crew_and_vehicle_detail/<int:id>/', edit_dispatch_incident_crew_and_vehicle, name = 'edit_dispatch_incident_crew_and_vehicle'),
+     path('assigning/paramedics/to/units/', assign_paramedics_to_units, name = 'assign_paramedics_to_units'),
+     path('list/units/', paramedics_with_assigned_unit_list, name = 'paramedics_with_assigned_unit_list'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

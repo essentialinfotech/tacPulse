@@ -41,15 +41,47 @@
     
                         <strong>Assigned Unit</strong>
                         {% for i in assigned_units %}
-                            <li>{{ i.assigned_unit }}</li>
+                            <li>
+                                <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}"> {{ i.assigned_unit }} Edit</a>
+                            </li>
                         {% endfor %}
     
                         <div class="form-group">
                             <a href="{% url 'dispatch_incident_crew_and_vehicle' id %}" class="btn btn-success mt-5">Add Another Crew & Vehicle Details</a>
-                            <a href="{% url 'dispatch_incident_travel_details' id %}" class="btn btn-success mt-5">Next</a>   
+                            <!-- <a href="dispatch_incident_travel_details id" class="btn btn-success mt-5"></a> -->
                         </div>
+
                     </div>
                     
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <div class="my-5">
+                            <h3>SMS Notification will be sent to the paramedics showing down below</h3>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="display table" id="unit_table">
+                            <thead>
+                                <th>Unit Name</th>
+                                <th>Assigned Paramedic</th>
+                                <th>Paramedic Contact</th>
+                            </thead>
+                            <tbody>
+                                {% for i in assigned_units %}
+                                <tr>
+                                    <td>{{ i.assigned_unit.uni_name }}</td>
+                                    <td>
+                                        <a href="{% url 'profile' i.assigned_unit.paramedics.id %}">{{ i.assigned_unit.paramedics.username }}</a>
+                                    </td>
+                                    <td>{{ i.assigned_unit.paramedics.contact }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 

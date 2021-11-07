@@ -319,14 +319,14 @@ class AmbulanceModel(models.Model):
     assigned = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
 
+    closed = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.id)
 
 
-class DispatchIncidentCrewAndVehicle(models.Model):
-
+class AssignUnitCreateWithParamedics(models.Model):
     ASSIGNED_UNIT = [
         ('SDO1','SDO1'),
         ('L01','L01'),
@@ -342,6 +342,15 @@ class DispatchIncidentCrewAndVehicle(models.Model):
         ('TP11','TP11'),
         ('TP10','TP10'),
     ]
+    paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+    uni_name = models.CharField(max_length = 100,blank=True,null=True,choices = ASSIGNED_UNIT)
+
+    def __str__(self):
+        return self.uni_name
+
+
+class DispatchIncidentCrewAndVehicle(models.Model):
+
 
     VEHICLE = [
         ('1','1'),
@@ -360,14 +369,14 @@ class DispatchIncidentCrewAndVehicle(models.Model):
     ]
 
     parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
-    assigned_unit = models.CharField(max_length=100,choices=ASSIGNED_UNIT)
+    assigned_unit = models.ForeignKey(AssignUnitCreateWithParamedics,on_delete=models.CASCADE,blank=True,null=True)
+    paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     vehicle_total = models.CharField(max_length=50,choices=VEHICLE)
     unit_reg = models.CharField(max_length=30,default='BH 17WM GP')
     senior = models.ForeignKey(Senior,on_delete=SET_NULL,null=True)
     assist01 = models.ForeignKey(Assist01,on_delete=SET_NULL,null=True)
     assist02 = models.ForeignKey(Assist02,on_delete=SET_NULL,null=True)
     loc = models.CharField(max_length=200,choices=LOC)
-
 
 class DispatchIncidentServiceNotes(models.Model):
     SERVICE_NOTES = [

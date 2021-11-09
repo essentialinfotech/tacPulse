@@ -48,3 +48,17 @@ class HospitalTransferSerializer(serializers.ModelSerializer):
         model = HospitalTransferModel
         fields = '__all__'
         depth = 1
+
+
+# dispatch incident
+class AsignedParamedicsWholeDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle
+        fields = '__all__'
+        depth = 3
+
+class ParamedicsPhaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParamedicsPhases
+        fields = '__all__'
+        depth = 3

@@ -30,6 +30,7 @@ urlpatterns = [
          name='edit_profile_dispatch'),
     path('edit/profile/user/<hashid:id>/',
          edit_profile_user, name='edit_profile_user'),
+     path('edit/profile/medic/<hashid:id>/', edit_profile_medic, name = 'edit_profile_medic'),
 
     path('registration/', register, name='register'),
 
@@ -79,6 +80,8 @@ urlpatterns = [
      path('message/<hashid:id>/', send_message, name = 'send_message'),
      path('message/deleting/<hashid:id>/', delete_message, name = 'delete_message'),
      path('track/pos/dispatch/', post_pos_dispatch, name = 'post_pos_dispatch' ),
+     path('corporate/users/', corporate_users, name = 'corporate_users'),
+     path('manage/roles/<int:id>/', manage_role, name = 'manage_role'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

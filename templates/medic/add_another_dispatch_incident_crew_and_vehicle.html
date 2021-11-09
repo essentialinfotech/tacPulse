@@ -56,36 +56,6 @@
                 </div>
 
 
-                <div class="col-md-12">
-                    <div class="text-center">
-                        <div class="my-5">
-                            <h3>SMS Notification will be sent to the paramedics showing down below</h3>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="display table" id="unit_table">
-                            <thead>
-                                <th>Unit Name</th>
-                                <th>Assigned Paramedic</th>
-                                <th>Paramedic Contact</th>
-                            </thead>
-                            <tbody>
-                                {% for i in assigned_units %}
-                                <tr>
-                                    <td>{{ i.assigned_unit.uni_name }}</td>
-                                    <td>
-                                        <a href="{% url 'profile' i.assigned_unit.paramedics.id %}">{{ i.assigned_unit.paramedics.username }}</a>
-                                    </td>
-                                    <td>{{ i.assigned_unit.paramedics.contact }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                
-
             </div>
            
         </div>

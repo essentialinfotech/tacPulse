@@ -75,10 +75,22 @@
                     <div class="col-lg-6 draggable-zone">
 
                         <div class="draggable">
-                            <label class="draggable-handle" for="dispatch">Dispatch*</label>
+                            <label class="draggable-handle" for="dispatch">Corporate User*</label>
                             <select name="dispatch" class="form-control mb-2 draggable-handle" id="dispatch" name="dispatch">
-                            {% for i in dispatch %}
-                            <option value="{{i.id}}">{{i.first_name}} {{i.last_name}}</option>
+                            {% for i in dispatch_or_medic %}
+                                <option value="{{ i.id }}">{{ i.first_name|title }} {{ i.last_name|title }} 
+                                    {% if i.is_staff and i.medic %}
+                                        (Dispatch & Medic)
+                                    {% endif %}
+
+                                    {% if i.is_staff and not i.medic %}
+                                        (Dispatch)
+                                    {% endif %}
+
+                                    {% if i.medic and not i.is_staff %}
+                                        (Medic)
+                                    {% endif %}
+                                </option>
                           {% endfor %}
                         </select>
                         </div>

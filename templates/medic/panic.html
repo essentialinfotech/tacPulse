@@ -393,8 +393,15 @@
 
     <script>
         $('#profile_contact').click(function() {
-            contact = " {{ request.user.contact }} "
-            $('#emergency_contact').val(contact)
+            var contact = "{{ request.user.contact }}"
+            if(contact != ''){
+                $('#emergency_contact').val(contact)
+            }
+            else{
+                alert('Something went wrong! Please input a number manually')
+                $('#emergency_contact').focus();
+            }
+            
         })
     </script>
 </body>

@@ -137,6 +137,7 @@ class Assist02(models.Model):
     def __str__(self):
         return self.a2_name
 
+# dispatch incident
 class AmbulanceModel(models.Model):
     INCIDENT = [
         ('Primary','Primary'),
@@ -306,6 +307,7 @@ class AmbulanceModel(models.Model):
     ]
     
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
+    panic = models.ForeignKey(Panic, on_delete=models.CASCADE, blank=True, null=True)
     run_id = models.CharField(max_length=100, blank=False, null=False)
     chief_complain = models.TextField(blank=True,null=True)
     incident_category = models.CharField(max_length=100, blank=False, null=False,choices=INCIDENT)
@@ -389,6 +391,42 @@ class DispatchIncidentCrewAndVehicle(models.Model):
     assist01 = models.ForeignKey(Assist01,on_delete=SET_NULL,null=True)
     assist02 = models.ForeignKey(Assist02,on_delete=SET_NULL,null=True)
     loc = models.CharField(max_length=200,choices=LOC)
+
+
+
+class AssignedParamedicsAfterDispatchIncidentCrewAndVehicle(models.Model):
+    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
+    for_crew = models.ForeignKey(DispatchIncidentCrewAndVehicle,on_delete=models.CASCADE,blank=True,null=True)
+    paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+
+    # assigned medics will respond
+    service_completed_by_paramedic = models.BooleanField(default=False)
+
+
+class ParamedicsPhases(models.Model):
+
+    PHASES = [
+        ('Respond','Respond'),
+        ('On-Scene','On-Scene'),
+        ('Departs-Scene','Departs-Scene '),
+        ('Arrives-Hospital','Arrives-Hospital'),
+        ('Hand-Over','Hand-Over'),
+        ('Return-Back-To-Back','Return-Back-To-Back'),
+        ('Service-Completed','Service-Completed'),
+    ]
+
+    parent = models.ForeignKey(AssignedParamedicsAfterDispatchIncidentCrewAndVehicle,on_delete=models.CASCADE,blank=True,null=True)
+    status = models.CharField(max_length=50,blank=True,null=True,choices=PHASES)
+
+    medic_loc = models.CharField(max_length=100,blank=True,null=True)
+    target_loc = models.CharField(max_length=100,blank=True,null=True)
+    action_time = models.CharField(max_length=100,blank=True,null=True)
+    odo = models.PositiveBigIntegerField(blank=True,null=True)
+    dis = models.CharField(max_length=100,blank=True,null=True)
+    dur = models.CharField(max_length=100,blank=True,null=True)
+
+
+
 
 class DispatchIncidentServiceNotes(models.Model):
     SERVICE_NOTES = [

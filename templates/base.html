@@ -247,6 +247,15 @@
                                             </li>
 
                                             <li class="menu-item" aria-haspopup="true">
+                                                <a href="{% url 'corporate_users' %}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Corporate User's</span>
+                                                </a>
+                                            </li>
+
+                                            <li class="menu-item" aria-haspopup="true">
                                                 <a href="{% url 'create_unit' %}" class="menu-link">
                                                     <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
@@ -1643,7 +1652,22 @@
                 </div>
                 <div class="d-flex flex-column">
                     <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ request.user.first_name }}</a>
-                    <div class="text-muted mt-1">{% if request.user.is_superuser %} Admin {% elif request.user.is_staff and not request.user.is_superuser %} Dispatch {% else %} User {% endif %}
+                    <div class="text-muted mt-1">
+                        {% if request.user.is_superuser %}
+                            Admin 
+                        {% endif %}
+
+                        {% if request.user.is_staff and not request.user.is_superuser and not request.user.medic %} 
+                            Dispatch
+                        {% endif %}
+
+                        {% if request.user.is_staff and request.user.medic %}
+                            Dispatch/Medic
+                        {% endif %}
+
+                        {% if request.user.medic and not request.user.is_staff %} 
+                            Medic 
+                        {% endif %}
                     </div>
                     <div class="navi mt-2">
                         <a href="#" class="navi-item">
@@ -2304,7 +2328,7 @@
         <script src="{% static 'assets/js/pages/custom/login/login-3.js' %}"></script>
         <script src="{% static 'assets/js/pages/features/charts/apexcharts.js' %}"></script>
         <script src="{% static 'assets/js/pages/features/miscellaneous/bootstrap-notify.js' %}"></script>
-        <script src="{% static 'assets/js/pages/crud/forms/widgets/bootstrap-switch.js' %}"></script>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="{%static 'assets/js/pages/custom/profile/profile.js' %}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -2328,6 +2352,21 @@
             $(document).ready(function () {
                 $('#unit_table').DataTable({
                     responsive: true,
+                });
+            });
+
+            $(document).ready(function () {
+                $('#cosporate_users_list_table').DataTable({
+                    responsive: true,
+                });
+            });
+            
+            $(document).ready(function () {
+                $('#cosporate_user_change_role_table').DataTable({
+                    responsive: true,
+                    searching: false,
+                    paging: false,
+                    info: false
                 });
             });
         </script>

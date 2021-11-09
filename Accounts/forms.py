@@ -4,6 +4,7 @@ from django import forms
 from django.forms import fields
 from .models import *
 from django_toggle_switch_widget.widgets import DjangoToggleSwitchWidget
+from django.db.models import Q
 
 class UserCreation(UserCreationForm):
     class Meta:
@@ -36,7 +37,7 @@ class AssesmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AssesmentForm, self).__init__(*args, **kwargs)
         instance = kwargs.pop('instance', User)
-        self.fields["to_user"].queryset = User.objects.filter(is_staff=True,is_superuser=False)
+        self.fields["to_user"].queryset = User.objects.filter(Q(is_staff=True) | Q(medic = True),is_superuser=False)
     class Meta:
         model = Assesment
         fields = '__all__'

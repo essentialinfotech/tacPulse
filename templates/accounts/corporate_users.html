@@ -1,0 +1,67 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="text-center">
+                                <h3>Corporate User's</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="display table" id="cosporate_users_list_table">
+                                    <thead>
+                                        <th>Count</th>
+                                        <th>User's ID(Sensitive/Vulnerable if leaked to other's)</th>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Account Creation Date</th>
+                                        <th>Roles</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in user %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ i.id }}</td>
+                                                <td>{{ i.first_name|title }} {{ i.last_name|title }}</td>
+                                                <td>{{ i.contact }}</td>
+                                                <td>{{ i.email }}</td>
+                                                <td>{{ i.address }}</td>
+                                                <td>{{ i.date_joined }}</td>
+                                                <th>
+                                                    {% if i.is_staff %}
+                                                        Dispatch
+                                                    {% endif %}
+                                                    {% if i.medic %}
+                                                        Medic
+                                                    {% endif %}
+                                                </th>
+                                                <td>
+                                                    <a href="{% url 'manage_role' i.id %}" class="btn btn-dark">
+                                                        Manage Role
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -238,7 +238,6 @@ def ambulance_request(request):
                 return redirect('dispatch_incident_crew_and_vehicle', id=instance.id)
 
     context = {
-        # 'scribe_form': scribe_form,
         'form': form,
         }
     return render(request, 'medic/ambulance_request.html',context)
@@ -278,18 +277,50 @@ def dispatch_incident_crew_and_vehicle(request,id):
                 instance.parent_id = id
                 instance.save()
 
-                # requests.post(
-                #     'https://api.bulksms.com/v1/messages',
-                #     headers = {
-                #             'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
-                #         },
+                other_medics = request.POST.get('other_medics')
+                if other_medics is not None:
+                    medic_lists = request.POST.getlist('paramedics')
+                    medics = User.objects.filter(id__in = list(medic_lists)).values_list('contact', flat=True)
+                    for i in medic_lists:
+                        assigned_medics = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.create(
+                                                                                                parent = instance.parent,
+                                                                                                for_crew_id = instance.id,
+                                                                                                paramedics_id = i,
+                                                                                            )
 
-                #     json = {
-                #             "to": "+27662232625",
-                #             "body": "test"
-                #         }
-                # )
+                    # requests.post(
+                    #     'https://api.bulksms.com/v1/messages',
+                    #     headers = {
+                    #             'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
+                    #         },
 
+                    #     json = {
+                    #             "to": [medics],
+                    #             "body": "test"
+                    #         }
+                    # )
+
+                else:
+                    unit = request.POST.get('assigned_unit')
+                    get_unit_paramedics = AssignUnitCreateWithParamedics.objects.filter(uni_name_id = unit).values_list('paramedics__contact', flat=True)
+                    get_medic_ids = AssignUnitCreateWithParamedics.objects.filter(uni_name_id = unit).values_list('paramedics__id', flat=True)
+                    for i in get_medic_ids:
+                        assigned_medics = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.create(
+                                                                                                parent = instance.parent,
+                                                                                                for_crew_id = instance.id,
+                                                                                                paramedics_id = i,
+                                                                                            )
+                    # requests.post(
+                    #     'https://api.bulksms.com/v1/messages',
+                    #     headers = {
+                    #             'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
+                    #         },
+
+                    #     json = {
+                    #             "to": [get_unit_paramedics],
+                    #             "body": "test"
+                    #         }
+                    # )
                 return redirect('add_another_dispatch_incident_crew_and_vehicle', id)
 
     context = {
@@ -319,7 +350,7 @@ def dispatch_incident_travel_details(request,id):
     dispatch_incident_main_model = AmbulanceModel.objects.get(id = id)
     units = dispatch_incident_main_model.how_many_units_dispatched
     total_form = Vehicles_count_with_info_for_ambulance_request.objects.filter(parent_id = id).count()
-    print(units,type(units),total_form)
+    # print(units,type(units),total_form)
     if int(units) == total_form:
         return redirect('dispatch_incident_service_notes', id)
 
@@ -774,7 +805,7 @@ def check_panic_requests(request):
 @login_required
 def check_panic_requests_location(request, id):
     context = {}
-    if request.user.is_staff:
+    if request.user.is_staff or request.user.medic:
         task = False
         try:
             this_panic = Panic.objects.filter(id=id)
@@ -811,6 +842,7 @@ def check_panic_requests_location(request, id):
             panic = Panic.objects.get(id=id)
 
             context = {
+                'panic': panic,
                 'email': panic.panic_sender.username,
                 'first_name': panic.panic_sender.first_name,
                 'contact': panic.panic_sender.contact,
@@ -863,9 +895,12 @@ def panic_noti(request):
 @login_required
 def mark_seen_panic_noti(request,id):
     noti = PanicNoti.objects.get(id = id)
-    noti.is_seen = True
-    noti.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if request.user.is_superuser:
+        noti.is_seen = True
+        noti.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('you are not allowed to perform this action')
 
 @login_required
 def property_report(request):
@@ -1136,7 +1171,7 @@ def noti_length(request):
 
     if request.user.is_staff and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
-        h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False)
+        h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).count()
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
         total_noti_length = panic_noti + renewal_noti + h_transfer_noti
 
@@ -1459,12 +1494,14 @@ def hospital_transfer_noti_for_admin_dispatch(request):
 @login_required
 def h_transfer_noti_mark_seen(request,id):
     obj = HospitalTransferNoti.objects.get(id=id)
-    if request.user.is_staff:
+    if request.user.is_suseruser:
         obj.mark_read_admin = True
         obj.save()
-    else:
+    elif not request.user.medic and not request.user.is_staff:
         obj.mark_read_user = True
         obj.save()
+    else:
+        return HttpResponse('You are not allowed to perform this action')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -2185,6 +2222,10 @@ def edit_dispatch_incident_crew_and_vehicle(request,id):
 def create_unit(request):
     form = CreateUnitForm()
     if request.method == 'POST':
+        uni_name = request.POST.get('uni_name')
+        if UnitNames.objects.filter(uni_name__iexact = uni_name).exists():
+            messages.warning(request,f'A unit with {uni_name} already exists')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         form = CreateUnitForm(request.POST)
         if form.is_valid():
             form.save()
@@ -2257,3 +2298,5 @@ def show_medic_via_selected_unit(request):
             }
             data.append(prefetch)
         return JsonResponse(data,safe=False)
+    
+

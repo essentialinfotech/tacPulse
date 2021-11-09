@@ -148,3 +148,24 @@ class HospitalTransferList(generics.ListAPIView):
         serializer = HospitalTransferSerializer(transfers, many = True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
+
+# dispatch incident emergency api's
+class AmbulanceModelList(generics.ListAPIView):
+    permission_classes = [IsAuthenticated,]
+    def get(self,request):
+        crews = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.filter(paramedics = self.request.user, service_completed_by_paramedic = False).order_by('-id')
+        serializer = AsignedParamedicsWholeDetailSerializer(crews, many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class ParamedicsDifferentPhasesReportCreateApi(generics.CreateAPIView):
+    serializer_class = ParamedicsPhaseSerializer
+    permission_classes = [IsAuthenticated,]
+    def post(self,request,formate=None):
+        serializer = self.get_serializer(data = request.data)
+        parent_id = request.data["parent"]
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(parent_id = parent_id)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+

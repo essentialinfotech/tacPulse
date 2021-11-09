@@ -14,5 +14,9 @@ urlpatterns = [
     path('panic/crerate/', PanicCreate.as_view(), name = 'PanicCreate_api'),
     path('faq/', FAQLIST.as_view(), name = 'FAQLIST_api'),
     path('hospital/transfer/request/', HospitalTransferAPI.as_view(), name = 'HospitalTransferAPI_api'),
-    path('hospital/transfer/request/list/', HospitalTransferList.as_view(), name = 'HospitalTransferList')
+    path('hospital/transfer/request/list/', HospitalTransferList.as_view(), name = 'HospitalTransferList'),
+
+    # dispatch incident
+    path('assigned/paramedics/tasks/', AmbulanceModelList.as_view(), name = 'AmbulanceModelList_api'),
+    path('paramedic/phases/update/', ParamedicsDifferentPhasesReportCreateApi.as_view(), name = 'ParamedicsDifferentPhasesReportCreateApi_api'),
 ]

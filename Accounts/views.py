@@ -203,7 +203,7 @@ def admin_profile(request, id):
     from datetime import datetime, timedelta
     last_seven_days = datetime.today() - timedelta(days=7)
     
-    user = User.objects.filter(is_superuser=False, is_staff=False)
+    user = User.objects.filter(is_superuser=False, is_staff=False, medic = False)
     dispatch = User.objects.filter(is_staff=True, is_superuser=False)
     all_user = User.objects.filter(is_superuser=False)
     me = User.objects.filter(id=id)
@@ -236,9 +236,9 @@ def admin_profile(request, id):
 @login_required
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def medic_profile(request, id):
-    user = User.objects.filter(medic = True, id = id, is_superuser = False)
+    user = User.objects.filter(id = id)
     chat = User.objects.filter(~Q(id = request.user.id))
-    patients = User.objects.filter(is_superuser=False, is_staff=False)
+    patients = User.objects.filter(is_superuser = False, is_staff = False, medic = False)
     panic_req_month = Panic.objects.filter(timestamp__month=this_month,
                                            timestamp__year=this_year).order_by('-id')
     task = TaskModel.objects.filter(dispatch_id=id, created_on__month = this_month)
@@ -258,9 +258,9 @@ def medic_profile(request, id):
 @login_required
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def dispatch_profile(request, id):
-    user = User.objects.filter(is_staff=True, id=id, is_superuser=False)
+    user = User.objects.filter(id=id)
     chat = User.objects.filter(~Q(id = request.user.id))
-    patients = User.objects.filter(is_superuser=False, is_staff=False)
+    patients = User.objects.filter(is_superuser=False, is_staff=False, medic = False)
     panic_req_month = Panic.objects.filter(timestamp__month=this_month,
                                            timestamp__year=this_year).order_by('-id')
     task = TaskModel.objects.filter(dispatch_id=id, created_on__month = this_month)
@@ -279,7 +279,7 @@ def dispatch_profile(request, id):
 @login_required
 @user_passes_test(is_active, INACTIVE_REDIRECT_FIELD_NAME)
 def user_profile(request, id):
-    user = User.objects.filter(is_superuser=False, is_staff=False, id=id)
+    user = User.objects.filter(id=id)
     chat = User.objects.filter(~Q(id = request.user.id))
     ambulance_req = AmbulanceRequestModel.objects.filter(
         user_id=id, created_on__year=this_year)
@@ -391,6 +391,28 @@ def edit_profile_admin(request, id):
         'id': id,
     }
     return render(request, 'accounts/edit_profile_admin.html', context)
+
+@login_required
+def edit_profile_medic(request, id):
+    if id == request.user.id: 
+        data = User.objects.get(id=id)
+        form = EditProfile(instance=data)
+        if request.method == 'POST':
+            form = EditProfile(request.POST, request.FILES, instance=data)
+            if form.is_valid():
+                email = form.cleaned_data['username']
+                data.email = email
+                data.save()
+                form.save()
+                return redirect('profile', id)
+        context = {
+            'form': form,
+            'data': data,
+            'id': id,
+        }
+        return render(request, 'accounts/edit_profile_medic.html', context)
+    else:
+        return redirect('forbidden')
 
 @login_required
 @user_passes_test(has_perm_dispatch, REDIRECT_FIELD_NAME)
@@ -663,3 +685,43 @@ def post_pos_dispatch(request):
         user.save()
         print(user.latitude,user.longitude)
         return HttpResponse('Lat , Lng: Posted')
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def corporate_users(request):
+    user = User.objects.filter(Q(is_staff = True) | Q(medic = True), is_superuser = False)
+    context = {
+        'user': user
+    }
+    return render(request,'accounts/corporate_users.html',context)
+    
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def manage_role(request,id):
+    user = get_object_or_404(User, id=id)
+    if request.method == 'POST':
+        is_staff = request.POST.get('is_staff')
+        medic = request.POST.get('medic')
+
+        if is_staff is not None:
+            is_staff = True
+        else:
+            is_staff = False
+
+        if medic is not None:
+            medic = True
+        else:
+            medic = False
+
+        user.is_staff = is_staff
+        user.medic = medic
+        user.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    context = {
+        'user': user,
+        'id': id,
+    }
+    return render(request,'accounts/manage_roles.html',context)
+
+

@@ -8,6 +8,22 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
+                        {% if messages %}
+                            <div class="card-header">
+                                <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                                    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                    <div class="alert-text">
+                                        <p class="messages">
+                                            {% for message in messages %}
+                                        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                            {{message}}
+                                        </p>
+                                        {% endfor %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="card-body">
                             <form action="{% url 'create_unit' %}" method="post">
                                 {% csrf_token %}

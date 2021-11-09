@@ -353,7 +353,7 @@ class CompletedSchedule(LoginRequiredMixin, View):
 def task_create(request):
     if request.user.is_superuser:
         form = TaskModelForm()
-        dispatch = User.objects.filter(is_staff=True, is_superuser=False)
+        dispatch_or_medic = User.objects.filter(Q(is_staff =True) | Q(medic = True), is_superuser = False)
         schedule = ScheduleModel.objects.filter(assigned=False)
         ambulance = AmbulanceRequestModel.objects.filter(assigned=False)
         hospital = HospitalTransferModel.objects.filter(assigned=False)
@@ -389,7 +389,7 @@ def task_create(request):
 
         context = {
             'form': form,
-            'dispatch': dispatch,
+            'dispatch_or_medic': dispatch_or_medic,
             'schedule': schedule,
             'ambulance': ambulance,
             'panic': panic,

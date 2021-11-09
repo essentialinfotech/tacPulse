@@ -552,13 +552,13 @@ class DispatchIncidentPatientInformation(models.Model):
         ('DOA','DOA'),
     ]
 
-    parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
-    patient = models.CharField(max_length=50,choices=PATIENT)
-    p_priority = models.CharField(max_length=100,blank=True,null=True,choices=P_PRIORITY)
-    p_lvl_of_care = models.CharField(max_length=100,blank=True,null=True,choices=P_LEVEL_OF_CARE)
-    p_name = models.CharField(max_length=50,blank=True,null=True)
-    p_medical_aid_plan_option = models.CharField(max_length=50,blank=True,null=True)
-    p_medical_aid = models.CharField(max_length=50,blank=True,null=True)
+    parent = models.ForeignKey(AmbulanceModel, on_delete=models.CASCADE, blank=True, null=True)
+    patient = models.CharField(max_length=50, choices=PATIENT)
+    p_priority = models.CharField(max_length=100, blank=True, null=True, choices=P_PRIORITY)
+    p_lvl_of_care = models.CharField(max_length=100, blank=True, null=True, choices=P_LEVEL_OF_CARE)
+    p_name = models.CharField(max_length=50, blank=True, null=True)
+    p_medical_aid_plan_option = models.CharField(max_length=50, blank=True, null=True)
+    p_medical_aid = models.CharField(max_length=50, blank=True, null=True)
 
 
 class DispatchIncidentPhotos(models.Model):
@@ -714,6 +714,7 @@ class FAQ(models.Model):
 class CaseNote(models.Model):
     creator = models.ForeignKey(User,on_delete=SET_NULL,blank=True, null=True)
     case_panic = models.ForeignKey(Panic,on_delete=models.CASCADE,blank=True, null=True)
+    case_dispatch_form = models.ForeignKey(AmbulanceModel, on_delete=models.CASCADE, blank=True, null=True)
     case_no = models.TextField(blank=True, null=True)
     case_note = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)

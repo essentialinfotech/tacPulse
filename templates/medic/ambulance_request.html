@@ -51,6 +51,16 @@
             {% endif %}
             <form method="POST" action="{% url 'ambulance_request' %}" >
                 {% csrf_token %}
+
+                <div class="row shadow p-3 mb-10 bg-white rounded">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <p>Want to assign this form with a panic request?</p>
+                            <span>Please paste your panic id here (Optional) </span> <br>
+                            <input type="number" name="panic" id="panic" placeholder="123">
+                        </div>
+                    </div>
+                </div>
                 <div class="row shadow p-3 mb-10 bg-white rounded">
 
                     <div class="col-md-12">
@@ -243,6 +253,41 @@
         if (selected_option == "HELIVAC / CIMS") {
             am_quoted.style.display = 'none';
             billing_source_hide.style.display = 'none';
+        }
+
+    })
+</script>
+
+<script>
+    $('#panic').on('change', function(e){
+        this.value.replace(/\s/g, "");
+
+        var val = this.value;
+        if(val != ''){
+            var backend_data = {'panic_id': val}
+
+            $.ajax({
+                type: 'POST',
+                url: '/auto/fill/panic/data/to/call/intake/2nd/phase/',
+                data: backend_data,
+                success: function(response){
+                    if(response.found == true){
+                        var please_confirm = confirm('Do you want to autofill the Chief Complain,Scene/Pick Up address,Caller Name and Caller number from the Panic Detail?')
+                        if (please_confirm == true) {
+                            $.alert(response.for_whome, 'Is this panic was sent for someone else?')
+                            $('#id_chief_complain').val(response.reason);
+                            $('#id_pick_up_address').val(response.place);
+                            $('#id_caller_name').val(response.panic_sender);
+                            $('#id_caller_number').val(response.contact);
+                        }
+                    }
+                    else{
+                        alert("No Panic Found with your given id")
+                        $('#panic').val('');
+                    }
+
+                }
+            })
         }
 
     })

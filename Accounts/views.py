@@ -630,7 +630,7 @@ def assesment_list_users(request):
 @login_required
 @user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
 def customer_list(request):
-    customers = User.objects.filter(is_superuser = False, is_staff = False)
+    customers = User.objects.filter(is_superuser = False, is_staff = False, medic = False)
     context = {
         'customers': customers,
     }

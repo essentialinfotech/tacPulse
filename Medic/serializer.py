@@ -55,7 +55,7 @@ class AsignedParamedicsWholeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle
         fields = '__all__'
-        depth = 3
+        depth = 4
 
 class ParamedicsPhaseSerializer(serializers.ModelSerializer):
     class Meta:

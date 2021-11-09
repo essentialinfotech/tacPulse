@@ -3,6 +3,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tac-Pulse</title>
     <link rel="shortcut icon" href="{% static 'images\favicon.ico' %}" />
     <!-- CSS only -->
@@ -121,7 +122,7 @@
                         {% csrf_token %}
                         <textarea required name="reason" id="reason" class="form-control mb-1" style="resize: none;" placeholder="Reason for a panic request"></textarea>
                         <div class="form-group my-2">
-                            <label for="">Is This Panic is for you?</label> {{ form.for_whome }}
+                            <label for="">Is This Panic is for someone else?</label> {{ form.for_whome }}
                         </div>
                         <input type="text" name="emergency_contact" id="emergency_contact" class="form-control mb-1" placeholder="Emergency Contact">
                         <button type="button" class="btn btn-info my-2" id="profile_contact">Add My Profile Number Here <i class="fa fa-arrow-up"></i> </button>

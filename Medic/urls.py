@@ -167,6 +167,7 @@ urlpatterns = [
      path('list/units/', paramedics_with_assigned_unit_list, name = 'paramedics_with_assigned_unit_list'),
      path('showing/medic/via/unit/selection/', show_medic_via_selected_unit, name = 'show_medic_via_selected_unit'),
      path('adding/unit/', create_unit, name = 'create_unit'),
+     path('auto/fill/panic/data/to/call/intake/2nd/phase/', auto_fill_panic_data_to_call_intake_2nd_phase, name = 'auto_fill_panic_data_to_call_intake_2nd_phase'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

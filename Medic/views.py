@@ -51,20 +51,21 @@ this_year = datetime.datetime.now().year
 def invoice_no(type):
     date = datetime.datetime.now()
     timestamp = datetime.datetime.timestamp(date)
-    invoice_no = '#'+str(type) +str(round(timestamp))
+    invoice_no = '#'+str(type) + str(round(timestamp))
     return invoice_no
 
 def unique_id(id):
     date = datetime.datetime.now()
     timestamp = datetime.datetime.timestamp(date)
-    unique_id = '#'+str(round(timestamp))+str(-(id))
+    unique_id = '#'+str(round(timestamp)) + str(-(id))
     return unique_id
-
 
 def case_number():
     date = datetime.datetime.now()
     timestamp = datetime.datetime.timestamp(date)
-    case_no = '#C'+str(round(timestamp))
+    case_no = '#' + str(timestamp)
+    if '.' in case_no:
+        case_no = case_no.replace('.', '')
     return case_no
 
 
@@ -230,11 +231,19 @@ def ambulance_request(request):
     if request.method == 'POST':
         main_form = request.POST.get('main_form')
         if main_form is not None:
+            panic_id = request.POST.get('panic')
             form = EmergencyMedDisIncidentReportForm(request.POST)
             if form.is_valid():
                 instance = form.save(commit=False)
                 instance.user = request.user
                 instance.save()
+                if panic_id:
+                    try:
+                        panic = Panic.objects.get(id = int(panic_id))
+                    except:
+                        panic = None
+                    instance.panic = panic
+                    instance.save()
                 return redirect('dispatch_incident_crew_and_vehicle', id=instance.id)
 
     context = {
@@ -338,8 +347,10 @@ def dispatch_incident_crew_and_vehicle(request,id):
 @login_required
 def add_another_dispatch_incident_crew_and_vehicle(request,id):
     assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
+    paramedics = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
     context = {
         'assigned_units': assigned_units,
+        'paramedics': paramedics,
         'id':id,
     }
     return render(request,'medic/add_another_dispatch_incident_crew_and_vehicle.html',context)
@@ -811,6 +822,8 @@ def check_panic_requests_location(request, id):
             this_panic = Panic.objects.filter(id=id)
             panic = Panic.objects.get(id=id)
 
+            dispatch_incident = panic.ambulancemodel_set.all()
+
             task_data = TaskModel.objects.filter(task_type='pan', panic_task_id =id )
             for i in task_data:
                 task_data = i.task_desc
@@ -818,6 +831,8 @@ def check_panic_requests_location(request, id):
                 task = True
 
             context = {
+                'dispatch_incident': dispatch_incident,
+
                 'panic': panic,
                 'task': task,
                 'task_data': task_data,
@@ -1011,6 +1026,7 @@ def invoice_pdf_property(request,id):
 
 def dispatch_incident_report_pdf(request,id):
     incident = AmbulanceModel.objects.get(id = id)
+    # ParamedicsPhases will be here
     crew_vehicle = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
     service_notes = DispatchIncidentServiceNotes.objects.filter(parent_id = id)
     loc_details = DispatchIncidentLocationDetails.objects.filter(parent_id = id)
@@ -1101,21 +1117,17 @@ def case_notes(request):
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def case_note_create(request,id):
     panic = get_object_or_404(Panic,id = id)
-    case = CaseNote.objects.filter(case_panic_id = panic)
-    if case:
-        return HttpResponse('Case already created')
-    else:
-        form = CaseForm()
-        if request.method == 'POST':
-            form = CaseForm(request.POST)
-            if form.is_valid():
-                instance = form.save(commit=False)
-                instance.creator = request.user
-                instance.case_no = case_number()
-                instance.case_panic = panic
-                instance.save()
-                messages.success(request,'Case Note created')
-                return redirect('case_notes')
+    form = CaseForm()
+    if request.method == 'POST':
+        form = CaseForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.creator = request.user
+            instance.case_no = case_number()
+            instance.case_panic = panic
+            instance.save()
+            messages.success(request,'Case Note created')
+            return redirect('case_notes')
     context = {
         'form': form,
         'id': id,
@@ -2299,4 +2311,51 @@ def show_medic_via_selected_unit(request):
             data.append(prefetch)
         return JsonResponse(data,safe=False)
     
+
+@csrf_exempt
+def auto_fill_panic_data_to_call_intake_2nd_phase(request):
+    if request.method == 'POST':
+        data = request.POST
+        for k,v in data.items():
+            if k == 'panic_id':
+                panic_id = v
+        try:
+            panic = get_object_or_404(Panic, id = panic_id)
+            response = {
+                'found': True,
+                'panic_sender': panic.panic_sender.first_name,
+                'contact': panic.emergency_contact,
+                'panic_sender_id': panic.panic_sender.id,
+                'reason': panic.reason,
+                'for_whome': panic.for_whome,
+                'place': panic.place,
+                'panic_creation_time': panic.timestamp,
+            }
+        except:
+            response = {
+                'found': False,
+            }
+        return JsonResponse(response,safe=False)
+
+
+@login_required
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def case_note_create_for_dispatch_emergency_incident(request,id):
+    dispatch_emergency_incident_parent_form_that_is_ambulance_model = get_object_or_404(AmbulanceModel,id = id)
+    if request.method == 'POST':
+        #return redirect('case_notes')
+        case_note = request.POST.get('case_note')
+        if case_note:
+            note = CaseNote.objects.create(
+                creator = request.user,
+                case_dispatch_form = dispatch_emergency_incident_parent_form_that_is_ambulance_model,
+                case_no = case_number(),
+                case_note = case_note,
+            )
+    context = {
+        'id': id,
+        'dispatch_emergency_incident_parent_form_that_is_ambulance_model': dispatch_emergency_incident_parent_form_that_is_ambulance_model,
+        'note': note,
+    }
+    return render(request, 'medic/case_note_form_for_dispatch_emergency_incident.html',context)
 

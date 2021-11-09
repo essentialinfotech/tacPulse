@@ -57,7 +57,7 @@
                                 <th scope="col">Is this panic was sent for someone else?</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Profile Address</th>
-                                <th scope="col">Place</th>
+                                <th scope="col">Requested Place</th>
                                 <th scope="col">Date</th>
                             </tr>
                         </thead>
@@ -76,29 +76,42 @@
                     </table>
                 </div>
 
-                <div class="my-2">
-                    <div class="fomr-group">
-                        <label for="" style="font-weight: bold;">Reason of this panic</label>
-                        <br> {{ reason }}
-                    </div>
+                
+                <div class="form-group" style="border: 1px solid black; padding: 5px;margin-bottom: 5px;">
+                    <label for="" style="font-weight: bold;">Reason of this panic</label>
+                    <br> {{ reason }}
                 </div>
+
+                <div class="panic" style="border: 1px solid black; padding: 5px; margin-bottom: 5px;">
+                    {% if dispatch_incident %}
+                        This panic is already assigned to a dispatch emergency incident form
+                        <a href="#">Details</a>
+                    {% else %}
+                        <p>IF you want to assign this panic to a dipatch emergency incident </p>
+                        <p> form then click on the link given down here and paste the panic id over there(On the First part of that form)</p>
+                        <input type="text" name="panic_id" value="{{ panic.id }}" readonly id="panic_id">
+                        <button onclick="myFunction()" class="bn btn-dark">Copy text</button> <br>
+                        <a href="{% url 'ambulance_request' %}">Take Me To Diapatch Incident Form</a>
+                    {% endif %}
+                </div>
+                
             </div>
 
         </div>
-        {% if request.user.is_staff %}
-        <div class="row">
-            <div class="col-md-10">
-                <h5>Task Description</h5>
-                {% if task_data %}
-                <p class="form-control">{{task_data}}</p>
-                {% else %}
-                <p class="form-control">Not Assigned</p>
-                {% endif %}
+        {% if request.user.is_staff  or request.user.medic %}
+            <div class="row">
+                <div class="col-md-10">
+                    <h5>Task Description</h5>
+                    {% if task_data %}
+                        <p class="form-control">{{ task_data }}</p>
+                    {% else %}
+                        <p class="form-control">Not Assigned</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'complete_panic_task' id %}" class="btn btn-warning"> Completed?</a>
+                </div>
             </div>
-            <div class="col-md-2">
-                <a href="{% url 'complete_panic_task' id%}" class="btn btn-warning"> Completed?</a>
-            </div>
-        </div>
         {% endif %}
         <div class="row">
             <div class="col-md-12">
@@ -221,4 +234,15 @@
         }
     </script>
 
+    <script>
+        function myFunction() {
+                var copyText = document.getElementById("panic_id");
+
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+
+                navigator.clipboard.writeText(copyText.value);
+                alert("Copied the text: " + copyText.value);
+            }
+    </script>
 </html>

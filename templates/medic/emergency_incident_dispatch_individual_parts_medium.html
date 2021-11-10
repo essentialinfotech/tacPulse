@@ -1,0 +1,248 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .box{
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #EBEDF3;
+    }
+</style>
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <div class="container" style="margin: 5px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-around">
+                        <div class="sidebar">
+                    
+                            <div class="box">
+                                <a href="#">Call Intake Phase</a>
+                            </div>
+                    
+                            <div class="box">
+                                <a href="#">Assigned Units</a>
+                            </div>
+                    
+                            <div class="box">
+                                <a href="#">Call Intake Phase</a>
+                            </div>
+                    
+                            <div class="box">
+                                <a href="#">Travel Details</a>
+                            </div>
+                    
+                        </div>
+                    
+                        <div class="contents">
+                            <div class="card p-5 mb-5" id="call">
+                                <div class="text-left">
+                                    <h3>Call Intake Phase</h3>
+                                </div>
+
+                                
+
+                                <div class="form-group">
+                                    <label for="user">Dispatcher</label> <br>
+                                    <input type="text" readonly name="user" id="user" value="{{ call_intake_phase.user }}">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="panic">Panic</label> <br>
+                                    {% if call_intake_phase.panic %}
+                                        <input type="text" readonly name="panic" id="panic" value="{{ call_intake_phase.panic }}">
+                                    {% else %}
+                                        No Panic attached
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="run_id">Run ID</label> <br>
+                                    <input type="text" readonly name="run_id" id="run_id" value="{{ call_intake_phase.run_id }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="chief_complain">Chief Complain</label> <br>
+                                    <input type="text" readonly name="chief_complain" id="chief_complain" value="{{ call_intake_phase.chief_complain }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="incident_category">Incident Category</label> <br>
+                                    <input type="text" readonly name="incident_category" id="incident_category" value="{{ call_intake_phase.incident_category }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ppe_lvl">PPE LEVEL</label> <br>
+                                    <input type="text" readonly name="ppe_lvl" id="ppe_lvl" value="{{ call_intake_phase.ppe_lvl }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="pick_up_address">Pick up address</label> <br>
+                                    <input type="text" readonly name="pick_up_address" id="pick_up_address" value="{{ call_intake_phase.pick_up_address }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="billing_type">Billing Type</label> <br>
+                                    <input type="text" readonly name="billing_type" id="billing_type" value="{{ call_intake_phase.billing_type }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="billing_source">Billing Source</label> <br>
+                                    <input type="text" readonly name="billing_source" id="billing_source" value="{{ call_intake_phase.billing_source }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="amount_quoted">Amount Quoted</label> <br>
+                                    <input type="text" readonly name="amount_quoted" id="amount_quoted" value="{{ call_intake_phase.amount_quoted }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="authorization_number">Authorization Number</label> <br>
+                                    <input type="text" readonly name="authorization_number" id="authorization_number" value="{{ call_intake_phase.authorization_number }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="caller_name">Caller Name</label> <br>
+                                    <input type="text" readonly name="caller_name" id="caller_name" value="{{ call_intake_phase.caller_name }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="caller_number">Caller Number</label> <br>
+                                    <input type="text" readonly name="caller_number" id="caller_number" value="{{ call_intake_phase.caller_number }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="caller_company">Caller Company</label> <br>
+                                    <input type="text" readonly name="caller_company" id="caller_company" value="{{ call_intake_phase.caller_company }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="call_received_time">Call Received Time</label> <br>
+                                    <input type="text" readonly name="call_received_time" id="call_received_time" value="{{ call_intake_phase.call_received_time }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted To Crew On Whatsapp</label> <br>
+                                    <input type="text" readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp" value="{{ call_intake_phase.time_call_posted_to_crew_on_whatsapp }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted To Crew On Whatsapp</label> <br>
+                                    <input type="text" readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp"
+                                        value="{{ call_intake_phase.time_call_posted_to_crew_on_whatsapp }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="crew_operational_status">Crew Operational Status</label> <br>
+                                    <input type="text" readonly name="crew_operational_status" id="crew_operational_status"
+                                        value="{{ call_intake_phase.crew_operational_status }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="how_many_units_dispatched">Units Dispatched</label> <br>
+                                    <input type="text" readonly name="how_many_units_dispatched" id="how_many_units_dispatched"
+                                        value="{{ call_intake_phase.how_many_units_dispatched }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="created_on">This part was created on</label> <br>
+                                    <input type="text" readonly name="created_on" id="created_on"
+                                        value="{{ call_intake_phase.created_on }}">
+                                </div>
+                            </div>
+
+                            <div class="card p-5 mb-5" id="units">
+                                <div class="text-left">
+                                    <h3>Assigned Units</h3>
+                                    {% for i in crews %}
+                                        <div>
+                                            <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}">{{ i.assigned_unit }}</a>
+                                        </div>
+                                        <hr>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="card p-5 mb-5" id="paramedics">
+                                <div class="text-left">
+                                    <h3>Assigned Paramedics</h3>
+                                </div>
+                                    {% for i in assigned_medics %}
+                                        {{ i.paramedics.first_name|title }} {{ i.paramedics.last_name|title }} <br>
+                                        {{ i.paramedics.contact }} <hr>
+                                    {% endfor %}
+                            </div>
+
+                            <div class="card p-5 mb-5" id="phases">
+                                <div class="text-left">
+                                    <h3>
+                                        Travel Details
+                                    </h3>
+                                    {% for i in travel_details %}
+
+                                        <div class="text-left">
+                                            Vehicle <strong>{{ forloop.counter }}</strong>
+                                        </div>
+
+                                        <div class="v-p">
+                                            <strong>Paramedics</strong>
+                                            {{ i.parent.paramedics.first_name|title }} {{ i.parent.paramedics.last_name|title }}
+                                        </div>
+
+                                        <hr style="width: 50px;">
+
+                                        <div class="form-group">
+                                            <label for="status">Status</label><br>
+                                            <input type="text" name="status" id="status" value="{{ i.status }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="medic_loc">Paramedic Location</label><br>
+                                            <input type="text" name="medic_loc" id="medic_loc" value="{{ i.medic_loc }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="target_loc">Target Location</label><br>
+                                            <input type="text" name="target_loc" id="target_loc" value="{{ i.target_loc }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="action_time">Log Time</label><br>
+                                            <input type="text" name="action_time" id="action_time" value="{{ i.action_time }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="odo">ODO</label><br>
+                                            <input type="text" name="odo" id="odo" value="{{ i.odo }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="dis">Distance</label><br>
+                                            <input type="text" name="dis" id="dis" value="{{ i.dis }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="dur">Distance</label><br>
+                                            <input type="text" name="dur" id="dur" value="{{ i.dur }}">
+                                        </div>
+
+                                        <hr>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -348,6 +348,7 @@ def dispatch_incident_crew_and_vehicle(request,id):
 def add_another_dispatch_incident_crew_and_vehicle(request,id):
     assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
     paramedics = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
+    print(assigned_units,paramedics)
     context = {
         'assigned_units': assigned_units,
         'paramedics': paramedics,
@@ -896,6 +897,7 @@ def panic_noti(request):
     noti = PanicNoti.objects.filter(is_seen = False).order_by('-id')
     for i in noti:
         prefetch = {
+            'sound_played': i.sound_played,
             'first_name': i.panic.panic_sender.first_name,
             'last_name': i.panic.panic_sender.last_name,
             'noti_text': i.text,
@@ -906,6 +908,17 @@ def panic_noti(request):
         }
         data.append(prefetch)
     return JsonResponse(data,safe=False)
+
+@csrf_exempt
+def panic_noti_sound_off_view(request):
+    if request.method == 'POST':
+        data = request.POST
+        for k,v in data.items():
+            if k == 'noti_id':
+                id = v
+    noti = PanicNoti.objects.filter(id = id).update(sound_played = True)
+
+    return JsonResponse('ok', safe=False)
 
 @login_required
 def mark_seen_panic_noti(request,id):
@@ -2160,15 +2173,30 @@ def delete_quotation_event_sport_report(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 # ends
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def dispatch_emergency_incident_submissions(request):
+    dispatch_emergency_incidents = AmbulanceModel.objects.all()
+    context = {
+        'incidents': dispatch_emergency_incidents,
+    }
+    return render(request,'medic/dispatch_emergency_incident_submissions.html',context)
 
 @login_required
 def edit_emergency_dispatch_incident_report_call_intake_phase(request,id):
     obj = get_object_or_404(AmbulanceModel, id=id)
+    try:
+        panic = Panic.objects.get(id = obj.panic.id)
+    except:
+        panic = None
+
     form = EmergencyMedDisIncidentReportForm(instance = obj)
     if request.method == 'POST':
         form = EmergencyMedDisIncidentReportForm(request.POST,instance=obj)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit = False)
+            instance.user = request.user
+            instance.panic = panic
+            instance.save()
             return redirect('dispatch_incident_crew_and_vehicle', id)
     context = {
         'form': form,
@@ -2214,7 +2242,7 @@ def edit_dispatch_incident_crew_and_vehicle(request,id):
                 instance = form.save(commit=False)
                 instance.parent = parent
                 instance.save()
-                return redirect('add_another_dispatch_incident_crew_and_vehicle', id)
+                return redirect('add_another_dispatch_incident_crew_and_vehicle', id = parent.id)
 
     context = {
         'user': user,
@@ -2358,4 +2386,31 @@ def case_note_create_for_dispatch_emergency_incident(request,id):
         'note': note,
     }
     return render(request, 'medic/case_note_form_for_dispatch_emergency_incident.html',context)
+
+
+
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def paramedic_phases(request,id):
+    phases = ParamedicsPhases.objects.filter(parent__parent_id = id)
+    context = {
+        'phases': phases
+    }
+    return render(request,'medic/paramedic_phases.html',context)
+
+
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def emergency_incident_dispatch_individual_parts_medium(request,id):
+    call_intake_phase = AmbulanceModel.objects.get(id = id)
+    crews = call_intake_phase.dispatchincidentcrewandvehicle_set.all()
+    assigned_medics = call_intake_phase.assignedparamedicsafterdispatchincidentcrewandvehicle_set.all()
+    travel_details = ParamedicsPhases.objects.filter(parent__parent_id = id)
+    context = {
+        'id': id,
+        'call_intake_phase': call_intake_phase,
+        'crews': crews,
+        'assigned_medics': assigned_medics,
+        'travel_details': travel_details,
+    }
+    return render(request,'medic/emergency_incident_dispatch_individual_parts_medium.html',context)
+
 

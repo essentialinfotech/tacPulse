@@ -180,6 +180,7 @@
 
 
             </form>
+            
 
             <div class="input-group mb-3">
                 <a href="{% url 'edit_emergency_dispatch_incident_report_call_intake_phase' parent.id  %}"
@@ -188,11 +189,14 @@
                 </a>
             </div>
 
-            {% for i in assigned_units %}
-            <li>
-                <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}"> {{ i.assigned_unit }} Edit</a>
-            </li>
-            {% endfor %}
+            {% if assigned_units %}
+                <h3>Assigned Units</h3>
+                {% for i in assigned_units %}
+                    <li>
+                        <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}"> {{ i.assigned_unit }} Edit</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

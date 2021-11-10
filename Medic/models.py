@@ -138,6 +138,35 @@ class Assist02(models.Model):
         return self.a2_name
 
 # dispatch incident
+class UnitNames(models.Model):
+    ASSIGNED_UNIT = [
+        ('SDO1','SDO1'),
+        ('L01','L01'),
+        ('RV03','RV03'),
+        ('TP07','TP07'),
+        ('TP09','TP09'),
+        ('TP08','TP08'),
+        ('RV01','RV01'),
+        ('TP02','TP02'),
+        ('TP05','TP05'),
+        ('TP03','TP03'),
+        ('RM01','RM01'),
+        ('TP11','TP11'),
+        ('TP10','TP10'),
+    ]
+    uni_name = models.CharField(max_length = 100,blank=True,null=True)
+
+    def __str__(self):
+        return self.uni_name
+
+class AssignUnitCreateWithParamedics(models.Model):
+    uni_name = models.ForeignKey(UnitNames,on_delete=models.CASCADE,blank=True,null=True)
+    paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+    
+    def __str__(self):
+        return self.uni_name.uni_name
+
+
 class AmbulanceModel(models.Model):
     INCIDENT = [
         ('Primary','Primary'),
@@ -335,35 +364,6 @@ class AmbulanceModel(models.Model):
         return str(self.id)
 
 
-class UnitNames(models.Model):
-    ASSIGNED_UNIT = [
-        ('SDO1','SDO1'),
-        ('L01','L01'),
-        ('RV03','RV03'),
-        ('TP07','TP07'),
-        ('TP09','TP09'),
-        ('TP08','TP08'),
-        ('RV01','RV01'),
-        ('TP02','TP02'),
-        ('TP05','TP05'),
-        ('TP03','TP03'),
-        ('RM01','RM01'),
-        ('TP11','TP11'),
-        ('TP10','TP10'),
-    ]
-    uni_name = models.CharField(max_length = 100,blank=True,null=True)
-
-    def __str__(self):
-        return self.uni_name
-
-class AssignUnitCreateWithParamedics(models.Model):
-    uni_name = models.ForeignKey(UnitNames,on_delete=models.CASCADE,blank=True,null=True)
-    paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
-    
-    def __str__(self):
-        return self.uni_name.uni_name
-
-
 class DispatchIncidentCrewAndVehicle(models.Model):
 
     VEHICLE = [
@@ -393,7 +393,7 @@ class DispatchIncidentCrewAndVehicle(models.Model):
     loc = models.CharField(max_length=200,choices=LOC)
 
 
-
+# assigned paramedics and unit to this table from above table for a task of ambulance
 class AssignedParamedicsAfterDispatchIncidentCrewAndVehicle(models.Model):
     parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
     for_crew = models.ForeignKey(DispatchIncidentCrewAndVehicle,on_delete=models.CASCADE,blank=True,null=True)
@@ -408,10 +408,10 @@ class ParamedicsPhases(models.Model):
     PHASES = [
         ('Respond','Respond'),
         ('On-Scene','On-Scene'),
-        ('Departs-Scene','Departs-Scene '),
+        ('Departs-Scene','Departs-Scene'),
         ('Arrives-Hospital','Arrives-Hospital'),
         ('Hand-Over','Hand-Over'),
-        ('Return-Back-To-Back','Return-Back-To-Back'),
+        ('Return-Back-To-Base','Return-Back-To-Base'),
         ('Service-Completed','Service-Completed'),
     ]
 
@@ -420,7 +420,7 @@ class ParamedicsPhases(models.Model):
 
     medic_loc = models.CharField(max_length=100,blank=True,null=True)
     target_loc = models.CharField(max_length=100,blank=True,null=True)
-    action_time = models.CharField(max_length=100,blank=True,null=True)
+    action_time = models.DateTimeField(blank=True,null=True)
     odo = models.PositiveBigIntegerField(blank=True,null=True)
     dis = models.CharField(max_length=100,blank=True,null=True)
     dur = models.CharField(max_length=100,blank=True,null=True)
@@ -469,7 +469,7 @@ class DispatchIncidentLocationDetails(models.Model):
     end_address = models.CharField(max_length=100,blank=True,null=True)
 
 
-# travel details
+# travel details(Not Needed anymore)
 class Vehicles_count_with_info_for_ambulance_request(models.Model):
     ASSIGNED_UNIT = [
         ('SDO1','SDO1'),
@@ -652,6 +652,8 @@ class PanicNoti(models.Model):
         Panic, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=100, default='has sent a panic request')
     is_seen = models.BooleanField(default=False)
+    sound_played = models.BooleanField(default=False)
+    
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

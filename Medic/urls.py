@@ -86,7 +86,7 @@ urlpatterns = [
      path('hospital/transfer/notifications/', hospital_transfer_noti_for_admin_dispatch, name = 'hospital_transfer_noti_for_admin_dispatch'),
      path('hospital_transfer_noti_mark_seen/<int:id>/', h_transfer_noti_mark_seen, name = 'h_transfer_noti_mark_seen'),
      path('crew_and_vehicle/details/<int:id>', dispatch_incident_crew_and_vehicle, name = 'dispatch_incident_crew_and_vehicle'),
-     path('add/another/crew_and_vehicle/<int:id>/', add_another_dispatch_incident_crew_and_vehicle, name = 'add_another_dispatch_incident_crew_and_vehicle'),
+     path('add/another/crew_and_vehicle/for/am/<int:id>/', add_another_dispatch_incident_crew_and_vehicle, name = 'add_another_dispatch_incident_crew_and_vehicle'),
      path('dispatch/incident/travel/details/<int:id>/', dispatch_incident_travel_details, name = 'dispatch_incident_travel_details'),
      path('dispatch/incident/service/notes/<int:id>/', dispatch_incident_service_notes, name = 'dispatch_incident_service_notes'),
      path('add/another/dispatch/incident/service/note/<int:id>/', add_another_dispatch_incident_service_notes, name = 'add_another_dispatch_incident_service_notes'),
@@ -168,6 +168,11 @@ urlpatterns = [
      path('showing/medic/via/unit/selection/', show_medic_via_selected_unit, name = 'show_medic_via_selected_unit'),
      path('adding/unit/', create_unit, name = 'create_unit'),
      path('auto/fill/panic/data/to/call/intake/2nd/phase/', auto_fill_panic_data_to_call_intake_2nd_phase, name = 'auto_fill_panic_data_to_call_intake_2nd_phase'),
+     path('dispatch/emergency/incident/submissions/', dispatch_emergency_incident_submissions, name = 'dispatch_emergency_incident_submissions'),
+     path('sound/off/noti/panic/', panic_noti_sound_off_view, name = 'panic_noti_sound_off_view'),
+     path('paramedic/phases/<int:id>/', paramedic_phases, name = 'paramedic_phases'),
+     path('dispatch/incident/parts/<int:id>/', emergency_incident_dispatch_individual_parts_medium, name = 'emergency_incident_dispatch_individual_parts_medium'),
+     
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

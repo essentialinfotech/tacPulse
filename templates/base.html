@@ -726,6 +726,31 @@
                                 </a>
                             </li>
 
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Reports</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'dispatch_emergency_incident_submissions' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Submissions</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover" style="display: none;">
                                 <a href="{% url 'dispatch_incident_submission_review_all' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -2267,6 +2292,18 @@
             </div>
             <!--end::Content-->
         </div>
+
+
+
+
+        <!-- noti audio -->
+        <inpu style="display: none;" id="playbtn" type="button" value="PLAY" onclick="play()">
+        <audio style="display: none;" id="track" src="{% static 'noti_sound/notification.mp3' %}"></audio>
+        <!-- ends -->
+
+
+
+
         <!--end::Quick Panel-->
         <script>
             var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
@@ -2381,6 +2418,12 @@
                     info: false
                 });
             });
+
+            $(document).ready(function () {
+                $('#dispatch_iuncident_submissions_table').DataTable({
+                    responsive: true,
+                });
+            });
         </script>
 
 
@@ -2447,6 +2490,8 @@
                         console.log(data)
                         $("#panic_noti").empty();
                         $.each(data, function(key, value) {
+                            var sound_played = value.sound_played;
+
                             var f_name = value.first_name.charAt(0).toUpperCase() + value.first_name.slice(1);
                             var l_name = value.last_name.charAt(0).toUpperCase() + value.last_name.slice(1);
                             var noti_text = value.noti_text;
@@ -2456,9 +2501,30 @@
                             var details = "<a href='/individual/panic/location/" + panic_id + "/'  id='aTag'>Details</a>";
                             var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.noti_id + "/'  id='mark_seen'>Mark as seen</a>";
                             if (is_seen == false) {
+
+                                // if (sound_played === false) {
+                                //     $('#playbtn').click();
+                                // }
+
+                                    // $.playSound('{% static "noti_sound/notification.mp3" %}')
+                                    // var audelem = document.getElementsByClassName('sound-player');
+
+                                    // audelem.addEventListener('ended', (event) => {
+                                    //     alert('dsds')
+                                    // });
+
+
+                                    // backend_data = {'noti_id': value.noti_id}
+                                    // $.ajax({
+                                    //     type: 'POST',
+                                    //     url: '/sound/off/noti/panic/',
+                                    //     data: backend_data,
+                                    // })
+
                                 $("#panic_noti").append(
                                     "<div>" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
                                 );
+
                             }
                         })
                     }
@@ -2597,6 +2663,13 @@
                     panic_noti.style.display = 'none';
                 }
             })
+        </script>
+
+        <script>
+            function play() {
+                    var audio = document.getElementById("track");
+                    audio.play();
+                }
         </script>
 
         {% block js %} {% endblock %}

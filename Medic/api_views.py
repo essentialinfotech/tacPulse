@@ -164,6 +164,12 @@ class ParamedicsDifferentPhasesReportCreateApi(generics.CreateAPIView):
     def post(self,request,formate=None):
         serializer = self.get_serializer(data = request.data)
         parent_id = request.data["parent"]
+
+        responding_status = request.data['status']
+        post = ParamedicsPhases.objects.filter(status = responding_status, parent_id = parent_id)
+        if post:
+            return Response('This unit has already responded', status=status.HTTP_208_ALREADY_REPORTED)
+
         if serializer.is_valid(raise_exception=True):
             serializer.save(parent_id = parent_id)
             return Response(serializer.data,status=status.HTTP_200_OK)

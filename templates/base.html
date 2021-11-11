@@ -1551,12 +1551,14 @@
             <div class="navi navi-icon-circle navi-spacer-x-0">
                 <!--begin::Item-->
                 <div class="col-md-12">
-                    {% if request.user.is_superuser %}
-                    <button class="form-control btn btn-danger mb-2" id="pn">Panic</button>
-                    <button class="form-control btn btn-success mb-2" id="membership">Membership</button>
-                    <button class="form-control btn btn-success mb-5" id="transfer_h">Hospital Transfer</button> {% endif %}
+                    {% if request.user.is_staff %}
+                        <button class="form-control btn btn-danger mb-2" id="pn">Panic</button>
+                        <button class="form-control btn btn-success mb-2" id="membership">Membership</button>
+                        <button class="form-control btn btn-success mb-5" id="transfer_h">Hospital Transfer</button>
+                    {% endif %}
                 </div>
 
+                <!-- notidiv is for new member noti -->
                 <div id="noti_div" class="text-dark" style="display: none;">
 
                 </div>
@@ -1567,6 +1569,10 @@
 
                 <div id="renewal_noti" class="text-dark">
 
+                </div>
+
+                <div id="phase_status" class="text-dark">
+                
                 </div>
 
                 {% if request.user.is_staff %}
@@ -2297,8 +2303,8 @@
 
 
         <!-- noti audio -->
-        <inpu style="display: none;" id="playbtn" type="button" value="PLAY" onclick="play()">
-        <audio style="display: none;" id="track" src="{% static 'noti_sound/notification.mp3' %}"></audio>
+        <!-- <inpu style="display: none;" id="playbtn" type="button" value="PLAY" onclick="play()">
+        <audio style="display: none;" id="track" src="{% static 'noti_sound/notification.mp3' %}"></audio> -->
         <!-- ends -->
 
 
@@ -2530,6 +2536,31 @@
                     }
                 })
 
+
+                // dispatch incident paramedic status update noti
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'paramedic_phase_noti' %}",
+                    success: function (data) {
+                        $("#phase_status").empty();
+                        $.each(data, function (key, value) {
+                            var incident_id = value.incident_id;
+                            var noti_text = value.noti_text;
+                            var time = value.time;
+                            var run_id = value.run_id;
+                            var noti_id = value.noti_id;
+
+                            var details = "<a href='/dispatch/incident/parts/" + incident_id + "/'  id='aTag'>Details</a>";
+                            var mark_seen = "<a href='/mark/seen/paramedic/phase/update/" + noti_id + "/'  id='aTag'>Mark Seen</a>";
+
+                            $("#phase_status").append(
+                                "<div> Status Updated For Dispatch Incident Run ID Of" + run_id + " <br> To " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + time + "</u><br>" + details + "<br>"+ mark_seen +"</div> <hr>"
+                            );
+
+                        })
+                    }
+                })
+
                 // user sees renewal noti
                 $.ajax({
                     method: "GET",
@@ -2665,12 +2696,12 @@
             })
         </script>
 
-        <script>
+        <!-- <script>
             function play() {
                     var audio = document.getElementById("track");
                     audio.play();
                 }
-        </script>
+        </script> -->
 
         {% block js %} {% endblock %}
 </body>

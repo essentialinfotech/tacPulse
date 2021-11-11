@@ -84,8 +84,10 @@
 
                 <div class="panic" style="border: 1px solid black; padding: 5px; margin-bottom: 5px;">
                     {% if dispatch_incident %}
-                        This panic is already assigned to a dispatch emergency incident form
-                        <a href="#">Details</a>
+                        {% for i in dispatch_incident %}
+                            This panic is already assigned to a dispatch emergency incident form
+                            <a href="{% url 'emergency_incident_dispatch_individual_parts_medium' i.id %}">Details</a>
+                        {% endfor %}
                     {% else %}
                         <p>IF you want to assign this panic to a dipatch emergency incident </p>
                         <p> form then click on the link given down here and paste the panic id over there(On the First part of that form)</p>

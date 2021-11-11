@@ -175,3 +175,11 @@ class ParamedicsDifferentPhasesReportCreateApi(generics.CreateAPIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+
+class ParamedicPhaseList(generics.ListAPIView):
+    permission_classes = [IsAuthenticated,]
+    def get(self,request):
+        crews = ParamedicsPhases.objects.filter(parent__paramedics = self.request.user).order_by('-id')
+        serializer = ParamedicsPhaseSerializer(crews, many = True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+

@@ -19,4 +19,5 @@ urlpatterns = [
     # dispatch incident
     path('assigned/paramedics/tasks/', AmbulanceModelList.as_view(), name = 'AmbulanceModelList_api'),
     path('paramedic/phases/update/', ParamedicsDifferentPhasesReportCreateApi.as_view(), name = 'ParamedicsDifferentPhasesReportCreateApi_api'),
+    path('paramedic/reports/list/', ParamedicPhaseList.as_view(), name = 'ParamedicPhaseList_api')
 ]

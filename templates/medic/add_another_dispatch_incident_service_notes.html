@@ -39,14 +39,15 @@
                             <u class="mb-15">Service Notes</u>
                         </div>
     
-                        <strong>Assigned Unit</strong>
                         {% for i in service_note %}
                             <li>{{ i.service_notes }}</li>
                         {% endfor %}
     
                         <div class="form-group">
                             <a href="{% url 'dispatch_incident_service_notes' id %}" class="btn btn-success mt-5">Add Another Service Note</a>
-                            <a href="{% url 'dispatch_incident_location_details' id %}" class="btn btn-success mt-5">Next</a>   
+                            <!-- <a href="{% url 'dispatch_incident_location_details' id %}" class="btn btn-success mt-5">Next</a>   -->
+                            <a href="{% url 'dispatch_incident_patient_info' id %}" class="btn btn-success mt-5">Next</a> <br>
+                            <a href="{% url 'emergency_incident_dispatch_individual_parts_medium' id %}" style="text-decoration: underline;">Take me to report section where i will find every details and upcoming or incoming informations regarding this incident/Form</a>
                         </div>
                     </div>
                     

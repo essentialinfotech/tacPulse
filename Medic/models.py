@@ -426,6 +426,19 @@ class ParamedicsPhases(models.Model):
     dur = models.CharField(max_length=100,blank=True,null=True)
 
 
+class ParamedicPhasesNotification(models.Model):
+    noti_for = models.ForeignKey(ParamedicsPhases, on_delete=models.CASCADE)
+    text = models.CharField(max_length=100,blank=True,null=True)
+    is_seen = models.BooleanField(default = False)
+    created = models.DateTimeField(auto_now_add=True)
+
+@receiver(post_save, sender = ParamedicsPhases)
+def create_paramedic_phase_noti(sender, instance = None, created = False, **kwargs):
+    if created:
+        noti = ParamedicPhasesNotification.objects.create(noti_for = instance)
+        noti.text = noti.noti_for.status
+        noti.save()
+
 
 
 class DispatchIncidentServiceNotes(models.Model):

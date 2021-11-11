@@ -61,4 +61,4 @@ class ParamedicsPhaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParamedicsPhases
         fields = '__all__'
-        depth = 3
+        depth = 5

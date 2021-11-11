@@ -231,19 +231,24 @@ def ambulance_request(request):
     if request.method == 'POST':
         main_form = request.POST.get('main_form')
         if main_form is not None:
-            panic_id = request.POST.get('panic')
+            panic_id = request.POST.get('panic_id')
             form = EmergencyMedDisIncidentReportForm(request.POST)
             if form.is_valid():
                 instance = form.save(commit=False)
                 instance.user = request.user
                 instance.save()
-                if panic_id:
-                    try:
-                        panic = Panic.objects.get(id = int(panic_id))
-                    except:
-                        panic = None
-                    instance.panic = panic
-                    instance.save()
+
+                try:
+                    panic = Panic.objects.get(id = int(panic_id))
+                except:
+                    panic = None
+                if panic is not None:
+                    check_if_any_panic_assigned = AmbulanceModel.objects.filter(panic = panic)
+                    if check_if_any_panic_assigned:
+                        instance.delete()
+                        return HttpResponse('This panic id is already assigned to a dispatch incident')
+                instance.panic = panic
+                instance.save()
                 return redirect('dispatch_incident_crew_and_vehicle', id=instance.id)
 
     context = {
@@ -280,6 +285,8 @@ def dispatch_incident_crew_and_vehicle(request,id):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         if main_form is not None:
+            data = []
+
             form = DispatchIncidentCrewAndVehicleForm(request.POST)
             if form.is_valid():
                 instance = form.save(commit=False)
@@ -290,6 +297,13 @@ def dispatch_incident_crew_and_vehicle(request,id):
                 if other_medics is not None:
                     medic_lists = request.POST.getlist('paramedics')
                     medics = User.objects.filter(id__in = list(medic_lists)).values_list('contact', flat=True)
+
+                    for i in medics:
+                        contacts = {
+                            'address': str(i),
+                        }
+                        data.append(contacts)
+
                     for i in medic_lists:
                         assigned_medics = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.create(
                                                                                                 parent = instance.parent,
@@ -297,39 +311,48 @@ def dispatch_incident_crew_and_vehicle(request,id):
                                                                                                 paramedics_id = i,
                                                                                             )
 
-                    # requests.post(
-                    #     'https://api.bulksms.com/v1/messages',
-                    #     headers = {
-                    #             'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
-                    #         },
+                    requests.post(
+                        'https://api.bulksms.com/v1/messages',
+                        headers = {
+                                'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
+                            },
 
-                    #     json = {
-                    #             "to": [medics],
-                    #             "body": "test"
-                    #         }
-                    # )
+                        json = {
+                                "to": data,
+                                "body": "You have assigned with a task of emergency medical response please check your app for further details"
+                            }
+                    )
 
                 else:
                     unit = request.POST.get('assigned_unit')
-                    get_unit_paramedics = AssignUnitCreateWithParamedics.objects.filter(uni_name_id = unit).values_list('paramedics__contact', flat=True)
-                    get_medic_ids = AssignUnitCreateWithParamedics.objects.filter(uni_name_id = unit).values_list('paramedics__id', flat=True)
+                    get_unit_paramedics_contacts = AssignUnitCreateWithParamedics.objects.filter(uni_name_id = unit).values_list('paramedics__contact', flat=True)
+                    get_medic_ids = AssignUnitCreateWithParamedics.objects.filter(uni_name_id = unit).values_list('paramedics_id', flat=True)
+
+                    for i in get_unit_paramedics_contacts:
+                        contacts = {
+                            'address': str(i),
+                        }
+                        data.append(contacts)
+                    print(data)
+
                     for i in get_medic_ids:
                         assigned_medics = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.create(
                                                                                                 parent = instance.parent,
                                                                                                 for_crew_id = instance.id,
                                                                                                 paramedics_id = i,
                                                                                             )
-                    # requests.post(
-                    #     'https://api.bulksms.com/v1/messages',
-                    #     headers = {
-                    #             'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
-                    #         },
 
-                    #     json = {
-                    #             "to": [get_unit_paramedics],
-                    #             "body": "test"
-                    #         }
-                    # )
+                    requests.post(
+                        'https://api.bulksms.com/v1/messages',
+                        headers = {
+                                'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
+                            },
+
+                        json = {
+                                "to": data,
+                                "body": "test"
+                            }
+                    )
                 return redirect('add_another_dispatch_incident_crew_and_vehicle', id)
 
     context = {
@@ -2366,26 +2389,26 @@ def auto_fill_panic_data_to_call_intake_2nd_phase(request):
         return JsonResponse(response,safe=False)
 
 
-@login_required
-@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
-def case_note_create_for_dispatch_emergency_incident(request,id):
-    dispatch_emergency_incident_parent_form_that_is_ambulance_model = get_object_or_404(AmbulanceModel,id = id)
-    if request.method == 'POST':
-        #return redirect('case_notes')
-        case_note = request.POST.get('case_note')
-        if case_note:
-            note = CaseNote.objects.create(
-                creator = request.user,
-                case_dispatch_form = dispatch_emergency_incident_parent_form_that_is_ambulance_model,
-                case_no = case_number(),
-                case_note = case_note,
-            )
-    context = {
-        'id': id,
-        'dispatch_emergency_incident_parent_form_that_is_ambulance_model': dispatch_emergency_incident_parent_form_that_is_ambulance_model,
-        'note': note,
-    }
-    return render(request, 'medic/case_note_form_for_dispatch_emergency_incident.html',context)
+# @login_required
+# @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+# def case_note_create_for_dispatch_emergency_incident(request,id):
+#     dispatch_emergency_incident_parent_form_that_is_ambulance_model = get_object_or_404(AmbulanceModel,id = id)
+#     if request.method == 'POST':
+#         #return redirect('case_notes')
+#         case_note = request.POST.get('case_note')
+#         if case_note:
+#             note = CaseNote.objects.create(
+#                 creator = request.user,
+#                 case_dispatch_form = dispatch_emergency_incident_parent_form_that_is_ambulance_model,
+#                 case_no = case_number(),
+#                 case_note = case_note,
+#             )
+#     context = {
+#         'id': id,
+#         'dispatch_emergency_incident_parent_form_that_is_ambulance_model': dispatch_emergency_incident_parent_form_that_is_ambulance_model,
+#         'note': note,
+#     }
+#     return render(request, 'medic/case_note_form_for_dispatch_emergency_incident.html',context)
 
 
 
@@ -2404,13 +2427,53 @@ def emergency_incident_dispatch_individual_parts_medium(request,id):
     crews = call_intake_phase.dispatchincidentcrewandvehicle_set.all()
     assigned_medics = call_intake_phase.assignedparamedicsafterdispatchincidentcrewandvehicle_set.all()
     travel_details = ParamedicsPhases.objects.filter(parent__parent_id = id)
+    service_notes = call_intake_phase.dispatchincidentservicenotes_set.all()
+    patient_info = DispatchIncidentPatientInformation.objects.filter(parent = call_intake_phase)
+    photos = DispatchIncidentPhotos.objects.filter(parent = call_intake_phase)
+    certification = DispatchIncidentDispatcherCertification.objects.filter(parent = call_intake_phase)
     context = {
         'id': id,
         'call_intake_phase': call_intake_phase,
         'crews': crews,
         'assigned_medics': assigned_medics,
         'travel_details': travel_details,
+        'service_notes': service_notes,
+        'patient_info': patient_info,
+        'photos': photos,
+        'certification': certification,
+
     }
     return render(request,'medic/emergency_incident_dispatch_individual_parts_medium.html',context)
+
+
+def paramedic_phase_noti(request):
+    if request.user.is_staff or request.user.medic:
+        data = []
+        noti = ParamedicPhasesNotification.objects.filter(is_seen = False).order_by('-id')
+        for i in noti:
+            prefetch = {
+                'run_id': i.noti_for.parent.parent.run_id,
+                'incident_id': i.noti_for.parent.parent.id,
+                'noti_id': i.id,
+                'noti_text': i.text,
+                'time': i.created,
+            }
+            data.append(prefetch)
+        return JsonResponse(data,safe=False)
+
+
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def mark_seen_paramedic_phase_noti(request,id):
+    noti = ParamedicPhasesNotification.objects.get(id = id)
+    noti.is_seen = True
+    noti.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def close_dispatch_emergency_incident(request,id):
+    incident = AmbulanceModel.objects.get(id = id)
+    incident.closed = True
+    incident.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

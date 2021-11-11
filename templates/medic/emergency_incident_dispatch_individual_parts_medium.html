@@ -8,6 +8,16 @@
         margin: 5px;
         border: 1px solid #EBEDF3;
     }
+
+    .active{
+        background-color: #ccc;
+    }
+
+    .shadow{
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        padding: 2rem;
+    }
+
 </style>
 
 <!--begin::Content-->
@@ -18,22 +28,61 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-around">
+                        <div class="card p-5">
+                            <a href="{% url 'dispatch_incident_patient_info' id %}" style="border-radius: 0px;" class="btn btn-info">Add Patient Information</a>
+                        </div>
+
+                        <div class="card p-5">
+                            <a href="{% url 'dispatch_incident_dispatcher_certification' id %}" style="border-radius: 0px;" class="btn btn-info">Add Dispatcher Certification</a>
+                        </div>
+
+                        <div class="card p-5">
+                            {% if call_intake_phase.closed %}
+                                <a href="#" style="border-radius: 0px;"
+                                class="btn btn-info">Closed</a>
+                            {% else %}
+                                <a href="{% url 'close_dispatch_emergency_incident' id %}" style="border-radius: 0px;"
+                                class="btn btn-info">Close This Incident</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-around">
                         <div class="sidebar">
                     
-                            <div class="box">
+                            <div class="box" id="call_i">
                                 <a href="#">Call Intake Phase</a>
                             </div>
                     
-                            <div class="box">
+                            <div class="box" id="a_u">
                                 <a href="#">Assigned Units</a>
                             </div>
                     
-                            <div class="box">
-                                <a href="#">Call Intake Phase</a>
+                            <div class="box" id="medics">
+                                <a href="#">Paramedics</a>
                             </div>
                     
-                            <div class="box">
+                            <div class="box" id="t_d">
                                 <a href="#">Travel Details</a>
+                            </div>
+
+                            <div class="box" id="p_i">
+                                <a href="#">Patient Information</a>
+                            </div>
+
+                            <div class="box" id="p_o">
+                                <a href="#">Photos and Others</a>
+                            </div>
+
+                            <div class="box" id="d_c">
+                                <a href="#">Dispatcher Certification</a>
+                            </div>
+
+                            <div class="box" id="s_n">
+                                <a href="#">Service Notes</a>
                             </div>
                     
                         </div>
@@ -157,19 +206,19 @@
                                 </div>
                             </div>
 
-                            <div class="card p-5 mb-5" id="units">
+                            <div class="card p-5 mb-5" id="units" style="display: none">
                                 <div class="text-left">
                                     <h3>Assigned Units</h3>
                                     {% for i in crews %}
                                         <div>
-                                            <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}">{{ i.assigned_unit }}</a>
+                                            <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}" style="text-decoration: underline;">{{ i.assigned_unit }}</a>
                                         </div>
                                         <hr>
                                     {% endfor %}
                                 </div>
                             </div>
 
-                            <div class="card p-5 mb-5" id="paramedics">
+                            <div class="card p-5 mb-5" id="paramedics" style="display: none">
                                 <div class="text-left">
                                     <h3>Assigned Paramedics</h3>
                                 </div>
@@ -179,7 +228,7 @@
                                     {% endfor %}
                             </div>
 
-                            <div class="card p-5 mb-5" id="phases">
+                            <div class="card p-5 mb-5" id="phases" style="display: none">
                                 <div class="text-left">
                                     <h3>
                                         Travel Details
@@ -187,12 +236,12 @@
                                     {% for i in travel_details %}
 
                                         <div class="text-left">
-                                            Vehicle <strong>{{ forloop.counter }}</strong>
+                                            Unit: {{ i.parent.for_crew.assigned_unit }}
                                         </div>
 
                                         <div class="v-p">
                                             <strong>Paramedics</strong>
-                                            {{ i.parent.paramedics.first_name|title }} {{ i.parent.paramedics.last_name|title }}
+                                            <u>{{ i.parent.paramedics.first_name|title }} {{ i.parent.paramedics.last_name|title }},</u>
                                         </div>
 
                                         <hr style="width: 50px;">
@@ -231,10 +280,164 @@
                                             <label for="dur">Distance</label><br>
                                             <input type="text" name="dur" id="dur" value="{{ i.dur }}">
                                         </div>
-
+                                        <hr>
+                                        <a href="{% url 'dispatch_incident_service_notes' i.parent.parent.id %}" class="btn btn-info">Add Service Notes</a>
                                         <hr>
                                     {% endfor %}
                                 </div>
+                            </div>
+
+                            <div class="card p-5 mb-5" id="s_notes" style="display: none">
+                                {% for i in service_notes %}
+                                    <div class="text-left">
+                                        <h3>Service Notes ({{ forloop.counter }}) </h3>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="service_notes">Service Note</label> <br>
+                                        <input type="text" readonly name="service_notes" id="service_notes" value="{{ i.service_notes }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="scribe">Scribe</label> <br>
+                                        <input type="text" readonly name="scribe" id="scribe" value="{{ i.scribe }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="service_note_time">Service Note Time</label> <br>
+                                        <input type="text" readonly name="service_note_time" id="service_note_time" value="{{ i.service_note_time }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="service_note_description">Service Note Description</label> <br>
+                                        <input type="text" readonly name="service_note_description" id="service_note_description" value="{{ i.service_note_description }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="card p-5 mb-5" id="patient" style="display: none">
+                                {% for i in patient_info %}
+                                <div class="text-left">
+                                    <h3>Patient Information ({{ forloop.counter }})</h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patient">Patient</label> <br>
+                                    <input type="text" name="patient" id="patient"
+                                        value="{{ i.patient }}" readonly>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label for="p_priority">Priority</label> <br>
+                                    <input type="text" name="p_priority" id="p_priority" value="{{ i.p_priority }}"
+                                        readonly>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label for="p_lvl_of_care">LEVEL OF CARE</label> <br>
+                                    <input type="text" name="p_lvl_of_care" id="p_lvl_of_care" value="{{ i.p_lvl_of_care }}" readonly>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label for="other_dispatcher">Other Dispatcher if call was handed over</label> <br>
+                                    <input type="text" name="other_dispatcher" id="other_dispatcher" value="{{ i.other_dispatcher }}" readonly>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label for="p_name">Patient Name</label> <br>
+                                    <input type="text" name="p_name" id="p_name"
+                                        value="{{ i.p_name }}" readonly>
+                                </div>
+                            
+                            
+                                <div class="form-group">
+                                    <label for="p_medical_aid_plan_option">Medical Aid Plan Option</label> <br>
+                                    <input type="text" name="p_medical_aid_plan_option" id="p_medical_aid_plan_option" value="{{ i.p_medical_aid_plan_option }}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="p_medical_aid">Medical Aid</label> <br>
+                                    <input type="text" name="p_medical_aid" id="p_medical_aid"
+                                        value="{{ i.p_medical_aid }}" readonly>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="card p-5 mb-5" id="photos" style="display: none">
+                                
+                                {% for i in photos %}
+                                    <div class="text-left">
+                                        <h3>Photos and Others ({{ forloop.counter }})</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="photos_and_other_choices">Photo & Other Choices</label> <br>
+                                        <input type="text" name="photos_and_other_choices" readonly id="photos_and_other_choices" value="{{ i.photos_and_other_choices }}">
+                                    </div>
+
+                                    {% if i.photo %}
+                                        <div class="form-group">
+                                            <label for="photos_and_other_choices">Photo & Other Choices</label> <br>
+                                            <img src="{{ i.photo.url }}" height="300px" width="300px" alt="">
+                                        </div>
+                                    {% endif %}
+
+                                    {% if i.document %}
+                                        <div class="form-group">
+                                            <label for="document">Document</label> <br>
+                                            <img src="{{ i.document.url }}" height="300px" width="300px" alt="">
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="card p-5 mb-5" id="certificate" style="display: none">
+                                <div class="text-left">
+                                    <h3>Dispatch Certification</h3>
+                                </div>
+
+                                {% for i in certification %}
+                                    <div class="form-group">
+                                        <label for="senior_practitioner_csn">Senior Practioner CSN</label> <br>
+                                        <input type="text" name="senior_practitioner_csn" id="senior_practitioner_csn" value="{{ i.senior_practitioner_csn }}" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="name_of_dispatcher">Name Of The Dispatcher</label> <br>
+                                        <input type="text" name="name_of_dispatcher" id="name_of_dispatcher"
+                                            value="{{ i.name_of_dispatcher }}" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="was_the_call_handed_over_to_another_dispatcher">Was the call handed over to another dispatcher?</label> <br>
+                                        <input type="text" name="was_the_call_handed_over_to_another_dispatcher" id="was_the_call_handed_over_to_another_dispatcher"
+                                            value="{{ i.was_the_call_handed_over_to_another_dispatcher }}" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="other_dispatcher">Other Dispatcher if call was handed over</label> <br>
+                                        <input type="text" name="other_dispatcher" id="other_dispatcher"
+                                            value="{{ i.other_dispatcher }}" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="dispatch_special_notes">Dispatch Special Notes</label> <br>
+                                        <input type="text" name="dispatch_special_notes" id="dispatch_special_notes"
+                                            value="{{ i.dispatch_special_notes }}" readonly>
+                                    </div>
+
+                                    {% if i.signature %}
+                                        <div class="form-group">
+                                            <label for="signature">Signature</label> <br>
+                                            <img src="{{ i.signature.url }}" class="img-thumbnail" alt="">
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="form-group">
+                                        <label for="created">Record Completion Date & Time</label> <br>
+                                        <input type="text" name="created" id="created"
+                                            value="{{ i.created }}" readonly>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -244,5 +447,122 @@
     </div>
 </div>
 
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    $('#call_i').click(function(){
+        $('#call').css("display", "block");
+        $('#call').addClass("shadow");
+
+        $('#units').css("display", "none");
+        $('#paramedics').css("display", "none");
+        $('#phases').css("display", "none");
+        $('#s_notes').css("display", "none");
+        $('#patient').css("display", "none");
+        $('#photos').css("display", "none");
+        $('#certificate').css("display", "none");
+    })
+
+    $('#a_u').click(function () {
+            $('#call').css("display", "none");
+            $('#units').css("display", "block");
+            $('#units').addClass("shadow");
+
+            $('#paramedics').css("display", "none");
+            $('#phases').css("display", "none");
+            $('#s_notes').css("display", "none");
+            $('#patient').css("display", "none");
+            $('#photos').css("display", "none");
+            $('#certificate').css("display", "none");
+        })
+
+    $('#medics').click(function () {
+            $('#call').css("display", "none");
+            $('#units').css("display", "none");
+            $('#paramedics').css("display", "block");
+            $('#paramedics').addClass("shadow");
+
+            $('#phases').css("display", "none");
+            $('#s_notes').css("display", "none");
+            $('#patient').css("display", "none");
+            $('#photos').css("display", "none");
+            $('#certificate').css("display", "none");
+        })
+
+    $('#t_d').click(function () {
+            $('#call').css("display", "none");
+            $('#units').css("display", "none");
+            $('#paramedics').css("display", "none");
+            $('#phases').css("display", "block");
+            $('#phases').addClass("shadow");
+
+            $('#s_notes').css("display", "none");
+            $('#patient').css("display", "none");
+            $('#photos').css("display", "none");
+            $('#certificate').css("display", "none");
+        })
+
+    $('#p_i').click(function () {
+            $('#call').css("display", "none");
+            $('#units').css("display", "none");
+            $('#paramedics').css("display", "none");
+            $('#phases').css("display", "none");
+            $('#s_notes').css("display", "none");
+            $('#patient').css("display", "block");
+            $('#patient').addClass("shadow");
+
+            $('#photos').css("display", "none");
+            $('#certificate').css("display", "none");
+        })
+
+    $('#p_o').click(function () {
+            $('#call').css("display", "none");
+            $('#units').css("display", "none");
+            $('#paramedics').css("display", "none");
+            $('#phases').css("display", "none");
+            $('#s_notes').css("display", "none");
+            $('#patient').css("display", "none");
+            $('#photos').css("display", "block");
+            $('#photos').addClass("shadow");
+
+            $('#certificate').css("display", "none");
+        })
+
+    $('#d_c').click(function () {
+            $('#call').css("display", "none");
+            $('#units').css("display", "none");
+            $('#paramedics').css("display", "none");
+            $('#phases').css("display", "none");
+            $('#s_notes').css("display", "none");
+            $('#patient').css("display", "none");
+            $('#photos').css("display", "none");
+            $('#certificate').css("display", "block");
+            $('#certificate').addClass("shadow");
+        })
+
+    $('#s_n').click(function () {
+            $('#call').css("display", "none");
+            $('#units').css("display", "none");
+            $('#paramedics').css("display", "none");
+            $('#phases').css("display", "none");
+            $('#s_notes').css("display", "block");
+            $('#s_notes').addClass("shadow");
+
+            $('#patient').css("display", "none");
+            $('#photos').css("display", "none");
+            $('#certificate').css("display", "none");
+        })
+</script>
+
+<script>
+    $('.box').click(function(){
+        var id = this.id;
+        $('.box').removeClass("active");
+        $('#' + id).addClass("active");
+    })
+</script>
 
 {% endblock %}

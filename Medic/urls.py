@@ -172,6 +172,9 @@ urlpatterns = [
      path('sound/off/noti/panic/', panic_noti_sound_off_view, name = 'panic_noti_sound_off_view'),
      path('paramedic/phases/<int:id>/', paramedic_phases, name = 'paramedic_phases'),
      path('dispatch/incident/parts/<int:id>/', emergency_incident_dispatch_individual_parts_medium, name = 'emergency_incident_dispatch_individual_parts_medium'),
+     path('paramedic/status/noti/', paramedic_phase_noti, name = 'paramedic_phase_noti'),
+     path('mark/seen/paramedic/phase/update/<int:id>/', mark_seen_paramedic_phase_noti, name = 'mark_seen_paramedic_phase_noti'),
+     path('closing/dispatch/incident/<int:id>/', close_dispatch_emergency_incident, name = 'close_dispatch_emergency_incident'),
      
 ]
 

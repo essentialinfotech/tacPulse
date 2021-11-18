@@ -2371,6 +2371,7 @@ def show_medic_via_selected_unit(request):
                     'username': i.paramedics.username,
                     'contact': i.paramedics.contact,
                     'user_id': i.paramedics.id,
+                    'unit_reg': i.uni_name.reg,
                 }
                 data.append(prefetch)
         else:

@@ -398,7 +398,7 @@ class DispatchIncidentCrewAndVehicle(models.Model):
     assigned_unit = models.ForeignKey(UnitNames,on_delete=models.CASCADE,blank=True,null=True)
     paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     vehicle_total = models.CharField(max_length=50,choices=VEHICLE)
-    unit_reg = models.CharField(max_length=30,default='BH 17WM GP')
+    unit_reg = models.CharField(max_length=30,blank=True,null=True)
     senior = models.ForeignKey(Senior,on_delete=SET_NULL,null=True)
     assist01 = models.ForeignKey(Assist01,on_delete=SET_NULL,null=True)
     assist02 = models.ForeignKey(Assist02,on_delete=SET_NULL,null=True)

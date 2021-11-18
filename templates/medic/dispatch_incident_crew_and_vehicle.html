@@ -249,10 +249,11 @@
                     if(value.found === true){
                         var username = value.username;
                         var contact = value.contact;
-                        console.log(username)
                         $("#fetch_paramedics_from_server").append(
                             "<div >" + username + ' ' + contact + " </div>"
                         );
+
+                        $("#id_unit_reg").val(value.unit_reg);
                     } 
 
                     if(value.found === false){

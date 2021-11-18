@@ -2286,6 +2286,9 @@ def create_unit(request):
     form = CreateUnitForm()
     if request.method == 'POST':
         uni_name = request.POST.get('uni_name')
+        vehicle_type = request.POST.get('vehicle_type')
+        max_crew = request.POST.get('max_crew')
+        reg = request.POST.get('reg')
         if UnitNames.objects.filter(uni_name__iexact = uni_name).exists():
             messages.warning(request,f'A unit with {uni_name} already exists')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -2306,6 +2309,18 @@ def assign_paramedics_to_units(request):
     form = AssignUnitFullFormWithParamedicsAdd()
     if request.method == 'POST':
         form = AssignUnitFullFormWithParamedicsAdd(request.POST)
+        # getting the id of unit model
+        unit = request.POST.get('uni_name')
+
+        unit_model = UnitNames.objects.get(id = unit )
+        check_max_crew = AssignUnitCreateWithParamedics.objects.filter(uni_name = unit).count()
+        print(check_max_crew,unit_model.max_crew)
+        if check_max_crew >= unit_model.max_crew:
+            messages.warning(request,f"""This Vehicle/Unit maximun crew is {unit_model.max_crew} and already two crew members are assigned with this vehicle
+            you must edit to remove and add other's to this unit.
+            """)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
         if form.is_valid():
             assigned, created = AssignUnitCreateWithParamedics.objects.get_or_create(
                 uni_name = form.cleaned_data['uni_name'],
@@ -2326,9 +2341,13 @@ def assign_paramedics_to_units(request):
 
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def paramedics_with_assigned_unit_list(request):
-    units = AssignUnitCreateWithParamedics.objects.all()
+    planed_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type ='Planned Patient Transport')
+    am_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type ='Ambulance')
+    response_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type ='Response Vehicle')
     context = {
-        'units': units,
+        'planed_units': planed_units,
+        'am_units': am_units,
+        'response_units': response_units,
     }
     return render(request,'medic/paramedics_with_assigned_unit_list.html',context)
 

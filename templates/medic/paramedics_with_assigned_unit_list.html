@@ -31,25 +31,111 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="display table" id="unit_table">
-                            <thead>
-                                <th>Unit Name</th>
-                                <th>Assigned Paramedic</th>
-                                <th>Paramedic Contact</th>
-                            </thead>
-                            <tbody>
-                                {% for i in units %}
-                                    <tr>
-                                        <td>{{ i.uni_name }}</td>
-                                        <td>
-                                            <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.username }}</a>
-                                        </td>
-                                        <td>{{ i.paramedics.contact }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Planned Patient Transportation Unit and assigned crew/paramedics
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="display table" id="unit_table">
+                                    <thead>
+                                        <th>Unit Name(Call Sign)</th>
+                                        <th>Vehicle Purpose</th>
+                                        <th>Max Crew</th>
+                                        <th>Registration</th>
+                                        <th>Assigned Paramedic</th>
+                                        <th>Paramedic Contact</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in planed_units %}
+                                        <tr>
+                                            <td>{{ i.uni_name.uni_name }}</td>
+                                            <td>{{ i.uni_name.vehicle_type }}</td>
+                                            <td>{{ i.uni_name.max_crew }}</td>
+                                            <td>{{ i.uni_name.reg }}</td>
+                                            <td>
+                                                <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.username }}</a>
+                                            </td>
+                                            <td>{{ i.paramedics.contact }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 my-5">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Normal Ambulances Unit and assigned crew/paramedics
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="display table" id="ambulance_unit">
+                                    <thead>
+                                        <th>Unit Name(Call Sign)</th>
+                                        <th>Vehicle Purpose</th>
+                                        <th>Max Crew</th>
+                                        <th>Registration</th>
+                                        <th>Assigned Paramedic</th>
+                                        <th>Paramedic Contact</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in am_units %}
+                                        <tr>
+                                            <td>{{ i.uni_name.uni_name }}</td>
+                                            <td>{{ i.uni_name.vehicle_type }}</td>
+                                            <td>{{ i.uni_name.max_crew }}</td>
+                                            <td>{{ i.uni_name.reg }}</td>
+                                            <td>
+                                                <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.username }}</a>
+                                            </td>
+                                            <td>{{ i.paramedics.contact }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Response Unit and assigned crew/paramedics
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="display table" id="response_unit">
+                                    <thead>
+                                        <th>Unit Name(Call Sign)</th>
+                                        <th>Vehicle Purpose</th>
+                                        <th>Max Crew</th>
+                                        <th>Registration</th>
+                                        <th>Assigned Paramedic</th>
+                                        <th>Paramedic Contact</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in response_units %}
+                                        <tr>
+                                            <td>{{ i.uni_name.uni_name }}</td>
+                                            <td>{{ i.uni_name.vehicle_type }}</td>
+                                            <td>{{ i.uni_name.max_crew }}</td>
+                                            <td>{{ i.uni_name.reg }}</td>
+                                            <td>
+                                                <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.username }}</a>
+                                            </td>
+                                            <td>{{ i.paramedics.contact }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

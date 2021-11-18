@@ -112,7 +112,10 @@ class CreateUnitForm(forms.ModelForm):
         model = UnitNames
         fields = '__all__'
         widgets = {
-            'uni_name': forms.TextInput(attrs={'class': 'form-control','required': True}),
+            'uni_name': forms.Select(attrs={'class': 'form-control','required': True}),
+            'vehicle_type': forms.Select(attrs={'class': 'form-control','required': True}),
+            'max_crew': forms.NumberInput(attrs={'class': 'form-control','required': True}),
+            'reg': forms.TextInput(attrs={'class': 'form-control','required': True}),
             }
 
 class AssignUnitFullFormWithParamedicsAdd(forms.ModelForm):

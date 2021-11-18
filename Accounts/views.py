@@ -145,6 +145,8 @@ def dashboard(request):
 
     if request.user.is_staff and not request.user.is_superuser:
         return redirect('dispatch_profile', id=request.user.id)
+    if request.user.medic:
+        return redirect('medic_profile', id=request.user.id)
     else:
         return redirect('user_profile', id=request.user.id)
 

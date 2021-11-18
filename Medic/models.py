@@ -139,6 +139,13 @@ class Assist02(models.Model):
 
 # dispatch incident
 class UnitNames(models.Model):
+
+    VEHICLE_TYPE = [
+        ('Planned Patient Transport','Planned Patient Transport'),
+        ('Ambulance','Ambulance'),
+        ('Response Vehicle','Response Vehicle'),
+    ]
+
     ASSIGNED_UNIT = [
         ('SDO1','SDO1'),
         ('L01','L01'),
@@ -154,7 +161,12 @@ class UnitNames(models.Model):
         ('TP11','TP11'),
         ('TP10','TP10'),
     ]
-    uni_name = models.CharField(max_length = 100,blank=True,null=True)
+
+    vehicle_type = models.CharField(max_length=100,blank=True,null=True,choices=VEHICLE_TYPE)
+    # call sign
+    uni_name = models.CharField(max_length = 100,blank=True,null=True,choices=ASSIGNED_UNIT)
+    max_crew = models.PositiveIntegerField(blank=True,null=True)
+    reg = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return self.uni_name

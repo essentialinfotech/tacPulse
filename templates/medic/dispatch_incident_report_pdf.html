@@ -424,31 +424,32 @@
         </th>
 
         <th class="text-center">
-            <u>RESPONDING</u>
+            <u>Status</u>
         </th>
 
-        <th class="text-center">
-            <u>ONSCENE</u>
-        </th>
 
         <th class="text-center">
-            <u>DEPART</u>
+            <u>Medic Location</u>
         </th>
-
+        
         <th class="text-center">
-            <u>FACILITY</u>
+            <u>Target Location</u>
         </th>
-
+        
         <th class="text-center">
-            <u>HANDOVER</u>
+            <u>Action Time</u>
         </th>
-
+        
         <th class="text-center">
-            <u>RTB</u>
+            <u>ODO</u>
         </th>
-
+        
         <th class="text-center">
-            <u>FREE</u>
+            <u>Distance</u>
+        </th>
+        
+        <th class="text-center">
+            <u>Duration</u>
         </th>
     </thead>
     <tbody>
@@ -456,49 +457,50 @@
             <tr>
                 <td>
                     <div class="text-center">
-                        {{ i.unit }}
+                        {{ i.parent.for_crew.assigned_unit.uni_name }}
                     </div>
                 </td>
 
                 <td>
                     <div class="text-center">
-                        {{ i.responding }}
+                        {{ i.status }}
+                    </div>
+                </td>
+
+               <td>
+                    <div class="text-center">
+                        {{ i.medic_loc }}
+                    </div>
+                </td>
+                
+                
+                <td>
+                    <div class="text-center">
+                        {{ i.target_loc }}
+                    </div>
+                </td>
+                
+                <td>
+                    <div class="text-center">
+                        {{ i.action_time }}
+                    </div>
+                </td>
+                
+                <td>
+                    <div class="text-center">
+                        {{ i.odo }}
                     </div>
                 </td>
 
                 <td>
                     <div class="text-center">
-                        {{ i.on_scene }}
+                        {{ i.dis }}
                     </div>
                 </td>
-
+                
                 <td>
                     <div class="text-center">
-                        {{ i.depart_scene }}
-                    </div>
-                </td>
-
-                <td>
-                    <div class="text-center">
-                        {{ i.arrive_fac }}
-                    </div>
-                </td>
-
-                <td>
-                    <div class="text-center">
-                        {{ i.hand_over }}
-                    </div>
-                </td>
-
-                <td>
-                    <div class="text-center">
-                        {{ i.depart }}
-                    </div>
-                </td>
-
-                <td>
-                    <div class="text-center">
-                        {{ i.end_standing_free }}
+                        {{ i.dur }}
                     </div>
                 </td>
 

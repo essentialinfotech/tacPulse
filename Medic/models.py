@@ -427,6 +427,7 @@ class ParamedicsPhases(models.Model):
         ('Service-Completed','Service-Completed'),
     ]
 
+    # task id
     parent = models.ForeignKey(AssignedParamedicsAfterDispatchIncidentCrewAndVehicle,on_delete=models.CASCADE,blank=True,null=True)
     status = models.CharField(max_length=50,blank=True,null=True,choices=PHASES)
 

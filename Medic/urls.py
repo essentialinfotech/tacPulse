@@ -165,6 +165,7 @@ urlpatterns = [
      path('update/crew_and_vehicle_detail/<int:id>/', edit_dispatch_incident_crew_and_vehicle, name = 'edit_dispatch_incident_crew_and_vehicle'),
      path('assigning/paramedics/to/units/', assign_paramedics_to_units, name = 'assign_paramedics_to_units'),
      path('list/units/', paramedics_with_assigned_unit_list, name = 'paramedics_with_assigned_unit_list'),
+     path('delete/medic/from/unit/<int:id>/', delete_paramedics_with_assigned_unit_list, name = 'delete_paramedics_with_assigned_unit_list'),
      path('showing/medic/via/unit/selection/', show_medic_via_selected_unit, name = 'show_medic_via_selected_unit'),
      path('adding/unit/', create_unit, name = 'create_unit'),
      path('auto/fill/panic/data/to/call/intake/2nd/phase/', auto_fill_panic_data_to_call_intake_2nd_phase, name = 'auto_fill_panic_data_to_call_intake_2nd_phase'),

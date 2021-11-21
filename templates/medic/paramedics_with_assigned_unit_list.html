@@ -30,7 +30,114 @@
         <!--begin::Container-->
         <div class="container">
             <div class="row">
+
                 <div class="col-md-12">
+                    <div class="w-50 m-auto">
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+            <!-- planned -->
+            <div class="col-md-12 my-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Planned Patient Transport vehicles
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="display table" id="planned">
+                                <thead>
+                                    <th>Unit Name(Call Sign)</th>
+                                    <th>Vehicle Purpose</th>
+                                    <th>Max Crew</th>
+                                    <th>Registration</th>
+                                </thead>
+                                <tbody>
+                                    {% for i in planned %}
+                                    <tr>
+                                        <td>{{ i.uni_name }}</td>
+                                        <td>{{ i.vehicle_type }}</td>
+                                        <td>{{ i.max_crew }}</td>
+                                        <td>{{ i.reg }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ambulances -->
+            <div class="col-md-12 my-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Ambulances
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="display table" id="am">
+                                <thead>
+                                    <th>Unit Name(Call Sign)</th>
+                                    <th>Vehicle Purpose</th>
+                                    <th>Max Crew</th>
+                                    <th>Registration</th>
+                                </thead>
+                                <tbody>
+                                    {% for i in am %}
+                                    <tr>
+                                        <td>{{ i.uni_name }}</td>
+                                        <td>{{ i.vehicle_type }}</td>
+                                        <td>{{ i.max_crew }}</td>
+                                        <td>{{ i.reg }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- response vehicles -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Response vehicles
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="display table" id="response">
+                                <thead>
+                                    <th>Unit Name(Call Sign)</th>
+                                    <th>Vehicle Purpose</th>
+                                    <th>Max Crew</th>
+                                    <th>Registration</th>
+                                </thead>
+                                <tbody>
+                                    {% for i in response %}
+                                    <tr>
+                                        <td>{{ i.uni_name }}</td>
+                                        <td>{{ i.vehicle_type }}</td>
+                                        <td>{{ i.max_crew }}</td>
+                                        <td>{{ i.reg }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <div class="col-md-12 my-5">
                     <div class="card">
                         <div class="card-header text-center">
                             Planned Patient Transportation Unit and assigned crew/paramedics
@@ -45,6 +152,7 @@
                                         <th>Registration</th>
                                         <th>Assigned Paramedic</th>
                                         <th>Paramedic Contact</th>
+                                        <th>Remove Paramedic</th>
                                     </thead>
                                     <tbody>
                                         {% for i in planed_units %}
@@ -57,6 +165,9 @@
                                                 <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.username }}</a>
                                             </td>
                                             <td>{{ i.paramedics.contact }}</td>
+                                            <td>
+                                                <a href="{% url 'delete_paramedics_with_assigned_unit_list' i.id %}" class="btn btn-warning">Remove</a>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -81,6 +192,7 @@
                                         <th>Registration</th>
                                         <th>Assigned Paramedic</th>
                                         <th>Paramedic Contact</th>
+                                        <th>Remove Paramedic</th>
                                     </thead>
                                     <tbody>
                                         {% for i in am_units %}
@@ -93,6 +205,9 @@
                                                 <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.username }}</a>
                                             </td>
                                             <td>{{ i.paramedics.contact }}</td>
+                                            <td>
+                                                <a href="{% url 'delete_paramedics_with_assigned_unit_list' i.id %}" class="btn btn-warning">Remove</a>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -118,6 +233,7 @@
                                         <th>Registration</th>
                                         <th>Assigned Paramedic</th>
                                         <th>Paramedic Contact</th>
+                                        <th>Remove Paramedic</th>
                                     </thead>
                                     <tbody>
                                         {% for i in response_units %}
@@ -130,6 +246,9 @@
                                                 <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.username }}</a>
                                             </td>
                                             <td>{{ i.paramedics.contact }}</td>
+                                            <td>
+                                                <a href="{% url 'delete_paramedics_with_assigned_unit_list' i.id %}" class="btn btn-warning">Remove</a>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

@@ -1066,10 +1066,15 @@ def dispatch_incident_report_pdf(request,id):
     crew_vehicle = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
     service_notes = DispatchIncidentServiceNotes.objects.filter(parent_id = id)
     loc_details = DispatchIncidentLocationDetails.objects.filter(parent_id = id)
-    odo = Vehicles_count_with_info_for_ambulance_request.objects.filter(parent_id = id)
+    odo = ParamedicsPhases.objects.filter(parent__parent_id = id)
     patient_info = DispatchIncidentPatientInformation.objects.filter(parent_id = id)
     photos_other_documents = DispatchIncidentPhotos.objects.filter(parent_id = id)
     certificate = DispatchIncidentDispatcherCertification.objects.filter(parent_id = id)
+
+    responding_address = ParamedicsPhases.objects.filter(parent__parent_id = id, status = 'Respond')
+    scene_address = ParamedicsPhases.objects.filter(parent__parent_id = id, status = 'On-Scene')
+    facility_address = ParamedicsPhases.objects.filter(parent__parent_id = id, status = 'Arrives-Hospital')
+    end_address = ParamedicsPhases.objects.filter(parent__parent_id = id, status = 'Return-Back-To-Base')
 
     current_site = get_current_site(request)
 
@@ -1084,6 +1089,11 @@ def dispatch_incident_report_pdf(request,id):
         'patient_info': patient_info,
         'id':id,
         'domain': current_site.domain,
+
+        'responding_address': responding_address,
+        'scene_address': scene_address,
+        'facility_address': facility_address,
+        'end_address': end_address,
     }
     template = get_template('medic/dispatch_incident_report_pdf.html')
     pdf = render_to_pdf(template, context)
@@ -2341,16 +2351,34 @@ def assign_paramedics_to_units(request):
 
 @user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
 def paramedics_with_assigned_unit_list(request):
-    planed_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type ='Planned Patient Transport')
-    am_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type ='Ambulance')
-    response_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type ='Response Vehicle')
+    # only units
+    planned = UnitNames.objects.filter(vehicle_type = 'Planned Patient Transport')
+    am = UnitNames.objects.filter(vehicle_type = 'Ambulance')
+    response = UnitNames.objects.filter(vehicle_type = 'Response Vehicle')
+
+    # with paramedics
+    planed_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type = 'Planned Patient Transport')
+    am_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type = 'Ambulance')
+    response_units = AssignUnitCreateWithParamedics.objects.filter(uni_name__vehicle_type = 'Response Vehicle')
+    
     context = {
+        'planned': planned,
+        'am': am,
+        'response': response,
+
         'planed_units': planed_units,
         'am_units': am_units,
         'response_units': response_units,
     }
     return render(request,'medic/paramedics_with_assigned_unit_list.html',context)
 
+@user_passes_test(has_perm_admin_dispatch,REDIRECT_FIELD_NAME)
+def delete_paramedics_with_assigned_unit_list(request,id):
+    obj = get_object_or_404(AssignUnitCreateWithParamedics, id=id)
+    medic = obj.paramedics.username
+    obj.delete()
+    messages.success(request,f'{medic} has been deleted from this unit')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @csrf_exempt
 def show_medic_via_selected_unit(request):
@@ -2360,9 +2388,11 @@ def show_medic_via_selected_unit(request):
         for k,v in frontend_data.items():
             if k == 'val':
                 id = v
+        print(id)
         medics = AssignUnitCreateWithParamedics.objects.filter(
             uni_name_id = id
         )
+        print(medics)
 
         if medics:
             for i in medics:

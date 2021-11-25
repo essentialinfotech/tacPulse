@@ -109,12 +109,12 @@ class Occurrence(models.Model):
 
 
 # dispatch incident
-class Senior(models.Model):
-    senior_name = models.CharField(max_length=500,blank=False,null=False)
-    created = models.DateTimeField(auto_now_add=True)
+# class Senior(models.Model):
+#     senior_name = models.CharField(max_length=500,blank=False,null=False)
+#     created = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.senior_name
+#     def __str__(self):
+#         return self.senior_name
 
 class Scribe(models.Model):
     scribe_name = models.CharField(max_length=500,blank=False,null=False)
@@ -123,19 +123,19 @@ class Scribe(models.Model):
     def __str__(self):
         return self.scribe_name
 
-class Assist01(models.Model):
-    a1_name = models.CharField(max_length=500,blank=False,null=False)
-    created = models.DateTimeField(auto_now_add=True)
+# class Assist01(models.Model):
+#     a1_name = models.CharField(max_length=500,blank=False,null=False)
+#     created = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.a1_name
+#     def __str__(self):
+#         return self.a1_name
 
-class Assist02(models.Model):
-    a2_name = models.CharField(max_length=500,blank=False,null=False)
-    created = models.DateTimeField(auto_now_add=True)
+# class Assist02(models.Model):
+#     a2_name = models.CharField(max_length=500,blank=False,null=False)
+#     created = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.a2_name
+#     def __str__(self):
+#         return self.a2_name
 
 # dispatch incident
 class UnitNames(models.Model):
@@ -399,9 +399,9 @@ class DispatchIncidentCrewAndVehicle(models.Model):
     paramedics = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     vehicle_total = models.CharField(max_length=50,choices=VEHICLE)
     unit_reg = models.CharField(max_length=30,blank=True,null=True)
-    senior = models.ForeignKey(Senior,on_delete=SET_NULL,null=True)
-    assist01 = models.ForeignKey(Assist01,on_delete=SET_NULL,null=True)
-    assist02 = models.ForeignKey(Assist02,on_delete=SET_NULL,null=True)
+    senior = models.CharField(max_length = 100,blank=True,null=True)
+    assist01 = models.CharField(max_length = 100,blank=True,null=True)
+    assist02 = models.CharField(max_length = 100,blank=True,null=True)
     loc = models.CharField(max_length=200,choices=LOC)
 
 
@@ -462,33 +462,17 @@ class DispatchIncidentServiceNotes(models.Model):
         ('HANDOVER DELAY','HANDOVER DELAY'),
         ('SPECIAL RECORD','SPECIAL RECORD'),
     ]
+    service_noted_by = models.ForeignKey(User,blank=True,null=True,on_delete=SET_NULL)
     parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
     service_notes = models.CharField(max_length=100,choices=SERVICE_NOTES)
     scribe = models.ForeignKey(Scribe,on_delete=SET_NULL,blank=True,null=True)
-    service_note_time = models.TimeField(blank=True,null=True)
+    service_note_time = models.DateTimeField(auto_now_add=True)
     service_note_description = models.TextField(blank=True,null=True)
 
 
 class DispatchIncidentLocationDetails(models.Model):
 
-    ASSIGNED_UNIT = [
-        ('SDO1','SDO1'),
-        ('L01','L01'),
-        ('RV03','RV03'),
-        ('TP07','TP07'),
-        ('TP09','TP09'),
-        ('TP08','TP08'),
-        ('RV01','RV01'),
-        ('TP02','TP02'),
-        ('TP05','TP05'),
-        ('TP03','TP03'),
-        ('RM01','RM01'),
-        ('TP11','TP11'),
-        ('TP10','TP10'),
-    ]
-
     parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
-    unit = models.CharField(blank=True,null=True,max_length=200,choices=ASSIGNED_UNIT)
     responding_address = models.CharField(max_length=100,blank=True,null=True)
     scene_address = models.CharField(max_length=100,blank=True,null=True)
     facility_address = models.CharField(max_length=100,blank=True,null=True)

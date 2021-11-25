@@ -68,6 +68,12 @@ def case_number():
         case_no = case_no.replace('.', '')
     return case_no
 
+def run_id(call_number):
+    if len(str(call_number)) == 1:
+        call_number = '0' + str(call_number)
+    time = datetime.datetime.now().strftime("%Y%m%d")
+    unique_run_id = 'TP#' + str(time) + '/' + str(call_number)
+    return unique_run_id
 
 # Create your views here.
 @login_required
@@ -228,6 +234,13 @@ def del_feedback(request,id):
 # this is for dispatch emergency incident report . not an ambulance  form submitted by user
 def ambulance_request(request):
     form = EmergencyMedDisIncidentReportForm()
+
+    # generating run ID
+    today_date = this_day.date()
+    todays_emergency_calls = AmbulanceModel.objects.filter(created_on__date = today_date).count()
+    caller_number = todays_emergency_calls + 1
+    generate_run_id = run_id(caller_number)
+
     if request.method == 'POST':
         main_form = request.POST.get('main_form')
         if main_form is not None:
@@ -236,6 +249,7 @@ def ambulance_request(request):
             if form.is_valid():
                 instance = form.save(commit=False)
                 instance.user = request.user
+                instance.run_id = generate_run_id
                 instance.save()
 
                 try:
@@ -253,37 +267,40 @@ def ambulance_request(request):
 
     context = {
         'form': form,
+        'generate_run_id': generate_run_id,
         }
     return render(request, 'medic/ambulance_request.html',context)
 
 
 def dispatch_incident_crew_and_vehicle(request,id):
+    ambulance_model = AmbulanceModel.objects.get(id = id)
+    run_id = ambulance_model.run_id
+
     user = User.objects.filter(medic = True)
     assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
 
     form = DispatchIncidentCrewAndVehicleForm()
-    senior_form = SeniorForm()
-    assist_1_form = Assist01Form()
-    assist_2_form = Assist02Form()
+    # senior_form = SeniorForm()
+    # assist_1_form = Assist01Form()
+    # assist_2_form = Assist02Form()
     if request.method == 'POST':
-        senior_form = SeniorForm(request.POST)
-        assist_1_form = Assist01Form(request.POST)
-        assist_2_form = Assist02Form(request.POST)
+        # senior_form = SeniorForm(request.POST)
+        # assist_1_form = Assist01Form(request.POST)
+        # assist_2_form = Assist02Form(request.POST)
+
+        # if senior_form.is_valid():
+        #     senior_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        # if assist_1_form.is_valid():
+        #     assist_1_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        # if assist_2_form.is_valid():
+        #     assist_2_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         main_form = request.POST.get('main_form')
-
-        if senior_form.is_valid():
-            senior_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        if assist_1_form.is_valid():
-            assist_1_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        if assist_2_form.is_valid():
-            assist_2_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
         if main_form is not None:
             data = []
 
@@ -350,7 +367,11 @@ def dispatch_incident_crew_and_vehicle(request,id):
 
                         json = {
                                 "to": data,
-                                "body": "test"
+                                "body": f"""
+                                            Please note that You have been allocated case {run_id} by 
+                                            TAC-Pulse ERS (WEB). Please open the TAC-Pulse ERS 
+                                            App for further details.
+                                        """
                             }
                     )
                 return redirect('add_another_dispatch_incident_crew_and_vehicle', id)
@@ -358,9 +379,9 @@ def dispatch_incident_crew_and_vehicle(request,id):
     context = {
         'user': user,
         'form': form,
-        'senior_form': senior_form,
-        'assist_1_form': assist_1_form,
-        'assist_2_form': assist_2_form,
+        # 'senior_form': senior_form,
+        # 'assist_1_form': assist_1_form,
+        # 'assist_2_form': assist_2_form,
         'assigned_units': assigned_units,
         'id': id,
     }
@@ -1225,18 +1246,35 @@ def noti_length(request):
         membership_noti = MembershipNoti.objects.filter(is_seen = False).count()
         renewal_noti = MembershipRenewalNoti.objects.filter(is_seen = False).count()
         h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).count()
-        total_noti_length = panic_noti + membership_noti + h_transfer_noti + renewal_noti
+        paramedic_phases = ParamedicPhasesNotification.objects.filter(is_seen = False).count()
+        total_noti_length = panic_noti + membership_noti + h_transfer_noti + renewal_noti + paramedic_phases
 
-    if request.user.is_staff and not request.user.is_superuser:
+    elif request.user.is_staff and not request.user.medic and not request.user.is_superuser:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
         h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).count()
         panic_noti = PanicNoti.objects.filter(is_seen = False).count()
-        total_noti_length = panic_noti + renewal_noti + h_transfer_noti
+        paramedic_phases = ParamedicPhasesNotification.objects.filter(is_seen = False).count()
+        total_noti_length = panic_noti + renewal_noti + h_transfer_noti + paramedic_phases
 
-    if not request.user.is_staff and not request.user.is_superuser:
+    elif not request.user.is_superuser and request.user.is_staff and  request.user.medic :
+        renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
+        h_transfer_noti = HospitalTransferNoti.objects.filter(mark_read_admin = False).count()
+        panic_noti = PanicNoti.objects.filter(is_seen = False).count()
+        paramedic_phases = ParamedicPhasesNotification.objects.filter(is_seen = False).count()
+        total_noti_length = panic_noti + renewal_noti + h_transfer_noti + paramedic_phases
+
+
+    elif not request.user.is_staff and not request.user.is_superuser and not request.user.medic:
         renewal_noti = MembershipRenewalNoti.objects.filter(noti_for__user_id = request.user.id,is_seen = False).count()
         h_transfer_noti = HospitalTransferNoti.objects.filter(noti_for__requested_by = request.user,mark_read_user = False).count()
         total_noti_length = renewal_noti + h_transfer_noti
+
+
+    elif request.user.medic and not request.user.is_staff:
+        paramedic_phases = ParamedicPhasesNotification.objects.filter(is_seen = False).count()
+        total_noti_length = paramedic_phases
+
+
     data = {
         'total_noti_length': total_noti_length,
     }
@@ -2247,28 +2285,28 @@ def edit_dispatch_incident_crew_and_vehicle(request,id):
     assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent = parent)
 
     form = DispatchIncidentCrewAndVehicleForm(instance = obj)
-    senior_form = SeniorForm()
-    assist_1_form = Assist01Form()
-    assist_2_form = Assist02Form()
+    # senior_form = SeniorForm()
+    # assist_1_form = Assist01Form()
+    # assist_2_form = Assist02Form()
     if request.method == 'POST':
-        senior_form = SeniorForm(request.POST)
-        assist_1_form = Assist01Form(request.POST)
-        assist_2_form = Assist02Form(request.POST)
+        # senior_form = SeniorForm(request.POST)
+        # assist_1_form = Assist01Form(request.POST)
+        # assist_2_form = Assist02Form(request.POST)
+
+
+        # if senior_form.is_valid():
+        #     senior_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        # if assist_1_form.is_valid():
+        #     assist_1_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        # if assist_2_form.is_valid():
+        #     assist_2_form.save()
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         main_form = request.POST.get('main_form')
-
-        if senior_form.is_valid():
-            senior_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        if assist_1_form.is_valid():
-            assist_1_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        if assist_2_form.is_valid():
-            assist_2_form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
         if main_form is not None:
             form = DispatchIncidentCrewAndVehicleForm(request.POST,instance=obj)
             if form.is_valid():
@@ -2280,10 +2318,11 @@ def edit_dispatch_incident_crew_and_vehicle(request,id):
     context = {
         'user': user,
         'form': form,
-        'senior_form': senior_form,
-        'assist_1_form': assist_1_form,
-        'assist_2_form': assist_2_form,
+        # 'senior_form': senior_form,
+        # 'assist_1_form': assist_1_form,
+        # 'assist_2_form': assist_2_form,
         'parent': parent,
+        'data': obj,
         'assigned_units': assigned_units,
         'id': id,
     }
@@ -2326,9 +2365,7 @@ def assign_paramedics_to_units(request):
         check_max_crew = AssignUnitCreateWithParamedics.objects.filter(uni_name = unit).count()
         print(check_max_crew,unit_model.max_crew)
         if check_max_crew >= unit_model.max_crew:
-            messages.warning(request,f"""This Vehicle/Unit maximun crew is {unit_model.max_crew} and already two crew members are assigned with this vehicle
-            you must edit to remove and add other's to this unit.
-            """)
+            messages.warning(request,f"""This Vehicle/Unit maximun crew is {unit_model.max_crew} and already two crew members are assigned with this vehicle.""")
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         if form.is_valid():
@@ -2497,7 +2534,7 @@ def emergency_incident_dispatch_individual_parts_medium(request,id):
 
 
 def paramedic_phase_noti(request):
-    if request.user.is_staff or request.user.medic:
+    if request.user.is_staff or request.user.medic or request.user.is_superuser:
         data = []
         noti = ParamedicPhasesNotification.objects.filter(is_seen = False).order_by('-id')
         for i in noti:

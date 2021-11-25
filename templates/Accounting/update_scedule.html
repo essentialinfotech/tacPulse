@@ -549,31 +549,15 @@
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %}{% endif %} {% if request.user.is_superuser %}
+                            {% endif %}{% endif %}
+            
+            
+            
+            
+                            {% if request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fas fa-car"></i>
-                                    </span>
-                                    <span class="menu-text">Dispatch List</span>
-            
-                                </a>
-                            </li>
-            
-                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fas fa-car"></i>
-                                    </span>
-                                    <span class="menu-text">Track Dispatches</span>
-            
-                                </a>
                             </li>
             
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
@@ -610,6 +594,30 @@
                                         </li>
                                     </ul>
                                 </div>
+                            </li>
+            
+                            {% if request.user.is_superuser %}
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Dispatch List</span>
+            
+                                </a>
+                            </li>
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Track Dispatches</span>
+            
+                                </a>
                             </li>
             
                             <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover" style="display: none;">
@@ -662,8 +670,125 @@
                                 </div>
                             </li>
                             {% endif %}
+                            {% endif %}
+            
+                            {% if request.user.is_staff %}
+                            <li class="menu-section">
+                                <h4 class="menu-text">Dispatch Management</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'ambulance_request' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Medical Dispatch Form <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                </a>
+                            </li>
+            
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Reports</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+            
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'dispatch_emergency_incident_submissions' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Submissions</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+            
+                            {% if request.user.is_superuser %}
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Dispatch List</span>
+            
+                                </a>
+                            </li>
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Track Dispatches</span>
+            
+                                </a>
+                            </li>
+            
+                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover" style="display: none;">
+                                <a href="{% url 'dispatch_incident_submission_review_all' %}" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <span class="menu-text">Emergency Medical Dispatch Incident Report <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                </a>
+                            </li>
             
             
+                            <li class="menu-section">
+                                <h4 class="menu-text">Assessments</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+            
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
+                                    <span class="menu-text">Assessment</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'assetment_form' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Add Assessment</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'assesment_list_users' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">User Assessments</span>
+                                            </a>
+                                        </li>
+            
+                                    </ul>
+                                </div>
+                            </li>
+                            {% endif %}
+                            {% endif %}
             
                             <li class="menu-section">
                                 <h4 class="menu-text">Accounting</h4>

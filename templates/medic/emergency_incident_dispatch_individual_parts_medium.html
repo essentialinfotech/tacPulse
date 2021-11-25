@@ -18,6 +18,33 @@
         padding: 2rem;
     }
 
+    .sidebar{
+        position: fixed;
+        left: 100px;
+    }
+
+    .contents{
+        position: absolute;
+        max-height: 400px;
+        right: 200px;
+        overflow: auto;
+    }
+
+    @media only screen and (max-width: 760px) {
+        .data-container {
+            flex: none !important;
+        }
+
+        .sidebar{
+            position: unset !important;
+        }
+
+        .contents{
+            position: unset !important;
+            display: block !important;
+        }
+    }
+
 </style>
 
 <!--begin::Content-->
@@ -50,7 +77,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="d-flex justify-content-around">
+                    <div class="d-flex justify-content-around data-container">
                         <div class="sidebar">
                     
                             <div class="box" id="call_i">
@@ -97,14 +124,14 @@
 
                                 <div class="form-group">
                                     <label for="user">Dispatcher</label> <br>
-                                    <input type="text" readonly name="user" id="user" value="{{ call_intake_phase.user }}">
+                                    <input type="text" class="form-control" readonly name="user" id="user" value="{{ call_intake_phase.user }}">
                                 </div>
 
 
                                 <div class="form-group">
                                     <label for="panic">Panic</label> <br>
                                     {% if call_intake_phase.panic %}
-                                        <input type="text" readonly name="panic" id="panic" value="{{ call_intake_phase.panic }}">
+                                        <input type="text" readonly class="form-control"  name="panic" id="panic" value="{{ call_intake_phase.panic }}">
                                     {% else %}
                                         No Panic attached
                                     {% endif %}
@@ -113,95 +140,95 @@
 
                                 <div class="form-group">
                                     <label for="run_id">Run ID</label> <br>
-                                    <input type="text" readonly name="run_id" id="run_id" value="{{ call_intake_phase.run_id }}">
+                                    <input type="text" readonly class="form-control"  name="run_id" id="run_id" value="{{ call_intake_phase.run_id }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="chief_complain">Chief Complain</label> <br>
-                                    <input type="text" readonly name="chief_complain" id="chief_complain" value="{{ call_intake_phase.chief_complain }}">
+                                    <input type="text" class="form-control"    readonly name="chief_complain" id="chief_complain" value="{{ call_intake_phase.chief_complain }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="incident_category">Incident Category</label> <br>
-                                    <input type="text" readonly name="incident_category" id="incident_category" value="{{ call_intake_phase.incident_category }}">
+                                    <input type="text" class="form-control"  readonly name="incident_category" id="incident_category" value="{{ call_intake_phase.incident_category }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="ppe_lvl">PPE LEVEL</label> <br>
-                                    <input type="text" readonly name="ppe_lvl" id="ppe_lvl" value="{{ call_intake_phase.ppe_lvl }}">
+                                    <input type="text" class="form-control" readonly name="ppe_lvl" id="ppe_lvl" value="{{ call_intake_phase.ppe_lvl }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="pick_up_address">Pick up address</label> <br>
-                                    <input type="text" readonly name="pick_up_address" id="pick_up_address" value="{{ call_intake_phase.pick_up_address }}">
+                                    <input type="text" class="form-control" readonly name="pick_up_address" id="pick_up_address" value="{{ call_intake_phase.pick_up_address }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="billing_type">Billing Type</label> <br>
-                                    <input type="text" readonly name="billing_type" id="billing_type" value="{{ call_intake_phase.billing_type }}">
+                                    <input type="text" class="form-control" readonly name="billing_type" id="billing_type" value="{{ call_intake_phase.billing_type }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="billing_source">Billing Source</label> <br>
-                                    <input type="text" readonly name="billing_source" id="billing_source" value="{{ call_intake_phase.billing_source }}">
+                                    <input type="text" class="form-control" readonly name="billing_source" id="billing_source" value="{{ call_intake_phase.billing_source }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="amount_quoted">Amount Quoted</label> <br>
-                                    <input type="text" readonly name="amount_quoted" id="amount_quoted" value="{{ call_intake_phase.amount_quoted }}">
+                                    <input type="text" class="form-control" readonly name="amount_quoted" id="amount_quoted" value="{{ call_intake_phase.amount_quoted }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="authorization_number">Authorization Number</label> <br>
-                                    <input type="text" readonly name="authorization_number" id="authorization_number" value="{{ call_intake_phase.authorization_number }}">
+                                    <input type="text" class="form-control" readonly name="authorization_number" id="authorization_number" value="{{ call_intake_phase.authorization_number }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="caller_name">Caller Name</label> <br>
-                                    <input type="text" readonly name="caller_name" id="caller_name" value="{{ call_intake_phase.caller_name }}">
+                                    <input type="text" class="form-control" readonly name="caller_name" id="caller_name" value="{{ call_intake_phase.caller_name }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="caller_number">Caller Number</label> <br>
-                                    <input type="text" readonly name="caller_number" id="caller_number" value="{{ call_intake_phase.caller_number }}">
+                                    <input type="text" class="form-control" readonly name="caller_number" id="caller_number" value="{{ call_intake_phase.caller_number }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="caller_company">Caller Company</label> <br>
-                                    <input type="text" readonly name="caller_company" id="caller_company" value="{{ call_intake_phase.caller_company }}">
+                                    <input type="text" class="form-control" readonly name="caller_company" id="caller_company" value="{{ call_intake_phase.caller_company }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="call_received_time">Call Received Time</label> <br>
-                                    <input type="text" readonly name="call_received_time" id="call_received_time" value="{{ call_intake_phase.call_received_time }}">
+                                    <input type="text" class="form-control" readonly name="call_received_time" id="call_received_time" value="{{ call_intake_phase.call_received_time }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted To Crew On Whatsapp</label> <br>
-                                    <input type="text" readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp" value="{{ call_intake_phase.time_call_posted_to_crew_on_whatsapp }}">
+                                    <input type="text" class="form-control" readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp" value="{{ call_intake_phase.time_call_posted_to_crew_on_whatsapp }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted To Crew On Whatsapp</label> <br>
-                                    <input type="text" readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp"
+                                    <input type="text" class="form-control"  readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp"
                                         value="{{ call_intake_phase.time_call_posted_to_crew_on_whatsapp }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="crew_operational_status">Crew Operational Status</label> <br>
-                                    <input type="text" readonly name="crew_operational_status" id="crew_operational_status"
+                                    <input type="text" class="form-control"  readonly name="crew_operational_status" id="crew_operational_status"
                                         value="{{ call_intake_phase.crew_operational_status }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="how_many_units_dispatched">Units Dispatched</label> <br>
-                                    <input type="text" readonly name="how_many_units_dispatched" id="how_many_units_dispatched"
+                                    <input type="text" class="form-control"  readonly name="how_many_units_dispatched" id="how_many_units_dispatched"
                                         value="{{ call_intake_phase.how_many_units_dispatched }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="created_on">This part was created on</label> <br>
-                                    <input type="text" readonly name="created_on" id="created_on"
+                                    <input type="text" class="form-control"  readonly name="created_on" id="created_on"
                                         value="{{ call_intake_phase.created_on }}">
                                 </div>
                             </div>
@@ -248,37 +275,37 @@
 
                                         <div class="form-group">
                                             <label for="status">Status</label><br>
-                                            <input type="text" name="status" id="status" value="{{ i.status }}">
+                                            <input class="form-control"  type="text" name="status" id="status" value="{{ i.status }}">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="medic_loc">Paramedic Location</label><br>
-                                            <input type="text" name="medic_loc" id="medic_loc" value="{{ i.medic_loc }}">
+                                            <input class="form-control" type="text" name="medic_loc" id="medic_loc" value="{{ i.medic_loc }}">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="target_loc">Target Location</label><br>
-                                            <input type="text" name="target_loc" id="target_loc" value="{{ i.target_loc }}">
+                                            <input class="form-control"  type="text" name="target_loc" id="target_loc" value="{{ i.target_loc }}">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="action_time">Log Time</label><br>
-                                            <input type="text" name="action_time" id="action_time" value="{{ i.action_time }}">
+                                            <input class="form-control"  type="text" name="action_time" id="action_time" value="{{ i.action_time }}">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="odo">ODO</label><br>
-                                            <input type="text" name="odo" id="odo" value="{{ i.odo }}">
+                                            <input class="form-control"  type="text" name="odo" id="odo" value="{{ i.odo }}">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="dis">Distance</label><br>
-                                            <input type="text" name="dis" id="dis" value="{{ i.dis }}">
+                                            <input class="form-control"  type="text" name="dis" id="dis" value="{{ i.dis }}">
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="dur">Distance</label><br>
-                                            <input type="text" name="dur" id="dur" value="{{ i.dur }}">
+                                            <label for="dur">Duration</label><br>
+                                            <input class="form-control"  type="text" name="dur" id="dur" value="{{ i.dur }}">
                                         </div>
                                         <hr>
                                         <a href="{% url 'dispatch_incident_service_notes' i.parent.parent.id %}" class="btn btn-info">Add Service Notes</a>
@@ -295,22 +322,22 @@
 
                                     <div class="form-group">
                                         <label for="service_notes">Service Note</label> <br>
-                                        <input type="text" readonly name="service_notes" id="service_notes" value="{{ i.service_notes }}">
+                                        <input class="form-control"  type="text" readonly name="service_notes" id="service_notes" value="{{ i.service_notes }}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="scribe">Scribe</label> <br>
-                                        <input type="text" readonly name="scribe" id="scribe" value="{{ i.scribe }}">
+                                        <input class="form-control"  type="text" readonly name="scribe" id="scribe" value="{{ i.scribe }}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="service_note_time">Service Note Time</label> <br>
-                                        <input type="text" readonly name="service_note_time" id="service_note_time" value="{{ i.service_note_time }}">
+                                        <input class="form-control"  type="text" readonly name="service_note_time" id="service_note_time" value="{{ i.service_note_time }}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="service_note_description">Service Note Description</label> <br>
-                                        <input type="text" readonly name="service_note_description" id="service_note_description" value="{{ i.service_note_description }}">
+                                        <input class="form-control"  type="text" readonly name="service_note_description" id="service_note_description" value="{{ i.service_note_description }}">
                                     </div>
                                 {% endfor %}
                             </div>
@@ -323,41 +350,41 @@
 
                                 <div class="form-group">
                                     <label for="patient">Patient</label> <br>
-                                    <input type="text" name="patient" id="patient"
+                                    <input class="form-control"  type="text" name="patient" id="patient"
                                         value="{{ i.patient }}" readonly>
                                 </div>
                             
                                 <div class="form-group">
                                     <label for="p_priority">Priority</label> <br>
-                                    <input type="text" name="p_priority" id="p_priority" value="{{ i.p_priority }}"
+                                    <input class="form-control"  type="text" name="p_priority" id="p_priority" value="{{ i.p_priority }}"
                                         readonly>
                                 </div>
                             
                                 <div class="form-group">
                                     <label for="p_lvl_of_care">LEVEL OF CARE</label> <br>
-                                    <input type="text" name="p_lvl_of_care" id="p_lvl_of_care" value="{{ i.p_lvl_of_care }}" readonly>
+                                    <input class="form-control"  type="text" name="p_lvl_of_care" id="p_lvl_of_care" value="{{ i.p_lvl_of_care }}" readonly>
                                 </div>
                             
                                 <div class="form-group">
                                     <label for="other_dispatcher">Other Dispatcher if call was handed over</label> <br>
-                                    <input type="text" name="other_dispatcher" id="other_dispatcher" value="{{ i.other_dispatcher }}" readonly>
+                                    <input class="form-control"  type="text" name="other_dispatcher" id="other_dispatcher" value="{{ i.other_dispatcher }}" readonly>
                                 </div>
                             
                                 <div class="form-group">
                                     <label for="p_name">Patient Name</label> <br>
-                                    <input type="text" name="p_name" id="p_name"
+                                    <input class="form-control"  type="text" name="p_name" id="p_name"
                                         value="{{ i.p_name }}" readonly>
                                 </div>
                             
                             
                                 <div class="form-group">
                                     <label for="p_medical_aid_plan_option">Medical Aid Plan Option</label> <br>
-                                    <input type="text" name="p_medical_aid_plan_option" id="p_medical_aid_plan_option" value="{{ i.p_medical_aid_plan_option }}" readonly>
+                                    <input class="form-control"  type="text" name="p_medical_aid_plan_option" id="p_medical_aid_plan_option" value="{{ i.p_medical_aid_plan_option }}" readonly>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="p_medical_aid">Medical Aid</label> <br>
-                                    <input type="text" name="p_medical_aid" id="p_medical_aid"
+                                    <input  class="form-control"  type="text" name="p_medical_aid" id="p_medical_aid"
                                         value="{{ i.p_medical_aid }}" readonly>
                                 </div>
                                 {% endfor %}
@@ -371,7 +398,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="photos_and_other_choices">Photo & Other Choices</label> <br>
-                                        <input type="text" name="photos_and_other_choices" readonly id="photos_and_other_choices" value="{{ i.photos_and_other_choices }}">
+                                        <input class="form-control"  type="text" name="photos_and_other_choices" readonly id="photos_and_other_choices" value="{{ i.photos_and_other_choices }}">
                                     </div>
 
                                     {% if i.photo %}
@@ -398,30 +425,30 @@
                                 {% for i in certification %}
                                     <div class="form-group">
                                         <label for="senior_practitioner_csn">Senior Practioner CSN</label> <br>
-                                        <input type="text" name="senior_practitioner_csn" id="senior_practitioner_csn" value="{{ i.senior_practitioner_csn }}" readonly>
+                                        <input class="form-control"  type="text" name="senior_practitioner_csn" id="senior_practitioner_csn" value="{{ i.senior_practitioner_csn }}" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="name_of_dispatcher">Name Of The Dispatcher</label> <br>
-                                        <input type="text" name="name_of_dispatcher" id="name_of_dispatcher"
+                                        <input class="form-control"  type="text" name="name_of_dispatcher" id="name_of_dispatcher"
                                             value="{{ i.name_of_dispatcher }}" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="was_the_call_handed_over_to_another_dispatcher">Was the call handed over to another dispatcher?</label> <br>
-                                        <input type="text" name="was_the_call_handed_over_to_another_dispatcher" id="was_the_call_handed_over_to_another_dispatcher"
+                                        <input class="form-control"  type="text" name="was_the_call_handed_over_to_another_dispatcher" id="was_the_call_handed_over_to_another_dispatcher"
                                             value="{{ i.was_the_call_handed_over_to_another_dispatcher }}" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="other_dispatcher">Other Dispatcher if call was handed over</label> <br>
-                                        <input type="text" name="other_dispatcher" id="other_dispatcher"
+                                        <input class="form-control"  type="text" name="other_dispatcher" id="other_dispatcher"
                                             value="{{ i.other_dispatcher }}" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="dispatch_special_notes">Dispatch Special Notes</label> <br>
-                                        <input type="text" name="dispatch_special_notes" id="dispatch_special_notes"
+                                        <input class="form-control"  type="text" name="dispatch_special_notes" id="dispatch_special_notes"
                                             value="{{ i.dispatch_special_notes }}" readonly>
                                     </div>
 
@@ -434,7 +461,7 @@
 
                                     <div class="form-group">
                                         <label for="created">Record Completion Date & Time</label> <br>
-                                        <input type="text" name="created" id="created"
+                                        <input class="form-control"  type="text" name="created" id="created"
                                             value="{{ i.created }}" readonly>
                                     </div>
                                 {% endfor %}

@@ -210,13 +210,13 @@ class DispatchIncidentDispatcherCertificationForm(forms.ModelForm):
             }
 
 
-class SeniorForm(forms.ModelForm):
-    class Meta:
-        model = Senior
-        fields = '__all__'
-        widgets = {
-                'senior_name': forms.TextInput(attrs={'class': 'form-control'}),
-            }
+# class SeniorForm(forms.ModelForm):
+#     class Meta:
+#         model = Senior
+#         fields = '__all__'
+#         widgets = {
+#                 'senior_name': forms.TextInput(attrs={'class': 'form-control'}),
+#             }
 
 class ScribeForm(forms.ModelForm):
     class Meta:
@@ -226,21 +226,21 @@ class ScribeForm(forms.ModelForm):
                 'scribe_name': forms.TextInput(attrs={'class': 'form-control'}),
             }
 
-class Assist01Form(forms.ModelForm):
-    class Meta:
-        model = Assist01
-        fields = '__all__'
-        widgets = {
-                'a1_name': forms.TextInput(attrs={'class': 'form-control'}),
-            }
+# class Assist01Form(forms.ModelForm):
+#     class Meta:
+#         model = Assist01
+#         fields = '__all__'
+#         widgets = {
+#                 'a1_name': forms.TextInput(attrs={'class': 'form-control'}),
+#             }
 
-class Assist02Form(forms.ModelForm):
-    class Meta:
-        model = Assist02
-        fields = '__all__'
-        widgets = {
-                'a2_name': forms.TextInput(attrs={'class': 'form-control'}),
-            }
+# class Assist02Form(forms.ModelForm):
+#     class Meta:
+#         model = Assist02
+#         fields = '__all__'
+#         widgets = {
+#                 'a2_name': forms.TextInput(attrs={'class': 'form-control'}),
+#             }
 
 
 class VehicleCountForm(forms.ModelForm):

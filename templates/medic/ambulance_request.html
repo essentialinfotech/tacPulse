@@ -70,7 +70,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mt-2">
-                            <label for="run_id">Run ID</label> {{ form.run_id }}
+                            <label for="run_id">Run ID</label>
+                            <input type="text" readonly name="run_id" id="run_id" class="form-control" value="{{ generate_run_id }}">
                         </div>
                     </div>
 

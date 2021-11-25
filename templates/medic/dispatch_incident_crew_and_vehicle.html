@@ -33,64 +33,6 @@
                         <h3 class="card-label">Emergency Medical Dispatch - Incident Report</h3>
                         <hr>
 
-                        <div class="col-md-12">
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#exampleModal" data-whatever="@mdo">Add Senior? Assist01? Assist02</button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Senior/Assist01/Assist02</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="POST"
-                                                action="{% url 'dispatch_incident_crew_and_vehicle' id %}">
-                                                {% csrf_token %}
-                                                <div class="form-group">
-                                                    <label for="recipient-name" class="col-form-label">Senior
-                                                        Name:</label> {{ senior_form.senior_name }}
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Add Value</button>
-                                            </form>
-
-                                            <hr>
-
-                                            <form method="POST"
-                                                action="{% url 'dispatch_incident_crew_and_vehicle' id %}">
-                                                {% csrf_token %}
-                                                <div class="form-group">
-                                                    <label for="recipient-name" class="col-form-label">Assist01
-                                                        Name:</label> {{ assist_1_form.a1_name }}
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Add Value</button>
-                                            </form>
-                                            <hr>
-
-
-                                            <form method="POST"
-                                                action="{% url 'dispatch_incident_crew_and_vehicle' id %}">
-                                                {% csrf_token %}
-                                                <div class="form-group">
-                                                    <label for="recipient-name" class="col-form-label">Assist02
-                                                        Name:</label> {{ assist_2_form.a2_name }}
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Add Value</button>
-                                            </form>
-                                            <hr>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <marquee behavior="" direction="" class="text-warning"
-                            style="font-family: lobster;font-size: large;"> <i class="fa fa-arrow-up"></i> Add <span
-                                class="text-success">Senior Name</span> , <span class="text-success">Assist01
-                                Name</span> , <span class="text-success">Assist 02 Name</span> in case of need <i
-                                class="fa fa-arrow-up"></i></marquee>
                         <div>
                             {{ form.errors }}
                                 {% if assigned_units %}
@@ -182,7 +124,7 @@
 
 
                     
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <div class="form-group mt-2">
                             <label for="other_medics" style="font-weight: bold;">No I want to add other paramedics</label> <br>
                             <input type="checkbox" name="other_medics" id="other_medics"> 
@@ -197,7 +139,7 @@
                         </select>
                     </div>
 
-                    <br>
+                    <br> -->
 
 
                 </div>
@@ -236,6 +178,21 @@
 <script>
     $('#id_assigned_unit').change(function () {
         var selected_unit = $(this).children("option:selected").val();
+
+        // removing options
+        $('#id_senior')
+            .find('option')
+            .remove();
+
+        $('#id_assist01')
+            .find('option')
+            .remove();
+
+        $('#id_assist02')
+            .find('option')
+            .remove();
+
+
         backend_data = {
             'val': selected_unit,
         }
@@ -254,12 +211,43 @@
                         );
 
                         $("#id_unit_reg").val(value.unit_reg);
+
+                        // adding options dynamically
+                        $('#id_senior').append($('<option>', {
+                            value: username,
+                            text: username
+                        }));
+
+                        $('#id_assist01').append($('<option>', {
+                            value: username,
+                            text: username
+                        }));
+
+                        $('#id_assist02').append($('<option>', {
+                            value: username,
+                            text: username
+                        }));
                     } 
 
                     if(value.found === false){
                         $("#fetch_paramedics_from_server").append(
                             "<div >" + value.msg + " </div>"
                         );
+                        $("#id_unit_reg").val('');
+
+                        // removing options
+                        $('#id_senior')
+                            .find('option')
+                            .remove();
+
+                        $('#id_assist01')
+                            .find('option')
+                            .remove();
+
+                        $('#id_assist02')
+                            .find('option')
+                            .remove();
+
                     }
                     
                 })
@@ -268,7 +256,7 @@
     })
 </script>
 
-<script>
+<!-- <script>
     $(document).ready(function () {
         $('#paramedics').select2();
         $('#show_add_paramedics').css("pointer-events", "none");
@@ -285,6 +273,6 @@
             $('#show_add_paramedics').css("pointer-events", "none");
         }
     })
-</script>
+</script> -->
 
 {% endblock %}

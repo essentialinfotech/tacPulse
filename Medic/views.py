@@ -276,6 +276,7 @@ def ambulance_request(request):
 def dispatch_incident_crew_and_vehicle(request,id):
     ambulance_model = AmbulanceModel.objects.get(id = id)
     run_id = ambulance_model.run_id
+    backslash = '\n'
 
     user = User.objects.filter(medic = True)
     assigned_units = DispatchIncidentCrewAndVehicle.objects.filter(parent_id = id)
@@ -368,11 +369,7 @@ def dispatch_incident_crew_and_vehicle(request,id):
 
                         json = {
                                 "to": data,
-                                "body": f"""
-                                            Please note that You have been allocated case {run_id} by 
-                                            TAC-Pulse ERS (WEB). Please open the TAC-Pulse ERS 
-                                            App for further details.
-                                        """
+                                "body": f"""You have been {backslash} allocated case {backslash} {run_id} by {backslash} TAC-Pulse ERS (WEB). {backslash} Please open the {backslash} TAC-Pulse ERS App {backslash} for further details."""
                             }
                     )
                     
@@ -388,10 +385,7 @@ def dispatch_incident_crew_and_vehicle(request,id):
                                     'address': str(ambulance_model.caller_number),
                                 }],
 
-                                "body": f"""
-                                            TAC-Pulse ERS has dispatched an ambulance to assist you.Please have your medical aid 
-                                            card,and ID document ready. Your call reference number is {run_id} | 0861 666 911
-                                        """
+                                "body": f"""TAC-Pulse ERS has dispatched {backslash} an ambulance to assist you. {backslash} Please have your medical {backslash} aid card,and ID document {backslash} ready. Your call reference number is {run_id} {backslash} | 0861 666 911"""
                             }
                     )
                 return redirect('add_another_dispatch_incident_crew_and_vehicle', id)

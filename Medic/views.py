@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.urls.base import reverse_lazy
 from django.views.generic.base import TemplateView
 from rest_framework.views import APIView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from Accounting.views import vehicle_maintenance
 from .models import *
@@ -358,7 +359,7 @@ def dispatch_incident_crew_and_vehicle(request,id):
                                                                                                 for_crew_id = instance.id,
                                                                                                 paramedics_id = i,
                                                                                             )
-
+                    # sending SMS to paramedics
                     requests.post(
                         'https://api.bulksms.com/v1/messages',
                         headers = {
@@ -371,6 +372,25 @@ def dispatch_incident_crew_and_vehicle(request,id):
                                             Please note that You have been allocated case {run_id} by 
                                             TAC-Pulse ERS (WEB). Please open the TAC-Pulse ERS 
                                             App for further details.
+                                        """
+                            }
+                    )
+                    
+                    # sending SMS to patient/caller/panic/sender(caller_number)
+                    requests.post(
+                        'https://api.bulksms.com/v1/messages',
+                        headers = {
+                                'Authorization': 'Basic' + ' ' +  'dGFjX3B1bHNlOmxvdmViaXRl',
+                            },
+
+                        json = {
+                                "to": [{
+                                    'address': str(ambulance_model.caller_number),
+                                }],
+
+                                "body": f"""
+                                            TAC-Pulse ERS has dispatched an ambulance to assist you.Please have your medical aid 
+                                            card,and ID document ready. Your call reference number is {run_id} | 0861 666 911
                                         """
                             }
                     )
@@ -445,6 +465,7 @@ def dispatch_incident_service_notes(request,id):
             if form.is_valid():
                 instance = form.save(commit=False)
                 instance.parent_id = id
+                instance.service_noted_by = request.user
                 instance.save()
                 return redirect('add_another_dispatch_incident_service_notes', id)
     context = {
@@ -558,12 +579,14 @@ def add_another_dispatch_incident_photos_and_others(request,id):
 
 @login_required
 def dispatch_incident_dispatcher_certification(request,id):
+    am_model = AmbulanceModel.objects.get(id = id)
+    dispatcher_name = am_model.user.first_name + ' ' + am_model.user.last_name
     form = DispatchIncidentDispatcherCertificationForm()
     if request.method == 'POST':
-        dispatcher_name = request.POST.get('dispatcher_name')
-        if dispatcher_name:
-            DispatchIncidentNameOfDispatcher.objects.create(dispatcher_name = dispatcher_name)
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        # dispatcher_name = request.POST.get('dispatcher_name')
+        # if dispatcher_name:
+        #     DispatchIncidentNameOfDispatcher.objects.create(dispatcher_name = dispatcher_name)
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         main_form = request.POST.get('main_form')
         if main_form:
@@ -586,6 +609,8 @@ def dispatch_incident_dispatcher_certification(request,id):
             
     context = {
         'form': form,
+        'dispatcher_name': dispatcher_name,
+        'am_model': am_model,
         'id': id,
     }
     return render(request,'medic/dispatch_incident_dispatcher_certification.html', context)
@@ -853,6 +878,15 @@ def del_panic(request, id):
 @login_required
 def check_panic_requests(request):
     panic_requests = Panic.objects.all().order_by('-id')
+    page = request.GET.get('page', 1)
+    panic_requests = Paginator(panic_requests, 30)
+    try:
+        panic_requests = panic_requests.page(page)
+    except PageNotAnInteger:
+        panic_requests = panic_requests.page(1)
+    except EmptyPage:
+        panic_requests = panic_requests.page(panic_requests.num_pages)
+
     context = {
         'panic_requests': panic_requests,
     }
@@ -2425,17 +2459,15 @@ def show_medic_via_selected_unit(request):
         for k,v in frontend_data.items():
             if k == 'val':
                 id = v
-        print(id)
         medics = AssignUnitCreateWithParamedics.objects.filter(
             uni_name_id = id
         )
-        print(medics)
 
         if medics:
             for i in medics:
                 prefetch = {
                     'found': True,
-                    'username': i.paramedics.username,
+                    'username': str(i.paramedics.first_name) + ' ' + str(i.paramedics.last_name),
                     'contact': i.paramedics.contact,
                     'user_id': i.paramedics.id,
                     'unit_reg': i.uni_name.reg,
@@ -2536,7 +2568,7 @@ def emergency_incident_dispatch_individual_parts_medium(request,id):
 def paramedic_phase_noti(request):
     if request.user.is_staff or request.user.medic or request.user.is_superuser:
         data = []
-        noti = ParamedicPhasesNotification.objects.filter(is_seen = False).order_by('-id')
+        noti = ParamedicPhasesNotification.objects.filter(is_seen = False,noti_for__parent__parent__closed = False).order_by('-id')
         for i in noti:
             prefetch = {
                 'run_id': i.noti_for.parent.parent.run_id,

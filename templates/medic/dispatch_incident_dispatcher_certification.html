@@ -98,7 +98,11 @@
 
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="name_of_dispatcher">Name Of Dispatcher</label> {{ form.name_of_dispatcher }}
+                            <label for="name_of_dispatcher">Name Of Dispatcher</label>
+                            <br>
+                            <select class="form-control" name="name_of_dispatcher" id="name_of_dispatcher">
+                                <option selected value="{{ am_model.user.id }}">{{ dispatcher_name }}</option>
+                            </select>
                         </div>
                     </div>
 

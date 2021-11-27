@@ -165,6 +165,23 @@
             .find('option')
             .remove();
 
+        // appending empty value to options
+        $('#id_senior').append($('<option>', {
+            value: '',
+            text: '-----------',
+        }));
+
+        $('#id_assist01').append($('<option>', {
+            value: '',
+            text: '-----------',
+        }));
+
+        $('#id_assist02').append($('<option>', {
+            value: '',
+            text: '-----------',
+        }));
+        
+
         backend_data = {
             'val': selected_unit,
         }

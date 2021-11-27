@@ -320,9 +320,16 @@
                                         <h3>Service Notes ({{ forloop.counter }}) </h3>
                                     </div>
 
+
+
                                     <div class="form-group">
                                         <label for="service_notes">Service Note</label> <br>
                                         <input class="form-control"  type="text" readonly name="service_notes" id="service_notes" value="{{ i.service_notes }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="service_noted_by">Service Noted By</label> <br>
+                                        <input class="form-control" type="text" readonly name="service_noted_by" id="service_noted_by" value="{{ i.service_noted_by }}">
                                     </div>
 
                                     <div class="form-group">
@@ -338,6 +345,12 @@
                                     <div class="form-group">
                                         <label for="service_note_description">Service Note Description</label> <br>
                                         <input class="form-control"  type="text" readonly name="service_note_description" id="service_note_description" value="{{ i.service_note_description }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="service_note_time">Service Note Time</label> <br>
+                                        <input class="form-control" type="text" readonly name="service_note_time" id="service_note_time"
+                                            value="{{ i.service_note_description }}">
                                     </div>
                                 {% endfor %}
                             </div>

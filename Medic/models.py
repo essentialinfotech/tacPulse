@@ -583,12 +583,12 @@ class DispatchIncidentPhotos(models.Model):
     photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
     document = models.FileField(upload_to='Ambulance',blank=True,null=True)
 
-class DispatchIncidentNameOfDispatcher(models.Model):
-    dispatcher_name = models.CharField(max_length=500)
-    created = models.DateTimeField(auto_now_add=True)
+# class DispatchIncidentNameOfDispatcher(models.Model):
+#     dispatcher_name = models.CharField(max_length=500)
+#     created = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.dispatcher_name
+#     def __str__(self):
+#         return self.dispatcher_name
 
 class DispatchIncidentDispatcherCertification(models.Model):
 
@@ -599,8 +599,8 @@ class DispatchIncidentDispatcherCertification(models.Model):
 
     parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
     senior_practitioner_csn = models.CharField(max_length=50,blank=True,null=True)
-    name_of_dispatcher = models.ForeignKey(DispatchIncidentNameOfDispatcher,blank=True,null=True,on_delete=SET_NULL,related_name='dispatcher')
-    other_dispatcher = models.ForeignKey(DispatchIncidentNameOfDispatcher,blank=True,null=True,on_delete=SET_NULL,related_name='other_dispatcher')
+    name_of_dispatcher = models.ForeignKey(User,blank=True,null=True,on_delete=SET_NULL,related_name='dispatcher')
+    other_dispatcher = models.ForeignKey(User,blank=True,null=True,on_delete=SET_NULL,related_name='other_dispatcher')
     was_the_call_handed_over_to_another_dispatcher = models.CharField(max_length=20,blank=True,null=True,choices=WAS_THE_CALL_HANDED_OVER)
     dispatch_special_notes = models.TextField(blank=True,null=True)
     signature = models.FileField(upload_to='Signature',blank=True,null=True)

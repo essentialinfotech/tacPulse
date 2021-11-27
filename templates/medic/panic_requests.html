@@ -38,11 +38,41 @@
                             </div>
                         </div>
                     </div>
-                    <br> {% endfor %}
+                    <br> 
+                    {% endfor %}
+                </div>
+                <div class="col-md-12">
+                    <!--begin::Pagination-->
+                    {% if panic_requests.has_other_pages %}
+                    <ul class="pagination">
+                        {% if panic_requests.has_previous %}
+                        <li class="page-item active">
+                            <a class="page-link" href="?page={{ panic_requests.previous_page_number }}">pre</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><span></span></li>
+                        {% endif %}
+                        {% for i in panic_requests.paginator.page_range %}
+                        {% if panic_requests.number == i %}
+                        <li class="page-item"><span
+                                style="z-index: 1; position: relative; display: block;padding: 0.5rem 0.75rem; margin-left: -1px; line-height: 1.25; color: #f7efef; background-color: #F64E60; border: 1px solid #E4E6EF;">
+                                {{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if panic_requests.has_next %}
+                        <li class="page-item active">
+                            <a class="page-link" href="?page={{ panic_requests.next_page_number }}">Next</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><span></span></li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 

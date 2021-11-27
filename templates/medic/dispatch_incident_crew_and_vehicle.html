@@ -192,20 +192,40 @@
             .find('option')
             .remove();
 
+        // appending empty value to options
+        $('#id_senior').append($('<option>', {
+            value: '',
+            text: '-----------',
+        }));
+
+        $('#id_assist01').append($('<option>', {
+            value: '',
+            text: '-----------',
+        }));
+
+        $('#id_assist02').append($('<option>', {
+            value: '',
+            text: '-----------',
+        }));
+
 
         backend_data = {
             'val': selected_unit,
         }
+        
         $.ajax({
             type: 'POST',
             url: '/showing/medic/via/unit/selection/',
             data: backend_data,
             success: function(response){
+                var i = 0;
             $("#fetch_paramedics_from_server").empty();
                 $.each(response, function(key, value) {
                     if(value.found === true){
                         var username = value.username;
                         var contact = value.contact;
+                        i++;
+
                         $("#fetch_paramedics_from_server").append(
                             "<div >" + username + ' ' + contact + " </div>"
                         );
@@ -222,7 +242,7 @@
                             value: username,
                             text: username
                         }));
-
+                        
                         $('#id_assist02').append($('<option>', {
                             value: username,
                             text: username

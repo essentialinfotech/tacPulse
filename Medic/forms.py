@@ -198,12 +198,15 @@ class DispatchIncidentPhotosForm(forms.ModelForm):
 
 
 class DispatchIncidentDispatcherCertificationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DispatchIncidentDispatcherCertificationForm, self).__init__(*args, **kwargs)
+        instance = kwargs.pop('instance', User)
+        self.fields["other_dispatcher"].queryset = User.objects.filter(is_staff = True,is_superuser = False)
     class Meta:
         model = DispatchIncidentDispatcherCertification
         fields = '__all__'
         widgets = {
                 'senior_practitioner_csn': forms.TextInput(attrs={'class': 'form-control'}),
-                'name_of_dispatcher': forms.Select(attrs={'class': 'form-control'}),
                 'other_dispatcher': forms.Select(attrs={'class': 'form-control'}),
                 'was_the_call_handed_over_to_another_dispatcher': forms.Select(attrs={'class': 'form-control'}),
                 'dispatch_special_notes': forms.Textarea(attrs={'class': 'form-control'}),

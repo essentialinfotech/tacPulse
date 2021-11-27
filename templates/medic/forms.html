@@ -25,15 +25,16 @@
             dataType: 'json',
             success: function(data) {
                 alert('success')
-                location.href = "http://localhost:8000/form/list/"
+                location.href = "http://127.0.0.1:8000/form/list/"
             }
         })
     }
 </script>
+
 <script>
     jQuery(function($) {
         var fbRender = document.getElementById('formrender'),
-            formData = JSON.parse("{{json_form|escapejs}}");
+            formData = JSON.parse("{{ json_form|escapejs }}");
 
         var formRenderOpts = {
             formData,

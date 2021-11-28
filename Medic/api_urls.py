@@ -19,5 +19,11 @@ urlpatterns = [
     # dispatch incident
     path('assigned/paramedics/tasks/', AmbulanceModelList.as_view(), name = 'AmbulanceModelList_api'),
     path('paramedic/phases/update/', ParamedicsDifferentPhasesReportCreateApi.as_view(), name = 'ParamedicsDifferentPhasesReportCreateApi_api'),
-    path('paramedic/reports/list/', ParamedicPhaseList.as_view(), name = 'ParamedicPhaseList_api')
+    path('paramedic/reports/list/', ParamedicPhaseList.as_view(), name = 'ParamedicPhaseList_api'),
+    path('photos/<int:id>/', DIspatchIncidentPhotosApi.as_view(), name = 'dispatch_incident_photo_api'),
+    path('notes/<int:id>/', DIspatchIncidentServiceNotesApi.as_view(), name = 'service_notes'),
+    path('scribes/', ScribeApi.as_view() , name = 'scribe_api'),
+
+    # group chat api
+    path('inbox/<int:id>/', GroupChatApi.as_view(), name = 'group_chat_api'),
 ]

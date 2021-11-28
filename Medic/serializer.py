@@ -62,3 +62,26 @@ class ParamedicsPhaseSerializer(serializers.ModelSerializer):
         model = ParamedicsPhases
         fields = '__all__'
         depth = 5
+
+class GroupChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupChat
+        fields = '__all__'
+        depth = 2
+
+class DispatchIncidentPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DispatchIncidentPhotos
+        fields = '__all__'
+        depth = 5
+
+class DispatchIncidentServiceNotesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DispatchIncidentServiceNotes
+        fields = '__all__'
+        depth = 5
+
+class ScribeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Scribe
+        fields = '__all__'

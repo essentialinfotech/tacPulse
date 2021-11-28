@@ -373,7 +373,7 @@ def dispatch_incident_crew_and_vehicle(request,id):
                             }
                     )
                     
-                    # sending SMS to patient/caller/panic/sender(caller_number)
+                    # sending SMS to patient/caller/panic sender(caller_number)
                     requests.post(
                         'https://api.bulksms.com/v1/messages',
                         headers = {
@@ -2590,3 +2590,15 @@ def close_dispatch_emergency_incident(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+class GroupChatView(TemplateView):
+    template_name = 'medic/group_chat.html'
+    success_url = reverse_lazy('group_chat')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['am_model_instance'] = AmbulanceModel.objects.get(id = self.kwargs['id'])
+        context['chat_users'] = AssignedParamedicsAfterDispatchIncidentCrewAndVehicle.objects.filter(parent_id = self.kwargs['id'])
+        context['inbox'] = GroupChat.objects.filter(am_model_id = self.kwargs['id'])
+        # ambulance model id
+        context['am_id'] = self.kwargs['id']
+        return context

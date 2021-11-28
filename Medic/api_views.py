@@ -8,12 +8,14 @@ from datetime import datetime, timedelta
 from rest_framework import status, viewsets
 from rest_framework import generics
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.serializers import Serializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.db.models import Sum, Q,query
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 today = datetime.today()
 week = datetime.today().date() - timedelta(days=7)
@@ -183,4 +185,71 @@ class ParamedicPhaseList(generics.ListAPIView):
         crews = ParamedicsPhases.objects.filter(parent__paramedics = self.request.user).order_by('-id')
         serializer = ParamedicsPhaseSerializer(crews, many = True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class GroupChatApi(APIView):
+    def get(self, request, *args, **kwargs):
+        inbox = GroupChat.objects.filter(am_model_id = self.kwargs['id']).order_by('sent')
+        serializer = GroupChatSerializer(inbox, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        if AmbulanceModel.objects.get(id = self.kwargs['id'], closed = False):
+            serializer = GroupChatSerializer(data = request.data)
+            am_model = get_object_or_404(AmbulanceModel, id=self.kwargs['id'])
+            sender = request.data['sender']
+            msg = request.data['msg']
+            if serializer.is_valid():
+                serializer.save(am_model = am_model, sender_id = sender, msg = msg)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response('This Incident was closed by someone', status=status.HTTP_400_BAD_REQUEST)
+
+
+class DIspatchIncidentPhotosApi(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        photos = DispatchIncidentPhotos.objects.filter(parent_id = self.kwargs['id']).order_by('-id')
+        serializer = DispatchIncidentPhotoSerializer(photos, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        am_model = get_object_or_404(AmbulanceModel, id=self.kwargs['id'])
+        serializer = DispatchIncidentPhotoSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save(parent = am_model)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DIspatchIncidentServiceNotesApi(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        notes = DispatchIncidentServiceNotes.objects.filter(parent_id = self.kwargs['id']).order_by('-id')
+        serializer = DispatchIncidentServiceNotesSerializer(notes, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        am_model = get_object_or_404(AmbulanceModel, id=self.kwargs['id'])
+        serializer = DispatchIncidentServiceNotesSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save(parent = am_model, service_noted_by = request.user, scribe_id = request.data['scribe'])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ScribeApi(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        scribes = Scribe.objects.all()
+        serializer = ScribeSerializer(scribes, many = True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = ScribeSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

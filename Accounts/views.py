@@ -640,6 +640,11 @@ def customer_list(request):
 
 @login_required
 def send_message(request,id):
+    # to delete messages on next day
+    all_msges_except_today = Message.objects.filter(sent__date__lt = this_day)
+    for i in all_msges_except_today:
+        i.delete()
+
     online_user = request.user
     messages = Message.objects.filter(Q(sender = request.user, receiver_id = id)| 
                                         Q(sender_id = id, receiver = request.user)).order_by('sent')

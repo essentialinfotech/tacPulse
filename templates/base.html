@@ -2563,11 +2563,20 @@
                     });
                 });
 
-
-
-
             $(document).ready(function () {
                 $('#cosporate_users_list_table').DataTable({
+                    responsive: true,
+                });
+            });
+
+            $(document).ready(function () {
+                $('#assigned_units').DataTable({
+                    responsive: true,
+                });
+            });
+
+            $(document).ready(function () {
+                $('#assigned_medics').DataTable({
                     responsive: true,
                 });
             });

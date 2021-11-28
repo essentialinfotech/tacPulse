@@ -31,7 +31,7 @@
         <!--begin::Container-->
         <div class="container">
 
-            <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="row">
 
                 <div class="col-md-12">
                     <div class="text-center">
@@ -40,28 +40,82 @@
                         </div>
     
                         <strong>Assigned Unit</strong>
-                        {% for i in assigned_units %}
-                            <li>
-                                <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}"> {{ i.assigned_unit }} Edit</a>
-                            </li>
-                        {% endfor %}
+
+                        <div class="table-responsive">
+                            <table class="display table" id="assigned_units">
+                                <thead>
+                                    <th>Count</th>
+                                    <th>Unit Name</th>
+                                    <th>Vehicle Type</th>
+                                    <th>Max Crew</th>
+                                    <th>Registration</th>
+                                    <th>Action</th>
+                                </thead>
+                                <tbody>
+                                    {% for i in assigned_units %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.assigned_unit }}</td>
+                                        <td>{{ i.assigned_unit.vehicle_type }}</td>
+                                        <td>{{ i.assigned_unit.max_crew }}</td>
+                                        <td>{{ i.assigned_unit.reg }}</td>
+                                        <td>
+                                            <a href="{% url 'edit_dispatch_incident_crew_and_vehicle' i.id %}" class="btn btn-danger" style="border-radius: 0px;">Edit</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
                         <hr style="width: 50%;">
 
+
                         <strong>SMS was sent to these paramedics</strong>
-                        {% for i in paramedics %}
-                            <li>
-                                <a href="{% url 'profile' i.paramedics.id %}">{{ i.paramedics.first_name|title }} {{ i.paramedics.lastname|title }}</a>
-                                <p>{{ i.paramedics.contact }}</p>
-                            </li>
-                        {% endfor %}
+                        <div class="table-responsive">
+                            <table class="display table" id="assigned_medics">
+                                <thead>
+                                    <th>Count</th>
+                                    <th>Image</th>
+                                    <th>Paramedic</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                </thead>
+                                <tbody>
+                                    {% for i in paramedics %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>
+                                                <img src="{{ i.paramedics.imageURL }}" height="50px" width="50px" alt="">
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'profile' i.paramedics.id %}">
+                                                    {{ i.paramedics.first_name|title }} {{ i.paramedics.lastname|title }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ i.paramedics.contact }}
+                                            </td>
+                                            <td>{{ i.paramedics.email }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
                         <hr style="width: 50%;">
                         <div class="form-group">
-                            <a href="{% url 'dispatch_incident_crew_and_vehicle' id %}" class="btn btn-success mt-5">Add Another Crew & Vehicle Details</a>
+                            <a href="{% url 'dispatch_incident_crew_and_vehicle' id %}" class="btn btn-success mt-5" style="border-radius: 0px;">Add Another Crew & Vehicle Details</a>
                             <!-- <a href="dispatch_incident_travel_details id" class="btn btn-success mt-5"></a> -->
                             <br>
-                            <a href="{% url 'emergency_incident_dispatch_individual_parts_medium' id %}" style="text-decoration: underline;">Take me to report section where i will find every details and upcoming or incoming informations regarding this incident/Form</a>
+                            <a href="{% url 'emergency_incident_dispatch_individual_parts_medium' id %}" class="btn btn-secondary" style="border-radius: 0px;">
+                                Redirect To Detail Page
+                            </a>
+
+                            <a href="{% url 'group_chat' id %}" class="btn btn-secondary"
+                                style="border-radius: 0px;">
+                                Chat with assigned medics
+                            </a>
                         </div>
 
                     </div>

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from Medic.forms import PropertyForm
 from django.contrib import admin
 from django.forms.fields import FileField
@@ -41,3 +42,4 @@ admin.site.register(AssignedParamedicsAfterDispatchIncidentCrewAndVehicle)
 admin.site.register(ParamedicsPhases)
 admin.site.register(ParamedicPhasesNotification)
 admin.site.register(UnitNames)
+admin.site.register(GroupChat)

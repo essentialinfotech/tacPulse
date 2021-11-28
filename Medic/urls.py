@@ -176,6 +176,9 @@ urlpatterns = [
      path('paramedic/status/noti/', paramedic_phase_noti, name = 'paramedic_phase_noti'),
      path('mark/seen/paramedic/phase/update/<int:id>/', mark_seen_paramedic_phase_noti, name = 'mark_seen_paramedic_phase_noti'),
      path('closing/dispatch/incident/<int:id>/', close_dispatch_emergency_incident, name = 'close_dispatch_emergency_incident'),
+
+     # group chat
+     path('group/chat/<int:id>/', GroupChatView.as_view(), name = 'group_chat'),
      
 ]
 

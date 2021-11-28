@@ -1072,3 +1072,18 @@ class Light(models.Model):
     status = models.CharField(choices=STATUS,max_length=100)
     notes = models.TextField()
     photo = models.ImageField(upload_to='fleet/',blank=True,null=True)
+
+
+# group chat starts
+class GroupChat(models.Model):
+    am_model =models.ForeignKey(AmbulanceModel,on_delete = models.CASCADE, blank=True, null=True)
+    sender = models.ForeignKey(User, blank=True,null=True, on_delete=models.CASCADE)
+    msg = models.TextField()
+    sent = models.DateTimeField(auto_now_add=True)
+
+    # def __str__(self):
+    #     return str(self.sender.first_name)
+
+# Group chat ends
+
+

@@ -487,6 +487,28 @@
     </div>
 </div>
 
+<!-- messenger icon -->
+<style>
+    .icon-container{
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        background-color: #333333 ;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<a href="{% url 'group_chat' id  %}" target="blank" title="Open Chat">
+    <div class="icon-container">
+        <div class="icon-div">
+            <i class="icon-2x text-dark-50 flaticon-chat"></i>
+        </div>
+    </div>
+</a>
+<!-- ends -->
+
 
 {% endblock %}
 

@@ -2673,25 +2673,6 @@
                             var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.noti_id + "/'  id='mark_seen'>Mark as seen</a>";
                             if (is_seen == false) {
 
-                                // if (sound_played === false) {
-                                //     $('#playbtn').click();
-                                // }
-
-                                    // $.playSound('{% static "noti_sound/notification.mp3" %}')
-                                    // var audelem = document.getElementsByClassName('sound-player');
-
-                                    // audelem.addEventListener('ended', (event) => {
-                                    //     alert('dsds')
-                                    // });
-
-
-                                    // backend_data = {'noti_id': value.noti_id}
-                                    // $.ajax({
-                                    //     type: 'POST',
-                                    //     url: '/sound/off/noti/panic/',
-                                    //     data: backend_data,
-                                    // })
-
                                 $("#panic_noti").append(
                                     "<div>" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
                                 );
@@ -2800,7 +2781,14 @@
                     }
                 })
 
-                // posting request.user's position
+
+            }, 10000)
+        </script>
+
+        <!-- posting request.user's position -->
+        <script>
+            window.onload = function(){
+
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         (position) => {
@@ -2814,8 +2802,8 @@
                                 data: pos,
                                 traditional: true,
                                 dataType: 'json',
-                                success: function(result) {
-                                    
+                                success: function (result) {
+
                                 }
                             })
                         })
@@ -2828,12 +2816,11 @@
                     data: 'dummy',
                     traditional: true,
                     dataType: 'json',
-                    success: function(result) {
+                    success: function (result) {
 
                     }
                 })
-
-            }, 10000)
+            }
         </script>
 
 
@@ -2872,12 +2859,6 @@
             })
         </script>
 
-        <!-- <script>
-            function play() {
-                    var audio = document.getElementById("track");
-                    audio.play();
-                }
-        </script> -->
 
         {% block js %} {% endblock %}
 </body>

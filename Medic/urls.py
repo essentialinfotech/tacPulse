@@ -179,6 +179,7 @@ urlpatterns = [
 
      # group chat
      path('group/chat/<int:id>/', GroupChatView.as_view(), name = 'group_chat'),
+     path('delete/group/chat/<int:id>/', delete_dispatch_sms, name = 'delete_dispatch_sms'),
      
 ]
 

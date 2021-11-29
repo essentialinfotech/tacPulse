@@ -3,61 +3,63 @@
 {% block content %}
 
 <style>
-    .chat-users{
+    .chat-users {
         border: 1px;
         margin-bottom: 1rem;
         padding: 10px;
     }
 
-    .chat-users img{
+    .chat-users img {
         border-radius: 30px;
     }
 
-    .chat-users:hover{
-        background-color: #f8f9fa!important;
+    .chat-users:hover {
+        background-color: #f8f9fa !important;
     }
 
-    #chat-user-section{
+    #chat-user-section {
         height: 400px;
+        min-width: 300px;
+        max-width: 500px;
         overflow: auto;
     }
 
-    .vertical-line{
+    .vertical-line {
         height: 500px;
         width: 0.2rem;
         background-color: #dbe1e6;
     }
 
-    #chat-user-names{
+    #chat-user-names {
         font-size: 15px;
         margin-left: 15px;
     }
 
-    .chat-log{
+    .chat-log {
         height: 350px;
         overflow: auto;
     }
 
-    #chat-log-section{
+    #chat-log-section {
         width: 100%;
     }
 
-    .input{
+    .input {
         width: 70%;
         margin-left: 2rem;
     }
 
-    .flaticon-paper-plane:hover{
+    .flaticon-paper-plane:hover {
         cursor: pointer;
     }
 
-    .send-icon-container{
+    .send-icon-container {
         padding: 5px;
     }
 
-    .others{
+    .others {
         border: 2px solid #ccc;
-        margin-left: 2rem;
+        margin-left: 1rem;
         padding: 10px;
         background-color: #ddd;
         border-radius: 5px;
@@ -69,36 +71,38 @@
         height: 50px;
         width: 50px;
         border-radius: 50px;
-        }
+    }
 
     .you {
-        margin-left: 2rem;
+        margin-left: 1rem;
         padding: 10px;
         border: 2px solid #dedede;
         background-color: #f1f1f1;
         border-radius: 5px;
         height: auto;
-        width: auto;
-        }
+        display: table;
+    }
 
-    .you img {
+    img {
         height: 50px;
         width: 50px;
         border-radius: 50px;
-        }
+        margin-left: 20px;
+    }
 
-    .flex-texts{
+    .flex-texts {
         margin-left: 1.5rem
     }
 
     @media only screen and (max-width: 556px) {
-    #chat-user-section {
-        display: none;
+        #chat-user-section {
+            display: none;
+        }
+
+        .vertical-line {
+            display: none;
+        }
     }
-    .vertical-line{
-        display: none;
-    }
-}
 </style>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -119,77 +123,92 @@
                                 <span id="chat-user-names">
                                     {{ am_model_instance.user.first_name|title }} {{ am_model_instance.user.last_name|title }}
                                     <br>
-                                    {{ am_model_instance.user.contact }} 
+                                    {{ am_model_instance.user.contact }}
                                 </span>
                             </div>
 
                             <!-- other users -->
                             {% for i in chat_users %}
-                                <div class="chat-users d-flex">
-                                    <img src="{{ i.paramedics.imageURL }}" height="40px" width="40px" alt="">
-                                    <span id="chat-user-names">{{ i.paramedics.first_name|title }} {{ i.paramedics.last_name|title }} <br> {{ i.paramedics.contact }} </span>
-                                </div>
+                            <div class="chat-users d-flex">
+                                <img src="{{ i.paramedics.imageURL }}" height="40px" width="40px" alt="">
+                                <span id="chat-user-names">{{ i.paramedics.first_name|title }} {{ i.paramedics.last_name|title }} <br> {{ i.paramedics.contact }} </span>
+                            </div>
                             {% endfor %}
 
                             <!-- Caller -->
                             {% if am_model_instance.panic %}
-                                <h5>Panic Sender/Caller</h5>
-                                <div class="chat-users d-flex">
-                                    <img src="{{ am_model_instance.user.imageURL }}" height="40px" width="40px" alt="">
-                                    <span id="chat-user-names">
-                                        {{ am_model_instance.panic.panic_sender.first_name|title }} {{ am_model_instance..panic.panic_sender.last_name|title }}
-                                        <br>
-                                        {{ am_model_instance.panic.panic_sender.contact }}
-                                    </span>
-                                </div>
+                            <h5>Panic Sender/Caller</h5>
+                            <div class="chat-users d-flex">
+                                <img src="{{ am_model_instance.user.imageURL }}" height="40px" width="40px" alt="">
+                                <span id="chat-user-names">
+                                    {{ am_model_instance.panic.panic_sender.first_name|title }} {{ am_model_instance..panic.panic_sender.last_name|title }}
+                                    <br>
+                                    {{ am_model_instance.panic.panic_sender.contact }}
+                                </span>
+                            </div>
                             {% endif %}
 
                         </section>
-                        
+
                         <div class="vertical-line"></div>
 
                         <!-- chat-log -->
                         <section id="chat-log-section">
                             <div class="chat-log">
+                            {% if not am_model_instance.closed %}
+
                                 {% for i in inbox %}
                                     {% if i.sender == request.user %}
+                                    <div class="d-flex">
+                                        <div>
+                                            <img src="{{ i.sender.imageURL }}" alt="">
+                                        </div>
+
                                         <div class="you mb-2">
                                             <strong>You</strong>
-                                            <div class="d-flex">
-                                                <div>
-                                                    <img src="{{ i.sender.imageURL }}" alt="">
-                                                </div>
-
-                                                <div class="flex-texts">
-                                                    <span>{{ i.sent }}</span> <br>
-                                                    <span>{{ i.msg|title }}</span>
-                                                </div>
+                                            <div class="flex-texts">
+                                                <span>{{ i.sent }}</span> <br>
+                                                <span>{{ i.msg|title }}</span>
                                             </div>
                                         </div>
+                                    </div>
+
                                     {% else %}
+                                    <div class="d-flex">
+                                        <div>
+                                            <img src="{{ i.sender.imageURL }}" alt="">
+                                        </div>
 
-                                        <div class="others mb-2">
+                                        <div class="you mb-2">
                                             <strong>{{ i.sender.first_name|title }}</strong>
-                                            <div class="d-flex">
-                                                <div>
-                                                    <img src="{{ i.sender.imageURL }}" alt="">
-                                                </div>
-                                            
-                                                <div class="flex-texts">
-                                                    <span>{{ i.sent }}</span> <br>
-                                                    <span>{{ i.msg|title }}</span>
-                                                </div>
+                                            <div class="flex-texts">
+                                                <span>{{ i.sent }}</span> <br>
+                                                <span>{{ i.msg|title }}</span>
                                             </div>
                                         </div>
+                                    </div>
                                     {% endif %}
                                 {% endfor %}
+
+                            {% else %}
+                                <div class="you mb-2">
+                                    <div class="flex-texts">
+                                        <span><h3>This Chat was closed</h3></span>
+                                    </div>
+                                </div>
+                            {% endif %}
                             </div>
 
                             <div class="input">
-                                <textarea class="form-control" required name="msg" id="msg" cols="100" rows="5"></textarea>
+                                <textarea class="form-control" required name="msg" id="msg" cols="100"
+                                    rows="5"></textarea>
                                 <div class="send-icon-container">
-                                    <button class="btn btn-secondary button-send">Send</button>
-                                    <button class="btn btn-secondary" id="reload-msg">Reload Messages</button>
+                                    <button class="btn btn-secondary button-send"
+                                        style="border-radius: 0px;">Send</button>
+                                    <button class="btn btn-secondary" id="reload-msg" style="border-radius: 0px;">Reload
+                                        Messages</button>
+                                    <a href="{% url 'delete_dispatch_sms' am_model_instance.id %}"
+                                        class="btn btn-danger" style="border-radius: 0px;">Delete Conversion</a>
                                 </div>
                             </div>
                         </section>
@@ -231,7 +250,37 @@
             data: backend_data,
             success: function (data) {
                 $('#msg').val('');
-                UpdateChat(am_id, user, url);
+                var first_name = data.sender.first_name;
+                var last_name = data.sender.last_name;
+                var image = data.sender.profile_pic;
+                var msg = data.msg;
+                var sent = new Date(data.sent);
+                var sent = sent.toLocaleString("en-US", {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+
+                var image_src = window.location.origin + image;
+                var sender = data.sender.id;
+
+                if (user == sender) {
+                    $(".chat-log").append(
+                        '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
+                    );
+                }
+
+                // scrolling down after a message is received/send
+                $(".chat-log").animate({
+                    scrollTop: 20000000
+                }, "slow");
+
+                // update chat
+                // UpdateChat(am_id, user, url);
             }
         })
     })
@@ -239,7 +288,7 @@
 
 <!-- show messages to chat log -->
 <script>
-    function UpdateChat(am_id, user, url){
+    function UpdateChat(am_id, user, url) {
         var am_id = am_id;
         var user = user;
 
@@ -269,13 +318,13 @@
 
                     if (user == sender) {
                         $(".chat-log").append(
-                            '<div class="you mb-2"> <strong>You</strong> <div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div><div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
+                            '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
                         );
                     }
 
                     else {
                         $(".chat-log").append(
-                            '<div class="others mb-2"> <strong> '+ first_name +' </strong> <div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div><div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
+                            '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="others mb-2"> <strong>' + first_name + '</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
                         );
                     }
 
@@ -292,7 +341,7 @@
 
 <!-- reload messages -->
 <script>
-    $('#reload-msg').click(function(){
+    $('#reload-msg').click(function () {
         var am_id = JSON.parse("{{ am_id }}");
         var user = $('#request-user').val();
         var url = '/api/inbox/' + am_id + '/';

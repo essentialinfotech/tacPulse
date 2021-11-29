@@ -1,5 +1,6 @@
 from __future__ import division
 from django import dispatch
+from django.views.generic import DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.api import success
 from django.http.response import JsonResponse
@@ -2558,7 +2559,7 @@ def emergency_incident_dispatch_individual_parts_medium(request,id):
     }
     return render(request,'medic/emergency_incident_dispatch_individual_parts_medium.html',context)
 
-
+@login_required
 def paramedic_phase_noti(request):
     if request.user.is_staff or request.user.medic or request.user.is_superuser:
         data = []
@@ -2592,7 +2593,6 @@ def close_dispatch_emergency_incident(request,id):
 
 class GroupChatView(TemplateView):
     template_name = 'medic/group_chat.html'
-    success_url = reverse_lazy('group_chat')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -2602,3 +2602,10 @@ class GroupChatView(TemplateView):
         # ambulance model id
         context['am_id'] = self.kwargs['id']
         return context
+        
+@login_required
+def delete_dispatch_sms(request,id):
+    inbox = GroupChat.objects.filter(am_model_id = id)
+    for i in inbox:
+        i.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

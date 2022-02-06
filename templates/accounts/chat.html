@@ -73,14 +73,17 @@
                     <u>{{ other_user.first_name|title }} {{ other_user.last_name|title }}</u>
                 </p>
                 
-                <div class="social-media">
+                <!-- <div class="social-media">
                     <a href="{% url 'delete_message' other_user.id %}" class="btn btn-danger"
                         style="margin-right: 5px;">Delete</a>
-                </div>
+                </div> -->
+
             </div>
-            <div style="width: 70%; margin: auto;">
+
+            <!-- <div style="width: 70%; margin: auto;">
                 <Strong style="text-align: center;  font-size: 13px;">Note that messages will be permanently deleted exactly after 1 day messages were sent</Strong>
-            </div>
+            </div> -->
+
             <div class="messages">
                 <ul id="uldown" style="height: auto!important; overflow-y: auto!important;">
                     {% for i in messages %} {% if i.sender.username == request.user.username %}
@@ -94,8 +97,14 @@
                         {% endif %}
 
                         {% if i.file %}
-                        <a href="{{ i.file.url }}"><img id="img_edit" src="{{ i.file.url }}"
-                                style="height: 70px!important; width: 70px!important;" alt=""></a>
+                        <a href="{{ i.file.url }}"><img class="files" id="img_edit" src="{{ i.file.url }}"
+                                style="height: 70px!important; width: 70px!important;" alt=""> 
+
+                            <!-- <small>
+                                {{ i.filename|slice:50 }}....
+                            </small>     -->
+
+                        </a>
                         {% endif %}
 
                     </li>
@@ -111,8 +120,14 @@
                         {% endif %}
 
                         {% if i.file %}
-                        <a href="{{ i.file.url }}"><img id="img_edit" src="{{ i.file.url }}"
-                                style="height: 70px!important; width: 70px!important;" alt=""></a>
+                            <a href="{{ i.file.url }}"><img class="files" id="img_edit" src="{{ i.file.url }}"
+                                    style="height: 70px!important; width: 70px!important;" alt=""> 
+
+                                <!-- <small>
+                                    {{ i.filename|slice:50 }}....
+                                </small> -->
+
+                            </a>
                         {% endif %}
 
                     </li>
@@ -154,3 +169,14 @@
         file.style.display = 'block';
     })
 </script>
+
+<!-- {% block js %}
+
+<script>
+    function isFileImage(file) {
+        const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+        return file && $.inArray(file['type'], acceptedImageTypes)
+    }
+</script>
+
+{% endblock %} -->

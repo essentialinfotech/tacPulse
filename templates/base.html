@@ -9,13 +9,14 @@
     <title>TAC Pulse</title>
     <meta name="description" content="Updates and statistics" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="canonical" href="https://keenthemes.com/metronic" />
+    <!--<link rel="canonical" href="https://keenthemes.com/metronic" />-->
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <!--begin::Page Vendors Styles(used by this page)-->
-    <link href="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet"
+        type="text/css" />
     <!--end::Page Vendors Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
     <link href="{% static 'assets/plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
@@ -44,7 +45,7 @@
             font-family: Georgia, 'Times New Roman', Times, serif;
             color: rgb(134, 131, 131);
         }
-        
+
         #tags {
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
@@ -93,7 +94,7 @@
             line-height: 1.5;
             border-radius: .3rem;
         }
-        
+
         #tags:focus {
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
@@ -146,20 +147,20 @@
             box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
             margin-top: .5rem;
         }
-        
+
         #date {
-            color: brown!important;
+            color: brown !important;
         }
-        
+
         .mark_seen,
         #mark_seen {
-            border-radius: 0px!important;
-            padding: 1px!important;
-            padding-right: 2px!important;
-            padding-left: 2px!important;
-            margin-left: 10px!important;
+            border-radius: 0px !important;
+            padding: 1px !important;
+            padding-right: 2px !important;
+            padding-left: 2px !important;
+            margin-left: 10px !important;
         }
-        
+
         #head-expired {
             color: red;
         }
@@ -167,26 +168,28 @@
         ::-webkit-scrollbar {
             width: 5px;
         }
-        
+
         ::-webkit-scrollbar-track {
             box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         }
-        
+
         ::-webkit-scrollbar-thumb {
-        background-color: grey;
+            background-color: grey;
         }
     </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 
-<body id="kt_body" class="quick-panel-right demo-panel-right offcanvas-right header-fixed header-mobile-fixed aside-enabled aside-static page-loading">
+<body id="kt_body"
+    class="quick-panel-right demo-panel-right offcanvas-right header-fixed header-mobile-fixed aside-enabled aside-static page-loading">
     <!--begin::Main-->
     <!--begin::Header Mobile-->
     <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
         <!--begin::Logo-->
-        <a href="/">
-            <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+        <a href="{% url 'dashboard' %}">
+            <div style="display: flex;"><i class="fas fa-star-of-life"
+                    style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
                 <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
             </div>
         </a>
@@ -194,21 +197,26 @@
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
             <button class="btn p-0 burger-icon rounded-0 burger-icon-left" id="kt_aside_tablet_and_mobile_toggle">
-					<span></span>
-			</button>
+                <span></span>
+            </button>
             <button class="btn btn-hover-text-primary p-0 ml-3" id="kt_header_mobile_topbar_toggle">
-					<span class="svg-icon svg-icon-xl">
-						<!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-								<polygon points="0 0 24 0 24 24 0 24" />
-								<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-								<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
-							</g>
-						</svg>
-						<!--end::Svg Icon-->
-					</span>
-			</button>
+                <span class="svg-icon svg-icon-xl">
+                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <polygon points="0 0 24 0 24 24 0 24" />
+                            <path
+                                d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
+                                fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                            <path
+                                d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
+                                fill="#000000" fill-rule="nonzero" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>
+            </button>
         </div>
         <!--end::Toolbar-->
     </div>
@@ -221,165 +229,172 @@
                 <!--begin::Aside Menu-->
                 <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                     <!--begin::Menu Container-->
-                    <div id="kt_aside_menu" class="aside-menu min-h-lg-800px" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
+                    <div id="kt_aside_menu" class="aside-menu min-h-lg-800px" data-menu-vertical="1"
+                        data-menu-scroll="1" data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-                            <a href="/">
-                                <div style="display: flex;" class="ml-7"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                            <a href="{% url 'dashboard' %}">
+                                <div style="display: flex;" class="ml-7"><i class="fas fa-star-of-life"
+                                        style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
                                     <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
                                 </div>
                             </a>
 
 
                             {% if request.user.is_superuser %}
-                                <li class="menu-section">
-                                    <h4 class="menu-text">User Management</h4>
-                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                                </li>
-                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fa fa-plus-square"></i>
-                                        </span>
-                                        <span class="menu-text">Manage your users here <strong style="color: red; margin-left: 5px;"> <i
-                                                    class="fas fa-bell"></i> New</strong> </span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'register' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Register a user</span>
-                                                </a>
-                                            </li>
+                            <li class="menu-section">
+                                <h4 class="menu-text">User Management</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fa fa-plus-square"></i>
+                                    </span>
+                                    <span class="menu-text">Manage your users here <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i>
+                                            New</strong> </span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'register' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Register a user</span>
+                                            </a>
+                                        </li>
 
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'corporate_users' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Corporate User's</span>
-                                                </a>
-                                            </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'corporate_users' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Corporate User's</span>
+                                            </a>
+                                        </li>
 
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'create_unit' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Add Unit/Ambulance</span>
-                                                </a>
-                                            </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'create_unit' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Add Unit/Ambulance</span>
+                                            </a>
+                                        </li>
 
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'assign_paramedics_to_units' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Add paramedic to a crew/unit</span>
-                                                </a>
-                                            </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'assign_paramedics_to_units' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Add paramedic to a crew/unit</span>
+                                            </a>
+                                        </li>
 
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'paramedics_with_assigned_unit_list' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Units Detail</span>
-                                                </a>
-                                            </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'paramedics_with_assigned_unit_list' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Units Detail</span>
+                                            </a>
+                                        </li>
 
-                                        </ul>
-                                    </div>
-                                </li>
+                                    </ul>
+                                </div>
+                            </li>
                             {% endif %}
 
 
                             <!-- vehicle -->
                             {% if request.user.is_staff %}
-                                <li class="menu-section">
-                                    <h4 class="menu-text">Vehicle Information</h4>
-                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                                </li>
-                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fa fa-plus-square"></i>
-                                        </span>
-                                        <span class="menu-text">Vehicle Profile <strong style="color: red; margin-left: 5px;" > <i class="fas fa-bell"></i> New</strong> </span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'vehicle_information' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Vehicle Profile Information</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'vehicle_profile_report' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Vehicle Profile Report</span>
-                                                </a>
-                                            </li>
-                                
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="menu-section">
-                                    <h4 class="menu-text">Fleet Preventive Management</h4>
-                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                                </li>
-                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fa fa-plus-square"></i>
-                                        </span>
-                                        <span class="menu-text">Fleet Preventive Management <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'daily_preventive_insperctions' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Daily Preventive Insperctions</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'fleet_preventive_management_report' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Fleet Preventive Management Report</span>
-                                                </a>
-                                            </li>
-                                
-                                        </ul>
-                                    </div>
-                                </li>
+                            <li class="menu-section">
+                                <h4 class="menu-text">Vehicle Information</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fa fa-plus-square"></i>
+                                    </span>
+                                    <span class="menu-text">Vehicle Profile <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i>
+                                            New</strong> </span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'vehicle_information' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Vehicle Profile Information</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'vehicle_profile_report' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Vehicle Profile Report</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="menu-section">
+                                <h4 class="menu-text">Fleet Preventive Management</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <span class="svg-icon menu-icon">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fa fa-plus-square"></i>
+                                    </span>
+                                    <span class="menu-text">Fleet Preventive Management <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i>
+                                            New</strong></span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'daily_preventive_insperctions' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Daily Preventive Insperctions</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" aria-haspopup="true">
+                                            <a href="{% url 'fleet_preventive_management_report' %}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Fleet Preventive Management Report</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
 
                             {% endif %}
 
 
 
-                        {% if request.user.is_superuser %}
+                            {% if request.user.is_superuser %}
 
                             <!-- form builder -->
                             <li class="menu-section">
@@ -389,10 +404,11 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                         <i class="fa fa-plus-square"></i>
-                                        </span>
-                                        <span class="menu-text">Builder <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                    </span>
+                                    <span class="menu-text">Builder <strong style="color: red; margin-left: 5px;"> <i
+                                                class="fas fa-bell"></i> New</strong></span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -401,16 +417,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'form_builder' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Form Builder</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'form_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Form Lists</span>
                                             </a>
                                         </li>
@@ -418,7 +434,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            
+
                             <!-- blogs -->
                             <li class="menu-section">
                                 <h4 class="menu-text">Our Blogs</h4>
@@ -427,10 +443,11 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-									<i class="fas fa-blog"></i>
-										</span>
-                                    <span class="menu-text">Blog <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-blog"></i>
+                                    </span>
+                                    <span class="menu-text">Blog <strong style="color: red; margin-left: 5px;"> <i
+                                                class="fas fa-bell"></i> New</strong></span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -439,16 +456,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'create_blog' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Create a blog post</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'blog_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Blogs</span>
                                             </a>
                                         </li>
@@ -466,9 +483,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-									<i class="fas fa-search"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-search"></i>
+                                    </span>
                                     <span class="menu-text">Inspection</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -478,16 +495,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'create_inspection' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Inspection Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'inpection_reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Inspection Reports</span>
                                             </a>
                                         </li>
@@ -503,9 +520,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-car-crash"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-car-crash"></i>
+                                    </span>
                                     <span class="menu-text">Occurrence</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -515,16 +532,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'occurrence_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Occurrence Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'occurrence_report' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Occurrence Reports</span>
                                             </a>
                                         </li>
@@ -540,9 +557,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="far fa-sticky-note"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="far fa-sticky-note"></i>
+                                    </span>
                                     <span class="menu-text">Case</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -552,8 +569,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'case_notes' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Case Reports</span>
                                             </a>
                                         </li>
@@ -570,9 +587,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-book-open"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
                                     <span class="menu-text">Audit</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -582,16 +599,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'audit_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Audit Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'audit_report' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Audit Reports</span>
                                             </a>
                                         </li>
@@ -608,9 +625,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-book-open"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book-open"></i>
+                                    </span>
                                     <span class="menu-text">Make Deduction</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -620,16 +637,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'payroll_deduction_form' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Create</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'payrol_deduction_reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Reports</span>
                                             </a>
                                         </li>
@@ -649,9 +666,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="{% url 'task_create' %}" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-pencil-alt"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </span>
 
                                     <span class="menu-text">Assign Task</span>
 
@@ -661,9 +678,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-exchange-alt"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </span>
                                     <span class="menu-text">Report</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -673,27 +690,27 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'task_list' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Task Reports</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'transferred_task' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Transfer Reports</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
-                            {% endif %}{% endif %} 
+                            {% endif %}{% endif %}
 
 
-                            
-                            
+
+
                             {% if request.user.is_staff %}
                             <li class="menu-section">
                                 <h4 class="menu-text">Dispatch Management</h4>
@@ -706,8 +723,9 @@
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                         <i class="fas fa-car"></i>
                                     </span>
-                                    <span class="menu-text">Emergency Medical Dispatch Form <strong style="color: red; margin-left: 5px;"> <i
-                                                class="fas fa-bell"></i> New</strong></span>
+                                    <span class="menu-text">Emergency Medical Dispatch Form <strong
+                                            style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i>
+                                            New</strong></span>
                                 </a>
                             </li>
 
@@ -720,12 +738,13 @@
                                     <span class="menu-text">Emergency Reports</span>
                                     <i class="menu-arrow"></i>
                                 </a>
-                            
+
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'dispatch_emergency_incident_submissions' %}" class="menu-link">
+                                            <a href="{% url 'dispatch_emergency_incident_submissions' %}"
+                                                class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
                                                 </i>
@@ -741,9 +760,9 @@
                                 <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                             <i class="fas fa-car"></i>
-                                            </span>
+                                        </span>
                                         <span class="menu-text">Dispatch List</span>
 
                                     </a>
@@ -752,24 +771,26 @@
                                 <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                             <i class="fas fa-car"></i>
-                                            </span>
+                                        </span>
                                         <span class="menu-text">Track Dispatches</span>
 
                                     </a>
                                 </li>
 
                                 <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover" style="display: none;">
-                                    <a href="{% url 'dispatch_incident_submission_review_all' %}" class="menu-link menu-toggle">
+                                    <a href="{% url 'dispatch_incident_submission_review_all' %}"
+                                        class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fas fa-car"></i>
+                                            <i class="fas fa-car"></i>
                                         </span>
-                                        <span class="menu-text">Emergency Medical Dispatch Incident Report <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                        <span class="menu-text">Emergency Medical Dispatch Incident Report <strong
+                                                style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i>
+                                                New</strong></span>
                                     </a>
                                 </li>
-
 
                                 <li class="menu-section">
                                     <h4 class="menu-text">Assessments</h4>
@@ -779,9 +800,9 @@
                                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="javascript:;" class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                                <i class="fas fa-book-open"></i>
-                                            </span>
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                            <i class="fas fa-book-open"></i>
+                                        </span>
                                         <span class="menu-text">Assessment</span>
                                         <i class="menu-arrow"></i>
                                     </a>
@@ -791,16 +812,16 @@
                                             <li class="menu-item" aria-haspopup="true">
                                                 <a href="{% url 'assetment_form' %}" class="menu-link">
                                                     <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
+                                                        <span></span>
+                                                    </i>
                                                     <span class="menu-text">Add Assessment</span>
                                                 </a>
                                             </li>
                                             <li class="menu-item" aria-haspopup="true">
                                                 <a href="{% url 'assesment_list_users' %}" class="menu-link">
                                                     <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
+                                                        <span></span>
+                                                    </i>
                                                     <span class="menu-text">User Assessments</span>
                                                 </a>
                                             </li>
@@ -808,138 +829,25 @@
                                         </ul>
                                     </div>
                                 </li>
+
                             {% endif %}
                             {% endif %}
 
-{% if request.user.is_staff %}
-                            <li class="menu-section">
-                                <h4 class="menu-text">Dispatch Management</h4>
-                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-
-                            <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="{% url 'ambulance_request' %}" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fas fa-car"></i>
-                                    </span>
-                                    <span class="menu-text">Emergency Medical Dispatch Form <strong style="color: red; margin-left: 5px;"> <i
-                                                class="fas fa-bell"></i> New</strong></span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fas fa-book-open"></i>
-                                    </span>
-                                    <span class="menu-text">Emergency Reports</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
                             
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item" aria-haspopup="true">
-                                            <a href="{% url 'dispatch_emergency_incident_submissions' %}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Submissions</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                            {% if request.user.is_superuser %}
-
-                                <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="{% url 'dispatch_list' %}" class="menu-link menu-toggle">
-                                        <span class="svg-icon menu-icon">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-car"></i>
-                                            </span>
-                                        <span class="menu-text">Dispatch List</span>
-
-                                    </a>
-                                </li>
-
-                                <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="{% url 'track_dispatches' %}" class="menu-link menu-toggle">
-                                        <span class="svg-icon menu-icon">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                            <i class="fas fa-car"></i>
-                                            </span>
-                                        <span class="menu-text">Track Dispatches</span>
-
-                                    </a>
-                                </li>
-
-                                <li class="menu-item" aria-haspopup="true" data-menu-toggle="hover" style="display: none;">
-                                    <a href="{% url 'dispatch_incident_submission_review_all' %}" class="menu-link menu-toggle">
-                                        <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <i class="fas fa-car"></i>
-                                        </span>
-                                        <span class="menu-text">Emergency Medical Dispatch Incident Report <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
-                                    </a>
-                                </li>
-
-
-                                <li class="menu-section">
-                                    <h4 class="menu-text">Assessments</h4>
-                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                                </li>
-
-                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <span class="svg-icon menu-icon">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                                <i class="fas fa-book-open"></i>
-                                            </span>
-                                        <span class="menu-text">Assessment</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'assetment_form' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                    <span class="menu-text">Add Assessment</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item" aria-haspopup="true">
-                                                <a href="{% url 'assesment_list_users' %}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                    <span class="menu-text">User Assessments</span>
-                                                </a>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </li>
-                            {% endif %}
-                            {% endif %}
 
                             <li class="menu-section">
                                 <h4 class="menu-text">Accounting</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
+                            
                             {% if request.user.is_superuser %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i>R</i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i>R</i>
+                                    </span>
                                     <span class="menu-text">Paystub</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -949,16 +857,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'add_paystub'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Paystub Report</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'paystub_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Paystub Reports</span>
                                             </a>
                                         </li>
@@ -970,9 +878,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-box"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-box"></i>
+                                    </span>
                                     <span class="menu-text">Package</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -984,8 +892,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'add_package'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Add Packages</span>
                                             </a>
                                         </li>
@@ -993,8 +901,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'packages'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Packages</span>
                                             </a>
                                         </li>
@@ -1006,9 +914,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-users"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-users"></i>
+                                    </span>
                                     <span class="menu-text">Membership</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1019,16 +927,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'members'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Membership holder</span>
                                             </a>
                                         </li>{% endif %}
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'getmembership'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Get Membership</span>
                                             </a>
                                         </li>
@@ -1042,9 +950,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-tools"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-tools"></i>
+                                    </span>
                                     <span class="menu-text">Property/Tools</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1054,7 +962,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'property_add'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
 
                                                 <span class="menu-text">Property I/O</span>
                                             </a>
@@ -1062,8 +970,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'property_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Property Reports</span>
                                             </a>
                                         </li>
@@ -1076,10 +984,11 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-book"></i>
-										</span>
-                                    <span class="menu-text">Finance <strong style="color: red; margin-left: 5px;"> <i class="fas fa-bell"></i> New</strong></span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-book"></i>
+                                    </span>
+                                    <span class="menu-text">Finance <strong style="color: red; margin-left: 5px;"> <i
+                                                class="fas fa-bell"></i> New</strong></span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -1088,7 +997,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'electronic_cash_receipt'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
 
                                                 <span class="menu-text">Electronics Cash Receipt</span>
                                             </a>
@@ -1097,7 +1006,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'expense_reimbursement_record_form'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
 
                                                 <span class="menu-text">Expense Reimbursement Record</span>
                                             </a>
@@ -1106,7 +1015,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'purchase_order_customer_information' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
 
                                                 <span class="menu-text">Purchase Order</span>
                                             </a>
@@ -1115,7 +1024,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{%url 'details_of_prospective_client' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
 
                                                 <span class="menu-text">Quotation Emergency Operation</span>
                                             </a>
@@ -1123,9 +1032,10 @@
 
 
                                         <li class="menu-item" aria-haspopup="true">
-                                            <a href="{%url 'details_of_prospective_client_for_events' %}" class="menu-link">
+                                            <a href="{%url 'details_of_prospective_client_for_events' %}"
+                                                class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
 
                                                 <span class="menu-text">Quotation- Events & Sport</span>
                                             </a>
@@ -1136,8 +1046,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'reports' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Financial Submission Reports</span>
                                             </a>
                                         </li>
@@ -1158,9 +1068,9 @@
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i>L</i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i>L</i>
+                                    </span>
                                     <span class="menu-text">Leaves</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1170,16 +1080,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'employee_leave' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Leave Request</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'my_leaves' request.user.id %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">My Leaves</span>
                                             </a>
                                         </li>
@@ -1188,8 +1098,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'employee_leaves' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Employee Leaves</span>
                                             </a>
                                         </li>
@@ -1206,9 +1116,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-warehouse"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-warehouse"></i>
+                                    </span>
                                     <span class="menu-text">Stock</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1218,24 +1128,24 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'stock_request'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request for stock</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'cancel_stock_request'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Cancel Stock Request</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'stock_requests' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Stock Request Reports</span>
                                             </a>
                                         </li>
@@ -1248,9 +1158,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-ambulance "></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-ambulance "></i>
+                                    </span>
                                     <span class="menu-text">Ambulance</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1260,16 +1170,16 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'ambulance_request' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request for Ambulance</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'ambulance_request_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Ambulance requests</span>
                                             </a>
                                         </li>
@@ -1281,9 +1191,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-calendar-alt"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
                                     <span class="menu-text">Schedule</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1293,8 +1203,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'shcedule_trip'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                        </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request for Schedule</span>
                                             </a>
                                         </li>
@@ -1302,8 +1212,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'accepted_schedule' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Accepted Requests</span>
                                             </a>
                                         </li>
@@ -1311,8 +1221,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'trip_schedules' %}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Schedule requests</span>
                                             </a>
                                         </li>
@@ -1320,8 +1230,8 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'complete_schedule'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Completed Schedules</span>
                                             </a>
                                         </li>
@@ -1333,9 +1243,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-										<i class="fas fa-hospital"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-hospital"></i>
+                                    </span>
                                     <span class="menu-text">Hospital Transfer</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1345,15 +1255,15 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'hospital_transfer'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                    </i>
+                                                    <span></span>
+                                                </i>
                                                 <span class="menu-text">Request to Transfer</span>
                                             </a>
                                         </li>
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'hospital_transfer_report'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
 
                                                 <span class="menu-text">Transfer reports</span>
                                             </a>
@@ -1373,9 +1283,9 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<i class="fas fa-star"></i>
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <i class="fas fa-star"></i>
+                                    </span>
                                     <span class="menu-text">Feedback</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1385,7 +1295,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'rating'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
                                                 <span class="menu-text">Rate Us(Customer app)</span>
                                             </a>
                                         </li>
@@ -1398,7 +1308,7 @@
                                         <li class="menu-item" aria-haspopup="true">
                                             <a href="{% url 'feedbacks'%}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
-                                                <span></span></i>
+                                                    <span></span></i>
                                                 <span class="menu-text">Feedbacks</span>
                                             </a>
                                         </li>
@@ -1415,8 +1325,8 @@
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-											<i class="fas fa-question"></i>
-										</span>
+                                        <i class="fas fa-question"></i>
+                                    </span>
                                     <span class="menu-text">Frequently Asked Questions</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -1460,23 +1370,29 @@
                         <div class="d-none d-lg-flex align-items-center mr-3">
                             <!--begin::Aside Toggle-->
                             <button class="btn btn-icon aside-toggle ml-n3 mr-10" id="kt_aside_desktop_toggle">
-									<span class="svg-icon svg-icon-xxl svg-icon-dark-75">
-										<!--begin::Svg Icon | path:assets/media/svg/icons/Text/Align-left.svg-->
-										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect x="0" y="0" width="24" height="24" />
-												<rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="2" rx="1" />
-												<rect fill="#000000" opacity="0.3" x="4" y="13" width="16" height="2" rx="1" />
-												<path d="M5,9 L13,9 C13.5522847,9 14,9.44771525 14,10 C14,10.5522847 13.5522847,11 13,11 L5,11 C4.44771525,11 4,10.5522847 4,10 C4,9.44771525 4.44771525,9 5,9 Z M5,17 L13,17 C13.5522847,17 14,17.4477153 14,18 C14,18.5522847 13.5522847,19 13,19 L5,19 C4.44771525,19 4,18.5522847 4,18 C4,17.4477153 4.44771525,17 5,17 Z" fill="#000000" />
-											</g>
-										</svg>
-										<!--end::Svg Icon-->
-									</span>
-								</button>
+                                <span class="svg-icon svg-icon-xxl svg-icon-dark-75">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Text/Align-left.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="2"
+                                                rx="1" />
+                                            <rect fill="#000000" opacity="0.3" x="4" y="13" width="16" height="2"
+                                                rx="1" />
+                                            <path
+                                                d="M5,9 L13,9 C13.5522847,9 14,9.44771525 14,10 C14,10.5522847 13.5522847,11 13,11 L5,11 C4.44771525,11 4,10.5522847 4,10 C4,9.44771525 4.44771525,9 5,9 Z M5,17 L13,17 C13.5522847,17 14,17.4477153 14,18 C14,18.5522847 13.5522847,19 13,19 L5,19 C4.44771525,19 4,18.5522847 4,18 C4,17.4477153 4.44771525,17 5,17 Z"
+                                                fill="#000000" />
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </button>
                             <!--end::Aside Toggle-->
                             <!--begin::Logo-->
-                            <a href="/">
-                                <div style="display: flex;"><i class="fas fa-star-of-life" style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
+                            <a href="{% url 'dashboard' %}">
+                                <div style="display: flex;"><i class="fas fa-star-of-life"
+                                        style="color: #f64e60;font-size: 25px;margin-top: 4px;"></i>
                                     <h2 class="ml-2" style="font-size: 25px;"> <b>TAC-PULSE</b></h2>
                                 </div>
                             </a>
@@ -1486,7 +1402,9 @@
                                 <!--begin::Form-->
                                 <form id="searchform" method="get" action="{% url 'search' %}">
                                     <div class="input-group rounded bg-light">
-                                        <input id="tags" name="q" type="text" class="h-45px" placeholder="Search by Number/Email/First Name/Last Name..." value="{{ request.GET.q }}" />
+                                        <input id="tags" name="q" type="text" class="h-45px"
+                                            placeholder="Search by Number/Email/First Name/Last Name..."
+                                            value="{{ request.GET.q }}" />
                                     </div>
                                 </form>
                                 <!--end::Form-->
@@ -1495,7 +1413,8 @@
                                 <!--end::Search Toggle-->
                                 <!--begin::Dropdown-->
                                 <div class="dropdown-menu dropdown-menu-left dropdown-menu-lg dropdown-menu-anim-up">
-                                    <div class="quick-search-wrapper scroll" data-scroll="true" data-height="350" data-mobile-height="200"></div>
+                                    <div class="quick-search-wrapper scroll" data-scroll="true" data-height="350"
+                                        data-mobile-height="200"></div>
                                 </div>
                                 <!--end::Dropdown-->
                             </div>
@@ -1513,49 +1432,51 @@
                                 </div> -->
                                 <!--end::Toggle-->
                                 <!--begin::Dropdown-->
-                                <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-md">
+                                <div
+                                    class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-md">
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover py-5">
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-														<i class="flaticon2-drop"></i>
-													</span>
+                                                    <i class="flaticon2-drop"></i>
+                                                </span>
                                                 <span class="navi-text">New Group</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-														<i class="flaticon2-list-3"></i>
-													</span>
+                                                    <i class="flaticon2-list-3"></i>
+                                                </span>
                                                 <span class="navi-text">Contacts</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-														<i class="flaticon2-rocket-1"></i>
-													</span>
+                                                    <i class="flaticon2-rocket-1"></i>
+                                                </span>
                                                 <span class="navi-text">Groups</span>
                                                 <span class="navi-link-badge">
-														<span class="label label-light-primary label-inline font-weight-bold">new</span>
+                                                    <span
+                                                        class="label label-light-primary label-inline font-weight-bold">new</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-														<i class="flaticon2-bell-2"></i>
-													</span>
+                                                    <i class="flaticon2-bell-2"></i>
+                                                </span>
                                                 <span class="navi-text">Calls</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-														<i class="flaticon2-gear"></i>
-													</span>
+                                                    <i class="flaticon2-gear"></i>
+                                                </span>
                                                 <span class="navi-text">Settings</span>
                                             </a>
                                         </li>
@@ -1563,19 +1484,20 @@
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-														<i class="flaticon2-magnifier-tool"></i>
-													</span>
+                                                    <i class="flaticon2-magnifier-tool"></i>
+                                                </span>
                                                 <span class="navi-text">Help</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-														<i class="flaticon2-bell-2"></i>
-													</span>
+                                                    <i class="flaticon2-bell-2"></i>
+                                                </span>
                                                 <span class="navi-text">Privacy</span>
                                                 <span class="navi-link-badge">
-														<span class="label label-light-danger label-rounded font-weight-bold">5</span>
+                                                    <span
+                                                        class="label label-light-danger label-rounded font-weight-bold">5</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -1587,18 +1509,23 @@
                             <!--end::Create-->
                             <!--begin::Quick Actions-->
                             <div class="topbar-item mr-4">
-                                <div class="btn btn-icon btn-sm btn-clean btn-text-dark-75" id="kt_quick_actions_toggle">
+                                <div class="btn btn-icon btn-sm btn-clean btn-text-dark-75"
+                                    id="kt_quick_actions_toggle">
                                     <span class="svg-icon svg-icon-lg">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-													<rect x="0" y="0" width="24" height="24" />
-													<rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5" />
-													<path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z" fill="#000000" opacity="0.3" />
-												</g>
-											</svg>
-											<!--end::Svg Icon-->
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5" />
+                                                <path
+                                                    d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z"
+                                                    fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>
                                 </div>
                             </div>
                             <!--end::Quick panel-->
@@ -1606,22 +1533,30 @@
                             <div class="topbar-item mr-4">
                                 <div class="btn btn-icon btn-sm btn-clean btn-text-dark-75" id="kt_quick_user_toggle">
                                     <span class="svg-icon svg-icon-lg">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
-											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-													<polygon points="0 0 24 0 24 24 0 24" />
-													<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-													<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
-												</g>
-											</svg>
-											<!--end::Svg Icon-->
-										</span>
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <polygon points="0 0 24 0 24 24 0 24" />
+                                                <path
+                                                    d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
+                                                    fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                <path
+                                                    d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
+                                                    fill="#000000" fill-rule="nonzero" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>
                                 </div>
                             </div>
                             <!--end::User-->
                             <!--begin::Notifications-->
                             <div class="topbar-item">
-                                <div class="btn btn-icon btn-sm btn-primary font-weight-bolder p-0" id="kt_quick_notifications_toggle">
+                                <div class="btn btn-icon btn-sm btn-primary font-weight-bolder p-0"
+                                    id="kt_quick_notifications_toggle">
+                                    N
                                 </div>
                             </div>
                             <!--end::Notifications-->
@@ -1638,15 +1573,17 @@
                     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
-                            <span class="text-muted font-weight-bold mr-2">	&#169; 2021,</span>
+                            <span class="text-muted font-weight-bold mr-2"> &#169; 2021,</span>
                             <a href="" class="text-dark-75 text-hover-primary">TAC-Pulse. All rights reserved</a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark order-1 order-md-2">
-                            <a href="https://essential-infotech.com/" target="_blank" class="nav-link pr-3 pl-0">About</a>
+                            <a href="https://essential-infotech.com/" target="_blank"
+                                class="nav-link pr-3 pl-0">About</a>
                             <a href="" target="_blank" class="nav-link px-3">Team</a>
-                            <a href="https://essential-infotech.com/contact-us/" target="_blank" class="nav-link pl-3 pr-0">Contact</a>
+                            <a href="https://essential-infotech.com/contact-us/" target="_blank"
+                                class="nav-link pl-3 pr-0">Contact</a>
                         </div>
                         <!--end::Nav-->
                     </div>
@@ -1664,7 +1601,8 @@
         <!--begin::Header-->
         <div class="offcanvas-header d-flex align-items-center justify-content-between mb-10">
             <h3 class="font-weight-bold m-0">Notifications
-                <small class="text-muted font-size-sm ml-2"></small></h3>
+                <small class="text-muted font-size-sm ml-2"></small>
+            </h3>
             <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_notifications_close">
                 <i class="ki ki-close icon-xs text-muted"></i>
             </a>
@@ -1677,9 +1615,9 @@
                 <!--begin::Item-->
                 <div class="col-md-12">
                     {% if request.user.is_staff %}
-                        <button class="form-control btn btn-danger mb-2" id="pn">Panic</button>
-                        <button class="form-control btn btn-success mb-2" id="membership">Membership</button>
-                        <button class="form-control btn btn-success mb-5" id="transfer_h">Hospital Transfer</button>
+                    <button class="form-control btn btn-danger mb-2" id="pn">Panic</button>
+                    <button class="form-control btn btn-success mb-2" id="membership">Membership</button>
+                    <button class="form-control btn btn-success mb-5" id="transfer_h">Hospital Transfer</button>
                     {% endif %}
                 </div>
 
@@ -1696,10 +1634,10 @@
 
                 </div>
 
-                
+
                 <div id="phase_status" class="text-dark">
-                    
-                
+
+
                 </div>
 
                 {% if request.user.is_staff %}
@@ -1720,7 +1658,8 @@
         <!--begin::Header-->
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-10">
             <h3 class="font-weight-bold m-0">Quick Actions
-                <small class="text-muted font-size-sm ml-2"></small></h3>
+                <small class="text-muted font-size-sm ml-2"></small>
+            </h3>
             <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_actions_close">
                 <i class="ki ki-close icon-xs text-muted"></i>
             </a>
@@ -1731,12 +1670,13 @@
             <div class="row gutter-b">
                 <!--begin::Item-->
                 <div class="col-6">
-                    <a href="{%  url 'panic_system' %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
+                    <a href="{%  url 'panic_system' %}"
+                        class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
                         <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
-								<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Euro.svg-->
-								<i class="fas fa-wifi" style="color: red;"></i>
-								<!--end::Svg Icon-->
-							</span>
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Euro.svg-->
+                            <i class="fas fa-wifi" style="color: red;"></i>
+                            <!--end::Svg Icon-->
+                        </span>
                         <span class="d-block font-weight-bold font-size-h6 mt-2">Panic Request</span>
                     </a>
                 </div>
@@ -1744,18 +1684,24 @@
                 <!--begin::Item-->
                 {% if request.user.is_superuser %}
                 <div class="col-6">
-                    <a href="{% url 'check_panic_requests' %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
+                    <a href="{% url 'check_panic_requests' %}"
+                        class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
                         <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
-								<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Box2.svg-->
-								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-										<rect x="0" y="0" width="24" height="24" />
-										<path d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z" fill="#000000" />
-										<path d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z" fill="#000000" opacity="0.3" />
-									</g>
-								</svg>
-								<!--end::Svg Icon-->
-							</span>
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Box2.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path
+                                        d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z"
+                                        fill="#000000" />
+                                    <path
+                                        d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z"
+                                        fill="#000000" opacity="0.3" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
                         <span class="d-block font-weight-bold font-size-h6 mt-2">Panic Requests</span>
                     </a>
                 </div>
@@ -1763,18 +1709,24 @@
                 <!--begin::Item-->
                 {% if request.user.is_superuser %}
                 <div class="col-6">
-                    <a href="{% url 'customer_list' %}" class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
+                    <a href="{% url 'customer_list' %}"
+                        class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-10 px-5">
                         <span class="svg-icon svg-icon-3x svg-icon-primary m-0">
-								<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Group.svg-->
-								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-										<polygon points="0 0 24 0 24 24 0 24" />
-										<path d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-										<path d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
-									</g>
-								</svg>
-								<!--end::Svg Icon-->
-							</span>
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Group.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path
+                                        d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z"
+                                        fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                    <path
+                                        d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z"
+                                        fill="#000000" fill-rule="nonzero" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
                         <span class="d-block font-weight-bold font-size-h6 mt-2">Customers</span>
                     </a>
                 </div>
@@ -1802,7 +1754,8 @@
         <!--begin::Header-->
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
             <h3 class="font-weight-bold m-0">User Profile
-                <small class="text-muted font-size-sm ml-2"></small></h3>
+                <small class="text-muted font-size-sm ml-2"></small>
+            </h3>
             <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
                 <i class="ki ki-close icon-xs text-muted"></i>
             </a>
@@ -1820,31 +1773,32 @@
                     <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ request.user.first_name }}</a>
                     <div class="text-muted mt-1">
                         {% if request.user.is_superuser %}
-                            Admin 
+                        Admin
                         {% endif %}
 
-                        {% if request.user.is_staff and not request.user.is_superuser and not request.user.medic %} 
-                            Dispatch
+                        {% if request.user.is_staff and not request.user.is_superuser and not request.user.medic %}
+                        Dispatch
                         {% endif %}
 
                         {% if request.user.is_staff and request.user.medic %}
-                            Dispatch/Medic
+                        Dispatch/Medic
                         {% endif %}
 
-                        {% if request.user.medic and not request.user.is_staff %} 
-                            Medic 
+                        {% if request.user.medic and not request.user.is_staff %}
+                        Medic
                         {% endif %}
                     </div>
                     <div class="navi mt-2">
                         <a href="#" class="navi-item">
                             <span class="navi-link p-0 pb-2">
-                                    <span class="navi-icon mr-1">
-                                        <i class="fa fa-mobile" ></i>
-                            </span>
-                            <span class="navi-text text-muted text-hover-primary">{{ request.user.contact }}</span>
+                                <span class="navi-icon mr-1">
+                                    <i class="fa fa-mobile"></i>
+                                </span>
+                                <span class="navi-text text-muted text-hover-primary">{{ request.user.contact }}</span>
                             </span>
                         </a>
-                        <a href="{% url 'logout' %}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                        <a href="{% url 'logout' %}"
+                            class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
                     </div>
                 </div>
             </div>
@@ -1860,22 +1814,26 @@
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
                                 <span class="svg-icon svg-icon-md svg-icon-success">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000" />
-                                                <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path
+                                                d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z"
+                                                fill="#000000" />
+                                            <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5" />
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
                             </div>
                         </div>
                         <div class="navi-text">
                             <div class="font-weight-bold">My Profile</div>
                             <div class="text-muted">Account settings and more
-                                <span class="label label-light-danger label-inline font-weight-bold">update</span></div>
+                                <span class="label label-light-danger label-inline font-weight-bold">update</span>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -1897,7 +1855,8 @@
         <div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10">
             <!--begin::Header-->
             <div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
-                <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10" role="tablist">
+                <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary flex-grow-1 px-10"
+                    role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#kt_quick_panel_logs">Audit Logs</a>
                     </li>
@@ -1927,70 +1886,90 @@
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-										<img src="assets/media/svg/misc/006-plurk.svg" class="h-50 align-self-center" alt="" />
-									</span>
+                                        <img src="assets/media/svg/misc/006-plurk.svg" class="h-50 align-self-center"
+                                            alt="" />
+                                    </span>
                                 </div>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Top Authors</a>
+                                    <a href="#"
+                                        class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Top
+                                        Authors</a>
                                     <span class="text-muted font-weight-bold">Most Successful Fellas</span>
                                 </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder py-1 my-lg-0 my-2 text-dark-50">+82$</span>
+                                <span
+                                    class="btn btn-sm btn-light font-weight-bolder py-1 my-lg-0 my-2 text-dark-50">+82$</span>
                             </div>
                             <!--end: Item-->
                             <!--begin: Item-->
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-										<img src="assets/media/svg/misc/015-telegram.svg" class="h-50 align-self-center" alt="" />
-									</span>
+                                        <img src="assets/media/svg/misc/015-telegram.svg" class="h-50 align-self-center"
+                                            alt="" />
+                                    </span>
                                 </div>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Popular Authors</a>
+                                    <a href="#"
+                                        class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Popular
+                                        Authors</a>
                                     <span class="text-muted font-weight-bold">Most Successful Fellas</span>
                                 </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+280$</span>
+                                <span
+                                    class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+280$</span>
                             </div>
                             <!--end: Item-->
                             <!--begin: Item-->
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-										<img src="assets/media/svg/misc/003-puzzle.svg" class="h-50 align-self-center" alt="" />
-									</span>
+                                        <img src="assets/media/svg/misc/003-puzzle.svg" class="h-50 align-self-center"
+                                            alt="" />
+                                    </span>
                                 </div>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">New Users</a>
+                                    <a href="#"
+                                        class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">New
+                                        Users</a>
                                     <span class="text-muted font-weight-bold">Most Successful Fellas</span>
                                 </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
+                                <span
+                                    class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
                             </div>
                             <!--end: Item-->
                             <!--begin: Item-->
                             <div class="d-flex align-items-center flex-wrap mb-5">
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-										<img src="assets/media/svg/misc/005-bebo.svg" class="h-50 align-self-center" alt="" />
-									</span>
+                                        <img src="assets/media/svg/misc/005-bebo.svg" class="h-50 align-self-center"
+                                            alt="" />
+                                    </span>
                                 </div>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Active Customers</a>
+                                    <a href="#"
+                                        class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Active
+                                        Customers</a>
                                     <span class="text-muted font-weight-bold">Most Successful Fellas</span>
                                 </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
+                                <span
+                                    class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
                             </div>
                             <!--end: Item-->
                             <!--begin: Item-->
                             <div class="d-flex align-items-center flex-wrap">
                                 <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label">
-										<img src="assets/media/svg/misc/014-kickstarter.svg" class="h-50 align-self-center" alt="" />
-									</span>
+                                        <img src="assets/media/svg/misc/014-kickstarter.svg"
+                                            class="h-50 align-self-center" alt="" />
+                                    </span>
                                 </div>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Bestseller Theme</a>
+                                    <a href="#"
+                                        class="font-weight-bolder text-dark-75 text-hover-primary font-size-lg mb-1">Bestseller
+                                        Theme</a>
                                     <span class="text-muted font-weight-bold">Most Successful Fellas</span>
                                 </div>
-                                <span class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
+                                <span
+                                    class="btn btn-sm btn-light font-weight-bolder my-lg-0 my-2 py-1 text-dark-50">+4500$</span>
                             </div>
                             <!--end: Item-->
                         </div>
@@ -2001,20 +1980,28 @@
                             <!--begin: Item-->
                             <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-5">
                                 <span class="svg-icon svg-icon-warning mr-5">
-									<span class="svg-icon svg-icon-lg">
-										<!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
-										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect x="0" y="0" width="24" height="24" />
-												<path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
-												<rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
-											</g>
-										</svg>
-										<!--end::Svg Icon-->
-									</span>
+                                    <span class="svg-icon svg-icon-lg">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <path
+                                                    d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z"
+                                                    fill="#000000" />
+                                                <rect fill="#000000" opacity="0.3"
+                                                    transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)"
+                                                    x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>
                                 </span>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Another purpose persuade</a>
+                                    <a href="#"
+                                        class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Another
+                                        purpose persuade</a>
                                     <span class="text-muted font-size-sm">Due in 2 Days</span>
                                 </div>
                                 <span class="font-weight-bolder text-warning py-1 font-size-lg">+28%</span>
@@ -2023,20 +2010,29 @@
                             <!--begin: Item-->
                             <div class="d-flex align-items-center bg-light-success rounded p-5 mb-5">
                                 <span class="svg-icon svg-icon-success mr-5">
-									<span class="svg-icon svg-icon-lg">
-										<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
-										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect x="0" y="0" width="24" height="24" />
-												<path d="M12.2674799,18.2323597 L12.0084872,5.45852451 C12.0004303,5.06114792 12.1504154,4.6768183 12.4255037,4.38993949 L15.0030167,1.70195304 L17.5910752,4.40093695 C17.8599071,4.6812911 18.0095067,5.05499603 18.0083938,5.44341307 L17.9718262,18.2062508 C17.9694575,19.0329966 17.2985816,19.701953 16.4718324,19.701953 L13.7671717,19.701953 C12.9505952,19.701953 12.2840328,19.0487684 12.2674799,18.2323597 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.701953, 10.701953) rotate(-135.000000) translate(-14.701953, -10.701953)" />
-												<path d="M12.9,2 C13.4522847,2 13.9,2.44771525 13.9,3 C13.9,3.55228475 13.4522847,4 12.9,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,6 C2,3.790861 3.790861,2 6,2 L12.9,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-											</g>
-										</svg>
-										<!--end::Svg Icon-->
-									</span>
+                                    <span class="svg-icon svg-icon-lg">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <path
+                                                    d="M12.2674799,18.2323597 L12.0084872,5.45852451 C12.0004303,5.06114792 12.1504154,4.6768183 12.4255037,4.38993949 L15.0030167,1.70195304 L17.5910752,4.40093695 C17.8599071,4.6812911 18.0095067,5.05499603 18.0083938,5.44341307 L17.9718262,18.2062508 C17.9694575,19.0329966 17.2985816,19.701953 16.4718324,19.701953 L13.7671717,19.701953 C12.9505952,19.701953 12.2840328,19.0487684 12.2674799,18.2323597 Z"
+                                                    fill="#000000" fill-rule="nonzero"
+                                                    transform="translate(14.701953, 10.701953) rotate(-135.000000) translate(-14.701953, -10.701953)" />
+                                                <path
+                                                    d="M12.9,2 C13.4522847,2 13.9,2.44771525 13.9,3 C13.9,3.55228475 13.4522847,4 12.9,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,6 C2,3.790861 3.790861,2 6,2 L12.9,2 Z"
+                                                    fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>
                                 </span>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Would be to people</a>
+                                    <a href="#"
+                                        class="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1">Would
+                                        be to people</a>
                                     <span class="text-muted font-size-sm">Due in 2 Days</span>
                                 </div>
                                 <span class="font-weight-bolder text-success py-1 font-size-lg">+50%</span>
@@ -2045,20 +2041,28 @@
                             <!--begin: Item-->
                             <div class="d-flex align-items-center bg-light-danger rounded p-5 mb-5">
                                 <span class="svg-icon svg-icon-danger mr-5">
-									<span class="svg-icon svg-icon-lg">
-										<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Group-chat.svg-->
-										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect x="0" y="0" width="24" height="24" />
-												<path d="M16,15.6315789 L16,12 C16,10.3431458 14.6568542,9 13,9 L6.16183229,9 L6.16183229,5.52631579 C6.16183229,4.13107011 7.29290239,3 8.68814808,3 L20.4776218,3 C21.8728674,3 23.0039375,4.13107011 23.0039375,5.52631579 L23.0039375,13.1052632 L23.0206157,17.786793 C23.0215995,18.0629336 22.7985408,18.2875874 22.5224001,18.2885711 C22.3891754,18.2890457 22.2612702,18.2363324 22.1670655,18.1421277 L19.6565168,15.6315789 L16,15.6315789 Z" fill="#000000" />
-												<path d="M1.98505595,18 L1.98505595,13 C1.98505595,11.8954305 2.88048645,11 3.98505595,11 L11.9850559,11 C13.0896254,11 13.9850559,11.8954305 13.9850559,13 L13.9850559,18 C13.9850559,19.1045695 13.0896254,20 11.9850559,20 L4.10078614,20 L2.85693427,21.1905292 C2.65744295,21.3814685 2.34093638,21.3745358 2.14999706,21.1750444 C2.06092565,21.0819836 2.01120804,20.958136 2.01120804,20.8293182 L2.01120804,18.32426 C1.99400175,18.2187196 1.98505595,18.1104045 1.98505595,18 Z M6.5,14 C6.22385763,14 6,14.2238576 6,14.5 C6,14.7761424 6.22385763,15 6.5,15 L11.5,15 C11.7761424,15 12,14.7761424 12,14.5 C12,14.2238576 11.7761424,14 11.5,14 L6.5,14 Z M9.5,16 C9.22385763,16 9,16.2238576 9,16.5 C9,16.7761424 9.22385763,17 9.5,17 L11.5,17 C11.7761424,17 12,16.7761424 12,16.5 C12,16.2238576 11.7761424,16 11.5,16 L9.5,16 Z" fill="#000000" opacity="0.3" />
-											</g>
-										</svg>
-										<!--end::Svg Icon-->
-									</span>
+                                    <span class="svg-icon svg-icon-lg">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Group-chat.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <path
+                                                    d="M16,15.6315789 L16,12 C16,10.3431458 14.6568542,9 13,9 L6.16183229,9 L6.16183229,5.52631579 C6.16183229,4.13107011 7.29290239,3 8.68814808,3 L20.4776218,3 C21.8728674,3 23.0039375,4.13107011 23.0039375,5.52631579 L23.0039375,13.1052632 L23.0206157,17.786793 C23.0215995,18.0629336 22.7985408,18.2875874 22.5224001,18.2885711 C22.3891754,18.2890457 22.2612702,18.2363324 22.1670655,18.1421277 L19.6565168,15.6315789 L16,15.6315789 Z"
+                                                    fill="#000000" />
+                                                <path
+                                                    d="M1.98505595,18 L1.98505595,13 C1.98505595,11.8954305 2.88048645,11 3.98505595,11 L11.9850559,11 C13.0896254,11 13.9850559,11.8954305 13.9850559,13 L13.9850559,18 C13.9850559,19.1045695 13.0896254,20 11.9850559,20 L4.10078614,20 L2.85693427,21.1905292 C2.65744295,21.3814685 2.34093638,21.3745358 2.14999706,21.1750444 C2.06092565,21.0819836 2.01120804,20.958136 2.01120804,20.8293182 L2.01120804,18.32426 C1.99400175,18.2187196 1.98505595,18.1104045 1.98505595,18 Z M6.5,14 C6.22385763,14 6,14.2238576 6,14.5 C6,14.7761424 6.22385763,15 6.5,15 L11.5,15 C11.7761424,15 12,14.7761424 12,14.5 C12,14.2238576 11.7761424,14 11.5,14 L6.5,14 Z M9.5,16 C9.22385763,16 9,16.2238576 9,16.5 C9,16.7761424 9.22385763,17 9.5,17 L11.5,17 C11.7761424,17 12,16.7761424 12,16.5 C12,16.2238576 11.7761424,16 11.5,16 L9.5,16 Z"
+                                                    fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>
                                 </span>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">Purpose would be to persuade</a>
+                                    <a href="#"
+                                        class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">Purpose
+                                        would be to persuade</a>
                                     <span class="text-muted font-size-sm">Due in 2 Days</span>
                                 </div>
                                 <span class="font-weight-bolder text-danger py-1 font-size-lg">-27%</span>
@@ -2067,22 +2071,38 @@
                             <!--begin: Item-->
                             <div class="d-flex align-items-center bg-light-info rounded p-5">
                                 <span class="svg-icon svg-icon-info mr-5">
-									<span class="svg-icon svg-icon-lg">
-										<!--begin::Svg Icon | path:assets/media/svg/icons/General/Attachment2.svg-->
-										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect x="0" y="0" width="24" height="24" />
-												<path d="M11.7573593,15.2426407 L8.75735931,15.2426407 C8.20507456,15.2426407 7.75735931,15.6903559 7.75735931,16.2426407 C7.75735931,16.7949254 8.20507456,17.2426407 8.75735931,17.2426407 L11.7573593,17.2426407 L11.7573593,18.2426407 C11.7573593,19.3472102 10.8619288,20.2426407 9.75735931,20.2426407 L5.75735931,20.2426407 C4.65278981,20.2426407 3.75735931,19.3472102 3.75735931,18.2426407 L3.75735931,14.2426407 C3.75735931,13.1380712 4.65278981,12.2426407 5.75735931,12.2426407 L9.75735931,12.2426407 C10.8619288,12.2426407 11.7573593,13.1380712 11.7573593,14.2426407 L11.7573593,15.2426407 Z" fill="#000000" opacity="0.3" transform="translate(7.757359, 16.242641) rotate(-45.000000) translate(-7.757359, -16.242641)" />
-												<path d="M12.2426407,8.75735931 L15.2426407,8.75735931 C15.7949254,8.75735931 16.2426407,8.30964406 16.2426407,7.75735931 C16.2426407,7.20507456 15.7949254,6.75735931 15.2426407,6.75735931 L12.2426407,6.75735931 L12.2426407,5.75735931 C12.2426407,4.65278981 13.1380712,3.75735931 14.2426407,3.75735931 L18.2426407,3.75735931 C19.3472102,3.75735931 20.2426407,4.65278981 20.2426407,5.75735931 L20.2426407,9.75735931 C20.2426407,10.8619288 19.3472102,11.7573593 18.2426407,11.7573593 L14.2426407,11.7573593 C13.1380712,11.7573593 12.2426407,10.8619288 12.2426407,9.75735931 L12.2426407,8.75735931 Z" fill="#000000" transform="translate(16.242641, 7.757359) rotate(-45.000000) translate(-16.242641, -7.757359)" />
-												<path d="M5.89339828,3.42893219 C6.44568303,3.42893219 6.89339828,3.87664744 6.89339828,4.42893219 L6.89339828,6.42893219 C6.89339828,6.98121694 6.44568303,7.42893219 5.89339828,7.42893219 C5.34111353,7.42893219 4.89339828,6.98121694 4.89339828,6.42893219 L4.89339828,4.42893219 C4.89339828,3.87664744 5.34111353,3.42893219 5.89339828,3.42893219 Z M11.4289322,5.13603897 C11.8194565,5.52656326 11.8194565,6.15972824 11.4289322,6.55025253 L10.0147186,7.96446609 C9.62419433,8.35499039 8.99102936,8.35499039 8.60050506,7.96446609 C8.20998077,7.5739418 8.20998077,6.94077682 8.60050506,6.55025253 L10.0147186,5.13603897 C10.4052429,4.74551468 11.0384079,4.74551468 11.4289322,5.13603897 Z M0.600505063,5.13603897 C0.991029355,4.74551468 1.62419433,4.74551468 2.01471863,5.13603897 L3.42893219,6.55025253 C3.81945648,6.94077682 3.81945648,7.5739418 3.42893219,7.96446609 C3.0384079,8.35499039 2.40524292,8.35499039 2.01471863,7.96446609 L0.600505063,6.55025253 C0.209980772,6.15972824 0.209980772,5.52656326 0.600505063,5.13603897 Z" fill="#000000" opacity="0.3" transform="translate(6.014719, 5.843146) rotate(-45.000000) translate(-6.014719, -5.843146)" />
-												<path d="M17.9142136,15.4497475 C18.4664983,15.4497475 18.9142136,15.8974627 18.9142136,16.4497475 L18.9142136,18.4497475 C18.9142136,19.0020322 18.4664983,19.4497475 17.9142136,19.4497475 C17.3619288,19.4497475 16.9142136,19.0020322 16.9142136,18.4497475 L16.9142136,16.4497475 C16.9142136,15.8974627 17.3619288,15.4497475 17.9142136,15.4497475 Z M23.4497475,17.1568542 C23.8402718,17.5473785 23.8402718,18.1805435 23.4497475,18.5710678 L22.0355339,19.9852814 C21.6450096,20.3758057 21.0118446,20.3758057 20.6213203,19.9852814 C20.2307961,19.5947571 20.2307961,18.9615921 20.6213203,18.5710678 L22.0355339,17.1568542 C22.4260582,16.76633 23.0592232,16.76633 23.4497475,17.1568542 Z M12.6213203,17.1568542 C13.0118446,16.76633 13.6450096,16.76633 14.0355339,17.1568542 L15.4497475,18.5710678 C15.8402718,18.9615921 15.8402718,19.5947571 15.4497475,19.9852814 C15.0592232,20.3758057 14.4260582,20.3758057 14.0355339,19.9852814 L12.6213203,18.5710678 C12.2307961,18.1805435 12.2307961,17.5473785 12.6213203,17.1568542 Z" fill="#000000" opacity="0.3" transform="translate(18.035534, 17.863961) scale(1, -1) rotate(45.000000) translate(-18.035534, -17.863961)" />
-											</g>
-										</svg>
-										<!--end::Svg Icon-->
-									</span>
+                                    <span class="svg-icon svg-icon-lg">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/General/Attachment2.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <path
+                                                    d="M11.7573593,15.2426407 L8.75735931,15.2426407 C8.20507456,15.2426407 7.75735931,15.6903559 7.75735931,16.2426407 C7.75735931,16.7949254 8.20507456,17.2426407 8.75735931,17.2426407 L11.7573593,17.2426407 L11.7573593,18.2426407 C11.7573593,19.3472102 10.8619288,20.2426407 9.75735931,20.2426407 L5.75735931,20.2426407 C4.65278981,20.2426407 3.75735931,19.3472102 3.75735931,18.2426407 L3.75735931,14.2426407 C3.75735931,13.1380712 4.65278981,12.2426407 5.75735931,12.2426407 L9.75735931,12.2426407 C10.8619288,12.2426407 11.7573593,13.1380712 11.7573593,14.2426407 L11.7573593,15.2426407 Z"
+                                                    fill="#000000" opacity="0.3"
+                                                    transform="translate(7.757359, 16.242641) rotate(-45.000000) translate(-7.757359, -16.242641)" />
+                                                <path
+                                                    d="M12.2426407,8.75735931 L15.2426407,8.75735931 C15.7949254,8.75735931 16.2426407,8.30964406 16.2426407,7.75735931 C16.2426407,7.20507456 15.7949254,6.75735931 15.2426407,6.75735931 L12.2426407,6.75735931 L12.2426407,5.75735931 C12.2426407,4.65278981 13.1380712,3.75735931 14.2426407,3.75735931 L18.2426407,3.75735931 C19.3472102,3.75735931 20.2426407,4.65278981 20.2426407,5.75735931 L20.2426407,9.75735931 C20.2426407,10.8619288 19.3472102,11.7573593 18.2426407,11.7573593 L14.2426407,11.7573593 C13.1380712,11.7573593 12.2426407,10.8619288 12.2426407,9.75735931 L12.2426407,8.75735931 Z"
+                                                    fill="#000000"
+                                                    transform="translate(16.242641, 7.757359) rotate(-45.000000) translate(-16.242641, -7.757359)" />
+                                                <path
+                                                    d="M5.89339828,3.42893219 C6.44568303,3.42893219 6.89339828,3.87664744 6.89339828,4.42893219 L6.89339828,6.42893219 C6.89339828,6.98121694 6.44568303,7.42893219 5.89339828,7.42893219 C5.34111353,7.42893219 4.89339828,6.98121694 4.89339828,6.42893219 L4.89339828,4.42893219 C4.89339828,3.87664744 5.34111353,3.42893219 5.89339828,3.42893219 Z M11.4289322,5.13603897 C11.8194565,5.52656326 11.8194565,6.15972824 11.4289322,6.55025253 L10.0147186,7.96446609 C9.62419433,8.35499039 8.99102936,8.35499039 8.60050506,7.96446609 C8.20998077,7.5739418 8.20998077,6.94077682 8.60050506,6.55025253 L10.0147186,5.13603897 C10.4052429,4.74551468 11.0384079,4.74551468 11.4289322,5.13603897 Z M0.600505063,5.13603897 C0.991029355,4.74551468 1.62419433,4.74551468 2.01471863,5.13603897 L3.42893219,6.55025253 C3.81945648,6.94077682 3.81945648,7.5739418 3.42893219,7.96446609 C3.0384079,8.35499039 2.40524292,8.35499039 2.01471863,7.96446609 L0.600505063,6.55025253 C0.209980772,6.15972824 0.209980772,5.52656326 0.600505063,5.13603897 Z"
+                                                    fill="#000000" opacity="0.3"
+                                                    transform="translate(6.014719, 5.843146) rotate(-45.000000) translate(-6.014719, -5.843146)" />
+                                                <path
+                                                    d="M17.9142136,15.4497475 C18.4664983,15.4497475 18.9142136,15.8974627 18.9142136,16.4497475 L18.9142136,18.4497475 C18.9142136,19.0020322 18.4664983,19.4497475 17.9142136,19.4497475 C17.3619288,19.4497475 16.9142136,19.0020322 16.9142136,18.4497475 L16.9142136,16.4497475 C16.9142136,15.8974627 17.3619288,15.4497475 17.9142136,15.4497475 Z M23.4497475,17.1568542 C23.8402718,17.5473785 23.8402718,18.1805435 23.4497475,18.5710678 L22.0355339,19.9852814 C21.6450096,20.3758057 21.0118446,20.3758057 20.6213203,19.9852814 C20.2307961,19.5947571 20.2307961,18.9615921 20.6213203,18.5710678 L22.0355339,17.1568542 C22.4260582,16.76633 23.0592232,16.76633 23.4497475,17.1568542 Z M12.6213203,17.1568542 C13.0118446,16.76633 13.6450096,16.76633 14.0355339,17.1568542 L15.4497475,18.5710678 C15.8402718,18.9615921 15.8402718,19.5947571 15.4497475,19.9852814 C15.0592232,20.3758057 14.4260582,20.3758057 14.0355339,19.9852814 L12.6213203,18.5710678 C12.2307961,18.1805435 12.2307961,17.5473785 12.6213203,17.1568542 Z"
+                                                    fill="#000000" opacity="0.3"
+                                                    transform="translate(18.035534, 17.863961) scale(1, -1) rotate(45.000000) translate(-18.035534, -17.863961)" />
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span>
                                 </span>
                                 <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <a href="#" class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">The best product</a>
+                                    <a href="#"
+                                        class="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1">The
+                                        best product</a>
                                     <span class="text-muted font-size-sm">Due in 2 Days</span>
                                 </div>
                                 <span class="font-weight-bolder text-info py-1 font-size-lg">+8%</span>
@@ -2305,10 +2325,10 @@
                                     <label class="col-8 col-form-label">Enable Notifications:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-success switch-sm">
-											<label>
-												<input type="checkbox" checked="checked" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2316,10 +2336,10 @@
                                     <label class="col-8 col-form-label">Enable Case Tracking:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-success switch-sm">
-											<label>
-												<input type="checkbox" name="quick_panel_notifications_2" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" name="quick_panel_notifications_2" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2327,10 +2347,10 @@
                                     <label class="col-8 col-form-label">Support Portal:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-success switch-sm">
-											<label>
-												<input type="checkbox" checked="checked" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2344,10 +2364,10 @@
                                     <label class="col-8 col-form-label">Generate Reports:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-sm switch-danger">
-											<label>
-												<input type="checkbox" checked="checked" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2355,10 +2375,10 @@
                                     <label class="col-8 col-form-label">Enable Report Export:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-sm switch-danger">
-											<label>
-												<input type="checkbox" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2366,10 +2386,10 @@
                                     <label class="col-8 col-form-label">Allow Data Collection:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-sm switch-danger">
-											<label>
-												<input type="checkbox" checked="checked" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2383,10 +2403,10 @@
                                     <label class="col-8 col-form-label">Enable Member singup:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-sm switch-primary">
-											<label>
-												<input type="checkbox" checked="checked" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2394,10 +2414,10 @@
                                     <label class="col-8 col-form-label">Allow User Feedbacks:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-sm switch-primary">
-											<label>
-												<input type="checkbox" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2405,10 +2425,10 @@
                                     <label class="col-8 col-form-label">Enable Customer Portal:</label>
                                     <div class="col-4 d-flex justify-content-end">
                                         <span class="switch switch-sm switch-primary">
-											<label>
-												<input type="checkbox" checked="checked" name="select" />
-												<span></span>
-                                        </label>
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="select" />
+                                                <span></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
@@ -2507,7 +2527,8 @@
         <script src="{% static 'assets/js/pages/features/charts/apexcharts.js' %}"></script>
         <script src="{% static 'assets/js/pages/features/miscellaneous/bootstrap-notify.js' %}"></script>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="{%static 'assets/js/pages/custom/profile/profile.js' %}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -2516,34 +2537,36 @@
 
         <script src="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
         <script src="{% static 'assets/plugins/custom/leaflet/leaflet.bundle.js' %}"></script>
-        <script src="{% static 'assets/plugins/custom/draggable/draggable.bundle.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/plugins/custom/draggable/draggable.bundle.js' %}"
+            type="text/javascript"></script>
         <script src="{% static 'assets/js/pages/features/cards/draggable.js' %}"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
         <script>
-            $(document).ready( function () {
+            $(document).ready(function () {
                 $('#table_id').DataTable();
-            } );
+            });
 
             $(document).ready(function () {
-                    $('#planned').DataTable({
-                        responsive: true,
-                    });
+                $('#planned').DataTable({
+                    responsive: true,
                 });
+            });
 
             $(document).ready(function () {
-                    $('#am').DataTable({
-                        responsive: true,
-                    });
+                $('#am').DataTable({
+                    responsive: true,
                 });
+            });
 
             $(document).ready(function () {
-                    $('#response').DataTable({
-                        responsive: true,
-                    });
+                $('#response').DataTable({
+                    responsive: true,
                 });
+            });
 
             $(document).ready(function () {
                 $('#unit_table').DataTable({
@@ -2552,16 +2575,16 @@
             });
 
             $(document).ready(function () {
-                    $('#ambulance_unit').DataTable({
-                        responsive: true,
-                    });
+                $('#ambulance_unit').DataTable({
+                    responsive: true,
                 });
+            });
 
             $(document).ready(function () {
-                    $('#response_unit').DataTable({
-                        responsive: true,
-                    });
+                $('#response_unit').DataTable({
+                    responsive: true,
                 });
+            });
 
             $(document).ready(function () {
                 $('#cosporate_users_list_table').DataTable({
@@ -2580,7 +2603,7 @@
                     responsive: true,
                 });
             });
-            
+
             $(document).ready(function () {
                 $('#cosporate_user_change_role_table').DataTable({
                     responsive: true,
@@ -2604,8 +2627,8 @@
     <end::Page Scripts-->
 
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('#tags').keydown(function(event) {
+            $(document).ready(function () {
+                $('#tags').keydown(function (event) {
                     if (event.keyCode == 13) {
                         this.form.submit();
                         return false;
@@ -2617,7 +2640,7 @@
         <script>
             $("#tags").autocomplete({
                 source: "{% url 'autocomplete' %}",
-                select: function(event, ui) {
+                select: function (event, ui) {
                     $("input#tags").val(ui.item.value);
                     $("#searchform").submit();
                 }
@@ -2625,20 +2648,30 @@
         </script>
 
         <script>
-            setInterval(function() {
+            setInterval(function () {
 
                 //membership noti
                 $.ajax({
                     method: "GET",
                     url: "/membership/notificattions/",
-                    success: function(data) {
+                    success: function (data) {
                         $("#noti_div").empty();
-                        $.each(data, function(key, value) {
+                        $.each(data, function (key, value) {
                             var f_name = value.first_name.charAt(0).toUpperCase() + value.first_name.slice(1);
                             var l_name = value.last_name.charAt(0).toUpperCase() + value.last_name.slice(1);
                             var noti_text = value.noti_text
                             var is_seen = value.is_seen;
-                            var created = value.created.substring(0, 10);
+                            // var created = value.created.substring(0, 10);
+                            var created = new Date(value.created);
+                            var created = created.toLocaleString("en-US", {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true
+                            });
                             var membership_id = value.membership_id;
                             var membership_noti_model_id = value.membership_noti_model_id;
                             var user_id = value.user_id;
@@ -2657,24 +2690,53 @@
                 $.ajax({
                     method: "GET",
                     url: "/notification/panic/",
-                    success: function(data) {
+                    success: function (data) {
                         console.log(data)
                         $("#panic_noti").empty();
-                        $.each(data, function(key, value) {
+                        $.each(data, function (key, value) {
                             var sound_played = value.sound_played;
 
                             var f_name = value.first_name.charAt(0).toUpperCase() + value.first_name.slice(1);
                             var l_name = value.last_name.charAt(0).toUpperCase() + value.last_name.slice(1);
                             var noti_text = value.noti_text;
                             var is_seen = value.is_seen;
-                            var created = value.created.substring(0, 10);
+                            // var created = value.created.substring(0, 10);
+                            var created = new Date(value.created);
+                            var created = created.toLocaleString("en-US", {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true
+                            });
                             var panic_id = value.panic_id;
                             var details = "<a href='/individual/panic/location/" + panic_id + "/'  id='aTag'>Details</a>";
                             var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.noti_id + "/'  id='mark_seen'>Mark as seen</a>";
                             if (is_seen == false) {
 
+                                // if (sound_played === false) {
+                                //     $('#playbtn').click();
+                                // }
+
+                                // $.playSound('{% static "noti_sound/notification.mp3" %}')
+                                // var audelem = document.getElementsByClassName('sound-player');
+
+                                // audelem.addEventListener('ended', (event) => {
+                                //     alert('dsds')
+                                // });
+
+
+                                // backend_data = {'noti_id': value.noti_id}
+                                // $.ajax({
+                                //     type: 'POST',
+                                //     url: '/sound/off/noti/panic/',
+                                //     data: backend_data,
+                                // })
+
                                 $("#panic_noti").append(
-                                    "<div>" + f_name + " <br> " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
+                                    "<div><h6><u> Panic ID: " + value.panic_id + " </u></h6>" + f_name + " <br> " + noti_text + " <br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"
                                 );
 
                             }
@@ -2711,7 +2773,7 @@
                             var mark_seen = "<a href='/mark/seen/paramedic/phase/update/" + noti_id + "/'  id='aTag'>Mark Seen</a>";
 
                             $("#phase_status").append(
-                                "<div> Status Updated For Dispatch Incident Run ID Of" + run_id + " <br> To " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + time + "</u><br>" + details + "<br>"+ mark_seen +"</div> <hr>"
+                                "<div> Status Updated For Dispatch Incident Run ID Of" + run_id + " <br> To " + noti_text + "<br><span>Notification Date: </span><u id='date'>" + time + "</u><br>" + details + "<br>" + mark_seen + "</div> <hr>"
                             );
 
                         })
@@ -2722,13 +2784,24 @@
                 $.ajax({
                     method: "GET",
                     url: "/renewal/membership/",
-                    success: function(data) {
+                    success: function (data) {
                         $("#renewal_noti").empty();
-                        $.each(data, function(key, value) {
+                        $.each(data, function (key, value) {
                             var membership_model_id = value.membership_model_id;
                             var noti_text = value.noti_text;
                             var is_seen = value.is_seen;
-                            var created = value.created.substring(0, 10);
+                            // var created = value.created.substring(0, 10);
+                            var created = new Date(value.created);
+                            var created = created.toLocaleString("en-US", {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true
+                            });
+
                             var details = "<a href='/membership/details/individual/" + membership_model_id + "/'  id='aTag'>Details</a>";
                             var mark_seen = "<a href='/mark/as/seen/membership/renewal/notification/" + value.renewal_noti_id + "/'  id='mark_seen'>Mark as seen</a>";
                             if (is_seen == false) {
@@ -2745,13 +2818,23 @@
                 $.ajax({
                     method: "GET",
                     url: "/hospital/transfer/notifications/",
-                    success: function(data) {
+                    success: function (data) {
                         $("#h_transfer_noti").empty();
-                        $.each(data, function(key, value) {
+                        $.each(data, function (key, value) {
                             var first_name = value.first_name;
                             var last_name = value.last_name;
                             var text = value.text;
-                            var created = value.created.substring(0, 10);
+                            // var created = value.created.substring(0, 10);
+                            var created = new Date(value.created);
+                            var created = created.toLocaleString("en-US", {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true
+                            });
                             var noti_id = value.noti_id;
                             var ambulance_req_id = value.ambulance_req_id;
                             var details = "<a href='/hospital/transfer/details/" + ambulance_req_id + "/'  id='aTag'>Details</a>";
@@ -2770,9 +2853,9 @@
                 $.ajax({
                     method: "GET",
                     url: "/notification/length/",
-                    success: function(data) {
+                    success: function (data) {
                         $("#kt_quick_notifications_toggle").empty();
-                        $.each(data, function(key, value) {
+                        $.each(data, function (key, value) {
                             var noti_length = data.total_noti_length;
                             $("#kt_quick_notifications_toggle").append(
                                 "<div >" + noti_length + " </div>"
@@ -2781,14 +2864,13 @@
                     }
                 })
 
-
             }, 10000)
         </script>
 
-        <!-- posting request.user's position -->
-        <script>
-            window.onload = function(){
 
+        <script>
+            window.onload = function () {
+                // posting request.user's position
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         (position) => {
@@ -2822,6 +2904,7 @@
                 })
             }
         </script>
+
 
 
         <script>
@@ -2859,6 +2942,12 @@
             })
         </script>
 
+        <!-- <script>
+            function play() {
+                    var audio = document.getElementById("track");
+                    audio.play();
+                }
+        </script> -->
 
         {% block js %} {% endblock %}
 </body>

@@ -191,7 +191,7 @@ class GroupChatApi(APIView):
     def get(self, request, *args, **kwargs):
         inbox = GroupChat.objects.filter(am_model_id = self.kwargs['id']).order_by('sent')
         serializer = GroupChatSerializer(inbox, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         if AmbulanceModel.objects.get(id = self.kwargs['id'], closed = False):

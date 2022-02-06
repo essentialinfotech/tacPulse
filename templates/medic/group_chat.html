@@ -209,6 +209,11 @@
                                         Messages</button>
                                     <a href="{% url 'delete_dispatch_sms' am_model_instance.id %}"
                                         class="btn btn-danger" style="border-radius: 0px;">Delete Conversion</a>
+
+                                    <a onclick="window.open('{% url "emergency_incident_dispatch_individual_parts_medium" am_model_instance.id %}', '_blank', 'location=yes,height=570,width=670,scrollbars=yes,status=yes');"
+                                    class="btn btn-success" style="border-radius: 0px;"
+                                    >Open Emergency In New Window</a>
+
                                 </div>
                             </div>
                         </section>

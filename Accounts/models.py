@@ -76,6 +76,10 @@ class Message(models.Model):
     def __str__(self):
         return self.sender.first_name
 
+    @property
+    def filename(self):
+        return self.file.name # os.path.basename(self.audio_file.path)
+
 
 
 #for password reset api

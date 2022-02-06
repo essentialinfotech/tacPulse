@@ -1080,6 +1080,8 @@ class GroupChat(models.Model):
     sender = models.ForeignKey(User, blank=True,null=True, on_delete=models.CASCADE)
     msg = models.TextField()
     sent = models.DateTimeField(auto_now_add=True)
+    img = models.ImageField(upload_to = 'GrpupChat', blank = True, null = True)
+    file = models.FileField(upload_to= 'GroupChat', blank = True, null = True)
 
     # def __str__(self):
     #     return str(self.sender.first_name)

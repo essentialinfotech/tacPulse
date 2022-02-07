@@ -33,6 +33,7 @@
     #chat-user-names {
         font-size: 15px;
         margin-left: 15px;
+        color: #222;
     }
 
     .chat-log {
@@ -115,37 +116,48 @@
                         <!-- chat iser's section -->
                         <section id="chat-user-section">
                             <div class="text-left">
-                                <h3>Chat Users</h3>
+                                <h3>Group Chat Members</h3>
+                                <small>Click on names to chat privately</small>
                             </div>
+
                             <!-- ambulance incident form creator -->
                             <div class="chat-users d-flex">
                                 <img src="{{ am_model_instance.user.imageURL }}" height="40px" width="40px" alt="">
-                                <span id="chat-user-names">
-                                    {{ am_model_instance.user.first_name|title }} {{ am_model_instance.user.last_name|title }}
-                                    <br>
-                                    {{ am_model_instance.user.contact }}
-                                </span>
+                                <a style="cursor: pointer;" class="d-flex" onclick="window.open( '{% url 'send_message' am_model_instance.user.id  %}' , '_blank' , 'location=yes,height=570,width=670,scrollbars=yes,status=yes' );">
+                                    <span id="chat-user-names">
+                                        {{ am_model_instance.user.first_name|title }} {{ am_model_instance.user.last_name|title }}
+                                        <br>
+                                        {{ am_model_instance.user.contact }}
+                                    </span>
+                                </a>
                             </div>
 
                             <!-- other users -->
                             {% for i in chat_users %}
-                            <div class="chat-users d-flex">
-                                <img src="{{ i.paramedics.imageURL }}" height="40px" width="40px" alt="">
-                                <span id="chat-user-names">{{ i.paramedics.first_name|title }} {{ i.paramedics.last_name|title }} <br> {{ i.paramedics.contact }} </span>
-                            </div>
+                                <div class="chat-users d-flex">
+                                    <img src="{{ i.paramedics.imageURL }}" height="40px" width="40px" alt="">
+                                    <a style="cursor: pointer;" class="d-flex" onclick="window.open('{% url 'send_message' i.paramedics.id %}', '_blank', 'location=yes,height=570,width=670,scrollbars=yes,status=yes');">
+                                        <span id="chat-user-names">{{ i.paramedics.first_name|title }} <br>
+                                            {{ i.paramedics.contact }} </span>
+                                    </a>
+                                </div>
                             {% endfor %}
 
-                            <!-- Caller -->
+                            <!-- Caller/panic sender -->
                             {% if am_model_instance.panic %}
-                            <h5>Panic Sender/Caller</h5>
-                            <div class="chat-users d-flex">
-                                <img src="{{ am_model_instance.user.imageURL }}" height="40px" width="40px" alt="">
-                                <span id="chat-user-names">
-                                    {{ am_model_instance.panic.panic_sender.first_name|title }} {{ am_model_instance..panic.panic_sender.last_name|title }}
-                                    <br>
-                                    {{ am_model_instance.panic.panic_sender.contact }}
-                                </span>
-                            </div>
+                                <h5>Panic Sender/Caller(Also in group chat)</h5>
+                                <div class="chat-users d-flex">
+                                    <img src="{{ am_model_instance.panic.panic_sender.imageURL }}" height="40px" width="40px" alt="">
+
+                                    <a style="cursor: pointer;" class="d-flex"
+                                        onclick="window.open( '{% url 'send_message' am_model_instance.panic.panic_sender.id  %}' , '_blank' , 'location=yes,height=570,width=670,scrollbars=yes,status=yes' );">
+                                        <span id="chat-user-names">
+                                            {{ am_model_instance.panic.panic_sender.first_name|title }} {{ am_model_instance..panic.panic_sender.last_name|title }}
+                                            <br>
+                                            {{ am_model_instance.panic.panic_sender.contact }}
+                                        </span>
+                                    </a>
+                                </div>
                             {% endif %}
 
                         </section>
@@ -154,6 +166,16 @@
 
                         <!-- chat-log -->
                         <section id="chat-log-section">
+
+                            <div class="text-center">
+                                <h6>
+                                    <strong>Group Chat</strong> For
+                                    <span>
+                                        Dispatch Incident Run ID: {{ am_model_instance.run_id }}</span>
+                                    <p><small>Messages here are visible for all members mentioned in the <strong>chat users</strong> section</small></p>
+                                </h6>
+                            </div>
+
                             <div class="chat-log">
                             {% if not am_model_instance.closed %}
 
@@ -168,7 +190,24 @@
                                             <strong>You</strong>
                                             <div class="flex-texts">
                                                 <span>{{ i.sent }}</span> <br>
-                                                <span>{{ i.msg|title }}</span>
+                                                {% if i.msg %}
+                                                    <span>{{ i.msg|title }}</span>
+                                                {% endif %}
+                                                
+                                                {% if i.img %}
+                                                <br>
+                                                    <a href="{{ i.img.url }}">
+                                                        <img src="{{ i.img.url }}" height="100px" width="100px" alt="">
+                                                    </a>
+                                                {% endif %}
+                                                
+                                                {% if i.attachment %}
+                                                <br>
+                                                    <a href="{{ i.attachment.url }}">
+                                                        {{ i.attachment.url }}
+                                                    </a>
+                                                {% endif %}
+
                                             </div>
                                         </div>
                                     </div>
@@ -183,7 +222,25 @@
                                             <strong>{{ i.sender.first_name|title }}</strong>
                                             <div class="flex-texts">
                                                 <span>{{ i.sent }}</span> <br>
-                                                <span>{{ i.msg|title }}</span>
+
+                                                {% if i.msg %}
+                                                    <span>{{ i.msg|title }}</span>
+                                                {% endif %}
+
+                                                {% if i.img %}
+                                                <br>
+                                                    <a href="{{ i.img.url }}">
+                                                        <img src="{{ i.img.url }}" height="100px" width="100px" alt="">
+                                                    </a>
+                                                {% endif %}
+
+                                                {% if i.attachment %}
+                                                <br>
+                                                    <a href="{{ i.attachment.url }}">
+                                                        {{ i.attachment.url }}
+                                                    </a>
+                                                {% endif %}
+
                                             </div>
                                         </div>
                                     </div>
@@ -200,19 +257,54 @@
                             </div>
 
                             <div class="input">
+                                <!-- msg input -->
                                 <textarea class="form-control" required name="msg" id="msg" cols="100"
                                     rows="5"></textarea>
                                 <div class="send-icon-container">
+
+                                    <!-- send msg btn -->
                                     <button class="btn btn-secondary button-send"
                                         style="border-radius: 0px;">Send</button>
+
+                                        <!-- reload msg btn ajax -->
                                     <button class="btn btn-secondary" id="reload-msg" style="border-radius: 0px;">Reload
                                         Messages</button>
+
+
+                                    <!-- img upload btn -->
+                                    <button type="button" id="images-btn" class="btn btn-secondary" style="border-radius: 0px;">
+                                        Upload Images
+                                    </button>
+
+                                    <!-- attachment upload btn -->
+                                    <button type="button" id="attachment-btn" class="btn btn-secondary" style="border-radius: 0px;">
+                                        <i class="icon text-dark-50 flaticon-attachment"></i>
+                                        Attachment
+                                    </button>
+
+                                    <br>
+
+                                    <!-- uploading attachments -->
+                                    <form method="post" action="{% url 'group_chat' am_id %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <!-- img input -->
+                                        <input type="file" multiple name="img" id="images-inp" accept="image/*" style="display: none;">
+                                        <!-- file input -->
+                                        <input type="file" name="attachment" id="attachment-inp" style="display: none;">
+                                        <br>
+                                        <button type="submit" id="submit-attachments" class="btn btn-success" style="display: none; border-radius: 0px;">Send Files</button>
+                                    </form>
+                                    <!-- ends attachment -->
+                                   
+
                                     <a href="{% url 'delete_dispatch_sms' am_model_instance.id %}"
                                         class="btn btn-danger" style="border-radius: 0px;">Delete Conversion</a>
 
+                                    <!-- new window for emergency report form -->
                                     <a onclick="window.open('{% url "emergency_incident_dispatch_individual_parts_medium" am_model_instance.id %}', '_blank', 'location=yes,height=570,width=670,scrollbars=yes,status=yes');"
                                     class="btn btn-success" style="border-radius: 0px;"
                                     >Open Emergency In New Window</a>
+
 
                                 </div>
                             </div>
@@ -231,6 +323,7 @@
 {% endblock %}
 
 {% block js %}
+
 <!-- post messages -->
 <script>
     $('.button-send').click(function (e) {
@@ -307,6 +400,8 @@
                     var last_name = value.sender.last_name;
                     var image = value.sender.profile_pic;
                     var msg = value.msg;
+                    var img = value.img;
+                    var attachment = value.attachment;
                     var sent = new Date(value.sent);
                     var sent = sent.toLocaleString("en-US", {
                         day: '2-digit',
@@ -318,19 +413,102 @@
                         hour12: true
                     });
 
+                    var image_file = window.location.origin + img;
+                    var attachment_file = window.location.origin + attachment;
                     var image_src = window.location.origin + image;
                     var sender = value.sender.id;
 
+                    if(attachment == null){
+                        attachment = ''
+                    }
+
+                    if(image !== null){
+                        var img_tag = $('<img src=' + image_file + ' height="100px" width="100px" alt="No Image">');
+                    }
+                    else{
+                        var img_tag = '';
+                    }
+
+                    // appending messages depending on various conditions
                     if (user == sender) {
-                        $(".chat-log").append(
-                            '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
-                        );
+
+                        if(msg != null){
+                            if(image != null || attachment != null){
+                                $(".chat-log").append(
+                                    '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> <br> <a href=' + image_file + '><img src=' + image_file + ' height="100px" width="100px" alt="No Image"></a> <br> <a href=' + attachment_file + '>' + attachment + '</a> </div> </div> </div>'
+                                );
+                            }
+
+                            else{
+                                $(".chat-log").append(
+                                    '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
+                                );
+                            }
+                            
+                        }
+
+                        else{
+                            if(image != null && attachment == null){
+                                $(".chat-log").append(
+                                    '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <a href=' + image_file + '><img src=' + image_file + ' height="100px" width="100px" alt=""></a> </div> </div> </div>'
+                                );
+                            }
+
+                            if (image == null && attachment != null) {
+                                $(".chat-log").append(
+                                    '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <a href=' + attachment_file + '>'+ attachment +'</a> </div> </div> </div>'
+                                );
+                            }
+
+                            if (image != null && attachment != null) {
+                                $(".chat-log").append(
+                                    '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="you mb-2"> <strong>You</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <a href=' + image_file + '><img src=' + image_file + ' height="100px" width="100px" alt=""></a> <a href=' + attachment_file + '>' + attachment + '</a> </div> </div> </div>'
+                                );
+                            }
+                            
+                            
+                        }
+                        
                     }
 
                     else {
-                        $(".chat-log").append(
-                            '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="others mb-2"> <strong>' + first_name + '</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
-                        );
+
+                         if (msg != null) {
+                             if (image != null || attachment != null) {
+                                 $(".chat-log").append(
+                                     '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="others mb-2"> <strong>' + first_name + '</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> <br> <a href=' + image_file + '><img src=' + image_file + ' height="100px" width="100px" alt=""></a> <br> <a href=' + attachment_file + '>' + attachment + '</a> </div> </div> </div>'
+                                 );
+                             }
+
+                             else {
+                                 $(".chat-log").append(
+                                     '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="others mb-2"> <strong>' + first_name + '</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <span>' + msg + '</span> </div> </div> </div>'
+                                 );
+                             }
+                         }
+
+                         else{
+
+                             if (image != null && attachment == null) {
+                                 $(".chat-log").append(
+                                     '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="others mb-2"> <strong>' + first_name + '</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <a href=' + image_file + '><img src=' + image_file + ' height="100px" width="100px" alt=""></a> </div> </div> </div>'
+                                 );
+                             }
+
+                             if (image == null && attachment != null) {
+                                 $(".chat-log").append(
+                                     '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="others mb-2"> <strong>' + first_name + '</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <a href=' + attachment_file + '>' + attachment + '</a> </div> </div> </div>'
+                                 );
+                             }
+
+                             if (image != null && attachment != null) {
+                                 $(".chat-log").append(
+                                     '<div class="d-flex"> <div> <img src=' + image_src + ' alt=""> </div> <div class="others mb-2"> <strong>' + first_name + '</strong> <div class="flex-texts"> <span>' + sent + '</span> <br> <a href=' + image_file + '><img src=' + image_file + ' height="100px" width="100px" alt=""></a> <a href=' + attachment_file + '>' + attachment + '</a> </div> </div> </div>'
+                                 );
+                             }
+
+                         }
+                        
                     }
 
                     // scrolling down after a message is received/send
@@ -351,6 +529,20 @@
         var user = $('#request-user').val();
         var url = '/api/inbox/' + am_id + '/';
         UpdateChat(am_id, user, url);
+    })
+</script>
+
+<script>
+    $('#images-btn').click(function(e){
+        $('#images-inp').click();
+        $('#images-inp').css("display", "block");
+        $('#submit-attachments').css("display", "block");
+    })
+
+    $('#attachment-btn').click(function (e) {
+        $('#attachment-inp').click();
+        $('#attachment-inp').css("display", "block");
+        $('#submit-attachments').css("display", "block");
     })
 </script>
 

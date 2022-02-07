@@ -1,4 +1,5 @@
 from __future__ import division
+from email.mime import image
 from django import dispatch
 from django.views.generic import DeleteView
 from django.contrib.auth.decorators import login_required
@@ -2602,6 +2603,24 @@ class GroupChatView(TemplateView):
         # ambulance model id
         context['am_id'] = self.kwargs['id']
         return context
+
+    def post(self, request, *args, **kwargs):
+        images = request.FILES.getlist('img')
+        attachment = request.FILES.get('attachment')
+        if images:
+            for img in images:
+                GroupChat.objects.create(
+                    am_model_id = self.kwargs['id'],
+                    sender = self.request.user,
+                    img = img,
+                )
+        if attachment:
+                GroupChat.objects.create(
+                    am_model_id = self.kwargs['id'],
+                    sender = request.user,
+                    attachment = attachment,
+                )
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         
 @login_required
 def delete_dispatch_sms(request,id):

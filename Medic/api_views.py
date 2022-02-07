@@ -198,7 +198,9 @@ class GroupChatApi(APIView):
             serializer = GroupChatSerializer(data = request.data)
             am_model = get_object_or_404(AmbulanceModel, id=self.kwargs['id'])
             sender = request.data['sender']
-            msg = request.data['msg']
+            msg = request.data.get('msg')
+            if not msg:
+                msg = None
             if serializer.is_valid():
                 serializer.save(am_model = am_model, sender_id = sender, msg = msg)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)

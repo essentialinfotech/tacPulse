@@ -1,4 +1,6 @@
 import builtins
+from email.policy import default
+from tkinter import N
 from typing import Set
 from django.db import models
 from django.db.models.aggregates import Count
@@ -1078,13 +1080,18 @@ class Light(models.Model):
 class GroupChat(models.Model):
     am_model =models.ForeignKey(AmbulanceModel,on_delete = models.CASCADE, blank=True, null=True)
     sender = models.ForeignKey(User, blank=True,null=True, on_delete=models.CASCADE)
-    msg = models.TextField()
+    msg = models.TextField(null=True)
+    img = models.ImageField(upload_to = 'GrpupChat', blank = True, null = True, default = '')
+    attachment = models.FileField(upload_to= 'GroupChat', blank = True, null = True, default = '')
     sent = models.DateTimeField(auto_now_add=True)
-    img = models.ImageField(upload_to = 'GrpupChat', blank = True, null = True)
-    file = models.FileField(upload_to= 'GroupChat', blank = True, null = True)
 
-    # def __str__(self):
-    #     return str(self.sender.first_name)
+    def __str__(self):
+        return str(self.sender.first_name)
+
+class ChatAttachments(models.Model):
+    for_chat = models.ForeignKey(GroupChat, blank=True, null=True, on_delete=models.CASCADE)
+    img = models.ImageField(upload_to = 'GrpupChat', blank = True, null = True)
+    attachment = models.FileField(upload_to= 'GroupChat', blank = True, null = True)
 
 # Group chat ends
 

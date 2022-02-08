@@ -1575,16 +1575,16 @@
                             <div class="row">
                                 <div class="col-md-8"></div>
                                 {% if request.user.is_staff %}
-                                <div class="col-md-2">
+                                <!-- <div class="col-md-2">
                                     <div class="row text-right">
                                         <a href="{% url 'schedule_status_change' object.id %}" class="btn btn-warning">Completed?</a>
                                     </div>
-                                </div>
+                                </div> -->
                                 {% endif %}
                                 <div class="col-md-2">
-                                    <div class="row text-right">
+                                    <!-- <div class="row text-right">
                                         <a href="{% url 'track_schedule' object.id %}" class="btn btn-light-primary font-weight-bolder mr-2">Track</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="row">
                                     {% if messages %}
@@ -1870,7 +1870,7 @@
                                     </div>
                                     <div class="row">
                                         {% if task%}
-                                        <div class="form- group">
+                                        <!-- <div class="form- group">
                                             <div class="form-group row">
                                                 <div class="col-md-2">
                                                     <label>Task Description</label>
@@ -1881,7 +1881,7 @@
 
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         {% endif%}
                                     </div>
 

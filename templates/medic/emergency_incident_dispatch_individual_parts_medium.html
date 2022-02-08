@@ -18,9 +18,20 @@
         padding: 2rem;
     }
 
-    .sidebar{
-        position: fixed;
-        left: 100px;
+    .page-inner-layout1{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+
+    .sidebar-related-info-panel{
+        height: 400px;
+        width:50%;
+        overflow-y: scroll;
     }
 
     .contents{
@@ -31,13 +42,6 @@
     }
 
     @media only screen and (max-width: 760px) {
-        .data-container {
-            flex: none !important;
-        }
-
-        .sidebar{
-            position: unset !important;
-        }
 
         .contents{
             position: unset !important;
@@ -77,8 +81,8 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="d-flex justify-content-around data-container">
-                        <div class="sidebar">
+                    <div class="page-inner-layout1">
+                        <div class="">
                     
                             <div class="box" id="call_i">
                                 <a href="#">Call Intake Phase</a>
@@ -114,7 +118,7 @@
                     
                         </div>
                     
-                        <div class="contents">
+                        <div class="sidebar-related-info-panel">
                             <div class="card p-5 mb-5" id="call">
                                 <div class="text-left">
                                     <h3>Call Intake Phase</h3>
@@ -204,15 +208,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted To Crew On Whatsapp</label> <br>
+                                    <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted To Crew</label> <br>
                                     <input type="text" class="form-control" readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp" value="{{ call_intake_phase.time_call_posted_to_crew_on_whatsapp }}">
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="time_call_posted_to_crew_on_whatsapp">Time Call Posted To Crew On Whatsapp</label> <br>
-                                    <input type="text" class="form-control"  readonly name="time_call_posted_to_crew_on_whatsapp" id="time_call_posted_to_crew_on_whatsapp"
-                                        value="{{ call_intake_phase.time_call_posted_to_crew_on_whatsapp }}">
-                                </div>
 
                                 <div class="form-group">
                                     <label for="crew_operational_status">Crew Operational Status</label> <br>
@@ -346,12 +345,6 @@
                                         <label for="service_note_description">Service Note Description</label> <br>
                                         <input class="form-control"  type="text" readonly name="service_note_description" id="service_note_description" value="{{ i.service_note_description }}">
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="service_note_time">Service Note Time</label> <br>
-                                        <input class="form-control" type="text" readonly name="service_note_time" id="service_note_time"
-                                            value="{{ i.service_note_description }}">
-                                    </div>
                                 {% endfor %}
                             </div>
 
@@ -414,17 +407,34 @@
                                         <input class="form-control"  type="text" name="photos_and_other_choices" readonly id="photos_and_other_choices" value="{{ i.photos_and_other_choices }}">
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="uploader"> Uploader: </label> <br>
+                                        <a href="{% url 'profile' i.uploader.id %}">
+                                            <img src="{{ i.uploader.imageURL }}" height="50px" width="50px" alt=""> <br>
+                                            {{ i.uploader.first_name }} {{ i.uploader.last_name }}
+                                        </a>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="uploader"> Uploaded Time: </label> <br>
+                                        {{ i.uploaded_at }}
+                                    </div>
+
                                     {% if i.photo %}
                                         <div class="form-group">
                                             <label for="photos_and_other_choices">Photo & Other Choices</label> <br>
-                                            <img src="{{ i.photo.url }}" height="300px" width="300px" alt="">
+                                            <a href="{{ i.photo.url }}">
+                                                <img src="{{ i.photo.url }}" height="300px" width="300px" alt="">
+                                            </a>
                                         </div>
                                     {% endif %}
 
                                     {% if i.document %}
                                         <div class="form-group">
                                             <label for="document">Document</label> <br>
-                                            <img src="{{ i.document.url }}" height="300px" width="300px" alt="">
+                                            <a href="{{ i.document.url }}">
+                                                {{ i.document }}
+                                            </a>
                                         </div>
                                     {% endif %}
                                 {% endfor %}

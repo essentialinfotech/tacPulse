@@ -100,7 +100,7 @@
             </div>
 
         </div>
-        {% if request.user.is_staff  or request.user.medic %}
+        <!-- {% if request.user.is_staff  or request.user.medic %}
             <div class="row">
                 <div class="col-md-10">
                     <h5>Task Description</h5>
@@ -114,7 +114,7 @@
                     <a href="{% url 'complete_panic_task' id %}" class="btn btn-warning"> Completed?</a>
                 </div>
             </div>
-        {% endif %}
+        {% endif %} -->
         <div class="row">
             <!-- <div class="col-md-12">
                 <div id="distance-duration">
@@ -149,13 +149,13 @@
 
 
     <script>
-        function initMap() {
-            data_lat = parseFloat(document.getElementById('lat').value);
-            data_lng = parseFloat(document.getElementById('lng').value);
+        data_lat = parseFloat(document.getElementById('lat').value);
+        data_lng = parseFloat(document.getElementById('lng').value);
 
+        function initMap() {
             const myLatLng = { lat: data_lat, lng: data_lng };
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 15,
+                zoom: 18,
                 center: myLatLng,
             });
 
@@ -164,6 +164,18 @@
                 map,
                 title: "{{ place }}",
             });
+
+             const cityCircle = new google.maps.Circle({
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+                map,
+                center: { lat: data_lat, lng: data_lng },
+                radius: Math.sqrt(2) * 10,
+            });
+
         }
     </script>
 

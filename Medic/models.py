@@ -581,9 +581,13 @@ class DispatchIncidentPhotos(models.Model):
         ('Other','Other')
     ]
     parent = models.ForeignKey(AmbulanceModel,on_delete=models.CASCADE,blank=True,null=True)
+    uploader = models.ForeignKey(User,on_delete=SET_NULL,blank=True,null=True)
+
     photos_and_other_choices = models.CharField(max_length=50,blank=True,null=True,choices=ITEM)
     photo = models.FileField(upload_to='Ambulance',blank=True,null=True)
     document = models.FileField(upload_to='Ambulance',blank=True,null=True)
+
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
 # class DispatchIncidentNameOfDispatcher(models.Model):
 #     dispatcher_name = models.CharField(max_length=500)

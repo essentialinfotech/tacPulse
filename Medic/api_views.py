@@ -220,7 +220,7 @@ class DIspatchIncidentPhotosApi(APIView):
         am_model = get_object_or_404(AmbulanceModel, id=self.kwargs['id'])
         serializer = DispatchIncidentPhotoSerializer(data = request.data)
         if serializer.is_valid():
-            serializer.save(parent = am_model)
+            serializer.save(parent = am_model, uploader = request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

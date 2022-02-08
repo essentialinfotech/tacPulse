@@ -300,7 +300,7 @@
                 </td>
 
                 <td>
-                    <div class="text-center">
+                    <div class="text-center" style="word-wrap: break-word;">
                         {{ incident.senior|title }}
                     </div>
                 </td>
@@ -908,7 +908,7 @@
         <tr>
             <th>
                 <div class="back-ground-common text-center">
-                    Item
+                    Description
                 </div>
             </th>
             <th>
@@ -917,11 +917,6 @@
                 </div>
             </th>
 
-            <th>
-                <div class="back-ground-common text-center">
-                    Others
-                </div>
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -935,22 +930,13 @@
                 <td>
                     <div class="text-center">
                         {% if incident.photo %}
-                            <img src="http://{{ domain }}/media/{{ incident.photo  }}" height="100" width="100" alt="">
+                            <img src="http://{{ domain }}/media/{{ incident.photo  }}" height="300" width="300" alt="">
                         {% else %}
                          N/A
                          {% endif %}
                     </div>
                 </td>
 
-                <td>
-                    <div class="text-center">
-                        {% if incident.document %}
-                            <img src="http://{{ domain }}/media/{{ incident.document  }}" height="100" width="100" alt="">
-                        {% else %}
-                        N/A
-                        {% endif %}
-                    </div>
-                </td>
             </tr>
         {% endfor %}
     </tbody>

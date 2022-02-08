@@ -396,7 +396,7 @@ def edit_profile_admin(request, id):
 
 @login_required
 def edit_profile_medic(request, id):
-    if id == request.user.id: 
+    if id == request.user.id or request.user.is_superuser: 
         data = User.objects.get(id=id)
         form = EditProfile(instance=data)
         if request.method == 'POST':
@@ -417,9 +417,9 @@ def edit_profile_medic(request, id):
         return redirect('forbidden')
 
 @login_required
-@user_passes_test(has_perm_dispatch, REDIRECT_FIELD_NAME)
+@user_passes_test(has_perm_admin_dispatch, REDIRECT_FIELD_NAME)
 def edit_profile_dispatch(request, id):
-    if id == request.user.id: 
+    if id == request.user.id or request.user.is_superuser: 
         data = User.objects.get(id=id)
         form = EditProfile(instance=data)
         if request.method == 'POST':
@@ -442,7 +442,7 @@ def edit_profile_dispatch(request, id):
 @login_required
 @user_passes_test(has_perm_user, REDIRECT_FIELD_NAME)
 def edit_profile_user(request, id):
-    if id == request.user.id: 
+    if id == request.user.id or request.user.is_superuser: 
         data = User.objects.get(id=id)
         form = EditProfile(instance=data)
         if request.method == 'POST':

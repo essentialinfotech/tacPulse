@@ -1,4 +1,7 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
+
 <style>
     select {
         border: none!important;
@@ -160,7 +163,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group mt-2">
-                            <label for="c_complain">Time Call Posted to crew on whatsapp?</label> {{ form.time_call_posted_to_crew_on_whatsapp }}
+                            <label for="c_complain">Time Call Posted to crew</label> {{ form.time_call_posted_to_crew_on_whatsapp }}
                         </div>
                     </div>
 
@@ -194,7 +197,11 @@
     </div>
 </div>
 
+{% endblock %}
 
+{% block js %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
 
 <script>
     var amount_quoted = document.getElementById('amount_quoted')
@@ -259,30 +266,53 @@
     })
 </script>
 
+<!-- parsing only time from datetime format -->
 <script>
-    $('#panic').on('change', function(e){
+    function parseTime(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        // var ampm = hours >= 12 ? 'PM' : 'AM';
+        // + ' ' + ampm
+        // hours = hours % 12;
+        // hours = hours ? hours : 12;
+        // if (hours.toString().length <= 1){
+        //     hours = '0' + hours;
+        // }
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes;
+        return strTime;
+    }
+</script>
+
+<script>
+    $('#panic').on('change', function (e) {
         this.value.replace(/\s/g, "");
 
         var val = this.value;
-        if(val != ''){
-            var backend_data = {'panic_id': val}
+        if (val != '') {
+            var backend_data = { 'panic_id': val }
 
             $.ajax({
                 type: 'POST',
                 url: '/auto/fill/panic/data/to/call/intake/2nd/phase/',
                 data: backend_data,
-                success: function(response){
-                    if(response.found == true){
+                success: function (response) {
+                    if (response.found == true) {
                         var please_confirm = confirm('Do you want to autofill the Chief Complain,Scene/Pick Up address,Caller Name and Caller number from the Panic Detail?')
                         if (please_confirm == true) {
+
                             $.alert(response.for_whome, 'Is this panic was sent for someone else?')
+                            let call_received_time = response.panic_creation_time;
+
                             $('#id_chief_complain').val(response.reason);
                             $('#id_pick_up_address').val(response.place);
                             $('#id_caller_name').val(response.panic_sender);
                             $('#id_caller_number').val(response.contact);
+                            $('#id_call_received_time').val(parseTime(new Date(call_received_time)));
                         }
                     }
-                    else{
+                    else {
                         alert("No Panic Found with your given id")
                         $('#panic').val('');
                     }

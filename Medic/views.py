@@ -892,25 +892,14 @@ def check_panic_requests(request):
 def check_panic_requests_location(request, id):
     context = {}
     if request.user.is_staff or request.user.medic:
-        task = False
         try:
             this_panic = Panic.objects.filter(id=id)
             panic = Panic.objects.get(id=id)
-
             dispatch_incident = panic.ambulancemodel_set.all()
-
-            task_data = TaskModel.objects.filter(task_type='pan', panic_task_id =id )
-            for i in task_data:
-                task_data = i.task_desc
-            if task_data:
-                task = True
 
             context = {
                 'dispatch_incident': dispatch_incident,
-
                 'panic': panic,
-                'task': task,
-                'task_data': task_data,
                 'email': panic.panic_sender.username,
                 'first_name': panic.panic_sender.first_name,
                 'contact': panic.panic_sender.contact,
@@ -2497,6 +2486,7 @@ def auto_fill_panic_data_to_call_intake_2nd_phase(request):
                 'place': panic.place,
                 'panic_creation_time': panic.timestamp,
             }
+            print(panic.timestamp)
         except:
             response = {
                 'found': False,

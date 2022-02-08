@@ -1087,12 +1087,6 @@ class GroupChat(models.Model):
 
     def __str__(self):
         return str(self.sender.first_name)
-
-class ChatAttachments(models.Model):
-    for_chat = models.ForeignKey(GroupChat, blank=True, null=True, on_delete=models.CASCADE)
-    img = models.ImageField(upload_to = 'GrpupChat', blank = True, null = True)
-    attachment = models.FileField(upload_to= 'GroupChat', blank = True, null = True)
-
 # Group chat ends
 
 

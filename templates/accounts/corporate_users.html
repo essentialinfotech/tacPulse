@@ -33,7 +33,11 @@
                                             <tr>
                                                 <td>{{ forloop.counter }}</td>
                                                 <td>{{ i.id }}</td>
-                                                <td>{{ i.first_name|title }} {{ i.last_name|title }}</td>
+                                                <td>
+                                                    <a title="Profile" href="{% url 'profile' i.id %}">
+                                                        {{ i.first_name|title }} {{ i.last_name|title }}
+                                                    </a>
+                                                </td>
                                                 <td>{{ i.contact }}</td>
                                                 <td>{{ i.email }}</td>
                                                 <td>{{ i.address }}</td>

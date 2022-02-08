@@ -19,7 +19,7 @@ def has_perm_admin(user):
     return user.is_superuser
 
 def has_perm_user(user):
-    return not user.is_staff 
+    return not user.is_staff and not user.medic
 
 def has_perm_dispatch(user):
     return user.is_staff  and not user.is_superuser 

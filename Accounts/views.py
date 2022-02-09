@@ -16,7 +16,7 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.db.models import Sum
-from .decorators import has_perm_admin_dispatch, user_passes_test, has_perm_admin, has_perm_user, has_perm_dispatch, is_active, \
+from .decorators import has_perm_admin_dispatch, user_passes_test, has_perm_admin, has_perm_user_admin ,has_perm_user, has_perm_dispatch, is_active, \
     REDIRECT_FIELD_NAME, INACTIVE_REDIRECT_FIELD_NAME
 import datetime
 import re
@@ -440,7 +440,7 @@ def edit_profile_dispatch(request, id):
         return redirect('forbidden')
 
 @login_required
-@user_passes_test(has_perm_user, REDIRECT_FIELD_NAME)
+@user_passes_test(has_perm_user_admin, REDIRECT_FIELD_NAME)
 def edit_profile_user(request, id):
     if id == request.user.id or request.user.is_superuser: 
         data = User.objects.get(id=id)

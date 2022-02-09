@@ -1155,6 +1155,7 @@
                             </li>
                             {% endif %}
 
+                            {% if request.user.is_staff or request.user.medic %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -1187,7 +1188,7 @@
                                     </ul>
                                 </div>
                             </li>
-
+                            {% endif %}
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
@@ -2442,6 +2443,19 @@
             <!--end::Content-->
         </div>
 
+        <!-- noti audio -->
+        <input style="display: none;" type="button" onclick="play()" id="play-audio">
+        <audio controls id="audio" >
+            <source src="{% static 'noti_sound/notification.mp3' %}" type="audio/mp3">
+            Your browser does not support the audio tag.
+        </audio>
+
+        <script>
+            function play() {
+                var audio = document.getElementById("audio");
+                audio.play();
+            }
+        </script>
 
         <!--end::Quick Panel-->
         <script>
@@ -2681,7 +2695,6 @@
                     method: "GET",
                     url: "/notification/panic/",
                     success: function (data) {
-                        console.log(data)
                         $("#panic_noti").empty();
                         $.each(data, function (key, value) {
                             var sound_played = value.sound_played;
@@ -2707,8 +2720,8 @@
 
                                 // notification sound
                                 if (sound_played === false) {
-                                    const audio = new Audio("{% static 'noti_sound/notification.mp3' %}");
-                                    audio.play();
+                                    // const audio = new Audio("{% static 'noti_sound/notification.mp3' %}");
+                                    $('#play-audio').click();
 
                                     backend_data = { 'noti_id': value.noti_id }
                                     $.ajax({

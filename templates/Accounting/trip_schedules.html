@@ -83,7 +83,9 @@
                                 <th>To</th>
                                 <th>Status</th>
                                 <th>Change Status</th>
+                                {% if request.user.is_staff %}
                                 <th>Set Amount</th>
+                                {% endif %}
                                 <th>Has Membership?</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -129,9 +131,11 @@
                                 <td>
                                     <a href="{% url 'changeScheduleStatus' i.id %}">Change Status</a>
                                 </td>
+                                {% if request.user.is_staff %}
                                 <td>
                                     <a href="{% url 'setAmountforScheduleTrip' i.id %}">Set amount</a>
                                 </td>
+                                {% endif %}
                                 <td>
                                     {% if i.user.has_membership %} Yes {% else %} No {% endif %}
                                 </td>

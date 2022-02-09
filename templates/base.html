@@ -2443,16 +2443,6 @@
         </div>
 
 
-
-
-        <!-- noti audio -->
-        <!-- <inpu style="display: none;" id="playbtn" type="button" value="PLAY" onclick="play()">
-        <audio style="display: none;" id="track" src="{% static 'noti_sound/notification.mp3' %}"></audio> -->
-        <!-- ends -->
-
-
-
-
         <!--end::Quick Panel-->
         <script>
             var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
@@ -2695,7 +2685,6 @@
                         $("#panic_noti").empty();
                         $.each(data, function (key, value) {
                             var sound_played = value.sound_played;
-
                             var f_name = value.first_name.charAt(0).toUpperCase() + value.first_name.slice(1);
                             var l_name = value.last_name.charAt(0).toUpperCase() + value.last_name.slice(1);
                             var noti_text = value.noti_text;
@@ -2716,24 +2705,19 @@
                             var mark_seen = "<a href='/panic/notification/marking/as/read/" + value.noti_id + "/'  id='mark_seen'>Mark as seen</a>";
                             if (is_seen == false) {
 
-                                // if (sound_played === false) {
-                                //     $('#playbtn').click();
-                                // }
+                                // notification sound
+                                if (sound_played === false) {
+                                    const audio = new Audio("{% static 'noti_sound/notification.mp3' %}");
+                                    audio.play();
 
-                                // $.playSound('{% static "noti_sound/notification.mp3" %}')
-                                // var audelem = document.getElementsByClassName('sound-player');
+                                    backend_data = { 'noti_id': value.noti_id }
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/sound/off/noti/panic/',
+                                        data: backend_data,
+                                    })
+                                }
 
-                                // audelem.addEventListener('ended', (event) => {
-                                //     alert('dsds')
-                                // });
-
-
-                                // backend_data = {'noti_id': value.noti_id}
-                                // $.ajax({
-                                //     type: 'POST',
-                                //     url: '/sound/off/noti/panic/',
-                                //     data: backend_data,
-                                // })
 
                                 $("#panic_noti").append(
                                     "<div><h6><u> Panic ID: " + value.panic_id + " </u></h6>" + f_name + " <br> " + noti_text + " <br><span>Notification Date: </span><u id='date'>" + created + "</u><br>" + details + mark_seen + "<br></div> <hr>"

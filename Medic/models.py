@@ -1,6 +1,5 @@
 import builtins
 from email.policy import default
-from tkinter import N
 from typing import Set
 from django.db import models
 from django.db.models.aggregates import Count
